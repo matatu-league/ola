@@ -1,0 +1,1678 @@
+{
+  "total": 21575,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 2000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 20000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 40000,
+          "label": "Under 40 K",
+          "item_count": 1294
+        },
+        {
+          "from": 40000,
+          "to": 59000,
+          "label": "40 - 59 K",
+          "item_count": 5178
+        },
+        {
+          "from": 59000,
+          "to": 89000,
+          "label": "59 - 89 K",
+          "item_count": 8630
+        },
+        {
+          "from": 89000,
+          "to": 200000,
+          "label": "89 - 200 K",
+          "item_count": 5393
+        },
+        {
+          "from": 200000,
+          "to": null,
+          "label": "More than 200 K",
+          "item_count": 1078
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_115_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 115,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_115_type",
+      "possible_values": [
+        {
+          "value": "Activewear & Sportswear"
+        },
+        {
+          "value": "Blazers"
+        },
+        {
+          "value": "Blouses"
+        },
+        {
+          "value": "Corsets"
+        },
+        {
+          "value": "Dresses"
+        },
+        {
+          "value": "Fabrics"
+        },
+        {
+          "value": "Hijabs"
+        },
+        {
+          "value": "Jackets & Coats"
+        },
+        {
+          "value": "Jalabiya"
+        },
+        {
+          "value": "Jeans"
+        },
+        {
+          "value": "Joggers & Sweatpants"
+        },
+        {
+          "value": "Jumpsuits & Rompers"
+        },
+        {
+          "value": "Lingerie & Underwear"
+        },
+        {
+          "value": "Loungewear"
+        },
+        {
+          "value": "Pants"
+        },
+        {
+          "value": "Senator Suits"
+        },
+        {
+          "value": "Shirts"
+        },
+        {
+          "value": "Shorts"
+        },
+        {
+          "value": "Skirts"
+        },
+        {
+          "value": "Sleepwear & Pyjamas"
+        },
+        {
+          "value": "Socks & Tights"
+        },
+        {
+          "value": "Suits"
+        },
+        {
+          "value": "Sweaters & Cardigans"
+        },
+        {
+          "value": "Sweatshirts & Hoodies"
+        },
+        {
+          "value": "Swimwear & Beachwear"
+        },
+        {
+          "value": "T-Shirts & Tanks"
+        },
+        {
+          "value": "Tops"
+        },
+        {
+          "value": "Tunics"
+        },
+        {
+          "value": "Tuxedos"
+        },
+        {
+          "value": "Uniforms"
+        },
+        {
+          "value": "Vests"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Dresses"
+        },
+        {
+          "value": "Jeans"
+        },
+        {
+          "value": "Pants"
+        },
+        {
+          "value": "Shirts"
+        },
+        {
+          "value": "T-Shirts & Tanks"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_416_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 416,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_416_brand",
+      "possible_values": [
+        {
+          "value": "100K"
+        },
+        {
+          "value": "11Kn"
+        },
+        {
+          "value": "4F"
+        },
+        {
+          "value": "A&D"
+        },
+        {
+          "value": "Abc"
+        },
+        {
+          "value": "Abraham Moon"
+        },
+        {
+          "value": "Ace Couture"
+        },
+        {
+          "value": "Acqua di Stresa"
+        },
+        {
+          "value": "Actuel"
+        },
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Adire"
+        },
+        {
+          "value": "Adot"
+        },
+        {
+          "value": "Aeropostale"
+        },
+        {
+          "value": "Aglini"
+        },
+        {
+          "value": "Agraria"
+        },
+        {
+          "value": "Aj"
+        },
+        {
+          "value": "AKT Clothing"
+        },
+        {
+          "value": "Akube"
+        },
+        {
+          "value": "Alaia"
+        },
+        {
+          "value": "Alberta Ferretti"
+        },
+        {
+          "value": "Alberto Guardiani"
+        },
+        {
+          "value": "Alberto Roma"
+        },
+        {
+          "value": "Aldo"
+        },
+        {
+          "value": "Alexander McQueen"
+        },
+        {
+          "value": "Alexander Wang"
+        },
+        {
+          "value": "Alexis"
+        },
+        {
+          "value": "Alfa"
+        },
+        {
+          "value": "Alfani"
+        },
+        {
+          "value": "Alice & Olivia"
+        },
+        {
+          "value": "Allsix"
+        },
+        {
+          "value": "Amaga"
+        },
+        {
+          "value": "Ambassador"
+        },
+        {
+          "value": "American Eagle"
+        },
+        {
+          "value": "Amiri"
+        },
+        {
+          "value": "Andacava"
+        },
+        {
+          "value": "Angelo Galasso"
+        },
+        {
+          "value": "Angelsdot Clothing"
+        },
+        {
+          "value": "Ann Taylor"
+        },
+        {
+          "value": "Anna Rachele"
+        },
+        {
+          "value": "Anna'Sdesign"
+        },
+        {
+          "value": "Aomei"
+        },
+        {
+          "value": "Arare"
+        },
+        {
+          "value": "Aries"
+        },
+        {
+          "value": "Armani"
+        },
+        {
+          "value": "Arsenal"
+        },
+        {
+          "value": "Artengo"
+        },
+        {
+          "value": "Ash"
+        },
+        {
+          "value": "Ashro"
+        },
+        {
+          "value": "Asma"
+        },
+        {
+          "value": "Asooke"
+        },
+        {
+          "value": "Asos"
+        },
+        {
+          "value": "Aspesi"
+        },
+        {
+          "value": "Astley Clarke"
+        },
+        {
+          "value": "Aston Martin"
+        },
+        {
+          "value": "Atmosphere"
+        },
+        {
+          "value": "Atorka"
+        },
+        {
+          "value": "Avogan"
+        },
+        {
+          "value": "Backwoods"
+        },
+        {
+          "value": "Bale Fabrics"
+        },
+        {
+          "value": "Balenciaga"
+        },
+        {
+          "value": "Balmain"
+        },
+        {
+          "value": "Banana Moon"
+        },
+        {
+          "value": "Barena"
+        },
+        {
+          "value": "Bark"
+        },
+        {
+          "value": "Batik"
+        },
+        {
+          "value": "BeaFearless"
+        },
+        {
+          "value": "Bell"
+        },
+        {
+          "value": "Belstaff"
+        },
+        {
+          "value": "Bench"
+        },
+        {
+          "value": "Benetton"
+        },
+        {
+          "value": "Berna"
+        },
+        {
+          "value": "Bespoke"
+        },
+        {
+          "value": "Billionaire"
+        },
+        {
+          "value": "Binnys"
+        },
+        {
+          "value": "Bk"
+        },
+        {
+          "value": "Black Icon"
+        },
+        {
+          "value": "Blend"
+        },
+        {
+          "value": "Bodycon"
+        },
+        {
+          "value": "Boglioli"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Bottega Veneta"
+        },
+        {
+          "value": "Brittany Black"
+        },
+        {
+          "value": "Brocade Lace"
+        },
+        {
+          "value": "Brunello Cucinelli"
+        },
+        {
+          "value": "Buffalo"
+        },
+        {
+          "value": "Bulk"
+        },
+        {
+          "value": "Burberry"
+        },
+        {
+          "value": "Bwears"
+        },
+        {
+          "value": "Calvin Klein"
+        },
+        {
+          "value": "Camp Costa"
+        },
+        {
+          "value": "Canali"
+        },
+        {
+          "value": "Care Label"
+        },
+        {
+          "value": "Castor"
+        },
+        {
+          "value": "CAT"
+        },
+        {
+          "value": "Champion"
+        },
+        {
+          "value": "Chanel"
+        },
+        {
+          "value": "Chingavy"
+        },
+        {
+          "value": "Comma"
+        },
+        {
+          "value": "Copaya"
+        },
+        {
+          "value": "Cycle"
+        },
+        {
+          "value": "Daniel Hechter"
+        },
+        {
+          "value": "Daro"
+        },
+        {
+          "value": "Denim & Supply"
+        },
+        {
+          "value": "Depend"
+        },
+        {
+          "value": "Dezayah"
+        },
+        {
+          "value": "Dickies"
+        },
+        {
+          "value": "Diesel"
+        },
+        {
+          "value": "Dimattia"
+        },
+        {
+          "value": "Dior"
+        },
+        {
+          "value": "Dockers"
+        },
+        {
+          "value": "Dolce & Gabbana"
+        },
+        {
+          "value": "Dorothee Schumacher"
+        },
+        {
+          "value": "Dr. Denim"
+        },
+        {
+          "value": "Drome"
+        },
+        {
+          "value": "Dsquared2"
+        },
+        {
+          "value": "Ecco"
+        },
+        {
+          "value": "Egypt Abaya"
+        },
+        {
+          "value": "Elitmen"
+        },
+        {
+          "value": "Emporio Armani"
+        },
+        {
+          "value": "Essentials"
+        },
+        {
+          "value": "Essentiel"
+        },
+        {
+          "value": "Eton"
+        },
+        {
+          "value": "Eva Solo"
+        },
+        {
+          "value": "Evans"
+        },
+        {
+          "value": "Everlast"
+        },
+        {
+          "value": "Excellence"
+        },
+        {
+          "value": "F&F"
+        },
+        {
+          "value": "Fashion Nova"
+        },
+        {
+          "value": "Fay"
+        },
+        {
+          "value": "Fendi"
+        },
+        {
+          "value": "Ferrari"
+        },
+        {
+          "value": "First Grade"
+        },
+        {
+          "value": "Foreign"
+        },
+        {
+          "value": "Fossil"
+        },
+        {
+          "value": "Freedom Clothing"
+        },
+        {
+          "value": "Gant"
+        },
+        {
+          "value": "Gap"
+        },
+        {
+          "value": "Gerry Weber"
+        },
+        {
+          "value": "Giorgio Armani"
+        },
+        {
+          "value": "Givenchy"
+        },
+        {
+          "value": "Goodman"
+        },
+        {
+          "value": "Gucci"
+        },
+        {
+          "value": "Haider Ackermann"
+        },
+        {
+          "value": "Halston Heritage"
+        },
+        {
+          "value": "Hang"
+        },
+        {
+          "value": "HelisBrain"
+        },
+        {
+          "value": "Hellstar"
+        },
+        {
+          "value": "Hermes"
+        },
+        {
+          "value": "Hom"
+        },
+        {
+          "value": "House of Joyce"
+        },
+        {
+          "value": "Hugo Boss"
+        },
+        {
+          "value": "Indian Bubu"
+        },
+        {
+          "value": "Individual"
+        },
+        {
+          "value": "Italian Wool"
+        },
+        {
+          "value": "Jean Paul Gaultier"
+        },
+        {
+          "value": "Jeckerson"
+        },
+        {
+          "value": "Jeep"
+        },
+        {
+          "value": "Jersey"
+        },
+        {
+          "value": "Jessica Simpson"
+        },
+        {
+          "value": "Jfour"
+        },
+        {
+          "value": "Jil Sander"
+        },
+        {
+          "value": "Jordan"
+        },
+        {
+          "value": "Juicy Couture"
+        },
+        {
+          "value": "Just Cavalli"
+        },
+        {
+          "value": "Kampala"
+        },
+        {
+          "value": "Kanin"
+        },
+        {
+          "value": "Kappa"
+        },
+        {
+          "value": "Kenzo"
+        },
+        {
+          "value": "Kings"
+        },
+        {
+          "value": "Klixs Jeans"
+        },
+        {
+          "value": "Kontatto"
+        },
+        {
+          "value": "Lacoste"
+        },
+        {
+          "value": "Lakers"
+        },
+        {
+          "value": "Lanvin"
+        },
+        {
+          "value": "Lee"
+        },
+        {
+          "value": "Levi's"
+        },
+        {
+          "value": "LifeStride"
+        },
+        {
+          "value": "Liz Claiborne"
+        },
+        {
+          "value": "Louis Vuitton"
+        },
+        {
+          "value": "Lv"
+        },
+        {
+          "value": "M&S"
+        },
+        {
+          "value": "Marco Lorenzo"
+        },
+        {
+          "value": "Max Mara"
+        },
+        {
+          "value": "Met"
+        },
+        {
+          "value": "Modo"
+        },
+        {
+          "value": "Moncler"
+        },
+        {
+          "value": "Monica Vinader"
+        },
+        {
+          "value": "Moss"
+        },
+        {
+          "value": "Mr. Tan"
+        },
+        {
+          "value": "New Balance"
+        },
+        {
+          "value": "New Look"
+        },
+        {
+          "value": "New Man"
+        },
+        {
+          "value": "NEXT"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Nil"
+        },
+        {
+          "value": "Non"
+        },
+        {
+          "value": "Nudie Jeans"
+        },
+        {
+          "value": "Ny"
+        },
+        {
+          "value": "Off-White"
+        },
+        {
+          "value": "Ok"
+        },
+        {
+          "value": "Oxford"
+        },
+        {
+          "value": "Palm Angel"
+        },
+        {
+          "value": "Pepe Jeans"
+        },
+        {
+          "value": "Philipp Plein"
+        },
+        {
+          "value": "Pierre Cardin"
+        },
+        {
+          "value": "Plain And Pattern"
+        },
+        {
+          "value": "Playsuit"
+        },
+        {
+          "value": "Polo"
+        },
+        {
+          "value": "Polo Ralph Lauren"
+        },
+        {
+          "value": "Potra"
+        },
+        {
+          "value": "Prada"
+        },
+        {
+          "value": "Pretty Little Thing"
+        },
+        {
+          "value": "Puma"
+        },
+        {
+          "value": "Quintessa"
+        },
+        {
+          "value": "Qwstion"
+        },
+        {
+          "value": "Ready To Wear"
+        },
+        {
+          "value": "Reclaimed Vintage"
+        },
+        {
+          "value": "Reebok"
+        },
+        {
+          "value": "Religion"
+        },
+        {
+          "value": "Represent"
+        },
+        {
+          "value": "Robert Clergerie"
+        },
+        {
+          "value": "Saint"
+        },
+        {
+          "value": "Shein"
+        },
+        {
+          "value": "Signature"
+        },
+        {
+          "value": "Silk And Chiffon"
+        },
+        {
+          "value": "Simond"
+        },
+        {
+          "value": "Singer"
+        },
+        {
+          "value": "The North Face"
+        },
+        {
+          "value": "Timberland"
+        },
+        {
+          "value": "Tom Tailor"
+        },
+        {
+          "value": "Tommy Hilfiger"
+        },
+        {
+          "value": "TU"
+        },
+        {
+          "value": "U.S.Polo Association"
+        },
+        {
+          "value": "UGG"
+        },
+        {
+          "value": "Umbro"
+        },
+        {
+          "value": "Under Armour"
+        },
+        {
+          "value": "UNIQLO"
+        },
+        {
+          "value": "Vans"
+        },
+        {
+          "value": "Versace"
+        },
+        {
+          "value": "Vesper"
+        },
+        {
+          "value": "VHT"
+        },
+        {
+          "value": "Vivetta"
+        },
+        {
+          "value": "Wax"
+        },
+        {
+          "value": "Zara"
+        },
+        {
+          "value": "Zelda Wong"
+        },
+        {
+          "value": "Zeus"
+        },
+        {
+          "value": "Other Brand"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "4F"
+        },
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Louis Vuitton"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Polo Ralph Lauren"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1651_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1652,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1651_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Size",
+      "parent_slug": null,
+      "slug": "filter_attr_99_size",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 99,
+      "attr_name": "Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_99_size",
+      "possible_values": [
+        {
+          "value": "3XS"
+        },
+        {
+          "value": "XXS"
+        },
+        {
+          "value": "XS"
+        },
+        {
+          "value": "S"
+        },
+        {
+          "value": "M"
+        },
+        {
+          "value": "L"
+        },
+        {
+          "value": "XL"
+        },
+        {
+          "value": "XXL"
+        },
+        {
+          "value": "3XL"
+        },
+        {
+          "value": "4XL"
+        },
+        {
+          "value": "5XL"
+        },
+        {
+          "value": "6XL"
+        },
+        {
+          "value": "7XL"
+        },
+        {
+          "value": "One Size"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_287_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 287,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_287_colour",
+      "possible_values": [
+        {
+          "value": "Ash"
+        },
+        {
+          "value": "Azure"
+        },
+        {
+          "value": "Baby Blue"
+        },
+        {
+          "value": "Beige"
+        },
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Bone"
+        },
+        {
+          "value": "Bronze"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Burgundy"
+        },
+        {
+          "value": "Chestnut"
+        },
+        {
+          "value": "Coffee"
+        },
+        {
+          "value": "Copper"
+        },
+        {
+          "value": "Coral"
+        },
+        {
+          "value": "Crimson"
+        },
+        {
+          "value": "Ecru"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Graphite"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Hot Pink"
+        },
+        {
+          "value": "Iron"
+        },
+        {
+          "value": "Khaki"
+        },
+        {
+          "value": "Lemon"
+        },
+        {
+          "value": "Light Blue"
+        },
+        {
+          "value": "Light Green"
+        },
+        {
+          "value": "Multi"
+        },
+        {
+          "value": "Multicolor"
+        },
+        {
+          "value": "Navy Blue"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Tan"
+        },
+        {
+          "value": "Turquoise"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Wine"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Multi"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "White"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Style",
+      "parent_slug": null,
+      "slug": "filter_attr_302_style",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 302,
+      "attr_name": "Style",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_302_style",
+      "possible_values": [
+        {
+          "value": "Androgynous"
+        },
+        {
+          "value": "Boho"
+        },
+        {
+          "value": "Casual"
+        },
+        {
+          "value": "Classic"
+        },
+        {
+          "value": "Cowgirl / Cowboy"
+        },
+        {
+          "value": "Edgy"
+        },
+        {
+          "value": "Editorial"
+        },
+        {
+          "value": "Ethnic"
+        },
+        {
+          "value": "Formal"
+        },
+        {
+          "value": "Glam"
+        },
+        {
+          "value": "Gothic"
+        },
+        {
+          "value": "Grunge"
+        },
+        {
+          "value": "Military"
+        },
+        {
+          "value": "Minimalist"
+        },
+        {
+          "value": "Romantic"
+        },
+        {
+          "value": "Sleek Chic"
+        },
+        {
+          "value": "Sport"
+        },
+        {
+          "value": "Vintage"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Casual"
+        },
+        {
+          "value": "Classic"
+        },
+        {
+          "value": "Formal"
+        },
+        {
+          "value": "Romantic"
+        },
+        {
+          "value": "Sport"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Material",
+      "parent_slug": null,
+      "slug": "filter_attr_289_material",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 289,
+      "attr_name": "Material",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_289_material",
+      "possible_values": [
+        {
+          "value": "Yak"
+        },
+        {
+          "value": "Wool"
+        },
+        {
+          "value": "Wire"
+        },
+        {
+          "value": "Voile Lace"
+        },
+        {
+          "value": "Voile"
+        },
+        {
+          "value": "Vlies"
+        },
+        {
+          "value": "Viscose"
+        },
+        {
+          "value": "Vicuna"
+        },
+        {
+          "value": "Velvet Lace"
+        },
+        {
+          "value": "Velvet"
+        },
+        {
+          "value": "Velour"
+        },
+        {
+          "value": "Twill"
+        },
+        {
+          "value": "Tweed"
+        },
+        {
+          "value": "Trivinyl"
+        },
+        {
+          "value": "Triacetate"
+        },
+        {
+          "value": "Tissue Cord Lace Fabric"
+        },
+        {
+          "value": "Terry"
+        },
+        {
+          "value": "Synthetic"
+        },
+        {
+          "value": "Suede"
+        },
+        {
+          "value": "Spandex"
+        },
+        {
+          "value": "Silk"
+        },
+        {
+          "value": "Sequin Lace"
+        },
+        {
+          "value": "Satin"
+        },
+        {
+          "value": "Rubber"
+        },
+        {
+          "value": "Resin"
+        },
+        {
+          "value": "PVC"
+        },
+        {
+          "value": "Polyurethane"
+        },
+        {
+          "value": "Polyethylene"
+        },
+        {
+          "value": "Polyesters"
+        },
+        {
+          "value": "Polyester"
+        },
+        {
+          "value": "Polycotton"
+        },
+        {
+          "value": "Nylon"
+        },
+        {
+          "value": "Net"
+        },
+        {
+          "value": "Modal"
+        },
+        {
+          "value": "Microfleece"
+        },
+        {
+          "value": "Microfiber"
+        },
+        {
+          "value": "Mesh"
+        },
+        {
+          "value": "Merino wool"
+        },
+        {
+          "value": "Merino Wool"
+        },
+        {
+          "value": "Maguey"
+        },
+        {
+          "value": "Lycra"
+        },
+        {
+          "value": "Linen"
+        },
+        {
+          "value": "Leather"
+        },
+        {
+          "value": "Latex"
+        },
+        {
+          "value": "Lace"
+        },
+        {
+          "value": "Jersey"
+        },
+        {
+          "value": "Fur"
+        },
+        {
+          "value": "Fleece"
+        },
+        {
+          "value": "Flannel"
+        },
+        {
+          "value": "Denim"
+        },
+        {
+          "value": "Cotton"
+        },
+        {
+          "value": "Cloth"
+        },
+        {
+          "value": "Chiffon"
+        },
+        {
+          "value": "Cashmere"
+        },
+        {
+          "value": "Brocade"
+        },
+        {
+          "value": "Acrylic"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Synthetic"
+        },
+        {
+          "value": "Silk"
+        },
+        {
+          "value": "Polycotton"
+        },
+        {
+          "value": "Denim"
+        },
+        {
+          "value": "Cotton"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 45 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 45000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 45 - 55 K",
+          "filters": {
+            "price_min": 45000,
+            "price_max": 55000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 55 - 65 K",
+          "filters": {
+            "price_min": 55000,
+            "price_max": 65000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 65 K",
+          "filters": {
+            "price_min": 65000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Dresses",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/dresses.png",
+          "filters": {
+            "filter_attr_115_type": "Dresses"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "T-Shirts & Tanks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/t-shirts.png",
+          "filters": {
+            "filter_attr_115_type": "T-Shirts & Tanks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shirts",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/shirts.png",
+          "filters": {
+            "filter_attr_115_type": "Shirts"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Jeans",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/jeans.png",
+          "filters": {
+            "filter_attr_115_type": "Jeans"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pants",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/pants.png",
+          "filters": {
+            "filter_attr_115_type": "Pants"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Suits",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/suits.png",
+          "filters": {
+            "filter_attr_115_type": "Suits"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Jackets & Coats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/clothing/jackets.png",
+          "filters": {
+            "filter_attr_115_type": "Jackets & Coats"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_115_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_115_type"
+    }
+  ]
+}

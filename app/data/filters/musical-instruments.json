@@ -1,0 +1,632 @@
+{
+  "total": 1655,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 10000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 14000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 33000,
+          "label": "Under 33 K",
+          "item_count": 99
+        },
+        {
+          "from": 33000,
+          "to": 250000,
+          "label": "33 - 250 K",
+          "item_count": 397
+        },
+        {
+          "from": 250000,
+          "to": 950000,
+          "label": "250 - 950 K",
+          "item_count": 662
+        },
+        {
+          "from": 950000,
+          "to": 3700000,
+          "label": "950 K - 3.7 M",
+          "item_count": 413
+        },
+        {
+          "from": 3700000,
+          "to": null,
+          "label": "More than 3.7 M",
+          "item_count": 82
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_5105_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5105,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5105_brand",
+      "possible_values": [
+        {
+          "value": "ADMIRA"
+        },
+        {
+          "value": "AfriRhythm"
+        },
+        {
+          "value": "Agile"
+        },
+        {
+          "value": "Aguilar"
+        },
+        {
+          "value": "Alembic"
+        },
+        {
+          "value": "Alhambra"
+        },
+        {
+          "value": "Allparts"
+        },
+        {
+          "value": "Alvarez"
+        },
+        {
+          "value": "ammoon"
+        },
+        {
+          "value": "Aria"
+        },
+        {
+          "value": "Asturias"
+        },
+        {
+          "value": "Austin"
+        },
+        {
+          "value": "Avatar"
+        },
+        {
+          "value": "AXL"
+        },
+        {
+          "value": "B-Band"
+        },
+        {
+          "value": "BK Butler"
+        },
+        {
+          "value": "Black Diamond"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Breedlove"
+        },
+        {
+          "value": "Brian Moore"
+        },
+        {
+          "value": "Bridgecraft"
+        },
+        {
+          "value": "Burns"
+        },
+        {
+          "value": "Burny"
+        },
+        {
+          "value": "Caline"
+        },
+        {
+          "value": "Casio"
+        },
+        {
+          "value": "Cervantes"
+        },
+        {
+          "value": "Cort"
+        },
+        {
+          "value": "Cozart"
+        },
+        {
+          "value": "CTS"
+        },
+        {
+          "value": "D'Addario"
+        },
+        {
+          "value": "D'Andrea"
+        },
+        {
+          "value": "DBZ"
+        },
+        {
+          "value": "DiMarzio"
+        },
+        {
+          "value": "DR"
+        },
+        {
+          "value": "Dr. Z"
+        },
+        {
+          "value": "EKO"
+        },
+        {
+          "value": "Elixir Strings"
+        },
+        {
+          "value": "Epiphone By Gibson"
+        },
+        {
+          "value": "EVH"
+        },
+        {
+          "value": "Fender"
+        },
+        {
+          "value": "Framus"
+        },
+        {
+          "value": "G&L"
+        },
+        {
+          "value": "Gibson"
+        },
+        {
+          "value": "Gold Tone"
+        },
+        {
+          "value": "Gruv Gear"
+        },
+        {
+          "value": "Handmade"
+        },
+        {
+          "value": "HOHNER"
+        },
+        {
+          "value": "Ibanez"
+        },
+        {
+          "value": "Italia"
+        },
+        {
+          "value": "JB Player"
+        },
+        {
+          "value": "Johnson"
+        },
+        {
+          "value": "K & M"
+        },
+        {
+          "value": "Kona"
+        },
+        {
+          "value": "La Patrie"
+        },
+        {
+          "value": "Line 6"
+        },
+        {
+          "value": "LTD"
+        },
+        {
+          "value": "Maestro"
+        },
+        {
+          "value": "Magnatone"
+        },
+        {
+          "value": "Marshall"
+        },
+        {
+          "value": "Martin"
+        },
+        {
+          "value": "Martin Guitars"
+        },
+        {
+          "value": "Minarik"
+        },
+        {
+          "value": "Monster"
+        },
+        {
+          "value": "Mooer"
+        },
+        {
+          "value": "Moon"
+        },
+        {
+          "value": "NUX"
+        },
+        {
+          "value": "Peavey"
+        },
+        {
+          "value": "PRS"
+        },
+        {
+          "value": "Reverend"
+        },
+        {
+          "value": "Rockbox"
+        },
+        {
+          "value": "Roland"
+        },
+        {
+          "value": "Saga"
+        },
+        {
+          "value": "Santa Cruz"
+        },
+        {
+          "value": "Source Audio"
+        },
+        {
+          "value": "Suzuki"
+        },
+        {
+          "value": "SX"
+        },
+        {
+          "value": "Tacoma"
+        },
+        {
+          "value": "Tone King"
+        },
+        {
+          "value": "Tune"
+        },
+        {
+          "value": "VENTURA"
+        },
+        {
+          "value": "Vox"
+        },
+        {
+          "value": "Wampler Pedals"
+        },
+        {
+          "value": "Westone"
+        },
+        {
+          "value": "Yamaha"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Casio"
+        },
+        {
+          "value": "DR"
+        },
+        {
+          "value": "Fender"
+        },
+        {
+          "value": "Ibanez"
+        },
+        {
+          "value": "Yamaha"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_323_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 323,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_323_type",
+      "possible_values": [
+        {
+          "value": "Acoustic Drum Sets"
+        },
+        {
+          "value": "Acoustic Guitars"
+        },
+        {
+          "value": "Bass Drums"
+        },
+        {
+          "value": "Bass Guitars"
+        },
+        {
+          "value": "Bongo Drums"
+        },
+        {
+          "value": "Cellos"
+        },
+        {
+          "value": "Clarinets"
+        },
+        {
+          "value": "Congas"
+        },
+        {
+          "value": "Cornets"
+        },
+        {
+          "value": "Cymbals"
+        },
+        {
+          "value": "Drum Sticks"
+        },
+        {
+          "value": "Electric Guitars"
+        },
+        {
+          "value": "Electronic Drums Sets",
+          "title": "Electronic Drum Sets"
+        },
+        {
+          "value": "Electronic Keyboards"
+        },
+        {
+          "value": "Flutes"
+        },
+        {
+          "value": "Guitar & Bass Effects"
+        },
+        {
+          "value": "Guitar Amp Heads"
+        },
+        {
+          "value": "Guitar Combos"
+        },
+        {
+          "value": "Harmonicas"
+        },
+        {
+          "value": "Harps"
+        },
+        {
+          "value": "Horns"
+        },
+        {
+          "value": "Maracas"
+        },
+        {
+          "value": "Midi Keyboards"
+        },
+        {
+          "value": "Music Bags & Cases"
+        },
+        {
+          "value": "Music Stands"
+        },
+        {
+          "value": "Organs"
+        },
+        {
+          "value": "Parts & Accessories"
+        },
+        {
+          "value": "Pianos"
+        },
+        {
+          "value": "Saxophones"
+        },
+        {
+          "value": "Snare Drums"
+        },
+        {
+          "value": "Tambourines"
+        },
+        {
+          "value": "Tom Drums"
+        },
+        {
+          "value": "Trombones"
+        },
+        {
+          "value": "Trumpets"
+        },
+        {
+          "value": "Tubas"
+        },
+        {
+          "value": "Violins"
+        },
+        {
+          "value": "Xylophones"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Acoustic Drum Sets"
+        },
+        {
+          "value": "Acoustic Guitars"
+        },
+        {
+          "value": "Electronic Keyboards"
+        },
+        {
+          "value": "Parts & Accessories"
+        },
+        {
+          "value": "Pianos"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_541_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 541,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_541_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Electronic Keyboards",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/keyboards.png",
+          "filters": {
+            "filter_attr_323_type": "Electronic Keyboards"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Acoustic Guitars",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/string-instruments.png",
+          "filters": {
+            "filter_attr_323_type": "Acoustic Guitars"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pianos",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/pianos.png",
+          "filters": {
+            "filter_attr_323_type": "Pianos"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Parts & Accessories",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/parts.png",
+          "filters": {
+            "filter_attr_323_type": "Parts & Accessories"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Bass Guitars",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/bass-guitars.png",
+          "filters": {
+            "filter_attr_323_type": "Bass Guitars"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Music Bags & Cases",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/music.png",
+          "filters": {
+            "filter_attr_323_type": "Music Bags & Cases"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Music Stands",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/musical-instruments/music-stands-music-stand.png",
+          "filters": {
+            "filter_attr_323_type": "Music Stands"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_323_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_323_type"
+    }
+  ]
+}

@@ -1,0 +1,499 @@
+{
+  "total": 4903,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 100,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 44000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 3500,
+          "label": "Under 3.5 K",
+          "item_count": 294
+        },
+        {
+          "from": 3500,
+          "to": 37000,
+          "label": "3.5 - 37 K",
+          "item_count": 1176
+        },
+        {
+          "from": 37000,
+          "to": 160000,
+          "label": "37 - 160 K",
+          "item_count": 1961
+        },
+        {
+          "from": 160000,
+          "to": 1800000,
+          "label": "160 K - 1.8 M",
+          "item_count": 1225
+        },
+        {
+          "from": 1800000,
+          "to": null,
+          "label": "More than 1.8 M",
+          "item_count": 245
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_6808_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 6808,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6808_brand",
+      "possible_values": [
+        {
+          "value": "Alta Power"
+        },
+        {
+          "value": "Crestanks"
+        },
+        {
+          "value": "Dangote"
+        },
+        {
+          "value": "Dr Fixit"
+        },
+        {
+          "value": "Geonor"
+        },
+        {
+          "value": "Hima Cement"
+        },
+        {
+          "value": "Hwan Sung"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Kansai Plascon"
+        },
+        {
+          "value": "Kiboko"
+        },
+        {
+          "value": "Megfin"
+        },
+        {
+          "value": "Novo Abrasive"
+        },
+        {
+          "value": "Oska Rio"
+        },
+        {
+          "value": "Roofings Group"
+        },
+        {
+          "value": "Sadolin"
+        },
+        {
+          "value": "Shakti"
+        },
+        {
+          "value": "Sodeca"
+        },
+        {
+          "value": "South Africa Brick"
+        },
+        {
+          "value": "Steeltech"
+        },
+        {
+          "value": "Tembo Steel"
+        },
+        {
+          "value": "Tom Green"
+        },
+        {
+          "value": "Tororo Cement"
+        },
+        {
+          "value": "Uganda Baati"
+        },
+        {
+          "value": "X Ceramics"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Kiboko"
+        },
+        {
+          "value": "Roofings Group"
+        },
+        {
+          "value": "Uganda Baati"
+        },
+        {
+          "value": "X Ceramics"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_559_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 559,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_559_type",
+      "possible_values": [
+        {
+          "value": "3D Panels"
+        },
+        {
+          "value": "Aluminum Profiles"
+        },
+        {
+          "value": "Blocks"
+        },
+        {
+          "value": "Bricks"
+        },
+        {
+          "value": "Carports"
+        },
+        {
+          "value": "Ceiling"
+        },
+        {
+          "value": "Cement"
+        },
+        {
+          "value": "Chippings"
+        },
+        {
+          "value": "Concrete Stamps"
+        },
+        {
+          "value": "Construction Adhesive"
+        },
+        {
+          "value": "Flooring Materials"
+        },
+        {
+          "value": "Granite"
+        },
+        {
+          "value": "Gutters"
+        },
+        {
+          "value": "Handrails"
+        },
+        {
+          "value": "Insulation Blankets"
+        },
+        {
+          "value": "Laminate Floor"
+        },
+        {
+          "value": "Marble"
+        },
+        {
+          "value": "Paint"
+        },
+        {
+          "value": "Paint Brushes, Rollers & Trays"
+        },
+        {
+          "value": "Paint Sprayers & Striping Machines",
+          "title": "Paint Sprayers & Stripping Machines"
+        },
+        {
+          "value": "Paving"
+        },
+        {
+          "value": "Pipes And Fittings",
+          "title": "Pipes & Fittings"
+        },
+        {
+          "value": "Plasterboard"
+        },
+        {
+          "value": "Plasters"
+        },
+        {
+          "value": "Plywood"
+        },
+        {
+          "value": "Polystyrene"
+        },
+        {
+          "value": "Rock & Gravel"
+        },
+        {
+          "value": "Rockwool & Fiberglass Wool"
+        },
+        {
+          "value": "Rods"
+        },
+        {
+          "value": "Roofing Materials"
+        },
+        {
+          "value": "Rubber"
+        },
+        {
+          "value": "Sand"
+        },
+        {
+          "value": "Scaffolding Nets"
+        },
+        {
+          "value": "Sealants"
+        },
+        {
+          "value": "Self-Adhesive Films"
+        },
+        {
+          "value": "Slabs"
+        },
+        {
+          "value": "Solar Panel Racking & Mounts"
+        },
+        {
+          "value": "Stain & Varnish"
+        },
+        {
+          "value": "Tarpaulins"
+        },
+        {
+          "value": "Tiles"
+        },
+        {
+          "value": "Timber"
+        },
+        {
+          "value": "Track Lighting Rails"
+        },
+        {
+          "value": "Wall Repair Kits"
+        },
+        {
+          "value": "Wallpaper"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Blocks"
+        },
+        {
+          "value": "Flooring Materials"
+        },
+        {
+          "value": "Granite"
+        },
+        {
+          "value": "Roofing Materials"
+        },
+        {
+          "value": "Tiles"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5425_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5425,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5425_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Roofing Materials",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/roofing-materials.png",
+          "filters": {
+            "filter_attr_559_type": "Roofing Materials"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Flooring Materials",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/flooring-mateirals.png",
+          "filters": {
+            "filter_attr_559_type": "Flooring Materials"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Tiles",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/tiles.png",
+          "filters": {
+            "filter_attr_559_type": "Tiles"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Granite",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/granite.png",
+          "filters": {
+            "filter_attr_559_type": "Granite"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Blocks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/blocks.png",
+          "filters": {
+            "filter_attr_559_type": "Blocks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Paint",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/paints.png",
+          "filters": {
+            "filter_attr_559_type": "Paint"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Paving",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/building-materials/paving.png",
+          "filters": {
+            "filter_attr_559_type": "Paving"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_559_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_559_type"
+    }
+  ]
+}

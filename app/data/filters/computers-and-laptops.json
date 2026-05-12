@@ -1,0 +1,1218 @@
+{
+  "total": 13284,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 100000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 40000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 400000,
+          "label": "Under 400 K",
+          "item_count": 797
+        },
+        {
+          "from": 400000,
+          "to": 680000,
+          "label": "400 - 680 K",
+          "item_count": 3188
+        },
+        {
+          "from": 680000,
+          "to": 1700000,
+          "label": "680 K - 1.7 M",
+          "item_count": 5313
+        },
+        {
+          "from": 1700000,
+          "to": 4500000,
+          "label": "1.7 - 4.5 M",
+          "item_count": 3321
+        },
+        {
+          "from": 4500000,
+          "to": null,
+          "label": "More than 4.5 M",
+          "item_count": 664
+        }
+      ]
+    },
+    {
+      "label": "Popular Filters",
+      "parent_slug": null,
+      "slug": "filter_attr_6362_popular_filters",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6362,
+      "attr_name": "Popular Filters",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6362_popular_filters",
+      "possible_values": [
+        {
+          "value": "For The Office"
+        },
+        {
+          "value": "Laptop for Gaming"
+        },
+        {
+          "value": "Long Battery Life"
+        },
+        {
+          "value": "Thin and Light"
+        },
+        {
+          "value": "With Windows Installed"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_176_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 176,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_176_type",
+      "possible_values": [
+        {
+          "value": "Desktop Computer"
+        },
+        {
+          "value": "Laptop"
+        },
+        {
+          "value": "Server"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1179_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1179,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1179_brand",
+      "possible_values": [
+        {
+          "value": "ABS"
+        },
+        {
+          "value": "Acer"
+        },
+        {
+          "value": "Advent"
+        },
+        {
+          "value": "Alienware"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Asus"
+        },
+        {
+          "value": "BAK"
+        },
+        {
+          "value": "Chuwi"
+        },
+        {
+          "value": "Clevo"
+        },
+        {
+          "value": "Cyberpower"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Digital Storm"
+        },
+        {
+          "value": "eMachines"
+        },
+        {
+          "value": "Fujitsu"
+        },
+        {
+          "value": "Gateway"
+        },
+        {
+          "value": "Geo"
+        },
+        {
+          "value": "Gigabyte"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Imose"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "Metabox"
+        },
+        {
+          "value": "Microsoft"
+        },
+        {
+          "value": "Monster"
+        },
+        {
+          "value": "MSI"
+        },
+        {
+          "value": "NEC"
+        },
+        {
+          "value": "Novatech"
+        },
+        {
+          "value": "Onkyo"
+        },
+        {
+          "value": "Over Powered"
+        },
+        {
+          "value": "Packard Bell"
+        },
+        {
+          "value": "Razer"
+        },
+        {
+          "value": "RM Minibook"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Stone"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Zinox"
+        },
+        {
+          "value": "Zoostorm"
+        },
+        {
+          "value": "Zyrex"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Asus"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Lenovo"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_235_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 235,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_235_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "RAM",
+      "parent_slug": null,
+      "slug": "filter_attr_1173_ram",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1173,
+      "attr_name": "RAM",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1173_ram",
+      "possible_values": [
+        {
+          "value": "1GB"
+        },
+        {
+          "value": "1.5GB"
+        },
+        {
+          "value": "2GB"
+        },
+        {
+          "value": "3GB"
+        },
+        {
+          "value": "4GB"
+        },
+        {
+          "value": "6GB"
+        },
+        {
+          "value": "8GB"
+        },
+        {
+          "value": "12GB"
+        },
+        {
+          "value": "16GB"
+        },
+        {
+          "value": "18GB"
+        },
+        {
+          "value": "20GB"
+        },
+        {
+          "value": "24GB"
+        },
+        {
+          "value": "32GB"
+        },
+        {
+          "value": "36GB"
+        },
+        {
+          "value": "40GB"
+        },
+        {
+          "value": "48GB"
+        },
+        {
+          "value": "64GB"
+        },
+        {
+          "value": "96GB"
+        },
+        {
+          "value": "128GB"
+        },
+        {
+          "value": "256GB"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "2GB"
+        },
+        {
+          "value": "4GB"
+        },
+        {
+          "value": "8GB"
+        },
+        {
+          "value": "16GB"
+        },
+        {
+          "value": "32GB"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Processor",
+      "parent_slug": null,
+      "slug": "filter_attr_1171_processor",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1171,
+      "attr_name": "Processor",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1171_processor",
+      "possible_values": [
+        {
+          "value": "Qualcomm Snapdragon X Plus"
+        },
+        {
+          "value": "Qualcomm Snapdragon X Elite"
+        },
+        {
+          "value": "Nvidia"
+        },
+        {
+          "value": "Intel Xeon"
+        },
+        {
+          "value": "Intel Pentium"
+        },
+        {
+          "value": "Intel Core Ultra 9"
+        },
+        {
+          "value": "Intel Core Ultra 7"
+        },
+        {
+          "value": "Intel Core Ultra 5"
+        },
+        {
+          "value": "Intel Core M3"
+        },
+        {
+          "value": "Intel Core M2"
+        },
+        {
+          "value": "Intel Core M"
+        },
+        {
+          "value": "Intel Core i9"
+        },
+        {
+          "value": "Intel Core i7"
+        },
+        {
+          "value": "Intel Core i5"
+        },
+        {
+          "value": "Intel Core i3"
+        },
+        {
+          "value": "Intel Core 7"
+        },
+        {
+          "value": "Intel Core 5"
+        },
+        {
+          "value": "Intel Core 2 Quad"
+        },
+        {
+          "value": "Intel Core 2 Duo"
+        },
+        {
+          "value": "Intel Celeron"
+        },
+        {
+          "value": "Intel Atom"
+        },
+        {
+          "value": "Intel"
+        },
+        {
+          "value": "Apple M5 Pro"
+        },
+        {
+          "value": "Apple M5"
+        },
+        {
+          "value": "Apple M4 Pro"
+        },
+        {
+          "value": "Apple M4 Max"
+        },
+        {
+          "value": "Apple M4"
+        },
+        {
+          "value": "Apple M3 Pro"
+        },
+        {
+          "value": "Apple M3 Max"
+        },
+        {
+          "value": "Apple M3"
+        },
+        {
+          "value": "Apple M2 Ultra"
+        },
+        {
+          "value": "Apple M2"
+        },
+        {
+          "value": "Apple M1 Pro"
+        },
+        {
+          "value": "Apple M1 Max"
+        },
+        {
+          "value": "Apple M1"
+        },
+        {
+          "value": "AMD Ryzen 9"
+        },
+        {
+          "value": "AMD Ryzen 7"
+        },
+        {
+          "value": "AMD Ryzen 5"
+        },
+        {
+          "value": "AMD Ryzen 3"
+        },
+        {
+          "value": "AMD Ryzen"
+        },
+        {
+          "value": "AMD A8"
+        },
+        {
+          "value": "AMD A6"
+        },
+        {
+          "value": "AMD A4"
+        },
+        {
+          "value": "AMD A10"
+        },
+        {
+          "value": "AMD"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Intel Core i7"
+        },
+        {
+          "value": "Intel Core i5"
+        },
+        {
+          "value": "Intel Core i3"
+        },
+        {
+          "value": "Intel Core 2 Duo"
+        },
+        {
+          "value": "Intel Celeron"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Storage Capacity",
+      "parent_slug": null,
+      "slug": "filter_attr_1176_storage_capacity",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1176,
+      "attr_name": "Storage Capacity",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1176_storage_capacity",
+      "possible_values": [
+        {
+          "value": "4T"
+        },
+        {
+          "value": "16 GB"
+        },
+        {
+          "value": "32GB"
+        },
+        {
+          "value": "40GB"
+        },
+        {
+          "value": "48GB"
+        },
+        {
+          "value": "60GB"
+        },
+        {
+          "value": "72GB"
+        },
+        {
+          "value": "128GB"
+        },
+        {
+          "value": "140GB"
+        },
+        {
+          "value": "160GB"
+        },
+        {
+          "value": "250GB"
+        },
+        {
+          "value": "256GB"
+        },
+        {
+          "value": "320GB"
+        },
+        {
+          "value": "350GB"
+        },
+        {
+          "value": "500GB"
+        },
+        {
+          "value": "512GB"
+        },
+        {
+          "value": "640GB"
+        },
+        {
+          "value": "700GB"
+        },
+        {
+          "value": "750GB"
+        },
+        {
+          "value": "1T"
+        },
+        {
+          "value": "1.5T"
+        },
+        {
+          "value": "2T"
+        },
+        {
+          "value": "3T"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "128GB"
+        },
+        {
+          "value": "256GB"
+        },
+        {
+          "value": "500GB"
+        },
+        {
+          "value": "512GB"
+        },
+        {
+          "value": "1T"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Display Size",
+      "parent_slug": null,
+      "slug": "filter_attr_94_display_size",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 94,
+      "attr_name": "Display Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_94_display_size",
+      "possible_values": [
+        {
+          "value": "more than 21\""
+        },
+        {
+          "value": "21\""
+        },
+        {
+          "value": "20.1\""
+        },
+        {
+          "value": "19\""
+        },
+        {
+          "value": "18\""
+        },
+        {
+          "value": "17\" / 17.3\" "
+        },
+        {
+          "value": "16\""
+        },
+        {
+          "value": "15\" / 15.6\""
+        },
+        {
+          "value": "14\""
+        },
+        {
+          "value": "13\" / 13.3\""
+        },
+        {
+          "value": "12\" / 12.3\""
+        },
+        {
+          "value": "11\" / 11.6\""
+        },
+        {
+          "value": "10.1\""
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Storage Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1172_storage_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1172,
+      "attr_name": "Storage Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1172_storage_type",
+      "possible_values": [
+        {
+          "value": "eMMC"
+        },
+        {
+          "value": "HDD"
+        },
+        {
+          "value": "HDD+SSD"
+        },
+        {
+          "value": "SSD"
+        },
+        {
+          "value": "SSHD (Hybrid)"
+        },
+        {
+          "value": "SSHD+SSD"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Operating System",
+      "parent_slug": null,
+      "slug": "filter_attr_1178_operating_system",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1178,
+      "attr_name": "Operating System",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1178_operating_system",
+      "possible_values": [
+        {
+          "value": "Windows XP"
+        },
+        {
+          "value": "Windows 8.1"
+        },
+        {
+          "value": "Windows 8"
+        },
+        {
+          "value": "Windows 7"
+        },
+        {
+          "value": "Windows 11"
+        },
+        {
+          "value": "Windows 10"
+        },
+        {
+          "value": "Ubuntu"
+        },
+        {
+          "value": "Non OS"
+        },
+        {
+          "value": "Mac OS"
+        },
+        {
+          "value": "Linux"
+        },
+        {
+          "value": "Free DOS"
+        },
+        {
+          "value": "DOS"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Graphics Card",
+      "parent_slug": null,
+      "slug": "filter_attr_350_graphics_card",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 350,
+      "attr_name": "Graphics Card",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_350_graphics_card",
+      "possible_values": [
+        {
+          "value": "Radeon RX 6800M"
+        },
+        {
+          "value": "Radeon RX 640"
+        },
+        {
+          "value": "Radeon RX 5500M"
+        },
+        {
+          "value": "Radeon RX 550 / 550X / 560X"
+        },
+        {
+          "value": "Radeon Pro"
+        },
+        {
+          "value": "Radeon 610 / 625 / 630"
+        },
+        {
+          "value": "Radeon 540 / 540X"
+        },
+        {
+          "value": "Radeon 530 / 535"
+        },
+        {
+          "value": "Radeon 520"
+        },
+        {
+          "value": "Nvidia RTX A"
+        },
+        {
+          "value": "Nvidia Quadro"
+        },
+        {
+          "value": "Nvidia"
+        },
+        {
+          "value": "Intel"
+        },
+        {
+          "value": "GeForce RTX 5090"
+        },
+        {
+          "value": "GeForce RTX 5080"
+        },
+        {
+          "value": "GeForce RTX 5070 Ti"
+        },
+        {
+          "value": "GeForce RTX 5060 Ti"
+        },
+        {
+          "value": "GeForce RTX 5060"
+        },
+        {
+          "value": "GeForce RTX 4090"
+        },
+        {
+          "value": "GeForce RTX 4080"
+        },
+        {
+          "value": "GeForce RTX 4070"
+        },
+        {
+          "value": "GeForce RTX 4060"
+        },
+        {
+          "value": "GeForce RTX 4050"
+        },
+        {
+          "value": "GeForce RTX 3080 Ti"
+        },
+        {
+          "value": "GeForce RTX 3080"
+        },
+        {
+          "value": "GeForce RTX 3070 Ti"
+        },
+        {
+          "value": "GeForce RTX 3070"
+        },
+        {
+          "value": "GeForce RTX 3060 Max-Q"
+        },
+        {
+          "value": "GeForce RTX 3060"
+        },
+        {
+          "value": "GeForce RTX 3050 Ti"
+        },
+        {
+          "value": "GeForce RTX 3050"
+        },
+        {
+          "value": "GeForce RTX 2080 Super"
+        },
+        {
+          "value": "GeForce RTX 2080 Max-Q"
+        },
+        {
+          "value": "GeForce RTX 2080"
+        },
+        {
+          "value": "GeForce RTX 2070 Super Max-Q"
+        },
+        {
+          "value": "GeForce RTX 2070 Super"
+        },
+        {
+          "value": "GeForce RTX 2070"
+        },
+        {
+          "value": "GeForce RTX 2060 Max-Q"
+        },
+        {
+          "value": "GeForce RTX 2060"
+        },
+        {
+          "value": "GeForce RTX 2050"
+        },
+        {
+          "value": "GeForce GTX 1660 Max-Q Ti"
+        },
+        {
+          "value": "GeForce GTX 1660"
+        },
+        {
+          "value": "GeForce GTX 1650 Ti"
+        },
+        {
+          "value": "GeForce GTX 1650 Max-Q"
+        },
+        {
+          "value": "GeForce GTX 1650"
+        },
+        {
+          "value": "GeForce GTX 1080"
+        },
+        {
+          "value": "GeForce GTX 1070"
+        },
+        {
+          "value": "GeForce GTX 1060 Max-Q"
+        },
+        {
+          "value": "GeForce GTX 1060"
+        },
+        {
+          "value": "GeForce GTX 1050"
+        },
+        {
+          "value": "GeForce 1050 Ti Max-Q"
+        },
+        {
+          "value": "GeForce 1050 Ti"
+        },
+        {
+          "value": "ATI"
+        },
+        {
+          "value": "Apple M3 Pro"
+        },
+        {
+          "value": "Apple M3 Max"
+        },
+        {
+          "value": "Apple M3"
+        },
+        {
+          "value": "Apple M2"
+        },
+        {
+          "value": "Apple M1"
+        },
+        {
+          "value": "AMD"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Radeon Pro"
+        },
+        {
+          "value": "Nvidia"
+        },
+        {
+          "value": "Intel"
+        },
+        {
+          "value": "ATI"
+        },
+        {
+          "value": "AMD"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Exchange Possible",
+      "parent_slug": null,
+      "slug": "filter_attr_1341_exchange_possible",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1341,
+      "attr_name": "Exchange Possible",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1341_exchange_possible",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 450 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 450000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 450 - 600 K",
+          "filters": {
+            "price_min": 450000,
+            "price_max": 600000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 600 K - 1 M",
+          "filters": {
+            "price_min": 600000,
+            "price_max": 1000000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 1 M",
+          "filters": {
+            "price_min": 1000000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Laptop",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/laptops-and-computers/laptop.png",
+          "filters": {
+            "filter_attr_176_type": "Laptop"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Desktop Computer",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/laptops-and-computers/desktop.png",
+          "filters": {
+            "filter_attr_176_type": "Desktop Computer"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Server",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/laptops-and-computers/servers.png",
+          "filters": {
+            "filter_attr_176_type": "Server"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_176_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_176_type"
+    }
+  ]
+}

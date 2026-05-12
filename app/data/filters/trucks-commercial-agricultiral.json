@@ -1,0 +1,518 @@
+{
+  "total": 959,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 3500000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 970000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 25000000,
+          "label": "Under 25 M",
+          "item_count": 57
+        },
+        {
+          "from": 25000000,
+          "to": 74000000,
+          "label": "25 - 74 M",
+          "item_count": 230
+        },
+        {
+          "from": 74000000,
+          "to": 120000000,
+          "label": "74 - 120 M",
+          "item_count": 383
+        },
+        {
+          "from": 120000000,
+          "to": 220000000,
+          "label": "120 - 220 M",
+          "item_count": 239
+        },
+        {
+          "from": 220000000,
+          "to": null,
+          "label": "More than 220 M",
+          "item_count": 47
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_153_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 153,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_153_type",
+      "possible_values": [
+        {
+          "value": "Crane Trucks"
+        },
+        {
+          "value": "Dump Trucks"
+        },
+        {
+          "value": "Fire Fighting Trucks"
+        },
+        {
+          "value": "Food Trucks"
+        },
+        {
+          "value": "Garbage Trucks"
+        },
+        {
+          "value": "Heavy Duty Trucks",
+          "title": "Heavy-Duty Trucks"
+        },
+        {
+          "value": "Low-Bed Trucks"
+        },
+        {
+          "value": "Manlift Trucks"
+        },
+        {
+          "value": "Mini truck",
+          "title": "Mini Truck"
+        },
+        {
+          "value": "Refrigerator Truck"
+        },
+        {
+          "value": "Rigid Trucks"
+        },
+        {
+          "value": "Self Loader Trucks",
+          "title": "Self-Loader Trucks"
+        },
+        {
+          "value": "Semi-Trailers"
+        },
+        {
+          "value": "Tank Trucks"
+        },
+        {
+          "value": "Tow Trucks"
+        },
+        {
+          "value": "Tractor Units"
+        },
+        {
+          "value": "Trailers"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Dump Trucks"
+        },
+        {
+          "value": "Food Trucks"
+        },
+        {
+          "value": "Heavy Duty Trucks",
+          "title": "Heavy-Duty Trucks"
+        },
+        {
+          "value": "Mini truck",
+          "title": "Mini Truck"
+        },
+        {
+          "value": "Rigid Trucks"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Make",
+      "parent_slug": null,
+      "slug": "filter_attr_111_make",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 111,
+      "attr_name": "Make",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_111_make",
+      "possible_values": [
+        {
+          "value": "Ashok Leyland"
+        },
+        {
+          "value": "BAW"
+        },
+        {
+          "value": "Chevrolet"
+        },
+        {
+          "value": "CNHTC Howo"
+        },
+        {
+          "value": "Daihatsu"
+        },
+        {
+          "value": "Eicher"
+        },
+        {
+          "value": "Ford"
+        },
+        {
+          "value": "Foton"
+        },
+        {
+          "value": "Hino"
+        },
+        {
+          "value": "Honda"
+        },
+        {
+          "value": "Isuzu"
+        },
+        {
+          "value": "Kia"
+        },
+        {
+          "value": "Mack"
+        },
+        {
+          "value": "MAN"
+        },
+        {
+          "value": "Mazda"
+        },
+        {
+          "value": "Mercedes-Benz"
+        },
+        {
+          "value": "Mitsubishi"
+        },
+        {
+          "value": "Nissan"
+        },
+        {
+          "value": "Scania"
+        },
+        {
+          "value": "Sinotruk"
+        },
+        {
+          "value": "Suzuki"
+        },
+        {
+          "value": "Tata"
+        },
+        {
+          "value": "Toyota"
+        },
+        {
+          "value": "Volkswagen"
+        },
+        {
+          "value": "Volvo"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Hino"
+        },
+        {
+          "value": "Isuzu"
+        },
+        {
+          "value": "Mitsubishi"
+        },
+        {
+          "value": "Sinotruk"
+        },
+        {
+          "value": "Toyota"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Year of Manufacture",
+      "parent_slug": null,
+      "slug": "filter_attr_112_year_of_manufacture",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 112,
+      "attr_name": "Year of Manufacture",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_112_year_of_manufacture",
+      "filter_data": {
+        "min": {
+          "fieldname": "filter_attr_112_year_of_manufacture__min",
+          "default": 1978,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "filter_attr_112_year_of_manufacture__max",
+          "default": 2026,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": 2026,
+          "to": 2030,
+          "label": "2026 - 2030",
+          "item_count": 34
+        },
+        {
+          "from": 2021,
+          "to": 2025,
+          "label": "2021 - 2025",
+          "item_count": 36
+        },
+        {
+          "from": 2016,
+          "to": 2020,
+          "label": "2016 - 2020",
+          "item_count": 19
+        },
+        {
+          "from": 2011,
+          "to": 2015,
+          "label": "2011 - 2015",
+          "item_count": 28
+        },
+        {
+          "from": 2006,
+          "to": 2010,
+          "label": "2006 - 2010",
+          "item_count": 33
+        },
+        {
+          "from": 2001,
+          "to": 2005,
+          "label": "2001 - 2005",
+          "item_count": 46
+        },
+        {
+          "from": 1996,
+          "to": 2000,
+          "label": "1996 - 2000",
+          "item_count": 193
+        },
+        {
+          "from": 1991,
+          "to": 1995,
+          "label": "1991 - 1995",
+          "item_count": 227
+        },
+        {
+          "from": 1986,
+          "to": 1990,
+          "label": "1986 - 1990",
+          "item_count": 322
+        },
+        {
+          "from": 1981,
+          "to": 1985,
+          "label": "1981 - 1985",
+          "item_count": 9
+        },
+        {
+          "from": 1976,
+          "to": 1980,
+          "label": "1976 - 1980",
+          "item_count": 4
+        }
+      ]
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_229_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 229,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_229_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Exchange Possible",
+      "parent_slug": null,
+      "slug": "filter_attr_1509_exchange_possible",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1509,
+      "attr_name": "Exchange Possible",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1509_exchange_possible",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Mitsubishi",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/trucks-and-trailers/mitsubishi.png",
+          "filters": {
+            "filter_attr_111_make": "Mitsubishi"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Isuzu",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/trucks-and-trailers/isuzu.png",
+          "filters": {
+            "filter_attr_111_make": "Isuzu"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Toyota",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/brand-make-icons/toyota.png",
+          "filters": {
+            "filter_attr_111_make": "Toyota"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Sinotruk",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/trucks-and-trailers/sinotruck.png",
+          "filters": {
+            "filter_attr_111_make": "Sinotruk"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Daihatsu",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/brand-make-icons/daihatsu.png",
+          "filters": {
+            "filter_attr_111_make": "Daihatsu"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Mercedes-Benz",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/brand-make-icons/mercedes-benz.png",
+          "filters": {
+            "filter_attr_111_make": "Mercedes-Benz"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Suzuki",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/motorcycles-and-scooters/suzuki.png",
+          "filters": {
+            "filter_attr_111_make": "Suzuki"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_111_make",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_111_make"
+    }
+  ]
+}

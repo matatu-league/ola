@@ -1,0 +1,1499 @@
+{
+  "total": 47597,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 12000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 55000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 55000,
+          "label": "Under 55 K",
+          "item_count": 2855
+        },
+        {
+          "from": 55000,
+          "to": 250000,
+          "label": "55 - 250 K",
+          "item_count": 11423
+        },
+        {
+          "from": 250000,
+          "to": 710000,
+          "label": "250 - 710 K",
+          "item_count": 19038
+        },
+        {
+          "from": 710000,
+          "to": 2800000,
+          "label": "710 K - 2.8 M",
+          "item_count": 11899
+        },
+        {
+          "from": 2800000,
+          "to": null,
+          "label": "More than 2.8 M",
+          "item_count": 2379
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_248_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 248,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_248_type",
+      "possible_values": [
+        {
+          "value": "Armchairs"
+        },
+        {
+          "value": "Bag Racks"
+        },
+        {
+          "value": "Bar Carts"
+        },
+        {
+          "value": "Bed Headboards & Footboards"
+        },
+        {
+          "value": "Beds & Bed Frames"
+        },
+        {
+          "value": "Benches, Stools & Bar Stool"
+        },
+        {
+          "value": "Bookcases & Shelving"
+        },
+        {
+          "value": "Cabinets & Cupboards"
+        },
+        {
+          "value": "CD & DVD Racks"
+        },
+        {
+          "value": "Chairs"
+        },
+        {
+          "value": "Dining Sets"
+        },
+        {
+          "value": "Drawers"
+        },
+        {
+          "value": "Dressers"
+        },
+        {
+          "value": "Electric Fireplaces"
+        },
+        {
+          "value": "Frameless Furniture"
+        },
+        {
+          "value": "Furniture Accessories"
+        },
+        {
+          "value": "Furniture Parts"
+        },
+        {
+          "value": "Futons, Frames & Covers"
+        },
+        {
+          "value": "Hat Stands"
+        },
+        {
+          "value": "Home Office Desks"
+        },
+        {
+          "value": "Kitchen Cabinets & Islands"
+        },
+        {
+          "value": "Lockers"
+        },
+        {
+          "value": "Makeup  Stations",
+          "title": "Make-Up Stations"
+        },
+        {
+          "value": "Mattresses"
+        },
+        {
+          "value": "Nightstands"
+        },
+        {
+          "value": "Plant Stands"
+        },
+        {
+          "value": "Poufs & Footstools"
+        },
+        {
+          "value": "Pulpits"
+        },
+        {
+          "value": "Screens & Room Dividers"
+        },
+        {
+          "value": "Shelving Units"
+        },
+        {
+          "value": "Side Tables"
+        },
+        {
+          "value": "Sideboards & Buffets"
+        },
+        {
+          "value": "Sofas"
+        },
+        {
+          "value": "Sun Loungers"
+        },
+        {
+          "value": "Tables"
+        },
+        {
+          "value": "Trunks & Chests"
+        },
+        {
+          "value": "TV Stands & Mounts"
+        },
+        {
+          "value": "Vanities & Dressing Tables"
+        },
+        {
+          "value": "Wardrobes"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Beds & Bed Frames"
+        },
+        {
+          "value": "Chairs"
+        },
+        {
+          "value": "Mattresses"
+        },
+        {
+          "value": "Sofas"
+        },
+        {
+          "value": "Tables"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_247_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 247,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_247_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Room",
+      "parent_slug": null,
+      "slug": "filter_attr_425_room",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 425,
+      "attr_name": "Room",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_425_room",
+      "possible_values": [
+        {
+          "value": "Attic"
+        },
+        {
+          "value": "Balcony"
+        },
+        {
+          "value": "Basement"
+        },
+        {
+          "value": "Bathroom"
+        },
+        {
+          "value": "Bedroom"
+        },
+        {
+          "value": "Dining Room"
+        },
+        {
+          "value": "Dressing Room"
+        },
+        {
+          "value": "Foyer"
+        },
+        {
+          "value": "Garage"
+        },
+        {
+          "value": "Guestroom"
+        },
+        {
+          "value": "Hallway"
+        },
+        {
+          "value": "Home Office / Study"
+        },
+        {
+          "value": "Kitchen"
+        },
+        {
+          "value": "Laundry / Utility Room"
+        },
+        {
+          "value": "Living Room"
+        },
+        {
+          "value": "Other"
+        },
+        {
+          "value": "Patio"
+        },
+        {
+          "value": "Playroom"
+        },
+        {
+          "value": "Porch"
+        },
+        {
+          "value": "Sport Room"
+        },
+        {
+          "value": "Sunroom"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Bedroom"
+        },
+        {
+          "value": "Dining Room"
+        },
+        {
+          "value": "Dressing Room"
+        },
+        {
+          "value": "Home Office / Study"
+        },
+        {
+          "value": "Living Room"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Material",
+      "parent_slug": null,
+      "slug": "filter_attr_4240_material",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4240,
+      "attr_name": "Material",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4240_material",
+      "possible_values": [
+        {
+          "value": "ABS"
+        },
+        {
+          "value": "Acrylic"
+        },
+        {
+          "value": "Aluminum",
+          "title": "Aluminium"
+        },
+        {
+          "value": "Artificial Leather"
+        },
+        {
+          "value": "Bamboo"
+        },
+        {
+          "value": "Cast Iron"
+        },
+        {
+          "value": "Ceramic"
+        },
+        {
+          "value": "Composite Wood"
+        },
+        {
+          "value": "Faux Leather"
+        },
+        {
+          "value": "Glass"
+        },
+        {
+          "value": "Iron"
+        },
+        {
+          "value": "Laminate"
+        },
+        {
+          "value": "Leather"
+        },
+        {
+          "value": "Linen"
+        },
+        {
+          "value": "Marble"
+        },
+        {
+          "value": "MBF"
+        },
+        {
+          "value": "MDF / Chipboard"
+        },
+        {
+          "value": "Metal"
+        },
+        {
+          "value": "Mirror"
+        },
+        {
+          "value": "Particle Board"
+        },
+        {
+          "value": "Plastic"
+        },
+        {
+          "value": "Plywood"
+        },
+        {
+          "value": "Porcelain"
+        },
+        {
+          "value": "PVC"
+        },
+        {
+          "value": "Rattan"
+        },
+        {
+          "value": "Resin"
+        },
+        {
+          "value": "Rubber"
+        },
+        {
+          "value": "Solid Wood"
+        },
+        {
+          "value": "Stainless Steel"
+        },
+        {
+          "value": "Steel"
+        },
+        {
+          "value": "Wood"
+        },
+        {
+          "value": "Wrought Iron"
+        },
+        {
+          "value": "Combination Materials"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Glass"
+        },
+        {
+          "value": "Leather"
+        },
+        {
+          "value": "Metal"
+        },
+        {
+          "value": "Plastic"
+        },
+        {
+          "value": "Wood"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_brand_423",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 423,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_brand_423",
+      "possible_values": [
+        {
+          "value": "Zuo Modern"
+        },
+        {
+          "value": "Zojirushi"
+        },
+        {
+          "value": "Zodiac"
+        },
+        {
+          "value": "Zodax"
+        },
+        {
+          "value": "Zinus"
+        },
+        {
+          "value": "Zephyr"
+        },
+        {
+          "value": "Zenith"
+        },
+        {
+          "value": "ZAR"
+        },
+        {
+          "value": "Zak"
+        },
+        {
+          "value": "Zack"
+        },
+        {
+          "value": "Z Gallerie"
+        },
+        {
+          "value": "YORK"
+        },
+        {
+          "value": "Yofoam"
+        },
+        {
+          "value": "Yankee Candle"
+        },
+        {
+          "value": "Yamazaki"
+        },
+        {
+          "value": "Yale"
+        },
+        {
+          "value": "X-10"
+        },
+        {
+          "value": "X Rocker"
+        },
+        {
+          "value": "Wyndham"
+        },
+        {
+          "value": "Wright"
+        },
+        {
+          "value": "WORX"
+        },
+        {
+          "value": "Worlds Apart"
+        },
+        {
+          "value": "World Industries"
+        },
+        {
+          "value": "Workforce"
+        },
+        {
+          "value": "Wooster"
+        },
+        {
+          "value": "Woodstock"
+        },
+        {
+          "value": "Wooden Mallet"
+        },
+        {
+          "value": "Woodbridge"
+        },
+        {
+          "value": "Wood-Mode"
+        },
+        {
+          "value": "Wonder Home"
+        },
+        {
+          "value": "Woltu"
+        },
+        {
+          "value": "Wolf"
+        },
+        {
+          "value": "WMF"
+        },
+        {
+          "value": "Winsome"
+        },
+        {
+          "value": "Windsor"
+        },
+        {
+          "value": "Winco"
+        },
+        {
+          "value": "Winchester"
+        },
+        {
+          "value": "Wilton"
+        },
+        {
+          "value": "Willow Tree"
+        },
+        {
+          "value": "Williams-Sonoma"
+        },
+        {
+          "value": "Wildon Home"
+        },
+        {
+          "value": "Wildkin"
+        },
+        {
+          "value": "Whizz"
+        },
+        {
+          "value": "Whitehall"
+        },
+        {
+          "value": "White Mountain"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Whalen"
+        },
+        {
+          "value": "Weston"
+        },
+        {
+          "value": "Westcool"
+        },
+        {
+          "value": "west elm"
+        },
+        {
+          "value": "Wesco"
+        },
+        {
+          "value": "WENKO"
+        },
+        {
+          "value": "WEN"
+        },
+        {
+          "value": "Wedgwood"
+        },
+        {
+          "value": "Weave"
+        },
+        {
+          "value": "Waxman"
+        },
+        {
+          "value": "Waverly"
+        },
+        {
+          "value": "Walker"
+        },
+        {
+          "value": "WAGNER"
+        },
+        {
+          "value": "Vollrath"
+        },
+        {
+          "value": "VIVERE"
+        },
+        {
+          "value": "Vitafoam"
+        },
+        {
+          "value": "Vita Foam"
+        },
+        {
+          "value": "Villeroy & Boch"
+        },
+        {
+          "value": "Village Wrought Iron"
+        },
+        {
+          "value": "Viking"
+        },
+        {
+          "value": "Vigo"
+        },
+        {
+          "value": "VIG Furniture"
+        },
+        {
+          "value": "Victory"
+        },
+        {
+          "value": "Victorian Heart"
+        },
+        {
+          "value": "Vector"
+        },
+        {
+          "value": "Vantage"
+        },
+        {
+          "value": "Vandor"
+        },
+        {
+          "value": "Urban Outfitters"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Umbra"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "U-Line"
+        },
+        {
+          "value": "Tvilum"
+        },
+        {
+          "value": "Triton"
+        },
+        {
+          "value": "TOTO"
+        },
+        {
+          "value": "Tommy Bahama"
+        },
+        {
+          "value": "Titan"
+        },
+        {
+          "value": "Timex"
+        },
+        {
+          "value": "Thomasville"
+        },
+        {
+          "value": "The Home Depot"
+        },
+        {
+          "value": "TEC"
+        },
+        {
+          "value": "Swingline"
+        },
+        {
+          "value": "SWING"
+        },
+        {
+          "value": "Sure Fit"
+        },
+        {
+          "value": "Suntree"
+        },
+        {
+          "value": "Suncast"
+        },
+        {
+          "value": "Sunbrella"
+        },
+        {
+          "value": "Stylemaster"
+        },
+        {
+          "value": "Stressless"
+        },
+        {
+          "value": "Stool International"
+        },
+        {
+          "value": "Stearns & Foster"
+        },
+        {
+          "value": "Stanley Furniture"
+        },
+        {
+          "value": "Standard"
+        },
+        {
+          "value": "Spiegelau"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Sonoma"
+        },
+        {
+          "value": "Solar"
+        },
+        {
+          "value": "Softline Home Fashions"
+        },
+        {
+          "value": "SofaSofa"
+        },
+        {
+          "value": "Sleek Decor"
+        },
+        {
+          "value": "Skyline Furniture"
+        },
+        {
+          "value": "SK"
+        },
+        {
+          "value": "Sis Covers"
+        },
+        {
+          "value": "Simplicity"
+        },
+        {
+          "value": "Simplex"
+        },
+        {
+          "value": "Sharper Image"
+        },
+        {
+          "value": "S&C"
+        },
+        {
+          "value": "Rwenzori Furniture"
+        },
+        {
+          "value": "Rubbermaid"
+        },
+        {
+          "value": "Royce Clothing"
+        },
+        {
+          "value": "Royal Foam"
+        },
+        {
+          "value": "Royal Comfort"
+        },
+        {
+          "value": "Royal"
+        },
+        {
+          "value": "Rowenta"
+        },
+        {
+          "value": "Roper"
+        },
+        {
+          "value": "Room Essentials"
+        },
+        {
+          "value": "Relax"
+        },
+        {
+          "value": "Raymond Waites"
+        },
+        {
+          "value": "Rainbow"
+        },
+        {
+          "value": "PUR"
+        },
+        {
+          "value": "Prime Line Products"
+        },
+        {
+          "value": "Premier Housewares"
+        },
+        {
+          "value": "Powell"
+        },
+        {
+          "value": "Porodo"
+        },
+        {
+          "value": "Podium"
+        },
+        {
+          "value": "Platt"
+        },
+        {
+          "value": "PIX"
+        },
+        {
+          "value": "Petra"
+        },
+        {
+          "value": "Pelican"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Peak"
+        },
+        {
+          "value": "OTC"
+        },
+        {
+          "value": "Oriental Furniture"
+        },
+        {
+          "value": "Oregon"
+        },
+        {
+          "value": "Olympia"
+        },
+        {
+          "value": "Office Star Products"
+        },
+        {
+          "value": "Ntex"
+        },
+        {
+          "value": "Nova"
+        },
+        {
+          "value": "Nordic Table"
+        },
+        {
+          "value": "Nil"
+        },
+        {
+          "value": "Nest"
+        },
+        {
+          "value": "Natura"
+        },
+        {
+          "value": "National"
+        },
+        {
+          "value": "Modloft"
+        },
+        {
+          "value": "Metaltex"
+        },
+        {
+          "value": "Metabo"
+        },
+        {
+          "value": "Merrick"
+        },
+        {
+          "value": "Maxim"
+        },
+        {
+          "value": "Master"
+        },
+        {
+          "value": "Marvel"
+        },
+        {
+          "value": "Marco"
+        },
+        {
+          "value": "MAC"
+        },
+        {
+          "value": "Lv"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "Lodge"
+        },
+        {
+          "value": "Local"
+        },
+        {
+          "value": "Linear"
+        },
+        {
+          "value": "Ligne Roset"
+        },
+        {
+          "value": "Lifetime"
+        },
+        {
+          "value": "Lifestyle"
+        },
+        {
+          "value": "Lenmar"
+        },
+        {
+          "value": "Leisure"
+        },
+        {
+          "value": "Leedsooy"
+        },
+        {
+          "value": "LDR"
+        },
+        {
+          "value": "Kitchen Craft"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Kindred"
+        },
+        {
+          "value": "Keystone"
+        },
+        {
+          "value": "Karcher"
+        },
+        {
+          "value": "Johnson"
+        },
+        {
+          "value": "iSi"
+        },
+        {
+          "value": "Intex"
+        },
+        {
+          "value": "Interiors Uganda"
+        },
+        {
+          "value": "InterDesign"
+        },
+        {
+          "value": "Innova"
+        },
+        {
+          "value": "Ideal"
+        },
+        {
+          "value": "Howard Elliott"
+        },
+        {
+          "value": "HON"
+        },
+        {
+          "value": "Home Interiors"
+        },
+        {
+          "value": "Home Interior"
+        },
+        {
+          "value": "Hickory Chair"
+        },
+        {
+          "value": "Herman Miller"
+        },
+        {
+          "value": "Hayward"
+        },
+        {
+          "value": "Hampton Bay"
+        },
+        {
+          "value": "Hailo"
+        },
+        {
+          "value": "Gree"
+        },
+        {
+          "value": "Graff"
+        },
+        {
+          "value": "Grace Foam Limited"
+        },
+        {
+          "value": "Goodman"
+        },
+        {
+          "value": "Global"
+        },
+        {
+          "value": "General"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Gain"
+        },
+        {
+          "value": "Fusion"
+        },
+        {
+          "value": "Ford"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "Flash Furniture"
+        },
+        {
+          "value": "Falcon"
+        },
+        {
+          "value": "Eureka"
+        },
+        {
+          "value": "Empire"
+        },
+        {
+          "value": "Elegant Home"
+        },
+        {
+          "value": "Eagle"
+        },
+        {
+          "value": "Dynasty Mattress"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "Drexel Heritage"
+        },
+        {
+          "value": "Downy"
+        },
+        {
+          "value": "Deco"
+        },
+        {
+          "value": "Dean"
+        },
+        {
+          "value": "Danco"
+        },
+        {
+          "value": "Custom Craft"
+        },
+        {
+          "value": "Cozy"
+        },
+        {
+          "value": "Comfy"
+        },
+        {
+          "value": "Comfort Line"
+        },
+        {
+          "value": "ClosetMaid"
+        },
+        {
+          "value": "Classic Accessories"
+        },
+        {
+          "value": "Chesterfield"
+        },
+        {
+          "value": "CENTURY"
+        },
+        {
+          "value": "Casual Home"
+        },
+        {
+          "value": "Case"
+        },
+        {
+          "value": "Carlton"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "Cadet"
+        },
+        {
+          "value": "burton + BURTON"
+        },
+        {
+          "value": "BUILT"
+        },
+        {
+          "value": "Browning"
+        },
+        {
+          "value": "Boss Office Products"
+        },
+        {
+          "value": "Boraam"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "BLOCK"
+        },
+        {
+          "value": "BLACK & DECKER"
+        },
+        {
+          "value": "Better Homes & Gardens"
+        },
+        {
+          "value": "Better Homes"
+        },
+        {
+          "value": "Bestway"
+        },
+        {
+          "value": "Best"
+        },
+        {
+          "value": "Bedmate"
+        },
+        {
+          "value": "Bed Bath & Beyond"
+        },
+        {
+          "value": "Bassett Mirror"
+        },
+        {
+          "value": "Astro"
+        },
+        {
+          "value": "ArtGlass"
+        },
+        {
+          "value": "ARK"
+        },
+        {
+          "value": "Arden"
+        },
+        {
+          "value": "Anvil"
+        },
+        {
+          "value": "Air King"
+        },
+        {
+          "value": "AeroBed"
+        },
+        {
+          "value": "Acme"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "A&M Furniture"
+        },
+        {
+          "value": "4walls"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "World Industries"
+        },
+        {
+          "value": "Wood-Mode"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "SofaSofa"
+        },
+        {
+          "value": "Dynasty Mattress"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_246_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 246,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_246_colour",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Multicolored"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "Transparent"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5372_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5372,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5372_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Chairs",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/chairs.png",
+          "filters": {
+            "filter_attr_248_type": "Chairs"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Tables",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/tables.png",
+          "filters": {
+            "filter_attr_248_type": "Tables"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Sofas",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/sofas.png",
+          "filters": {
+            "filter_attr_248_type": "Sofas"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Beds & Bed Frames",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/beds.png",
+          "filters": {
+            "filter_attr_248_type": "Beds & Bed Frames"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Mattresses",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/mattresses.png",
+          "filters": {
+            "filter_attr_248_type": "Mattresses"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "TV Stands & Mounts",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/tv-stands.png",
+          "filters": {
+            "filter_attr_248_type": "TV Stands & Mounts"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Wardrobes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/furniture/wardrobes.png",
+          "filters": {
+            "filter_attr_248_type": "Wardrobes"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_248_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_248_type"
+    }
+  ]
+}

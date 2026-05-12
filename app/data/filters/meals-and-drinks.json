@@ -1,0 +1,419 @@
+{
+  "total": 1308,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 52,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 10000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 3400,
+          "label": "Under 3.4 K",
+          "item_count": 78
+        },
+        {
+          "from": 3400,
+          "to": 20000,
+          "label": "3.4 - 20 K",
+          "item_count": 313
+        },
+        {
+          "from": 20000,
+          "to": 70000,
+          "label": "20 - 70 K",
+          "item_count": 523
+        },
+        {
+          "from": 70000,
+          "to": 250000,
+          "label": "70 - 250 K",
+          "item_count": 327
+        },
+        {
+          "from": 250000,
+          "to": null,
+          "label": "More than 250 K",
+          "item_count": 65
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_4343_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4343,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4343_brand",
+      "possible_values": [
+        {
+          "value": "7UP"
+        },
+        {
+          "value": "7Up"
+        },
+        {
+          "value": "All Gold"
+        },
+        {
+          "value": "Alpha Foods"
+        },
+        {
+          "value": "Anchor"
+        },
+        {
+          "value": "Aquafina"
+        },
+        {
+          "value": "AriZona"
+        },
+        {
+          "value": "Azam"
+        },
+        {
+          "value": "Bang"
+        },
+        {
+          "value": "Campari"
+        },
+        {
+          "value": "Caprice"
+        },
+        {
+          "value": "Community Coffee"
+        },
+        {
+          "value": "Dangote Foods"
+        },
+        {
+          "value": "Fan Milk"
+        },
+        {
+          "value": "Farm Pride"
+        },
+        {
+          "value": "Four Cousins"
+        },
+        {
+          "value": "Juicy Juice"
+        },
+        {
+          "value": "Loya Milk"
+        },
+        {
+          "value": "MONIN"
+        },
+        {
+          "value": "Nescafe"
+        },
+        {
+          "value": "Nestle"
+        },
+        {
+          "value": "NIDO"
+        },
+        {
+          "value": "Ocean Spray"
+        },
+        {
+          "value": "Pearl Dairy Farms"
+        },
+        {
+          "value": "Pure Life"
+        },
+        {
+          "value": "Robertson Winery"
+        },
+        {
+          "value": "Royco"
+        },
+        {
+          "value": "Safari"
+        },
+        {
+          "value": "SATURO"
+        },
+        {
+          "value": "Sofina"
+        },
+        {
+          "value": "Sunflower"
+        },
+        {
+          "value": "Supreme Flour"
+        },
+        {
+          "value": "Tesco"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Alpha Foods"
+        },
+        {
+          "value": "Anchor"
+        },
+        {
+          "value": "NIDO"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1594_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1594,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1594_type",
+      "possible_values": [
+        {
+          "value": "Alcoholic Drinks"
+        },
+        {
+          "value": "Bakery Products"
+        },
+        {
+          "value": "Cereals and Flakes"
+        },
+        {
+          "value": "Cheese"
+        },
+        {
+          "value": "Coffee"
+        },
+        {
+          "value": "Coffee Beans"
+        },
+        {
+          "value": "Dairy Products"
+        },
+        {
+          "value": "Eggs"
+        },
+        {
+          "value": "Energy Drinks"
+        },
+        {
+          "value": "Fish"
+        },
+        {
+          "value": "Frozen Food"
+        },
+        {
+          "value": "Fruits"
+        },
+        {
+          "value": "Grains"
+        },
+        {
+          "value": "Hot Drinks"
+        },
+        {
+          "value": "Juices"
+        },
+        {
+          "value": "Meat & Poultry"
+        },
+        {
+          "value": "Pasta & Noodles"
+        },
+        {
+          "value": "Ready Meals"
+        },
+        {
+          "value": "Salad Leaves"
+        },
+        {
+          "value": "Sauces"
+        },
+        {
+          "value": "Seafood"
+        },
+        {
+          "value": "Snacks"
+        },
+        {
+          "value": "Soft Drinks"
+        },
+        {
+          "value": "Spices"
+        },
+        {
+          "value": "Sweeties"
+        },
+        {
+          "value": "Tea"
+        },
+        {
+          "value": "Vegetables"
+        },
+        {
+          "value": "Vegetarian & Vegan"
+        },
+        {
+          "value": "Water"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Alcoholic Drinks"
+        },
+        {
+          "value": "Bakery Products"
+        },
+        {
+          "value": "Fruits"
+        },
+        {
+          "value": "Grains"
+        },
+        {
+          "value": "Spices"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Bakery Products",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/bakery-products.png",
+          "filters": {
+            "filter_attr_1594_type": "Bakery Products"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Spices",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/spices.png",
+          "filters": {
+            "filter_attr_1594_type": "Spices"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Fruits",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/fruits.png",
+          "filters": {
+            "filter_attr_1594_type": "Fruits"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Alcoholic Drinks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/alcoholic-drinks.png",
+          "filters": {
+            "filter_attr_1594_type": "Alcoholic Drinks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Grains",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/grains.png",
+          "filters": {
+            "filter_attr_1594_type": "Grains"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Tea",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/tea.png",
+          "filters": {
+            "filter_attr_1594_type": "Tea"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Vegetables",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/meals-and-drinks/vegetables.png",
+          "filters": {
+            "filter_attr_1594_type": "Vegetables"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1594_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1594_type"
+    }
+  ]
+}

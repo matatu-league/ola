@@ -1,0 +1,884 @@
+{
+  "total": 2270,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 150,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 15000,
+          "label": "Under 15 K",
+          "item_count": 136
+        },
+        {
+          "from": 15000,
+          "to": 35000,
+          "label": "15 - 35 K",
+          "item_count": 544
+        },
+        {
+          "from": 35000,
+          "to": 65000,
+          "label": "35 - 65 K",
+          "item_count": 908
+        },
+        {
+          "from": 65000,
+          "to": 150000,
+          "label": "65 - 150 K",
+          "item_count": 567
+        },
+        {
+          "from": 150000,
+          "to": null,
+          "label": "More than 150 K",
+          "item_count": 113
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1664_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1664,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1664_brand",
+      "possible_values": [
+        {
+          "value": "Zoya"
+        },
+        {
+          "value": "Zoella"
+        },
+        {
+          "value": "Zion Health"
+        },
+        {
+          "value": "Zest"
+        },
+        {
+          "value": "Zermat"
+        },
+        {
+          "value": "Zen"
+        },
+        {
+          "value": "Yojiya"
+        },
+        {
+          "value": "YES"
+        },
+        {
+          "value": "Yardley"
+        },
+        {
+          "value": "Worth"
+        },
+        {
+          "value": "World Market"
+        },
+        {
+          "value": "Vitamins"
+        },
+        {
+          "value": "Virgin"
+        },
+        {
+          "value": "Victoria's Secret"
+        },
+        {
+          "value": "Veetgold"
+        },
+        {
+          "value": "VEET"
+        },
+        {
+          "value": "Vaseline"
+        },
+        {
+          "value": "Vanicream"
+        },
+        {
+          "value": "valentino"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Tiara"
+        },
+        {
+          "value": "The Natural Solution"
+        },
+        {
+          "value": "Tea Tree"
+        },
+        {
+          "value": "Tampax"
+        },
+        {
+          "value": "Superior"
+        },
+        {
+          "value": "Sun Organic"
+        },
+        {
+          "value": "Sumifun"
+        },
+        {
+          "value": "Sugar"
+        },
+        {
+          "value": "South Moon"
+        },
+        {
+          "value": "SOTHYS"
+        },
+        {
+          "value": "Softsoap"
+        },
+        {
+          "value": "Soap & Glory"
+        },
+        {
+          "value": "Snail White"
+        },
+        {
+          "value": "Skin Food"
+        },
+        {
+          "value": "Skin Doctor"
+        },
+        {
+          "value": "Sk Duchess"
+        },
+        {
+          "value": "Simple"
+        },
+        {
+          "value": "Silka"
+        },
+        {
+          "value": "SHOWER TO SHOWER"
+        },
+        {
+          "value": "Shea Moisture"
+        },
+        {
+          "value": "SebaMed"
+        },
+        {
+          "value": "Savon Stories"
+        },
+        {
+          "value": "Saponificio Artigianale Fiorentino"
+        },
+        {
+          "value": "SANTE"
+        },
+        {
+          "value": "Sanex"
+        },
+        {
+          "value": "Samona"
+        },
+        {
+          "value": "SAGE"
+        },
+        {
+          "value": "Rexona"
+        },
+        {
+          "value": "Revlon"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Pure Body Naturals"
+        },
+        {
+          "value": "Pure"
+        },
+        {
+          "value": "Protex"
+        },
+        {
+          "value": "Power"
+        },
+        {
+          "value": "Platinum"
+        },
+        {
+          "value": "PINK"
+        },
+        {
+          "value": "Papaya"
+        },
+        {
+          "value": "Palmer'S"
+        },
+        {
+          "value": "own"
+        },
+        {
+          "value": "Origins"
+        },
+        {
+          "value": "Original"
+        },
+        {
+          "value": "Organic Fiji"
+        },
+        {
+          "value": "OPI"
+        },
+        {
+          "value": "Only Natural"
+        },
+        {
+          "value": "On"
+        },
+        {
+          "value": "Old Spice"
+        },
+        {
+          "value": "Olay"
+        },
+        {
+          "value": "Oilatum"
+        },
+        {
+          "value": "O'Carly"
+        },
+        {
+          "value": "NutriBiotic"
+        },
+        {
+          "value": "Nourish"
+        },
+        {
+          "value": "NIVEA"
+        },
+        {
+          "value": "Neutrogena"
+        },
+        {
+          "value": "Neutriherbs"
+        },
+        {
+          "value": "Movit"
+        },
+        {
+          "value": "Moroccanoil"
+        },
+        {
+          "value": "MOR"
+        },
+        {
+          "value": "Monat"
+        },
+        {
+          "value": "Molyneux"
+        },
+        {
+          "value": "Mitchum"
+        },
+        {
+          "value": "Miracle"
+        },
+        {
+          "value": "Medix 5.5"
+        },
+        {
+          "value": "Malibu"
+        },
+        {
+          "value": "Makari"
+        },
+        {
+          "value": "Ma"
+        },
+        {
+          "value": "Luxe"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "Lumin"
+        },
+        {
+          "value": "Love Beauty and Planet"
+        },
+        {
+          "value": "Longrich"
+        },
+        {
+          "value": "Lavera"
+        },
+        {
+          "value": "Lanbena"
+        },
+        {
+          "value": "La Roche-Posay"
+        },
+        {
+          "value": "L'Oreal"
+        },
+        {
+          "value": "Kojiesan"
+        },
+        {
+          "value": "Kojic Papaya"
+        },
+        {
+          "value": "Kojic"
+        },
+        {
+          "value": "KLORANE"
+        },
+        {
+          "value": "Kiss"
+        },
+        {
+          "value": "KIND"
+        },
+        {
+          "value": "K Brothers"
+        },
+        {
+          "value": "JOHNSON'S"
+        },
+        {
+          "value": "Himalaya"
+        },
+        {
+          "value": "Heritage Store"
+        },
+        {
+          "value": "Hemani"
+        },
+        {
+          "value": "HealthSmart"
+        },
+        {
+          "value": "HealthAid"
+        },
+        {
+          "value": "Harmony"
+        },
+        {
+          "value": "Guerlain"
+        },
+        {
+          "value": "Giorgio Armani"
+        },
+        {
+          "value": "Gillette"
+        },
+        {
+          "value": "Garnier"
+        },
+        {
+          "value": "GANZ"
+        },
+        {
+          "value": "Fresh"
+        },
+        {
+          "value": "Forever Living"
+        },
+        {
+          "value": "Forever"
+        },
+        {
+          "value": "FLOWER"
+        },
+        {
+          "value": "Fair And White"
+        },
+        {
+          "value": "Fair & White"
+        },
+        {
+          "value": "Face Facts"
+        },
+        {
+          "value": "Fa"
+        },
+        {
+          "value": "Extract"
+        },
+        {
+          "value": "EVO"
+        },
+        {
+          "value": "Eucerin"
+        },
+        {
+          "value": "Essential"
+        },
+        {
+          "value": "essence"
+        },
+        {
+          "value": "Eos"
+        },
+        {
+          "value": "EO"
+        },
+        {
+          "value": "ELLE"
+        },
+        {
+          "value": "ECO"
+        },
+        {
+          "value": "Earth Mama Angel Baby"
+        },
+        {
+          "value": "E45"
+        },
+        {
+          "value": "DREAM"
+        },
+        {
+          "value": "Dr. Teals"
+        },
+        {
+          "value": "Dr Rashel"
+        },
+        {
+          "value": "Dr Meinaier"
+        },
+        {
+          "value": "Dove"
+        },
+        {
+          "value": "Disaar"
+        },
+        {
+          "value": "Dettol"
+        },
+        {
+          "value": "Degree"
+        },
+        {
+          "value": "Dabur"
+        },
+        {
+          "value": "Cure"
+        },
+        {
+          "value": "Crystal"
+        },
+        {
+          "value": "Cosrx"
+        },
+        {
+          "value": "Cosmopolitan"
+        },
+        {
+          "value": "CLEAR SKIN"
+        },
+        {
+          "value": "Clean"
+        },
+        {
+          "value": "Cien"
+        },
+        {
+          "value": "CHI"
+        },
+        {
+          "value": "Cetaphil"
+        },
+        {
+          "value": "Cerave"
+        },
+        {
+          "value": "Burt's Bees"
+        },
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Bloom"
+        },
+        {
+          "value": "Blade"
+        },
+        {
+          "value": "Bismid"
+        },
+        {
+          "value": "BIODERMA"
+        },
+        {
+          "value": "BIOAQUA"
+        },
+        {
+          "value": "Bella"
+        },
+        {
+          "value": "Beauty by Earth"
+        },
+        {
+          "value": "Bath & Body Works"
+        },
+        {
+          "value": "Babaria"
+        },
+        {
+          "value": "AXE"
+        },
+        {
+          "value": "Aveeno"
+        },
+        {
+          "value": "Asantee"
+        },
+        {
+          "value": "Art Naturals"
+        },
+        {
+          "value": "Arm & Hammer"
+        },
+        {
+          "value": "Angel"
+        },
+        {
+          "value": "Amlactin"
+        },
+        {
+          "value": "AMBI"
+        },
+        {
+          "value": "Amanda"
+        },
+        {
+          "value": "Alpha"
+        },
+        {
+          "value": "Aichun Beauty"
+        },
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Veetgold"
+        },
+        {
+          "value": "Vaseline"
+        },
+        {
+          "value": "On"
+        },
+        {
+          "value": "Dove"
+        },
+        {
+          "value": "Bath & Body Works"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_584_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 584,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_584_type",
+      "possible_values": [
+        {
+          "value": "Aftershave Cosmetics"
+        },
+        {
+          "value": "Antiseptics"
+        },
+        {
+          "value": "Bath Bombs & Fizzies"
+        },
+        {
+          "value": "Bath Brushes & Sponges"
+        },
+        {
+          "value": "Bath Foams"
+        },
+        {
+          "value": "Bath Salts"
+        },
+        {
+          "value": "Bath Sets & Kits"
+        },
+        {
+          "value": "Body Butters"
+        },
+        {
+          "value": "Body Creams & Milks"
+        },
+        {
+          "value": "Body Lotions"
+        },
+        {
+          "value": "Body Oils"
+        },
+        {
+          "value": "Body Powders"
+        },
+        {
+          "value": "Body Scrubs"
+        },
+        {
+          "value": "Body Sprays"
+        },
+        {
+          "value": "Body Sun Care"
+        },
+        {
+          "value": "Body Washes & Soaps",
+          "title": "Body Wash & Soap"
+        },
+        {
+          "value": "Cotton Buds"
+        },
+        {
+          "value": "Deodorants & Aniperspirants"
+        },
+        {
+          "value": "Essential Oils"
+        },
+        {
+          "value": "Female Cleansers"
+        },
+        {
+          "value": "Hair Removal Creams"
+        },
+        {
+          "value": "Hand Washes"
+        },
+        {
+          "value": "Panty Liners"
+        },
+        {
+          "value": "Sanitary Pads"
+        },
+        {
+          "value": "Scar & Stretch Mark Reducers"
+        },
+        {
+          "value": "Shaving Cosmetics"
+        },
+        {
+          "value": "Shower Caps"
+        },
+        {
+          "value": "Shower Gels"
+        },
+        {
+          "value": "Tampons"
+        },
+        {
+          "value": "Travel Bottles & Container"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Body Creams & Milks"
+        },
+        {
+          "value": "Body Lotions"
+        },
+        {
+          "value": "Body Oils"
+        },
+        {
+          "value": "Body Washes & Soaps",
+          "title": "Body Wash & Soap"
+        },
+        {
+          "value": "Shower Gels"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Body Lotions",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/body-lotions.png",
+          "filters": {
+            "filter_attr_584_type": "Body Lotions"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shower Gels",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/shower-gels.png",
+          "filters": {
+            "filter_attr_584_type": "Shower Gels"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Body Oils",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/body-oils.png",
+          "filters": {
+            "filter_attr_584_type": "Body Oils"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Body Wash & Soap",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/soap.png",
+          "filters": {
+            "filter_attr_584_type": "Body Washes & Soaps"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Body Creams & Milks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/body-cream.png",
+          "filters": {
+            "filter_attr_584_type": "Body Creams & Milks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Body Scrubs",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/body-scrubs.png",
+          "filters": {
+            "filter_attr_584_type": "Body Scrubs"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Deodorants & Aniperspirants",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bath-and-body/deodorant-aniperspirant.png",
+          "filters": {
+            "filter_attr_584_type": "Deodorants & Aniperspirants"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_584_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_584_type"
+    }
+  ]
+}

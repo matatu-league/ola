@@ -1,0 +1,1263 @@
+{
+  "total": 9499,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 10000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 16500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 40000,
+          "label": "Under 40 K",
+          "item_count": 569
+        },
+        {
+          "from": 40000,
+          "to": 96000,
+          "label": "40 - 96 K",
+          "item_count": 2279
+        },
+        {
+          "from": 96000,
+          "to": 250000,
+          "label": "96 - 250 K",
+          "item_count": 3799
+        },
+        {
+          "from": 250000,
+          "to": 800000,
+          "label": "250 - 800 K",
+          "item_count": 2374
+        },
+        {
+          "from": 800000,
+          "to": null,
+          "label": "More than 800 K",
+          "item_count": 474
+        }
+      ]
+    },
+    {
+      "label": "Popular Filters",
+      "parent_slug": null,
+      "slug": "filter_attr_6396_popular_filters",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6396,
+      "attr_name": "Popular Filters",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6396_popular_filters",
+      "possible_values": [
+        {
+          "value": "Gaming Headphones"
+        },
+        {
+          "value": "Studio Headphones"
+        },
+        {
+          "value": "Sports Headphones"
+        },
+        {
+          "value": "True Wireless Headphones"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1521_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1521,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1521_brand",
+      "possible_values": [
+        {
+          "value": "1More"
+        },
+        {
+          "value": "A-Audio"
+        },
+        {
+          "value": "Abingo"
+        },
+        {
+          "value": "Accering"
+        },
+        {
+          "value": "Accessonico"
+        },
+        {
+          "value": "Accessory House"
+        },
+        {
+          "value": "Acctrend"
+        },
+        {
+          "value": "Acesori"
+        },
+        {
+          "value": "Acessorz"
+        },
+        {
+          "value": "Aceyoon"
+        },
+        {
+          "value": "ADJ"
+        },
+        {
+          "value": "Adseon"
+        },
+        {
+          "value": "Aftershokz"
+        },
+        {
+          "value": "Aigo"
+        },
+        {
+          "value": "Air Pro"
+        },
+        {
+          "value": "Air Six"
+        },
+        {
+          "value": "Airbuds"
+        },
+        {
+          "value": "Airpod Skins"
+        },
+        {
+          "value": "AKG"
+        },
+        {
+          "value": "Akz"
+        },
+        {
+          "value": "Aliph Jawbone"
+        },
+        {
+          "value": "Amalen"
+        },
+        {
+          "value": "Amaze"
+        },
+        {
+          "value": "American Audio"
+        },
+        {
+          "value": "Amorno"
+        },
+        {
+          "value": "Anker"
+        },
+        {
+          "value": "Anskp"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Aproca"
+        },
+        {
+          "value": "Arteck"
+        },
+        {
+          "value": "Aspor"
+        },
+        {
+          "value": "Audio-Technica"
+        },
+        {
+          "value": "Aukey"
+        },
+        {
+          "value": "Auvisio"
+        },
+        {
+          "value": "Avazi"
+        },
+        {
+          "value": "Baofeng"
+        },
+        {
+          "value": "Baseus"
+        },
+        {
+          "value": "Bass Jaxx"
+        },
+        {
+          "value": "Beatfade"
+        },
+        {
+          "value": "Beats"
+        },
+        {
+          "value": "Beatz"
+        },
+        {
+          "value": "Beautyrest"
+        },
+        {
+          "value": "Beem United"
+        },
+        {
+          "value": "Beexcellent"
+        },
+        {
+          "value": "Behringer"
+        },
+        {
+          "value": "Belkin"
+        },
+        {
+          "value": "Beyerdynamic"
+        },
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Bluelark"
+        },
+        {
+          "value": "Bose"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Bowers & Wilkins"
+        },
+        {
+          "value": "Braven"
+        },
+        {
+          "value": "BT"
+        },
+        {
+          "value": "C.R. Laurence"
+        },
+        {
+          "value": "Calus"
+        },
+        {
+          "value": "Catheadset"
+        },
+        {
+          "value": "Chgeek"
+        },
+        {
+          "value": "CJC"
+        },
+        {
+          "value": "Cloudmusic"
+        },
+        {
+          "value": "Creative Labs"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Denon"
+        },
+        {
+          "value": "Design Go"
+        },
+        {
+          "value": "DMM"
+        },
+        {
+          "value": "Dr Rock"
+        },
+        {
+          "value": "Ear Bud"
+        },
+        {
+          "value": "Earbudi"
+        },
+        {
+          "value": "Earin"
+        },
+        {
+          "value": "Earloomz"
+        },
+        {
+          "value": "Earson"
+        },
+        {
+          "value": "Eberry"
+        },
+        {
+          "value": "Ecoxgear"
+        },
+        {
+          "value": "Enjoy-Unique"
+        },
+        {
+          "value": "Evio"
+        },
+        {
+          "value": "EZC"
+        },
+        {
+          "value": "Fashionit"
+        },
+        {
+          "value": "Fastwin"
+        },
+        {
+          "value": "Ferlen"
+        },
+        {
+          "value": "G-Cord"
+        },
+        {
+          "value": "Gelidi"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Genius"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "Greenlion"
+        },
+        {
+          "value": "Guardians Of The Galaxy"
+        },
+        {
+          "value": "H2O Audio"
+        },
+        {
+          "value": "Harman Kardon"
+        },
+        {
+          "value": "Haylou"
+        },
+        {
+          "value": "Heartte"
+        },
+        {
+          "value": "Hello Kitty"
+        },
+        {
+          "value": "Hi-Fi"
+        },
+        {
+          "value": "Hmdx"
+        },
+        {
+          "value": "Hoco"
+        },
+        {
+          "value": "Hoco."
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "HTC"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Hyperx"
+        },
+        {
+          "value": "Ibrands"
+        },
+        {
+          "value": "Infinix"
+        },
+        {
+          "value": "Intbase"
+        },
+        {
+          "value": "Irhyme"
+        },
+        {
+          "value": "Iroar"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "Jabra"
+        },
+        {
+          "value": "JBL"
+        },
+        {
+          "value": "Jlab"
+        },
+        {
+          "value": "Joygeek"
+        },
+        {
+          "value": "Just Wireless"
+        },
+        {
+          "value": "Kokkia"
+        },
+        {
+          "value": "Kscat"
+        },
+        {
+          "value": "KZ"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "Levin"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Mackie"
+        },
+        {
+          "value": "Mad Catz"
+        },
+        {
+          "value": "Maono"
+        },
+        {
+          "value": "Marshall"
+        },
+        {
+          "value": "Maximo"
+        },
+        {
+          "value": "Meetyoo"
+        },
+        {
+          "value": "Microsoft"
+        },
+        {
+          "value": "Midland"
+        },
+        {
+          "value": "Mifa"
+        },
+        {
+          "value": "Mimoday"
+        },
+        {
+          "value": "Monodeal"
+        },
+        {
+          "value": "Monster"
+        },
+        {
+          "value": "Moxom"
+        },
+        {
+          "value": "Mpow"
+        },
+        {
+          "value": "MSI"
+        },
+        {
+          "value": "Mybat"
+        },
+        {
+          "value": "Ncredible"
+        },
+        {
+          "value": "Neo"
+        },
+        {
+          "value": "Nokia"
+        },
+        {
+          "value": "Numark"
+        },
+        {
+          "value": "Oneodio"
+        },
+        {
+          "value": "Oneplus"
+        },
+        {
+          "value": "Onikuma"
+        },
+        {
+          "value": "Onyx"
+        },
+        {
+          "value": "Oppo"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "P47"
+        },
+        {
+          "value": "P9"
+        },
+        {
+          "value": "Pamano"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "Pioneer"
+        },
+        {
+          "value": "Pioneer Dj"
+        },
+        {
+          "value": "PL"
+        },
+        {
+          "value": "Plantronics"
+        },
+        {
+          "value": "Polaroid"
+        },
+        {
+          "value": "Polatap"
+        },
+        {
+          "value": "Porodo"
+        },
+        {
+          "value": "Powerneer"
+        },
+        {
+          "value": "Promate"
+        },
+        {
+          "value": "Prospec Electronics"
+        },
+        {
+          "value": "Puregear"
+        },
+        {
+          "value": "Puro Sound Labs"
+        },
+        {
+          "value": "QCY"
+        },
+        {
+          "value": "QKZ"
+        },
+        {
+          "value": "Quikcell"
+        },
+        {
+          "value": "Rapoo"
+        },
+        {
+          "value": "Razer"
+        },
+        {
+          "value": "Realme"
+        },
+        {
+          "value": "Recrsi"
+        },
+        {
+          "value": "Redmi"
+        },
+        {
+          "value": "S"
+        },
+        {
+          "value": "Sainyer"
+        },
+        {
+          "value": "Samcom"
+        },
+        {
+          "value": "Samson Technologies"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Sennheiser"
+        },
+        {
+          "value": "Sentey"
+        },
+        {
+          "value": "Sharktooth"
+        },
+        {
+          "value": "Shenzhen"
+        },
+        {
+          "value": "Skullcandy"
+        },
+        {
+          "value": "Sms Audio"
+        },
+        {
+          "value": "Sodo"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Sound Around"
+        },
+        {
+          "value": "Soundcore"
+        },
+        {
+          "value": "Soundpeats"
+        },
+        {
+          "value": "Spider"
+        },
+        {
+          "value": "Sports Pro"
+        },
+        {
+          "value": "Super White"
+        },
+        {
+          "value": "Surefire"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Teknub"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "Travel Blue"
+        },
+        {
+          "value": "Treblab"
+        },
+        {
+          "value": "Tucci"
+        },
+        {
+          "value": "Turtle Beach"
+        },
+        {
+          "value": "TWS"
+        },
+        {
+          "value": "Umbo Earbud"
+        },
+        {
+          "value": "Unbrand"
+        },
+        {
+          "value": "V-Moda"
+        },
+        {
+          "value": "Vancca"
+        },
+        {
+          "value": "Velodyne"
+        },
+        {
+          "value": "Vibe"
+        },
+        {
+          "value": "Volkano"
+        },
+        {
+          "value": "Walker'S Game Ear"
+        },
+        {
+          "value": "Wearhaus"
+        },
+        {
+          "value": "Weile"
+        },
+        {
+          "value": "Wireless"
+        },
+        {
+          "value": "Wireless Sport"
+        },
+        {
+          "value": "Wiwu"
+        },
+        {
+          "value": "WXG"
+        },
+        {
+          "value": "X-1 Audio"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Xplus"
+        },
+        {
+          "value": "Yamay"
+        },
+        {
+          "value": "Yemo"
+        },
+        {
+          "value": "Yihunion"
+        },
+        {
+          "value": "Zepthus"
+        },
+        {
+          "value": "Zihnic"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Anker"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "JBL"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Samsung"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1523_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1523,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1523_type",
+      "possible_values": [
+        {
+          "value": "In-Ear"
+        },
+        {
+          "value": "On-Ear"
+        },
+        {
+          "value": "Over-Ear"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Form Factor",
+      "parent_slug": null,
+      "slug": "filter_attr_1524_form_factor",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1524,
+      "attr_name": "Form Factor",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1524_form_factor",
+      "possible_values": [
+        {
+          "value": "Ear-hook",
+          "title": "Ear Hook"
+        },
+        {
+          "value": "Headband"
+        },
+        {
+          "value": "In-Ear only",
+          "title": "In-Ear Only"
+        },
+        {
+          "value": "Neckband"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Connectivity",
+      "parent_slug": null,
+      "slug": "filter_attr_1525_connectivity",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1525,
+      "attr_name": "Connectivity",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1525_connectivity",
+      "possible_values": [
+        {
+          "value": "Wired"
+        },
+        {
+          "value": "Wired / Wireless",
+          "title": "Wired/Wireless"
+        },
+        {
+          "value": "Wireless"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Connecting Interface",
+      "parent_slug": null,
+      "slug": "filter_attr_1526_connecting_interface",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1526,
+      "attr_name": "Connecting Interface",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1526_connecting_interface",
+      "possible_values": [
+        {
+          "value": "2.5 mm"
+        },
+        {
+          "value": "2.5 mm / Bluetooth"
+        },
+        {
+          "value": "3.5 mm"
+        },
+        {
+          "value": "3.5 mm / Bluetooth"
+        },
+        {
+          "value": "Bluetooth"
+        },
+        {
+          "value": "Lightning"
+        },
+        {
+          "value": "Lightning / Bluetooth"
+        },
+        {
+          "value": "Micro USB"
+        },
+        {
+          "value": "Micro USB / Bluetooth"
+        },
+        {
+          "value": "Mini USB"
+        },
+        {
+          "value": "Mini USB / Bluetooth"
+        },
+        {
+          "value": "Proprietary"
+        },
+        {
+          "value": "Proprietary / Bluetooth"
+        },
+        {
+          "value": "USB Type-C"
+        },
+        {
+          "value": "USB Type-C / Bluetooth"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "3.5 mm"
+        },
+        {
+          "value": "3.5 mm / Bluetooth"
+        },
+        {
+          "value": "Bluetooth"
+        },
+        {
+          "value": "USB Type-C"
+        },
+        {
+          "value": "USB Type-C / Bluetooth"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_1527_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1527,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1527_colour",
+      "possible_values": [
+        {
+          "value": "Beige"
+        },
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Features",
+      "parent_slug": null,
+      "slug": "filter_attr_6439_features",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6439,
+      "attr_name": "Features",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6439_features",
+      "possible_values": [
+        {
+          "value": "Active Noise Cancellation"
+        },
+        {
+          "value": "AptX / AptX HD"
+        },
+        {
+          "value": "Detachable Microphone"
+        },
+        {
+          "value": "Hi-Res Audio"
+        },
+        {
+          "value": "Light Effects"
+        },
+        {
+          "value": "NFC"
+        },
+        {
+          "value": "Waterproof"
+        },
+        {
+          "value": "Wireless Charging"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1522_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1522,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1522_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "For parts or not working",
+          "title": "For Parts or Not Working"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 50 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 50000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 50 - 85 K",
+          "filters": {
+            "price_min": 50000,
+            "price_max": 85000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 85 - 150 K",
+          "filters": {
+            "price_min": 85000,
+            "price_max": 150000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 150 K",
+          "filters": {
+            "price_min": 150000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "JBL",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/headphones/jbl.png",
+          "filters": {
+            "filter_attr_1521_brand": "JBL"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Oraimo",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/headphones/oraimo.png",
+          "filters": {
+            "filter_attr_1521_brand": "Oraimo"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Apple",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/apple.png",
+          "filters": {
+            "filter_attr_1521_brand": "Apple"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Anker",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/headphones/anker.png",
+          "filters": {
+            "filter_attr_1521_brand": "Anker"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Samsung",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/samsung.png",
+          "filters": {
+            "filter_attr_1521_brand": "Samsung"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Sony",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/headphones/sony.png",
+          "filters": {
+            "filter_attr_1521_brand": "Sony"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Logitech",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/headphones/logitech.png",
+          "filters": {
+            "filter_attr_1521_brand": "Logitech"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1521_brand",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1521_brand"
+    }
+  ]
+}

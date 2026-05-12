@@ -1,0 +1,777 @@
+{
+  "total": 1350,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 130,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 250000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 35000,
+          "label": "Under 35 K",
+          "item_count": 81
+        },
+        {
+          "from": 35000,
+          "to": 65000,
+          "label": "35 - 65 K",
+          "item_count": 324
+        },
+        {
+          "from": 65000,
+          "to": 120000,
+          "label": "65 - 120 K",
+          "item_count": 540
+        },
+        {
+          "from": 120000,
+          "to": 150000,
+          "label": "120 - 150 K",
+          "item_count": 337
+        },
+        {
+          "from": 150000,
+          "to": null,
+          "label": "More than 150 K",
+          "item_count": 67
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3695_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 3695,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3695_brand",
+      "possible_values": [
+        {
+          "value": "2K"
+        },
+        {
+          "value": "3M"
+        },
+        {
+          "value": "A&BC"
+        },
+        {
+          "value": "A&G"
+        },
+        {
+          "value": "Abercrombie & Fitch"
+        },
+        {
+          "value": "Academy"
+        },
+        {
+          "value": "Accessorize"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Acme"
+        },
+        {
+          "value": "Acorn"
+        },
+        {
+          "value": "Action"
+        },
+        {
+          "value": "Active"
+        },
+        {
+          "value": "ACTON"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "adidas"
+        },
+        {
+          "value": "Adio"
+        },
+        {
+          "value": "Admiral"
+        },
+        {
+          "value": "Adrienne Vittadini"
+        },
+        {
+          "value": "AE"
+        },
+        {
+          "value": "Air force"
+        },
+        {
+          "value": "Aldo"
+        },
+        {
+          "value": "Amelia"
+        },
+        {
+          "value": "Angels"
+        },
+        {
+          "value": "Annabelle"
+        },
+        {
+          "value": "B&B"
+        },
+        {
+          "value": "Back To School"
+        },
+        {
+          "value": "Bata"
+        },
+        {
+          "value": "BEARPAW"
+        },
+        {
+          "value": "Beau"
+        },
+        {
+          "value": "Best"
+        },
+        {
+          "value": "Bobdog"
+        },
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Brooks Brothers"
+        },
+        {
+          "value": "Butterfly"
+        },
+        {
+          "value": "Canvas"
+        },
+        {
+          "value": "Clarks"
+        },
+        {
+          "value": "Conoli"
+        },
+        {
+          "value": "Country Road"
+        },
+        {
+          "value": "CR"
+        },
+        {
+          "value": "Crab Kids"
+        },
+        {
+          "value": "Criss-Cross"
+        },
+        {
+          "value": "Crocs"
+        },
+        {
+          "value": "Cupcake"
+        },
+        {
+          "value": "Dior"
+        },
+        {
+          "value": "Dr. Martens"
+        },
+        {
+          "value": "Easy"
+        },
+        {
+          "value": "Ecosoft"
+        },
+        {
+          "value": "F&F"
+        },
+        {
+          "value": "Fashion"
+        },
+        {
+          "value": "Finkid"
+        },
+        {
+          "value": "Fitkids"
+        },
+        {
+          "value": "Go"
+        },
+        {
+          "value": "Gucci"
+        },
+        {
+          "value": "Havaianas"
+        },
+        {
+          "value": "ID"
+        },
+        {
+          "value": "Jordan"
+        },
+        {
+          "value": "LA"
+        },
+        {
+          "value": "Max Shoes"
+        },
+        {
+          "value": "Moccasin"
+        },
+        {
+          "value": "ND"
+        },
+        {
+          "value": "New"
+        },
+        {
+          "value": "New Balance"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Original"
+        },
+        {
+          "value": "P"
+        },
+        {
+          "value": "PUMA"
+        },
+        {
+          "value": "REN"
+        },
+        {
+          "value": "Rider"
+        },
+        {
+          "value": "Skecher"
+        },
+        {
+          "value": "Stella"
+        },
+        {
+          "value": "Superfit"
+        },
+        {
+          "value": "Tiger"
+        },
+        {
+          "value": "Timberland"
+        },
+        {
+          "value": "Twins"
+        },
+        {
+          "value": "Ty"
+        },
+        {
+          "value": "Versace"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Zara"
+        },
+        {
+          "value": "Zip"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "adidas"
+        },
+        {
+          "value": "Crab Kids"
+        },
+        {
+          "value": "Fashion"
+        },
+        {
+          "value": "Jordan"
+        },
+        {
+          "value": "Nike"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_337_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 337,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_337_type",
+      "possible_values": [
+        {
+          "value": "Baby Shoes"
+        },
+        {
+          "value": "Ballet Flats"
+        },
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Clogs"
+        },
+        {
+          "value": "Flats Shoes",
+          "title": "Flat Shoes"
+        },
+        {
+          "value": "Flip Flops",
+          "title": "Flip-Flops"
+        },
+        {
+          "value": "Football Shoes"
+        },
+        {
+          "value": "High Heels"
+        },
+        {
+          "value": "Loafers"
+        },
+        {
+          "value": "Moccasins"
+        },
+        {
+          "value": "Sandals"
+        },
+        {
+          "value": "School Shoes"
+        },
+        {
+          "value": "Slip-Ons",
+          "title": "Slip-ons"
+        },
+        {
+          "value": "Slippers"
+        },
+        {
+          "value": "Sneakers"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Baby Shoes"
+        },
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Flats Shoes",
+          "title": "Flat Shoes"
+        },
+        {
+          "value": "School Shoes"
+        },
+        {
+          "value": "Sneakers"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_97_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 97,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_97_gender",
+      "possible_values": [
+        {
+          "value": "Girls"
+        },
+        {
+          "value": "Boys"
+        },
+        {
+          "value": "Unisex"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Size",
+      "parent_slug": null,
+      "slug": "filter_attr_345_size",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 345,
+      "attr_name": "Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_345_size",
+      "possible_values": [
+        {
+          "value": "16"
+        },
+        {
+          "value": "17"
+        },
+        {
+          "value": "18"
+        },
+        {
+          "value": "19"
+        },
+        {
+          "value": "20"
+        },
+        {
+          "value": "21"
+        },
+        {
+          "value": "22"
+        },
+        {
+          "value": "23"
+        },
+        {
+          "value": "24"
+        },
+        {
+          "value": "25"
+        },
+        {
+          "value": "26"
+        },
+        {
+          "value": "27"
+        },
+        {
+          "value": "28"
+        },
+        {
+          "value": "29"
+        },
+        {
+          "value": "30"
+        },
+        {
+          "value": "31"
+        },
+        {
+          "value": "32"
+        },
+        {
+          "value": "33"
+        },
+        {
+          "value": "34"
+        },
+        {
+          "value": "35"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "28"
+        },
+        {
+          "value": "29"
+        },
+        {
+          "value": "30"
+        },
+        {
+          "value": "33"
+        },
+        {
+          "value": "34"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_347_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 347,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_347_colour",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1632_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1633,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1632_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 40 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 40000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 40 - 60 K",
+          "filters": {
+            "price_min": 40000,
+            "price_max": 60000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 60 - 85 K",
+          "filters": {
+            "price_min": 60000,
+            "price_max": 85000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 85 K",
+          "filters": {
+            "price_min": 85000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Sneakers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/sneakers.png",
+          "filters": {
+            "filter_attr_337_type": "Sneakers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "School Shoes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/school-shoes.png",
+          "filters": {
+            "filter_attr_337_type": "School Shoes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Boots",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/boots.png",
+          "filters": {
+            "filter_attr_337_type": "Boots"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Baby Shoes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/baby-shoes.png",
+          "filters": {
+            "filter_attr_337_type": "Baby Shoes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Flat Shoes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/flats.png",
+          "filters": {
+            "filter_attr_337_type": "Flats Shoes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Loafers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/loafers.png",
+          "filters": {
+            "filter_attr_337_type": "Loafers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Moccasins",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-shoes/moccasins.png",
+          "filters": {
+            "filter_attr_337_type": "Moccasins"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_337_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_337_type"
+    }
+  ]
+}

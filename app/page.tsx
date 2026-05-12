@@ -1,65 +1,140 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import TopNav from './components/shared/TopNav';
+import SearchHeader from './components/shared/SearchHeader';
+import ProductsView from './components/marketplace/ProductsView';
+import StoresView from './components/marketplace/StoresView';
+import Storefront from './components/storefronts/Storefront';
+import CategoryListingView from './components/marketplace/CategoryListingView'; 
+
+function MarketplaceContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Initialize state directly from the URL parameters
+  const urlTab = searchParams.get('tab') || "Products";
+  const urlCategory = searchParams.get('category') || null;
+
+  const [view, setView] = useState("marketplace"); // "marketplace" | "storefront"
+  const [activeTab, setActiveTab] = useState(urlTab);
+  const [activeCategory, setActiveCategory] = useState(urlCategory); 
+  const [selectedStore, setSelectedStore] = useState(null);
+
+  // Sync state if the user navigates using Browser Back/Forward buttons
+  useEffect(() => {
+    const currentUrlTab = searchParams.get('tab') || "Products";
+    const currentUrlCategory = searchParams.get('category') || null;
+    
+    if (activeTab !== currentUrlTab) setActiveTab(currentUrlTab);
+    if (activeCategory !== currentUrlCategory) setActiveCategory(currentUrlCategory);
+  }, [searchParams]);
+
+  const handleVisitStore = (store) => {
+    setSelectedStore(store);
+    setView("storefront");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Handler for switching between Products and Stores tabs
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', tab);
+    
+    if (tab === "Stores") {
+      setActiveCategory(null);
+      params.delete('category'); // Clear category param if switching to stores
+    }
+    
+    // Update the browser URL
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  // Handler for when a category is clicked anywhere (TopNav or ProductsView)
+  const handleCategorySelect = (slug) => {
+    setActiveCategory(slug);
+    setActiveTab("Products"); 
+    setView("marketplace");
+    
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', 'Products');
+    if (slug) {
+      params.set('category', slug);
+    } else {
+      params.delete('category');
+    }
+
+    // Update the browser URL
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Render dynamic storefront if a store is selected
+  if (view === "storefront" && selectedStore) {
+    return <Storefront store={selectedStore} onBack={() => { setView("marketplace"); window.scrollTo(0,0); }} />;
+  }
+
+  // Render marketplace home
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="font-sans text-gray-800 flex flex-col min-h-screen">
+      <div className={`transition-colors duration-500 relative ${activeTab === 'Products' ? 'bg-gradient-to-tr from-white via-white to-[#fff0f4] animate-bg-gradient' : 'bg-gradient-to-br from-white via-white to-red-50'}`}>
+        <TopNav onCategorySelect={handleCategorySelect} />
+        
+        {/* Hide SearchHeader when browsing a specific category */}
+        {!activeCategory && (
+          <SearchHeader 
+            activeTab={activeTab} 
+            setActiveTab={handleTabChange} 
+          />
+        )}
+      </div>
+
+      {/* Conditionally render the views based on active tab & selected category */}
+      {activeCategory ? (
+        <CategoryListingView initialCategory={activeCategory} />
+      ) : activeTab === "Products" ? (
+        <ProductsView onCategorySelect={handleCategorySelect} />
+      ) : (
+        <StoresView onVisitStore={handleVisitStore} />
+      )}
+      
+      <footer className="bg-white border-t border-gray-200 pt-10 pb-6 mt-auto">
+        <div className="max-w-[1400px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between pt-6">
+           <div className="flex items-center gap-4 text-[13px] text-gray-500 font-medium mb-4 md:mb-0">
+              <span className="cursor-pointer hover:text-[#FE2C55]">Ola.com Site</span><span>|</span>
+              <span className="cursor-pointer hover:text-[#FE2C55]">Site Map</span><span>|</span>
+              <span className="cursor-pointer hover:text-[#FE2C55]">Terms of Use</span>
+           </div>
+           <div className="text-[13px] text-gray-500 font-medium">© 2026 Ola.com. All rights reserved.</div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
+
+      {/* Global CSS for scrollbars and animations */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .animate-bg-gradient { background-size: 200% 200%; animation: gradientMove 15s ease-in-out infinite; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+      `}} />
     </div>
+  );
+}
+
+// Wrap the main content in a Suspense boundary (Required by Next.js when using useSearchParams)
+export default function Page() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-[#FE2C55]/30 border-t-[#FE2C55] rounded-full animate-spin"></div>
+      </div>
+    }>
+      <MarketplaceContent />
+    </Suspense>
   );
 }

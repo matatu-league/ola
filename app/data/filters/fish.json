@@ -1,0 +1,135 @@
+{
+  "total": 396,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 10000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 7000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 23
+        },
+        {
+          "from": 20000,
+          "to": 400000,
+          "label": "20 - 400 K",
+          "item_count": 95
+        },
+        {
+          "from": 400000,
+          "to": 1500000,
+          "label": "400 K - 1.5 M",
+          "item_count": 158
+        },
+        {
+          "from": 1500000,
+          "to": 4300000,
+          "label": "1.5 - 4.3 M",
+          "item_count": 99
+        },
+        {
+          "from": 4300000,
+          "to": null,
+          "label": "More than 4.3 M",
+          "item_count": 19
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_2527_type_extend",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 2527,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_2527_type_extend",
+      "possible_values": [
+        {
+          "value": "Air Blower"
+        },
+        {
+          "value": "Air Stones"
+        },
+        {
+          "value": "Aquariums"
+        },
+        {
+          "value": "Filters for aquariums",
+          "title": "Filters for Aquariums"
+        },
+        {
+          "value": "Fish"
+        },
+        {
+          "value": "Food"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": []
+}

@@ -1,0 +1,492 @@
+{
+  "total": 909,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 6500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 11000,
+          "label": "Under 11 K",
+          "item_count": 54
+        },
+        {
+          "from": 11000,
+          "to": 30000,
+          "label": "11 - 30 K",
+          "item_count": 218
+        },
+        {
+          "from": 30000,
+          "to": 56000,
+          "label": "30 - 56 K",
+          "item_count": 363
+        },
+        {
+          "from": 56000,
+          "to": 160000,
+          "label": "56 - 160 K",
+          "item_count": 227
+        },
+        {
+          "from": 160000,
+          "to": null,
+          "label": "More than 160 K",
+          "item_count": 45
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_5683_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 5683,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5683_brand",
+      "possible_values": [
+        {
+          "value": "Abro"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Admiral"
+        },
+        {
+          "value": "Aerus"
+        },
+        {
+          "value": "AfriDet"
+        },
+        {
+          "value": "Air Wick"
+        },
+        {
+          "value": "Ajax"
+        },
+        {
+          "value": "Alpina"
+        },
+        {
+          "value": "Alpine"
+        },
+        {
+          "value": "Amica"
+        },
+        {
+          "value": "Amway"
+        },
+        {
+          "value": "Aqua"
+        },
+        {
+          "value": "Ariel"
+        },
+        {
+          "value": "Arm & Hammer"
+        },
+        {
+          "value": "AROMA"
+        },
+        {
+          "value": "Astonish"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "Bargain"
+        },
+        {
+          "value": "Best"
+        },
+        {
+          "value": "Bird"
+        },
+        {
+          "value": "Blanco"
+        },
+        {
+          "value": "Bona"
+        },
+        {
+          "value": "Borax"
+        },
+        {
+          "value": "Cadie"
+        },
+        {
+          "value": "Caldrea"
+        },
+        {
+          "value": "CEL"
+        },
+        {
+          "value": "Cheer"
+        },
+        {
+          "value": "Chicco"
+        },
+        {
+          "value": "Clorox"
+        },
+        {
+          "value": "Clover"
+        },
+        {
+          "value": "Comfort"
+        },
+        {
+          "value": "Daz"
+        },
+        {
+          "value": "Dettol"
+        },
+        {
+          "value": "Dial"
+        },
+        {
+          "value": "Dometic"
+        },
+        {
+          "value": "Downy"
+        },
+        {
+          "value": "Dr. Beckmann"
+        },
+        {
+          "value": "Essentials"
+        },
+        {
+          "value": "Finish"
+        },
+        {
+          "value": "Fresh"
+        },
+        {
+          "value": "Gain"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Global"
+        },
+        {
+          "value": "Greenleaf"
+        },
+        {
+          "value": "Ideal"
+        },
+        {
+          "value": "Joy"
+        },
+        {
+          "value": "Kitchen Cleaner"
+        },
+        {
+          "value": "Magic"
+        },
+        {
+          "value": "Master"
+        },
+        {
+          "value": "Neolife"
+        },
+        {
+          "value": "Purex"
+        },
+        {
+          "value": "Rat Raider"
+        },
+        {
+          "value": "Reckitt Benckiser"
+        },
+        {
+          "value": "Russ"
+        },
+        {
+          "value": "Soft Scrub"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Sticks"
+        },
+        {
+          "value": "Sunsational"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "White Magic"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Abro"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Best"
+        },
+        {
+          "value": "Finish"
+        },
+        {
+          "value": "GE"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_5621_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 5621,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5621_type",
+      "possible_values": [
+        {
+          "value": "Bathroom Cleaners"
+        },
+        {
+          "value": "Bleach"
+        },
+        {
+          "value": "Carpet and Rug Cleaners"
+        },
+        {
+          "value": "Descalers"
+        },
+        {
+          "value": "Dishwasher Detergents"
+        },
+        {
+          "value": "Disinfectants"
+        },
+        {
+          "value": "Floor Cleaners"
+        },
+        {
+          "value": "Glass Cleaners"
+        },
+        {
+          "value": "Kitchen Cleaners"
+        },
+        {
+          "value": "Laundry Detergents"
+        },
+        {
+          "value": "Multipurpose Liquid Soaps"
+        },
+        {
+          "value": "Repellents"
+        },
+        {
+          "value": "Rust Cleaners"
+        },
+        {
+          "value": "Sink & Drain Cleaners"
+        },
+        {
+          "value": "Stain Removers"
+        },
+        {
+          "value": "Toilet Cleaners"
+        },
+        {
+          "value": "Tub & Tile Cleaners"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Disinfectants"
+        },
+        {
+          "value": "Laundry Detergents"
+        },
+        {
+          "value": "Multipurpose Liquid Soaps"
+        },
+        {
+          "value": "Repellents"
+        },
+        {
+          "value": "Toilet Cleaners"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Form",
+      "parent_slug": null,
+      "slug": "filter_attr_5679_form",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5679,
+      "attr_name": "Form",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5679_form",
+      "possible_values": [
+        {
+          "value": "Capsules"
+        },
+        {
+          "value": "Concentrate (Mix With Water)"
+        },
+        {
+          "value": "Crystals"
+        },
+        {
+          "value": "Gel"
+        },
+        {
+          "value": "Granules / Pellets"
+        },
+        {
+          "value": "Liquid"
+        },
+        {
+          "value": "Lotion"
+        },
+        {
+          "value": "Packs"
+        },
+        {
+          "value": "Paste"
+        },
+        {
+          "value": "Powder"
+        },
+        {
+          "value": "Solid"
+        },
+        {
+          "value": "Spray"
+        },
+        {
+          "value": "Stick"
+        },
+        {
+          "value": "Tablets"
+        },
+        {
+          "value": "Wipes"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Crystals"
+        },
+        {
+          "value": "Gel"
+        },
+        {
+          "value": "Liquid"
+        },
+        {
+          "value": "Powder"
+        },
+        {
+          "value": "Spray"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": []
+}

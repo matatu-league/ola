@@ -1,0 +1,691 @@
+{
+  "total": 5264,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 4000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 15000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 50000,
+          "label": "Under 50 K",
+          "item_count": 315
+        },
+        {
+          "from": 50000,
+          "to": 130000,
+          "label": "50 - 130 K",
+          "item_count": 1263
+        },
+        {
+          "from": 130000,
+          "to": 300000,
+          "label": "130 - 300 K",
+          "item_count": 2105
+        },
+        {
+          "from": 300000,
+          "to": 1000000,
+          "label": "300 K - 1 M",
+          "item_count": 1316
+        },
+        {
+          "from": 1000000,
+          "to": null,
+          "label": "More than 1 M",
+          "item_count": 263
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1542_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1542,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1542_brand",
+      "possible_values": [
+        {
+          "value": "2Wire"
+        },
+        {
+          "value": "3Com"
+        },
+        {
+          "value": "9Mobile"
+        },
+        {
+          "value": "Acer"
+        },
+        {
+          "value": "ACP"
+        },
+        {
+          "value": "Action-Tec"
+        },
+        {
+          "value": "Adtran"
+        },
+        {
+          "value": "Africell"
+        },
+        {
+          "value": "Aico"
+        },
+        {
+          "value": "Air Live"
+        },
+        {
+          "value": "Airtel"
+        },
+        {
+          "value": "Alcatel-Lucent"
+        },
+        {
+          "value": "Alfa-Net"
+        },
+        {
+          "value": "Alink"
+        },
+        {
+          "value": "Aluratek"
+        },
+        {
+          "value": "Amplifi"
+        },
+        {
+          "value": "Apc"
+        },
+        {
+          "value": "Aruba Networks"
+        },
+        {
+          "value": "Ashata"
+        },
+        {
+          "value": "ASRock"
+        },
+        {
+          "value": "AT&T"
+        },
+        {
+          "value": "Aten"
+        },
+        {
+          "value": "Avaya"
+        },
+        {
+          "value": "AVM"
+        },
+        {
+          "value": "Axiom"
+        },
+        {
+          "value": "Baofeng"
+        },
+        {
+          "value": "Belkin"
+        },
+        {
+          "value": "Black Box"
+        },
+        {
+          "value": "Bolt+"
+        },
+        {
+          "value": "BT"
+        },
+        {
+          "value": "Bvot"
+        },
+        {
+          "value": "Cambium Networks"
+        },
+        {
+          "value": "Check Point"
+        },
+        {
+          "value": "Cisco"
+        },
+        {
+          "value": "CNet"
+        },
+        {
+          "value": "Comfast"
+        },
+        {
+          "value": "Commando"
+        },
+        {
+          "value": "Commscope"
+        },
+        {
+          "value": "Comtrend"
+        },
+        {
+          "value": "CP Technologies"
+        },
+        {
+          "value": "Cudy"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "Dahua"
+        },
+        {
+          "value": "Ddk"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Dtech"
+        },
+        {
+          "value": "Edup"
+        },
+        {
+          "value": "Eero"
+        },
+        {
+          "value": "ElctronicStore"
+        },
+        {
+          "value": "EnGenius"
+        },
+        {
+          "value": "Estream Networks"
+        },
+        {
+          "value": "Faiba"
+        },
+        {
+          "value": "Fortinet"
+        },
+        {
+          "value": "Gateway"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "GigaFast"
+        },
+        {
+          "value": "GL.iNet"
+        },
+        {
+          "value": "Glo"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "Grandstream"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "HiLink"
+        },
+        {
+          "value": "Hisource"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Hrui"
+        },
+        {
+          "value": "Hsdpa"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Jio"
+        },
+        {
+          "value": "Kubix"
+        },
+        {
+          "value": "Kuwfi"
+        },
+        {
+          "value": "LB-Link"
+        },
+        {
+          "value": "LB1 High Performance"
+        },
+        {
+          "value": "Linksys"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Lte Cpe"
+        },
+        {
+          "value": "Mercury"
+        },
+        {
+          "value": "Mercusys"
+        },
+        {
+          "value": "MikroTik"
+        },
+        {
+          "value": "Motorola"
+        },
+        {
+          "value": "MTN"
+        },
+        {
+          "value": "MultiTech"
+        },
+        {
+          "value": "NEC"
+        },
+        {
+          "value": "NetGear"
+        },
+        {
+          "value": "Netis"
+        },
+        {
+          "value": "Netlink"
+        },
+        {
+          "value": "Netopia"
+        },
+        {
+          "value": "Netpro"
+        },
+        {
+          "value": "Nokia"
+        },
+        {
+          "value": "Nortel"
+        },
+        {
+          "value": "Noyafa"
+        },
+        {
+          "value": "OEM"
+        },
+        {
+          "value": "Olax"
+        },
+        {
+          "value": "Onv"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "PIX-Link"
+        },
+        {
+          "value": "Quantum"
+        },
+        {
+          "value": "Razer"
+        },
+        {
+          "value": "Ruckus"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Smart"
+        },
+        {
+          "value": "SmartWi"
+        },
+        {
+          "value": "Smile"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Sophos"
+        },
+        {
+          "value": "Starlink"
+        },
+        {
+          "value": "StarTech"
+        },
+        {
+          "value": "Swift"
+        },
+        {
+          "value": "T-Connekt"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Telkom"
+        },
+        {
+          "value": "Tenda"
+        },
+        {
+          "value": "Totolink"
+        },
+        {
+          "value": "TP-Link"
+        },
+        {
+          "value": "Ubiquiti Networks"
+        },
+        {
+          "value": "UniFi"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Viewtec"
+        },
+        {
+          "value": "Vodafone"
+        },
+        {
+          "value": "Wavlink"
+        },
+        {
+          "value": "Wi-Tek"
+        },
+        {
+          "value": "Wifi Repeater"
+        },
+        {
+          "value": "WirEng"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Yeastar"
+        },
+        {
+          "value": "Zong"
+        },
+        {
+          "value": "Zonyer"
+        },
+        {
+          "value": "ZTE"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Bvot"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "TP-Link"
+        },
+        {
+          "value": "UniFi"
+        },
+        {
+          "value": "ZTE"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1544_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1544,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1544_type",
+      "possible_values": [
+        {
+          "value": "Access Point"
+        },
+        {
+          "value": "IP Phones"
+        },
+        {
+          "value": "Mifi"
+        },
+        {
+          "value": "Modem"
+        },
+        {
+          "value": "Network Cables"
+        },
+        {
+          "value": "Router"
+        },
+        {
+          "value": "SFP Modules"
+        },
+        {
+          "value": "Switch"
+        },
+        {
+          "value": "WiFi Repeater"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1543_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1543,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1543_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Router",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/routers.png",
+          "filters": {
+            "filter_attr_1544_type": "Router"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Access Point",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/access.png",
+          "filters": {
+            "filter_attr_1544_type": "Access Point"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Switch",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/switches.png",
+          "filters": {
+            "filter_attr_1544_type": "Switch"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Mifi",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/mifi.png",
+          "filters": {
+            "filter_attr_1544_type": "Mifi"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Network Cables",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/networkcables.png",
+          "filters": {
+            "filter_attr_1544_type": "Network Cables"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Modem",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/modems.png",
+          "filters": {
+            "filter_attr_1544_type": "Modem"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "IP Phones",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/networking-products/ip-phones.png",
+          "filters": {
+            "filter_attr_1544_type": "IP Phones"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1544_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1544_type"
+    }
+  ]
+}

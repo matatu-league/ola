@@ -1,0 +1,1645 @@
+{
+  "total": 27949,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 150,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1050000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 60000,
+          "label": "Under 60 K",
+          "item_count": 1676
+        },
+        {
+          "from": 60000,
+          "to": 300000,
+          "label": "60 - 300 K",
+          "item_count": 6707
+        },
+        {
+          "from": 300000,
+          "to": 1500000,
+          "label": "300 K - 1.5 M",
+          "item_count": 11179
+        },
+        {
+          "from": 1500000,
+          "to": 8500000,
+          "label": "1.5 - 8.5 M",
+          "item_count": 6987
+        },
+        {
+          "from": 8500000,
+          "to": null,
+          "label": "More than 8.5 M",
+          "item_count": 1397
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_2330_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 2330,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_2330_brand",
+      "possible_values": [
+        {
+          "value": "Zurn"
+        },
+        {
+          "value": "Zonergy"
+        },
+        {
+          "value": "Zodiac"
+        },
+        {
+          "value": "Zipper"
+        },
+        {
+          "value": "Zinsco"
+        },
+        {
+          "value": "Zero"
+        },
+        {
+          "value": "Zenith"
+        },
+        {
+          "value": "Zenetti"
+        },
+        {
+          "value": "Zebra"
+        },
+        {
+          "value": "YORK"
+        },
+        {
+          "value": "Yokogawa"
+        },
+        {
+          "value": "YHDC"
+        },
+        {
+          "value": "Yazaki"
+        },
+        {
+          "value": "YATO"
+        },
+        {
+          "value": "Yaskawa"
+        },
+        {
+          "value": "Yanmar"
+        },
+        {
+          "value": "Yamashita"
+        },
+        {
+          "value": "Yamaha"
+        },
+        {
+          "value": "Yale"
+        },
+        {
+          "value": "XP"
+        },
+        {
+          "value": "Xilinx"
+        },
+        {
+          "value": "Xicon"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "X1"
+        },
+        {
+          "value": "Wright"
+        },
+        {
+          "value": "Worxflex"
+        },
+        {
+          "value": "Worldsunlight"
+        },
+        {
+          "value": "Workflex"
+        },
+        {
+          "value": "wolfcraft"
+        },
+        {
+          "value": "Wolf"
+        },
+        {
+          "value": "WISKA"
+        },
+        {
+          "value": "Wiremold"
+        },
+        {
+          "value": "Wire PRO"
+        },
+        {
+          "value": "WinCo"
+        },
+        {
+          "value": "Wilson"
+        },
+        {
+          "value": "Western"
+        },
+        {
+          "value": "Wessex"
+        },
+        {
+          "value": "Wesco"
+        },
+        {
+          "value": "Wells"
+        },
+        {
+          "value": "Weber"
+        },
+        {
+          "value": "Watts"
+        },
+        {
+          "value": "Wallace"
+        },
+        {
+          "value": "WAGO"
+        },
+        {
+          "value": "WAGAN"
+        },
+        {
+          "value": "WAC Lighting"
+        },
+        {
+          "value": "Volvo"
+        },
+        {
+          "value": "VOLTREX"
+        },
+        {
+          "value": "Volex"
+        },
+        {
+          "value": "Visonic"
+        },
+        {
+          "value": "Vintech"
+        },
+        {
+          "value": "Victron Energy"
+        },
+        {
+          "value": "VICTOR"
+        },
+        {
+          "value": "Versa"
+        },
+        {
+          "value": "Vellmax"
+        },
+        {
+          "value": "Vanguard"
+        },
+        {
+          "value": "Vanco"
+        },
+        {
+          "value": "Universal Tool"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "UK"
+        },
+        {
+          "value": "UG"
+        },
+        {
+          "value": "Twin"
+        },
+        {
+          "value": "Tuya"
+        },
+        {
+          "value": "Tripp Lite"
+        },
+        {
+          "value": "Totaline"
+        },
+        {
+          "value": "Total"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "Titan"
+        },
+        {
+          "value": "Tiger"
+        },
+        {
+          "value": "Thor"
+        },
+        {
+          "value": "Tesla"
+        },
+        {
+          "value": "Tense"
+        },
+        {
+          "value": "Telemecanique"
+        },
+        {
+          "value": "TDK"
+        },
+        {
+          "value": "T&G"
+        },
+        {
+          "value": "Switchcraft"
+        },
+        {
+          "value": "Superior"
+        },
+        {
+          "value": "Super Power"
+        },
+        {
+          "value": "Sunshow"
+        },
+        {
+          "value": "Sunshine Gold"
+        },
+        {
+          "value": "Sun"
+        },
+        {
+          "value": "Sumec"
+        },
+        {
+          "value": "Sukam"
+        },
+        {
+          "value": "Streetwize"
+        },
+        {
+          "value": "Stone Bridge"
+        },
+        {
+          "value": "Stihl"
+        },
+        {
+          "value": "STI"
+        },
+        {
+          "value": "Stel"
+        },
+        {
+          "value": "STC"
+        },
+        {
+          "value": "StartAKT"
+        },
+        {
+          "value": "Star Plus"
+        },
+        {
+          "value": "STACO"
+        },
+        {
+          "value": "SRNE"
+        },
+        {
+          "value": "SPJ"
+        },
+        {
+          "value": "SPC"
+        },
+        {
+          "value": "Spartan"
+        },
+        {
+          "value": "Sollant"
+        },
+        {
+          "value": "Solarmac"
+        },
+        {
+          "value": "Solar"
+        },
+        {
+          "value": "SOLA"
+        },
+        {
+          "value": "Snap-on"
+        },
+        {
+          "value": "SMS"
+        },
+        {
+          "value": "Smith"
+        },
+        {
+          "value": "Smarten"
+        },
+        {
+          "value": "SMA"
+        },
+        {
+          "value": "SLV"
+        },
+        {
+          "value": "Skynet"
+        },
+        {
+          "value": "SK"
+        },
+        {
+          "value": "Silvercrest"
+        },
+        {
+          "value": "Sigma"
+        },
+        {
+          "value": "Siemon"
+        },
+        {
+          "value": "Siemens"
+        },
+        {
+          "value": "Shineray"
+        },
+        {
+          "value": "Senci Generator"
+        },
+        {
+          "value": "SE"
+        },
+        {
+          "value": "Scrap Batteries"
+        },
+        {
+          "value": "SCOTT"
+        },
+        {
+          "value": "Schneider Electric"
+        },
+        {
+          "value": "Schneider"
+        },
+        {
+          "value": "scheppach"
+        },
+        {
+          "value": "Sb"
+        },
+        {
+          "value": "SANYO"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Safeguard"
+        },
+        {
+          "value": "RST"
+        },
+        {
+          "value": "Royal"
+        },
+        {
+          "value": "Rockwell"
+        },
+        {
+          "value": "Robinson"
+        },
+        {
+          "value": "Robin Subaru"
+        },
+        {
+          "value": "Robin"
+        },
+        {
+          "value": "Rival"
+        },
+        {
+          "value": "Ritar"
+        },
+        {
+          "value": "Rexroth"
+        },
+        {
+          "value": "Rex"
+        },
+        {
+          "value": "Reliance"
+        },
+        {
+          "value": "Ranger"
+        },
+        {
+          "value": "Quali-Tech"
+        },
+        {
+          "value": "Pylontech"
+        },
+        {
+          "value": "PT"
+        },
+        {
+          "value": "Pro-Power"
+        },
+        {
+          "value": "PRO"
+        },
+        {
+          "value": "PRAMAC"
+        },
+        {
+          "value": "Powertec"
+        },
+        {
+          "value": "Powerstar"
+        },
+        {
+          "value": "Powers"
+        },
+        {
+          "value": "PowerMax"
+        },
+        {
+          "value": "PowerBright"
+        },
+        {
+          "value": "Power Value"
+        },
+        {
+          "value": "Power Tech-On"
+        },
+        {
+          "value": "Power Pro"
+        },
+        {
+          "value": "Power Blitzz"
+        },
+        {
+          "value": "Powell"
+        },
+        {
+          "value": "Porsche"
+        },
+        {
+          "value": "Polystar"
+        },
+        {
+          "value": "Phoenix Contact"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "Perkins"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Parkside"
+        },
+        {
+          "value": "Parker"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "PAL"
+        },
+        {
+          "value": "Ox"
+        },
+        {
+          "value": "Ortronics"
+        },
+        {
+          "value": "Original Engine Management"
+        },
+        {
+          "value": "Oregon"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Omron"
+        },
+        {
+          "value": "Olympian"
+        },
+        {
+          "value": "Okuma"
+        },
+        {
+          "value": "OEM"
+        },
+        {
+          "value": "NTE"
+        },
+        {
+          "value": "NSI"
+        },
+        {
+          "value": "NC"
+        },
+        {
+          "value": "Navigator"
+        },
+        {
+          "value": "MP"
+        },
+        {
+          "value": "Molex"
+        },
+        {
+          "value": "MK Electric"
+        },
+        {
+          "value": "Mitsubishi"
+        },
+        {
+          "value": "Miller"
+        },
+        {
+          "value": "Microtek"
+        },
+        {
+          "value": "Micron"
+        },
+        {
+          "value": "Micro Light"
+        },
+        {
+          "value": "MGM"
+        },
+        {
+          "value": "MG Electronics"
+        },
+        {
+          "value": "Mettler Toledo"
+        },
+        {
+          "value": "Metal Lux"
+        },
+        {
+          "value": "MEAN WELL"
+        },
+        {
+          "value": "Maxmech"
+        },
+        {
+          "value": "Maxim"
+        },
+        {
+          "value": "Maxi"
+        },
+        {
+          "value": "Max"
+        },
+        {
+          "value": "Matrix"
+        },
+        {
+          "value": "Masterplug"
+        },
+        {
+          "value": "Mars"
+        },
+        {
+          "value": "Makita"
+        },
+        {
+          "value": "Lutron"
+        },
+        {
+          "value": "Lutian"
+        },
+        {
+          "value": "Luthian"
+        },
+        {
+          "value": "Luminous"
+        },
+        {
+          "value": "Lucas"
+        },
+        {
+          "value": "Ls"
+        },
+        {
+          "value": "LOTOS"
+        },
+        {
+          "value": "Longen"
+        },
+        {
+          "value": "Loncin"
+        },
+        {
+          "value": "Lister"
+        },
+        {
+          "value": "Lion"
+        },
+        {
+          "value": "Link"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "Lexus"
+        },
+        {
+          "value": "Lento"
+        },
+        {
+          "value": "Legrand"
+        },
+        {
+          "value": "LEC"
+        },
+        {
+          "value": "Ldnio"
+        },
+        {
+          "value": "KW"
+        },
+        {
+          "value": "Kubota"
+        },
+        {
+          "value": "Klauke"
+        },
+        {
+          "value": "KIPOR"
+        },
+        {
+          "value": "Kingston"
+        },
+        {
+          "value": "Kings"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "KINCROME"
+        },
+        {
+          "value": "Kenstar"
+        },
+        {
+          "value": "Kemage"
+        },
+        {
+          "value": "Karcher"
+        },
+        {
+          "value": "KAN UK"
+        },
+        {
+          "value": "Kama"
+        },
+        {
+          "value": "K-Power"
+        },
+        {
+          "value": "K Tool"
+        },
+        {
+          "value": "Jones"
+        },
+        {
+          "value": "Johnson"
+        },
+        {
+          "value": "JinkoSolar"
+        },
+        {
+          "value": "JET"
+        },
+        {
+          "value": "Ja Solar"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "ITC"
+        },
+        {
+          "value": "Isuzu"
+        },
+        {
+          "value": "Ipower"
+        },
+        {
+          "value": "International"
+        },
+        {
+          "value": "Intel"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Infinity"
+        },
+        {
+          "value": "Hyundai"
+        },
+        {
+          "value": "Hypertronics"
+        },
+        {
+          "value": "Husqvarna"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Huanyang"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Honda"
+        },
+        {
+          "value": "Hobart"
+        },
+        {
+          "value": "Hitachi"
+        },
+        {
+          "value": "Hit"
+        },
+        {
+          "value": "Hisense"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "Hi Power"
+        },
+        {
+          "value": "Heavy Duty"
+        },
+        {
+          "value": "Heath"
+        },
+        {
+          "value": "HDX"
+        },
+        {
+          "value": "Hager"
+        },
+        {
+          "value": "GT"
+        },
+        {
+          "value": "Grundfos"
+        },
+        {
+          "value": "Greenlee"
+        },
+        {
+          "value": "Go Power"
+        },
+        {
+          "value": "GKN"
+        },
+        {
+          "value": "General Power Products"
+        },
+        {
+          "value": "General Motors"
+        },
+        {
+          "value": "General Electric"
+        },
+        {
+          "value": "General Cable"
+        },
+        {
+          "value": "General"
+        },
+        {
+          "value": "GEDORE"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Gacia"
+        },
+        {
+          "value": "G&H Technology"
+        },
+        {
+          "value": "Fuji"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "FIRMAN"
+        },
+        {
+          "value": "Felicitysolar"
+        },
+        {
+          "value": "Felicity"
+        },
+        {
+          "value": "Fast"
+        },
+        {
+          "value": "Extron"
+        },
+        {
+          "value": "Everstart"
+        },
+        {
+          "value": "Evergreen Solar"
+        },
+        {
+          "value": "Evergood"
+        },
+        {
+          "value": "Eventronic"
+        },
+        {
+          "value": "Europec"
+        },
+        {
+          "value": "EMC"
+        },
+        {
+          "value": "Elgin"
+        },
+        {
+          "value": "Elemax"
+        },
+        {
+          "value": "Elektra"
+        },
+        {
+          "value": "Electromak"
+        },
+        {
+          "value": "Electro Max"
+        },
+        {
+          "value": "Electra"
+        },
+        {
+          "value": "Ego"
+        },
+        {
+          "value": "Edon"
+        },
+        {
+          "value": "Edison"
+        },
+        {
+          "value": "Ecoflow"
+        },
+        {
+          "value": "ECHO"
+        },
+        {
+          "value": "ECCO"
+        },
+        {
+          "value": "Eaton"
+        },
+        {
+          "value": "Eastman"
+        },
+        {
+          "value": "Eastek"
+        },
+        {
+          "value": "Duravolt"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "Draper"
+        },
+        {
+          "value": "Dixie Electric Ltd"
+        },
+        {
+          "value": "Dixie Electric"
+        },
+        {
+          "value": "Distribution  Board"
+        },
+        {
+          "value": "Dinkle"
+        },
+        {
+          "value": "Digi"
+        },
+        {
+          "value": "Diesel"
+        },
+        {
+          "value": "Deye"
+        },
+        {
+          "value": "DEWALT"
+        },
+        {
+          "value": "Denyo"
+        },
+        {
+          "value": "Delta"
+        },
+        {
+          "value": "DCI"
+        },
+        {
+          "value": "DCC"
+        },
+        {
+          "value": "DCA"
+        },
+        {
+          "value": "DC"
+        },
+        {
+          "value": "Dayton"
+        },
+        {
+          "value": "Danfoss"
+        },
+        {
+          "value": "Dale"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "Cworth Energy"
+        },
+        {
+          "value": "CW"
+        },
+        {
+          "value": "Current"
+        },
+        {
+          "value": "Cummins"
+        },
+        {
+          "value": "Crane"
+        },
+        {
+          "value": "Craftsman"
+        },
+        {
+          "value": "CR"
+        },
+        {
+          "value": "Coyote"
+        },
+        {
+          "value": "Copper"
+        },
+        {
+          "value": "Cooper Wiring Devices"
+        },
+        {
+          "value": "Cooper Wiring"
+        },
+        {
+          "value": "Cooper"
+        },
+        {
+          "value": "Consolidated"
+        },
+        {
+          "value": "Clarke"
+        },
+        {
+          "value": "CL"
+        },
+        {
+          "value": "Chint"
+        },
+        {
+          "value": "Champion"
+        },
+        {
+          "value": "Centurion"
+        },
+        {
+          "value": "Central"
+        },
+        {
+          "value": "CEM"
+        },
+        {
+          "value": "Caterpillar"
+        },
+        {
+          "value": "CAT"
+        },
+        {
+          "value": "CARQUEST"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "Calterm"
+        },
+        {
+          "value": "Cable Tie"
+        },
+        {
+          "value": "C&E"
+        },
+        {
+          "value": "Bosch"
+        },
+        {
+          "value": "Bona"
+        },
+        {
+          "value": "BMW"
+        },
+        {
+          "value": "Blue Carbon"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "BLACK & DECKER"
+        },
+        {
+          "value": "Bison"
+        },
+        {
+          "value": "Best"
+        },
+        {
+          "value": "Belkin"
+        },
+        {
+          "value": "Battery Tender"
+        },
+        {
+          "value": "Basler"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "Baldor"
+        },
+        {
+          "value": "Atlas Copco"
+        },
+        {
+          "value": "ATI"
+        },
+        {
+          "value": "Astro"
+        },
+        {
+          "value": "Arrow Hart"
+        },
+        {
+          "value": "ARM"
+        },
+        {
+          "value": "Arctic Cat"
+        },
+        {
+          "value": "Apollo"
+        },
+        {
+          "value": "APC"
+        },
+        {
+          "value": "Andrews"
+        },
+        {
+          "value": "Anderson"
+        },
+        {
+          "value": "AMP Solar"
+        },
+        {
+          "value": "Amaron Quanta"
+        },
+        {
+          "value": "Am"
+        },
+        {
+          "value": "Allgrand"
+        },
+        {
+          "value": "All Star"
+        },
+        {
+          "value": "Alcatel-Lucent"
+        },
+        {
+          "value": "Air King"
+        },
+        {
+          "value": "AIMS Power"
+        },
+        {
+          "value": "AIM Electronics"
+        },
+        {
+          "value": "AD"
+        },
+        {
+          "value": "AC"
+        },
+        {
+          "value": "ABB"
+        },
+        {
+          "value": "AAF"
+        },
+        {
+          "value": "A123 Systems"
+        },
+        {
+          "value": "A&BC"
+        },
+        {
+          "value": "A&B"
+        },
+        {
+          "value": "3M"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Solar"
+        },
+        {
+          "value": "Perkins"
+        },
+        {
+          "value": "Honda"
+        },
+        {
+          "value": "Felicitysolar"
+        },
+        {
+          "value": "Edon"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1483_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1483,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1483_type",
+      "possible_values": [
+        {
+          "value": "Ac Speed Drives"
+        },
+        {
+          "value": "Accessories for Solar Energy"
+        },
+        {
+          "value": "Alternators"
+        },
+        {
+          "value": "Cable Reels"
+        },
+        {
+          "value": "Cable Ties"
+        },
+        {
+          "value": "Capacitors"
+        },
+        {
+          "value": "Charge Controllers"
+        },
+        {
+          "value": "Circuit Breakers & Disconnectors"
+        },
+        {
+          "value": "Commercial Lighting"
+        },
+        {
+          "value": "Compressors"
+        },
+        {
+          "value": "Concrete Mixers"
+        },
+        {
+          "value": "Concrete Vibrators"
+        },
+        {
+          "value": "Copper Bars"
+        },
+        {
+          "value": "Deep Cycle Batteries"
+        },
+        {
+          "value": "Digital Counters"
+        },
+        {
+          "value": "Distribution Boards"
+        },
+        {
+          "value": "Earthing Materials"
+        },
+        {
+          "value": "Electric Motors"
+        },
+        {
+          "value": "Electrical Boxes & Panels"
+        },
+        {
+          "value": "Electrical Cables"
+        },
+        {
+          "value": "Electrical Plugs"
+        },
+        {
+          "value": "Electrodes"
+        },
+        {
+          "value": "Electronic Components & Semiconductors"
+        },
+        {
+          "value": "Feeder Pillars"
+        },
+        {
+          "value": "Fuses"
+        },
+        {
+          "value": "Generators"
+        },
+        {
+          "value": "Heater Bands"
+        },
+        {
+          "value": "Inverter Batteries"
+        },
+        {
+          "value": "Inverters"
+        },
+        {
+          "value": "Manual Starters"
+        },
+        {
+          "value": "Phase Converters"
+        },
+        {
+          "value": "Photocells"
+        },
+        {
+          "value": "Plate Compactors"
+        },
+        {
+          "value": "Portable Power Stations"
+        },
+        {
+          "value": "Power Inverters"
+        },
+        {
+          "value": "Power Supplies"
+        },
+        {
+          "value": "Relays"
+        },
+        {
+          "value": "Selective Modules"
+        },
+        {
+          "value": "Sockets"
+        },
+        {
+          "value": "Solar Cells"
+        },
+        {
+          "value": "Solar Connectors"
+        },
+        {
+          "value": "Solar Energy Systems"
+        },
+        {
+          "value": "Solar Panels"
+        },
+        {
+          "value": "Soundproof Generators"
+        },
+        {
+          "value": "Speed Controllers"
+        },
+        {
+          "value": "Stabilizers"
+        },
+        {
+          "value": "Steam Generators"
+        },
+        {
+          "value": "Surge Protectors"
+        },
+        {
+          "value": "Switches"
+        },
+        {
+          "value": "Temperature Controllers"
+        },
+        {
+          "value": "Transformers"
+        },
+        {
+          "value": "Voltage Regulators"
+        },
+        {
+          "value": "Welding Machines"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Accessories for Solar Energy"
+        },
+        {
+          "value": "Commercial Lighting"
+        },
+        {
+          "value": "Deep Cycle Batteries"
+        },
+        {
+          "value": "Generators"
+        },
+        {
+          "value": "Welding Machines"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1484_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1484,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1484_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5428_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5428,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5428_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Generators",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/electrical-equipment/generators.png",
+          "filters": {
+            "filter_attr_1483_type": "Generators"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Welding Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/electrical-equipment/welding-machine.png",
+          "filters": {
+            "filter_attr_1483_type": "Welding Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Electrical Cables",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/electrical-equipment/electrical-cables.png",
+          "filters": {
+            "filter_attr_1483_type": "Electrical Cables"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Compressors",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/power-equipments/compressors.png",
+          "filters": {
+            "filter_attr_1483_type": "Compressors"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Power Inverters",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/electrical-equipment/power-invertors.png",
+          "filters": {
+            "filter_attr_1483_type": "Power Inverters"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Voltage Regulators",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/electrical-equipment/voltage-regulators.png",
+          "filters": {
+            "filter_attr_1483_type": "Voltage Regulators"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cable Reels",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/electrical-equipment/cable-reels.png",
+          "filters": {
+            "filter_attr_1483_type": "Cable Reels"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1483_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1483_type"
+    }
+  ]
+}

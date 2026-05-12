@@ -1,0 +1,710 @@
+{
+  "total": 4202,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 4000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 12830000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 75000,
+          "label": "Under 75 K",
+          "item_count": 252
+        },
+        {
+          "from": 75000,
+          "to": 180000,
+          "label": "75 - 180 K",
+          "item_count": 1008
+        },
+        {
+          "from": 180000,
+          "to": 500000,
+          "label": "180 - 500 K",
+          "item_count": 1680
+        },
+        {
+          "from": 500000,
+          "to": 1500000,
+          "label": "500 K - 1.5 M",
+          "item_count": 1050
+        },
+        {
+          "from": 1500000,
+          "to": null,
+          "label": "More than 1.5 M",
+          "item_count": 210
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1556_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1556,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1556_brand",
+      "possible_values": [
+        {
+          "value": "101 Av Inc"
+        },
+        {
+          "value": "A-Zone"
+        },
+        {
+          "value": "Abtech"
+        },
+        {
+          "value": "Acceskings"
+        },
+        {
+          "value": "AfriCam"
+        },
+        {
+          "value": "Alfawise"
+        },
+        {
+          "value": "Alician"
+        },
+        {
+          "value": "Amcrest"
+        },
+        {
+          "value": "Annke"
+        },
+        {
+          "value": "Anpviz"
+        },
+        {
+          "value": "Anran"
+        },
+        {
+          "value": "Anspo"
+        },
+        {
+          "value": "Apexis"
+        },
+        {
+          "value": "Aqara"
+        },
+        {
+          "value": "Arlo"
+        },
+        {
+          "value": "Ashata"
+        },
+        {
+          "value": "Ausno"
+        },
+        {
+          "value": "Axisvision"
+        },
+        {
+          "value": "Baofeng"
+        },
+        {
+          "value": "Bayit Home"
+        },
+        {
+          "value": "Blink"
+        },
+        {
+          "value": "Bluefishcam"
+        },
+        {
+          "value": "BW"
+        },
+        {
+          "value": "Camitel"
+        },
+        {
+          "value": "Cberry"
+        },
+        {
+          "value": "Cctv Kit"
+        },
+        {
+          "value": "Cctv Power Supply"
+        },
+        {
+          "value": "CencoVision"
+        },
+        {
+          "value": "Centurion"
+        },
+        {
+          "value": "Cludsee"
+        },
+        {
+          "value": "Costar"
+        },
+        {
+          "value": "CP Plus"
+        },
+        {
+          "value": "CTRAK"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "D-Tech"
+        },
+        {
+          "value": "Dahua"
+        },
+        {
+          "value": "DBM"
+        },
+        {
+          "value": "Digiteck"
+        },
+        {
+          "value": "E-Clips"
+        },
+        {
+          "value": "EasyN"
+        },
+        {
+          "value": "ESecure"
+        },
+        {
+          "value": "Eseecloud"
+        },
+        {
+          "value": "Eufy"
+        },
+        {
+          "value": "Eversecu"
+        },
+        {
+          "value": "Evertech"
+        },
+        {
+          "value": "Ezviz"
+        },
+        {
+          "value": "Festnight"
+        },
+        {
+          "value": "Focus"
+        },
+        {
+          "value": "Fosvision"
+        },
+        {
+          "value": "Garrett"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Gent"
+        },
+        {
+          "value": "Geovision"
+        },
+        {
+          "value": "Getel"
+        },
+        {
+          "value": "Gf07"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "GrandVision"
+        },
+        {
+          "value": "GSA"
+        },
+        {
+          "value": "HDVD"
+        },
+        {
+          "value": "HDview"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "HiLook"
+        },
+        {
+          "value": "Hiseeu"
+        },
+        {
+          "value": "Hitosino"
+        },
+        {
+          "value": "Hivideo"
+        },
+        {
+          "value": "Honeywell"
+        },
+        {
+          "value": "Hybrid"
+        },
+        {
+          "value": "Ic See"
+        },
+        {
+          "value": "Ike"
+        },
+        {
+          "value": "Imou"
+        },
+        {
+          "value": "Ivtech"
+        },
+        {
+          "value": "Kerui"
+        },
+        {
+          "value": "Leoie"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Longse"
+        },
+        {
+          "value": "Nemtek"
+        },
+        {
+          "value": "Oscarvision"
+        },
+        {
+          "value": "Owsoo"
+        },
+        {
+          "value": "P T Z Solar Camera"
+        },
+        {
+          "value": "Paisan"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "Polyvision"
+        },
+        {
+          "value": "Powerology"
+        },
+        {
+          "value": "PTZ"
+        },
+        {
+          "value": "Reolink"
+        },
+        {
+          "value": "Ring"
+        },
+        {
+          "value": "Ronshin"
+        },
+        {
+          "value": "Safehome"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Seagate"
+        },
+        {
+          "value": "Skyvision"
+        },
+        {
+          "value": "Smart Security Club"
+        },
+        {
+          "value": "Smart View"
+        },
+        {
+          "value": "Smartlock"
+        },
+        {
+          "value": "Smartnet"
+        },
+        {
+          "value": "Sricam"
+        },
+        {
+          "value": "Starlife"
+        },
+        {
+          "value": "Techtronica"
+        },
+        {
+          "value": "Tiandy"
+        },
+        {
+          "value": "Top Vision"
+        },
+        {
+          "value": "TP-Link"
+        },
+        {
+          "value": "TSL"
+        },
+        {
+          "value": "Tuya"
+        },
+        {
+          "value": "Ubiquiti"
+        },
+        {
+          "value": "Ubox"
+        },
+        {
+          "value": "Ultra-Link"
+        },
+        {
+          "value": "Uniview"
+        },
+        {
+          "value": "V380Pro"
+        },
+        {
+          "value": "Vimtag"
+        },
+        {
+          "value": "Vr Cam"
+        },
+        {
+          "value": "Vstarcam"
+        },
+        {
+          "value": "Wansview"
+        },
+        {
+          "value": "Wise-Tech"
+        },
+        {
+          "value": "Wisenet"
+        },
+        {
+          "value": "Wyze"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Zhudele"
+        },
+        {
+          "value": "ZKTeco"
+        },
+        {
+          "value": "Zmodo"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Dahua"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "Powerology"
+        },
+        {
+          "value": "PTZ"
+        },
+        {
+          "value": "Xiaomi"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1551_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1551,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1551_type",
+      "possible_values": [
+        {
+          "value": "Access Control"
+        },
+        {
+          "value": "CCTV Camera"
+        },
+        {
+          "value": "CCTV Kit"
+        },
+        {
+          "value": "CCTV Tester"
+        },
+        {
+          "value": "Digital Video Recorder"
+        },
+        {
+          "value": "IP Camera"
+        },
+        {
+          "value": "Motion Detector"
+        },
+        {
+          "value": "Nanny Cams"
+        },
+        {
+          "value": "Smart Home Hubs"
+        },
+        {
+          "value": "Spy Clock"
+        },
+        {
+          "value": "Spy Glasses"
+        },
+        {
+          "value": "Spy Pen"
+        },
+        {
+          "value": "Under Search Mirrors"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Connectivity",
+      "parent_slug": null,
+      "slug": "filter_attr_1553_connectivity",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1553,
+      "attr_name": "Connectivity",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1553_connectivity",
+      "possible_values": [
+        {
+          "value": "Wired"
+        },
+        {
+          "value": "Wired / Wireless",
+          "title": "Wired/Wireless"
+        },
+        {
+          "value": "Wireless"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1552_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1552,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1552_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "For parts or not working",
+          "title": "For Parts or Not Working"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "CCTV Camera",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/cctv-camera.png",
+          "filters": {
+            "filter_attr_1551_type": "CCTV Camera"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "CCTV Kit",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/cctv-kit.png",
+          "filters": {
+            "filter_attr_1551_type": "CCTV Kit"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "IP Camera",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/ip-camera.png",
+          "filters": {
+            "filter_attr_1551_type": "IP Camera"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Digital Video Recorder",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/digital-video-recorder.png",
+          "filters": {
+            "filter_attr_1551_type": "Digital Video Recorder"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Motion Detector",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/motion-detector.png",
+          "filters": {
+            "filter_attr_1551_type": "Motion Detector"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Access Control",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/access.png",
+          "filters": {
+            "filter_attr_1551_type": "Access Control"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Nanny Cams",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/security-and-surveillance/nanny-cams.png",
+          "filters": {
+            "filter_attr_1551_type": "Nanny Cams"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1551_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1551_type"
+    }
+  ]
+}

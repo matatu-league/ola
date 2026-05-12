@@ -1,0 +1,384 @@
+{
+  "total": 54,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 15000000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1875000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000000,
+          "label": "Under 20 M",
+          "item_count": 3
+        },
+        {
+          "from": 20000000,
+          "to": 48000000,
+          "label": "20 - 48 M",
+          "item_count": 12
+        },
+        {
+          "from": 48000000,
+          "to": 300000000,
+          "label": "48 - 300 M",
+          "item_count": 21
+        },
+        {
+          "from": 300000000,
+          "to": 1400000000,
+          "label": "300 M - 1.4 B",
+          "item_count": 13
+        },
+        {
+          "from": 1400000000,
+          "to": null,
+          "label": "More than 1.4 B",
+          "item_count": 2
+        }
+      ]
+    },
+    {
+      "label": "Property Type",
+      "parent_slug": null,
+      "slug": "filter_attr_6365_property_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 6365,
+      "attr_name": "Property Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6365_property_type",
+      "possible_values": [
+        {
+          "value": "Apartment"
+        },
+        {
+          "value": "Townhouse"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Status of Construction",
+      "parent_slug": null,
+      "slug": "filter_attr_6364_status_of_construction",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6364,
+      "attr_name": "Status of Construction",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6364_status_of_construction",
+      "possible_values": [
+        {
+          "value": "Commissioning"
+        },
+        {
+          "value": "Completed"
+        },
+        {
+          "value": "Facade Finished"
+        },
+        {
+          "value": "Foundation"
+        },
+        {
+          "value": "Frame Finished"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Property Size",
+      "parent_slug": null,
+      "slug": "filter_attr_6372_property_size",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6372,
+      "attr_name": "Property Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6372_property_size",
+      "unit": "sqm",
+      "filter_data": {
+        "min": {
+          "fieldname": "filter_attr_6372_property_size__min",
+          "default": 8,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "filter_attr_6372_property_size__max",
+          "default": 9988,
+          "value": ""
+        }
+      },
+      "prefill_options": []
+    },
+    {
+      "label": "Housing Class",
+      "parent_slug": null,
+      "slug": "filter_attr_6366_housing_class",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6366,
+      "attr_name": "Housing Class",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6366_housing_class",
+      "possible_values": [
+        {
+          "value": "Business"
+        },
+        {
+          "value": "Comfort"
+        },
+        {
+          "value": "Economy"
+        },
+        {
+          "value": "Premium"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Security",
+      "parent_slug": null,
+      "slug": "filter_attr_6374_security",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6374,
+      "attr_name": "Security",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6374_security",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Number of Bedrooms",
+      "parent_slug": null,
+      "slug": "filter_attr_6375_number_of_bedrooms",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 6375,
+      "attr_name": "Number of Bedrooms",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6375_number_of_bedrooms",
+      "possible_values": [
+        {
+          "value": "1"
+        },
+        {
+          "value": "2"
+        },
+        {
+          "value": "3"
+        },
+        {
+          "value": "4"
+        },
+        {
+          "value": "5"
+        },
+        {
+          "value": "8"
+        },
+        {
+          "value": "9"
+        },
+        {
+          "value": "10"
+        },
+        {
+          "value": "15"
+        },
+        {
+          "value": "20"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Number of Bathrooms",
+      "parent_slug": null,
+      "slug": "filter_attr_6376_number_of_bathrooms",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6376,
+      "attr_name": "Number of Bathrooms",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6376_number_of_bathrooms",
+      "possible_values": [
+        {
+          "value": "1"
+        },
+        {
+          "value": "2"
+        },
+        {
+          "value": "3"
+        },
+        {
+          "value": "4"
+        },
+        {
+          "value": "5"
+        },
+        {
+          "value": "8"
+        },
+        {
+          "value": "9"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Facilities",
+      "parent_slug": null,
+      "slug": "filter_attr_6379_facilities",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6379,
+      "attr_name": "Facilities",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6379_facilities",
+      "possible_values": [
+        {
+          "value": "BBQ Zone"
+        },
+        {
+          "value": "Elevator"
+        },
+        {
+          "value": "Gym"
+        },
+        {
+          "value": "Office Space"
+        },
+        {
+          "value": "Swimming Pool"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": []
+    }
+  ]
+}

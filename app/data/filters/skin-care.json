@@ -1,0 +1,1189 @@
+{
+  "total": 4958,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 3500,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 297
+        },
+        {
+          "from": 20000,
+          "to": 40000,
+          "label": "20 - 40 K",
+          "item_count": 1189
+        },
+        {
+          "from": 40000,
+          "to": 80000,
+          "label": "40 - 80 K",
+          "item_count": 1983
+        },
+        {
+          "from": 80000,
+          "to": 160000,
+          "label": "80 - 160 K",
+          "item_count": 1239
+        },
+        {
+          "from": 160000,
+          "to": null,
+          "label": "More than 160 K",
+          "item_count": 247
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1665_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1665,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1665_brand",
+      "possible_values": [
+        {
+          "value": "101E"
+        },
+        {
+          "value": "111SKIN"
+        },
+        {
+          "value": "21st Century"
+        },
+        {
+          "value": "24K Gold"
+        },
+        {
+          "value": "3LAB"
+        },
+        {
+          "value": "3M"
+        },
+        {
+          "value": "3W Clinic"
+        },
+        {
+          "value": "4VOO"
+        },
+        {
+          "value": "A bonne"
+        },
+        {
+          "value": "A&G"
+        },
+        {
+          "value": "Abbott"
+        },
+        {
+          "value": "Abella Skin care"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "AcneFree"
+        },
+        {
+          "value": "Actifirm"
+        },
+        {
+          "value": "Active Plus"
+        },
+        {
+          "value": "Acure"
+        },
+        {
+          "value": "Acwell"
+        },
+        {
+          "value": "adidas"
+        },
+        {
+          "value": "Advanced Clinicals"
+        },
+        {
+          "value": "Aesthetico"
+        },
+        {
+          "value": "Ahava"
+        },
+        {
+          "value": "Aichun Beauty"
+        },
+        {
+          "value": "Aircast"
+        },
+        {
+          "value": "Alba Botanica"
+        },
+        {
+          "value": "Alpha Skin Care"
+        },
+        {
+          "value": "Ambi"
+        },
+        {
+          "value": "American Beauty"
+        },
+        {
+          "value": "American Dream Products"
+        },
+        {
+          "value": "American Health"
+        },
+        {
+          "value": "Amira"
+        },
+        {
+          "value": "Aneeza"
+        },
+        {
+          "value": "Anew"
+        },
+        {
+          "value": "Anua"
+        },
+        {
+          "value": "APLB"
+        },
+        {
+          "value": "Aquafor"
+        },
+        {
+          "value": "Aquaphor"
+        },
+        {
+          "value": "Arbonne"
+        },
+        {
+          "value": "Art Naturals"
+        },
+        {
+          "value": "Astral"
+        },
+        {
+          "value": "Aveeno"
+        },
+        {
+          "value": "Avon"
+        },
+        {
+          "value": "Axis-Y"
+        },
+        {
+          "value": "Aztec Secret"
+        },
+        {
+          "value": "Babyface"
+        },
+        {
+          "value": "Balance"
+        },
+        {
+          "value": "Beauty Bioscience"
+        },
+        {
+          "value": "Beauty Formulas"
+        },
+        {
+          "value": "Beauty Of Joseon"
+        },
+        {
+          "value": "Beckon"
+        },
+        {
+          "value": "Benzac"
+        },
+        {
+          "value": "Bio-Oil"
+        },
+        {
+          "value": "Bioderma"
+        },
+        {
+          "value": "Biore"
+        },
+        {
+          "value": "Biotherm"
+        },
+        {
+          "value": "Biotique"
+        },
+        {
+          "value": "Bismid"
+        },
+        {
+          "value": "Black Girl"
+        },
+        {
+          "value": "bliss"
+        },
+        {
+          "value": "Blossom"
+        },
+        {
+          "value": "Body Merry"
+        },
+        {
+          "value": "Bondi Sands"
+        },
+        {
+          "value": "Born Pretty"
+        },
+        {
+          "value": "Botanics"
+        },
+        {
+          "value": "Breylee"
+        },
+        {
+          "value": "Bronzetone"
+        },
+        {
+          "value": "Carmex"
+        },
+        {
+          "value": "Carotone"
+        },
+        {
+          "value": "CeraVe"
+        },
+        {
+          "value": "Cetaphil"
+        },
+        {
+          "value": "CHI"
+        },
+        {
+          "value": "Cien"
+        },
+        {
+          "value": "Clean"
+        },
+        {
+          "value": "Clean & Clear"
+        },
+        {
+          "value": "Clear Essence"
+        },
+        {
+          "value": "Clear Skin"
+        },
+        {
+          "value": "Clearasil"
+        },
+        {
+          "value": "Clinique"
+        },
+        {
+          "value": "Cosmetic Skin Solutions"
+        },
+        {
+          "value": "Cosrx"
+        },
+        {
+          "value": "Creightons"
+        },
+        {
+          "value": "Creme 21"
+        },
+        {
+          "value": "Dead Sea Materials"
+        },
+        {
+          "value": "Dead Sea Premier"
+        },
+        {
+          "value": "Demeter"
+        },
+        {
+          "value": "Derma"
+        },
+        {
+          "value": "Derma E"
+        },
+        {
+          "value": "Dh7"
+        },
+        {
+          "value": "Differin"
+        },
+        {
+          "value": "Disaar"
+        },
+        {
+          "value": "Doctor's Best"
+        },
+        {
+          "value": "Dove"
+        },
+        {
+          "value": "Dr Davey"
+        },
+        {
+          "value": "Dr Meinaier"
+        },
+        {
+          "value": "Dr Rasheal"
+        },
+        {
+          "value": "Dr Teal"
+        },
+        {
+          "value": "Dr Teals"
+        },
+        {
+          "value": "Dr. Miracle's"
+        },
+        {
+          "value": "Dr. Rashel"
+        },
+        {
+          "value": "Dr. Scholl's"
+        },
+        {
+          "value": "E45"
+        },
+        {
+          "value": "Edens Garden"
+        },
+        {
+          "value": "Eelhoe"
+        },
+        {
+          "value": "Egyptian Magic"
+        },
+        {
+          "value": "Elizabeth Arden"
+        },
+        {
+          "value": "Elizavecca"
+        },
+        {
+          "value": "Emami"
+        },
+        {
+          "value": "EOS"
+        },
+        {
+          "value": "Equate"
+        },
+        {
+          "value": "Eskinol"
+        },
+        {
+          "value": "Essence"
+        },
+        {
+          "value": "Essential Elements"
+        },
+        {
+          "value": "ESTELIN"
+        },
+        {
+          "value": "Etre"
+        },
+        {
+          "value": "Eucerin"
+        },
+        {
+          "value": "Ex Skincare"
+        },
+        {
+          "value": "Exuviance"
+        },
+        {
+          "value": "Ezanic"
+        },
+        {
+          "value": "Face Facts"
+        },
+        {
+          "value": "Fade Out"
+        },
+        {
+          "value": "Fair & White"
+        },
+        {
+          "value": "Fem"
+        },
+        {
+          "value": "Forever Living"
+        },
+        {
+          "value": "Freederm"
+        },
+        {
+          "value": "Freeman"
+        },
+        {
+          "value": "Fresh"
+        },
+        {
+          "value": "Garnier"
+        },
+        {
+          "value": "Gillette"
+        },
+        {
+          "value": "Glow Half Cast"
+        },
+        {
+          "value": "Gluta Frozen"
+        },
+        {
+          "value": "Gluta- C"
+        },
+        {
+          "value": "Glutathione"
+        },
+        {
+          "value": "Gold Bond"
+        },
+        {
+          "value": "Golden Face"
+        },
+        {
+          "value": "Goldenglow"
+        },
+        {
+          "value": "Good Molecules"
+        },
+        {
+          "value": "Goodal"
+        },
+        {
+          "value": "Guan Jing"
+        },
+        {
+          "value": "Half Cast"
+        },
+        {
+          "value": "Hatomugi"
+        },
+        {
+          "value": "Healthy Origins"
+        },
+        {
+          "value": "Heel"
+        },
+        {
+          "value": "Hemani"
+        },
+        {
+          "value": "Himalaya"
+        },
+        {
+          "value": "Honey Bee"
+        },
+        {
+          "value": "Image"
+        },
+        {
+          "value": "Irish Spring"
+        },
+        {
+          "value": "Isntree"
+        },
+        {
+          "value": "Jergens"
+        },
+        {
+          "value": "Johnson & Johnson"
+        },
+        {
+          "value": "KAL"
+        },
+        {
+          "value": "Kinoki"
+        },
+        {
+          "value": "Kiss Beauty"
+        },
+        {
+          "value": "Koji White"
+        },
+        {
+          "value": "Kojic White"
+        },
+        {
+          "value": "Kojie.San"
+        },
+        {
+          "value": "Kuu"
+        },
+        {
+          "value": "Kuu Spa"
+        },
+        {
+          "value": "L'Oreal"
+        },
+        {
+          "value": "La Roche-Posay"
+        },
+        {
+          "value": "Lacura"
+        },
+        {
+          "value": "Lanbena"
+        },
+        {
+          "value": "Laneige"
+        },
+        {
+          "value": "Laverly"
+        },
+        {
+          "value": "Lemon Clear"
+        },
+        {
+          "value": "Longrich"
+        },
+        {
+          "value": "LP"
+        },
+        {
+          "value": "Lus"
+        },
+        {
+          "value": "Ma"
+        },
+        {
+          "value": "Makari"
+        },
+        {
+          "value": "Mally"
+        },
+        {
+          "value": "Mary Kay"
+        },
+        {
+          "value": "Max Factor"
+        },
+        {
+          "value": "Mederma"
+        },
+        {
+          "value": "Medix"
+        },
+        {
+          "value": "Medix 5.5"
+        },
+        {
+          "value": "Menarini"
+        },
+        {
+          "value": "Milani"
+        },
+        {
+          "value": "Mooyam"
+        },
+        {
+          "value": "Moroccanoil"
+        },
+        {
+          "value": "Nadinola"
+        },
+        {
+          "value": "Nano"
+        },
+        {
+          "value": "Nature Essence"
+        },
+        {
+          "value": "Nature Made"
+        },
+        {
+          "value": "Nature Secrete"
+        },
+        {
+          "value": "Nature Well"
+        },
+        {
+          "value": "Naturium"
+        },
+        {
+          "value": "NCM"
+        },
+        {
+          "value": "Neutriherbs"
+        },
+        {
+          "value": "Neutrogena"
+        },
+        {
+          "value": "Nip + Fab"
+        },
+        {
+          "value": "Nivea"
+        },
+        {
+          "value": "Now"
+        },
+        {
+          "value": "Nutrimetics"
+        },
+        {
+          "value": "O'Carly"
+        },
+        {
+          "value": "O'Keeffe's"
+        },
+        {
+          "value": "Oilatum"
+        },
+        {
+          "value": "Olay"
+        },
+        {
+          "value": "Olivia"
+        },
+        {
+          "value": "OPI"
+        },
+        {
+          "value": "Organic Surge"
+        },
+        {
+          "value": "Oster"
+        },
+        {
+          "value": "Palmer's"
+        },
+        {
+          "value": "PanOxyl"
+        },
+        {
+          "value": "Parley Goldie"
+        },
+        {
+          "value": "Paula's Choice"
+        },
+        {
+          "value": "Pei Mei"
+        },
+        {
+          "value": "Perfectly Posh"
+        },
+        {
+          "value": "Perlay Goldie"
+        },
+        {
+          "value": "Piment Doux"
+        },
+        {
+          "value": "Pixi"
+        },
+        {
+          "value": "Piz Buin"
+        },
+        {
+          "value": "Pond's"
+        },
+        {
+          "value": "Porcelana"
+        },
+        {
+          "value": "Pretty Cowry"
+        },
+        {
+          "value": "Pure Carrot"
+        },
+        {
+          "value": "Pure Egyptian"
+        },
+        {
+          "value": "Qei+"
+        },
+        {
+          "value": "Queen Helene"
+        },
+        {
+          "value": "Rdl"
+        },
+        {
+          "value": "REN"
+        },
+        {
+          "value": "Revlon"
+        },
+        {
+          "value": "RoC"
+        },
+        {
+          "value": "Roushun"
+        },
+        {
+          "value": "Sadoer"
+        },
+        {
+          "value": "Sante"
+        },
+        {
+          "value": "SebaMed"
+        },
+        {
+          "value": "Secret"
+        },
+        {
+          "value": "Sen"
+        },
+        {
+          "value": "Shea Moisture"
+        },
+        {
+          "value": "Simple"
+        },
+        {
+          "value": "Skin Aqua"
+        },
+        {
+          "value": "Skin Doctor"
+        },
+        {
+          "value": "Skin Food"
+        },
+        {
+          "value": "SkinCeuticals"
+        },
+        {
+          "value": "Soap & Glory"
+        },
+        {
+          "value": "Some By Mi"
+        },
+        {
+          "value": "Sonic"
+        },
+        {
+          "value": "Spring Valley"
+        },
+        {
+          "value": "St. Ives"
+        },
+        {
+          "value": "Sumifun"
+        },
+        {
+          "value": "Sunny Isle"
+        },
+        {
+          "value": "Supre"
+        },
+        {
+          "value": "Supreme White"
+        },
+        {
+          "value": "Sure"
+        },
+        {
+          "value": "Swisse"
+        },
+        {
+          "value": "T-Zone"
+        },
+        {
+          "value": "Tea Tree"
+        },
+        {
+          "value": "TENS"
+        },
+        {
+          "value": "Thayers"
+        },
+        {
+          "value": "The Body Shop"
+        },
+        {
+          "value": "The Inkey List"
+        },
+        {
+          "value": "The Ordinary"
+        },
+        {
+          "value": "Tiam"
+        },
+        {
+          "value": "Tosowoong"
+        },
+        {
+          "value": "Touch"
+        },
+        {
+          "value": "Tree Hut"
+        },
+        {
+          "value": "Tree of Life"
+        },
+        {
+          "value": "Vanicream"
+        },
+        {
+          "value": "Vaseline"
+        },
+        {
+          "value": "Veet"
+        },
+        {
+          "value": "Veetgold"
+        },
+        {
+          "value": "Victoria's Secret"
+        },
+        {
+          "value": "Virgin"
+        },
+        {
+          "value": "Vitamin C Naturals"
+        },
+        {
+          "value": "White Express"
+        },
+        {
+          "value": "Winstown"
+        },
+        {
+          "value": "WR"
+        },
+        {
+          "value": "X-White"
+        },
+        {
+          "value": "Xtreme Brite"
+        },
+        {
+          "value": "Yc"
+        },
+        {
+          "value": "Yoko"
+        },
+        {
+          "value": "Young Living Essential Oils"
+        },
+        {
+          "value": "Zapzyt"
+        },
+        {
+          "value": "Zero Spot"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "CeraVe"
+        },
+        {
+          "value": "Fair & White"
+        },
+        {
+          "value": "Garnier"
+        },
+        {
+          "value": "Neutrogena"
+        },
+        {
+          "value": "Vaseline"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_581_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 581,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_581_type",
+      "possible_values": [
+        {
+          "value": "Advent Calendar"
+        },
+        {
+          "value": "Aftershaves"
+        },
+        {
+          "value": "BB & CC Creams"
+        },
+        {
+          "value": "Cosmetic Bags & Organizers",
+          "title": "Cosmetics Bags & Organizers"
+        },
+        {
+          "value": "Eye Creams & Treatments"
+        },
+        {
+          "value": "Eye Masks"
+        },
+        {
+          "value": "Face Creams & Gels"
+        },
+        {
+          "value": "Face Masks"
+        },
+        {
+          "value": "Face Scrubs & Exfoliants"
+        },
+        {
+          "value": "Face Serums & Oils"
+        },
+        {
+          "value": "Face Sun Care"
+        },
+        {
+          "value": "Face Wash & Cleansers"
+        },
+        {
+          "value": "Face Wipes"
+        },
+        {
+          "value": "Facial Peels"
+        },
+        {
+          "value": "Gift Sets"
+        },
+        {
+          "value": "Hydrogel Patches"
+        },
+        {
+          "value": "Lip Balms & Treatments"
+        },
+        {
+          "value": "Make-Up Remover & Micellar Cleansing Waters"
+        },
+        {
+          "value": "Night Creams"
+        },
+        {
+          "value": "Skin and Hair Ampoules"
+        },
+        {
+          "value": "Skin Care Tools",
+          "title": "Skincare Tools"
+        },
+        {
+          "value": "Toners"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Face Creams & Gels"
+        },
+        {
+          "value": "Face Masks"
+        },
+        {
+          "value": "Face Serums & Oils"
+        },
+        {
+          "value": "Face Wash & Cleansers"
+        },
+        {
+          "value": "Toners"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_580_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 580,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_580_gender",
+      "possible_values": [
+        {
+          "value": "Women's"
+        },
+        {
+          "value": "Men's"
+        },
+        {
+          "value": "Unisex"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Face Serums & Oils",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/face-serums-oils.png",
+          "filters": {
+            "filter_attr_581_type": "Face Serums & Oils"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Face Creams & Gels",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/creams.png",
+          "filters": {
+            "filter_attr_581_type": "Face Creams & Gels"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Face Wash & Cleansers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/face-cleansers-toners.png",
+          "filters": {
+            "filter_attr_581_type": "Face Wash & Cleansers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Toners",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/toners.png",
+          "filters": {
+            "filter_attr_581_type": "Toners"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Face Masks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/face-masks.png",
+          "filters": {
+            "filter_attr_581_type": "Face Masks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Face Scrubs & Exfoliants",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/face-scrubs-and-exfoliants.png",
+          "filters": {
+            "filter_attr_581_type": "Face Scrubs & Exfoliants"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Face Sun Care",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/skin-care/sun-care.png",
+          "filters": {
+            "filter_attr_581_type": "Face Sun Care"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_581_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_581_type"
+    }
+  ]
+}

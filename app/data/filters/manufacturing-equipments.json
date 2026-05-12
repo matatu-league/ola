@@ -1,0 +1,347 @@
+{
+  "total": 4213,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 30000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 900000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 100000,
+          "label": "Under 100 K",
+          "item_count": 252
+        },
+        {
+          "from": 100000,
+          "to": 380000,
+          "label": "100 - 380 K",
+          "item_count": 1011
+        },
+        {
+          "from": 380000,
+          "to": 1900000,
+          "label": "380 K - 1.9 M",
+          "item_count": 1685
+        },
+        {
+          "from": 1900000,
+          "to": 25000000,
+          "label": "1.9 - 25 M",
+          "item_count": 1053
+        },
+        {
+          "from": 25000000,
+          "to": null,
+          "label": "More than 25 M",
+          "item_count": 210
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1502_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1502,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1502_type",
+      "possible_values": [
+        {
+          "value": "Bag Closers"
+        },
+        {
+          "value": "Bottle Making Machines"
+        },
+        {
+          "value": "Bread Slicer Machines"
+        },
+        {
+          "value": "Capping Machines"
+        },
+        {
+          "value": "CNC Router Machines"
+        },
+        {
+          "value": "Coating Machines"
+        },
+        {
+          "value": "Coding Machines"
+        },
+        {
+          "value": "Commercial Air Pumps"
+        },
+        {
+          "value": "Concrete Batch Plants"
+        },
+        {
+          "value": "Concrete Block Machines"
+        },
+        {
+          "value": "Containers"
+        },
+        {
+          "value": "Dehydrators"
+        },
+        {
+          "value": "Extruder Machines"
+        },
+        {
+          "value": "Feather Remover Machines"
+        },
+        {
+          "value": "Feed Mills"
+        },
+        {
+          "value": "Food and Oil Processing Pumps"
+        },
+        {
+          "value": "Forming Machines"
+        },
+        {
+          "value": "Grease Guns"
+        },
+        {
+          "value": "Grinding Machines"
+        },
+        {
+          "value": "Grinding Mill"
+        },
+        {
+          "value": "Hoists"
+        },
+        {
+          "value": "Industrial Blowers"
+        },
+        {
+          "value": "Industrial Extractor Fans"
+        },
+        {
+          "value": "Industrial Sewing Machines"
+        },
+        {
+          "value": "Laminating Machines"
+        },
+        {
+          "value": "Motors"
+        },
+        {
+          "value": "Packaging Machines"
+        },
+        {
+          "value": "Palm Oil Mills"
+        },
+        {
+          "value": "Panel Saws"
+        },
+        {
+          "value": "Peeling Machines"
+        },
+        {
+          "value": "Punching Machines"
+        },
+        {
+          "value": "Pure Water Machines"
+        },
+        {
+          "value": "Sealing Machines"
+        },
+        {
+          "value": "Shrink Wrapping Machines",
+          "title": "Shrink-Wrapping Machines"
+        },
+        {
+          "value": "Soap Cutters"
+        },
+        {
+          "value": "Soap Making Machines"
+        },
+        {
+          "value": "Steam Washer Machines"
+        },
+        {
+          "value": "Water Treatment Machines"
+        },
+        {
+          "value": "Water Treatment Plant"
+        },
+        {
+          "value": "Workbenches"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Concrete Block Machines"
+        },
+        {
+          "value": "Grinding Machines"
+        },
+        {
+          "value": "Industrial Sewing Machines"
+        },
+        {
+          "value": "Sealing Machines"
+        },
+        {
+          "value": "Soap Making Machines"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1202_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1202,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1202_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Sealing Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipments/sealing-machines.png",
+          "filters": {
+            "filter_attr_1502_type": "Sealing Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Industrial Sewing Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipments/industrial-sewing-machines.png",
+          "filters": {
+            "filter_attr_1502_type": "Industrial Sewing Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Concrete Block Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipment/concrete-block-machines.png",
+          "filters": {
+            "filter_attr_1502_type": "Concrete Block Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Grinding Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipment/grinding-machines.png",
+          "filters": {
+            "filter_attr_1502_type": "Grinding Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Soap Making Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipments/soap-making-machines.png",
+          "filters": {
+            "filter_attr_1502_type": "Soap Making Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Motors",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipment/motors.png",
+          "filters": {
+            "filter_attr_1502_type": "Motors"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Laminating Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/manufacturing-equipments/laminating-machines.png",
+          "filters": {
+            "filter_attr_1502_type": "Laminating Machines"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1502_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1502_type"
+    }
+  ]
+}

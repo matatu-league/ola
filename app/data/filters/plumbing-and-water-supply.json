@@ -1,0 +1,1006 @@
+{
+  "total": 5792,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 850,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 77000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 22000,
+          "label": "Under 22 K",
+          "item_count": 347
+        },
+        {
+          "from": 22000,
+          "to": 160000,
+          "label": "22 - 160 K",
+          "item_count": 1390
+        },
+        {
+          "from": 160000,
+          "to": 750000,
+          "label": "160 - 750 K",
+          "item_count": 2316
+        },
+        {
+          "from": 750000,
+          "to": 2600000,
+          "label": "750 K - 2.6 M",
+          "item_count": 1448
+        },
+        {
+          "from": 2600000,
+          "to": null,
+          "label": "More than 2.6 M",
+          "item_count": 289
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1501_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1501,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1501_type",
+      "possible_values": [
+        {
+          "value": "Bathtubs"
+        },
+        {
+          "value": "Bidets"
+        },
+        {
+          "value": "Borehole Drilling Equipment"
+        },
+        {
+          "value": "Drainage"
+        },
+        {
+          "value": "Floor Drains"
+        },
+        {
+          "value": "Gaskets & Seal Tapes"
+        },
+        {
+          "value": "Gutters"
+        },
+        {
+          "value": "Hoses"
+        },
+        {
+          "value": "Jacuzzi"
+        },
+        {
+          "value": "Pan Connectors"
+        },
+        {
+          "value": "Pipe Fittings"
+        },
+        {
+          "value": "Plungers"
+        },
+        {
+          "value": "Repair Waterproof Tapes"
+        },
+        {
+          "value": "Shower Cubicles"
+        },
+        {
+          "value": "Shower Doors"
+        },
+        {
+          "value": "Shower Heads"
+        },
+        {
+          "value": "Shower Mixers"
+        },
+        {
+          "value": "Shower Parts"
+        },
+        {
+          "value": "Shower Trays"
+        },
+        {
+          "value": "Sinks"
+        },
+        {
+          "value": "Toilet Seats"
+        },
+        {
+          "value": "Towel Dryers"
+        },
+        {
+          "value": "Urinals"
+        },
+        {
+          "value": "Valves"
+        },
+        {
+          "value": "Wash Hand Basins"
+        },
+        {
+          "value": "Water Closet"
+        },
+        {
+          "value": "Water Filters"
+        },
+        {
+          "value": "Water Pipes"
+        },
+        {
+          "value": "Water Pumps"
+        },
+        {
+          "value": "Water Tank Stands"
+        },
+        {
+          "value": "Water Tanks"
+        },
+        {
+          "value": "Water Taps"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Toilet Seats"
+        },
+        {
+          "value": "Wash Hand Basins"
+        },
+        {
+          "value": "Water Pumps"
+        },
+        {
+          "value": "Water Tanks"
+        },
+        {
+          "value": "Water Taps"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3230_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 3230,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3230_brand",
+      "possible_values": [
+        {
+          "value": "Abb"
+        },
+        {
+          "value": "Abey"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Acme"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "Adelphi"
+        },
+        {
+          "value": "Adora"
+        },
+        {
+          "value": "AEG"
+        },
+        {
+          "value": "AGA"
+        },
+        {
+          "value": "Agro"
+        },
+        {
+          "value": "Aico"
+        },
+        {
+          "value": "Air King"
+        },
+        {
+          "value": "Air Vent"
+        },
+        {
+          "value": "AirCloud"
+        },
+        {
+          "value": "AKDY"
+        },
+        {
+          "value": "Alape"
+        },
+        {
+          "value": "Alfi"
+        },
+        {
+          "value": "AllBrass"
+        },
+        {
+          "value": "Allen + Roth"
+        },
+        {
+          "value": "Alliance"
+        },
+        {
+          "value": "Allied Brass"
+        },
+        {
+          "value": "Allied Precision"
+        },
+        {
+          "value": "ALLURE"
+        },
+        {
+          "value": "ALNO"
+        },
+        {
+          "value": "Aloha"
+        },
+        {
+          "value": "Alpha"
+        },
+        {
+          "value": "Alpine"
+        },
+        {
+          "value": "Altro"
+        },
+        {
+          "value": "Amana"
+        },
+        {
+          "value": "Ambience"
+        },
+        {
+          "value": "Amway"
+        },
+        {
+          "value": "Andersen"
+        },
+        {
+          "value": "Anne At Home"
+        },
+        {
+          "value": "Anuda"
+        },
+        {
+          "value": "Apex"
+        },
+        {
+          "value": "Apollo"
+        },
+        {
+          "value": "Aqua Glass"
+        },
+        {
+          "value": "AquaSource"
+        },
+        {
+          "value": "aquaSu"
+        },
+        {
+          "value": "Aquatic"
+        },
+        {
+          "value": "Architeckt"
+        },
+        {
+          "value": "Arden"
+        },
+        {
+          "value": "Argent"
+        },
+        {
+          "value": "Ariel"
+        },
+        {
+          "value": "Ariens"
+        },
+        {
+          "value": "Ariston"
+        },
+        {
+          "value": "Arrow"
+        },
+        {
+          "value": "Artisan"
+        },
+        {
+          "value": "Arus"
+        },
+        {
+          "value": "Astral"
+        },
+        {
+          "value": "Astral Pool"
+        },
+        {
+          "value": "Astro"
+        },
+        {
+          "value": "Avida"
+        },
+        {
+          "value": "B&K"
+        },
+        {
+          "value": "B-P"
+        },
+        {
+          "value": "Bali"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "Bed Bath & Beyond"
+        },
+        {
+          "value": "Bellissimo"
+        },
+        {
+          "value": "Bio Bidet"
+        },
+        {
+          "value": "blomus"
+        },
+        {
+          "value": "Bluegrass"
+        },
+        {
+          "value": "Blum"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "BOOST"
+        },
+        {
+          "value": "Bosch"
+        },
+        {
+          "value": "Bossini"
+        },
+        {
+          "value": "Brabantia"
+        },
+        {
+          "value": "Brentwood"
+        },
+        {
+          "value": "Briggs & Stratton"
+        },
+        {
+          "value": "Brimix"
+        },
+        {
+          "value": "Bt"
+        },
+        {
+          "value": "Buck"
+        },
+        {
+          "value": "Cahaba"
+        },
+        {
+          "value": "CAMCO"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "Carlton"
+        },
+        {
+          "value": "Case"
+        },
+        {
+          "value": "Coastal Living"
+        },
+        {
+          "value": "Cooper"
+        },
+        {
+          "value": "Cram"
+        },
+        {
+          "value": "Davey"
+        },
+        {
+          "value": "DaVinci"
+        },
+        {
+          "value": "Dayton"
+        },
+        {
+          "value": "Deca"
+        },
+        {
+          "value": "Delta"
+        },
+        {
+          "value": "Delta Kitchen"
+        },
+        {
+          "value": "Di Vapor"
+        },
+        {
+          "value": "Dualflow"
+        },
+        {
+          "value": "Duravit"
+        },
+        {
+          "value": "Eden"
+        },
+        {
+          "value": "Elite Products"
+        },
+        {
+          "value": "England Kitchen Sink"
+        },
+        {
+          "value": "Era"
+        },
+        {
+          "value": "Essentials"
+        },
+        {
+          "value": "Euro"
+        },
+        {
+          "value": "Excellent"
+        },
+        {
+          "value": "Fine Fixtures"
+        },
+        {
+          "value": "Flash"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "Four Seasons"
+        },
+        {
+          "value": "Francis Pegler"
+        },
+        {
+          "value": "Fresca"
+        },
+        {
+          "value": "Frost King"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Genius"
+        },
+        {
+          "value": "Golden Diamond"
+        },
+        {
+          "value": "Grand Taps"
+        },
+        {
+          "value": "Greenleaf"
+        },
+        {
+          "value": "Grundfos"
+        },
+        {
+          "value": "HEAD"
+        },
+        {
+          "value": "HealthSmart"
+        },
+        {
+          "value": "Homax"
+        },
+        {
+          "value": "Homelody"
+        },
+        {
+          "value": "Honda"
+        },
+        {
+          "value": "Huma"
+        },
+        {
+          "value": "Husky"
+        },
+        {
+          "value": "India Ink"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Italbrass"
+        },
+        {
+          "value": "JET"
+        },
+        {
+          "value": "Kama"
+        },
+        {
+          "value": "Kenwood"
+        },
+        {
+          "value": "KES"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Kirkland"
+        },
+        {
+          "value": "kjzxi"
+        },
+        {
+          "value": "KNIPEX"
+        },
+        {
+          "value": "KOSHIN"
+        },
+        {
+          "value": "Leo"
+        },
+        {
+          "value": "Little Giant"
+        },
+        {
+          "value": "Lowara"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "Mainstays"
+        },
+        {
+          "value": "Marvel"
+        },
+        {
+          "value": "Maxmech"
+        },
+        {
+          "value": "Mesa"
+        },
+        {
+          "value": "Metaltex"
+        },
+        {
+          "value": "MIRA"
+        },
+        {
+          "value": "Mmaat"
+        },
+        {
+          "value": "Mulberry"
+        },
+        {
+          "value": "Natura"
+        },
+        {
+          "value": "Newline"
+        },
+        {
+          "value": "OIA"
+        },
+        {
+          "value": "P&S"
+        },
+        {
+          "value": "Pedrollo"
+        },
+        {
+          "value": "Pegler"
+        },
+        {
+          "value": "Platinum"
+        },
+        {
+          "value": "Plumb"
+        },
+        {
+          "value": "Polytank"
+        },
+        {
+          "value": "PowerShot"
+        },
+        {
+          "value": "Premier"
+        },
+        {
+          "value": "Prime"
+        },
+        {
+          "value": "PUR"
+        },
+        {
+          "value": "Pvc"
+        },
+        {
+          "value": "Quiksilver"
+        },
+        {
+          "value": "Regal"
+        },
+        {
+          "value": "Roca"
+        },
+        {
+          "value": "Rock Solar"
+        },
+        {
+          "value": "Royalty"
+        },
+        {
+          "value": "SAC"
+        },
+        {
+          "value": "Salter"
+        },
+        {
+          "value": "Samking"
+        },
+        {
+          "value": "Sentry"
+        },
+        {
+          "value": "Shark"
+        },
+        {
+          "value": "Shaw"
+        },
+        {
+          "value": "SK"
+        },
+        {
+          "value": "Sky"
+        },
+        {
+          "value": "Sloan"
+        },
+        {
+          "value": "Solar"
+        },
+        {
+          "value": "SP"
+        },
+        {
+          "value": "Square D"
+        },
+        {
+          "value": "STARBATH"
+        },
+        {
+          "value": "Steamist"
+        },
+        {
+          "value": "SupaPlumb"
+        },
+        {
+          "value": "Swan"
+        },
+        {
+          "value": "SWING"
+        },
+        {
+          "value": "Titan"
+        },
+        {
+          "value": "Top Tank"
+        },
+        {
+          "value": "Total"
+        },
+        {
+          "value": "TOTO"
+        },
+        {
+          "value": "Twyford"
+        },
+        {
+          "value": "Twyford England"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "USK"
+        },
+        {
+          "value": "Utilitech"
+        },
+        {
+          "value": "Venus"
+        },
+        {
+          "value": "Verona"
+        },
+        {
+          "value": "Very"
+        },
+        {
+          "value": "Victoria"
+        },
+        {
+          "value": "Vitra"
+        },
+        {
+          "value": "Vstar"
+        },
+        {
+          "value": "Waterworks"
+        },
+        {
+          "value": "Weber"
+        },
+        {
+          "value": "Yamazaki"
+        },
+        {
+          "value": "Zodiac"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Bt"
+        },
+        {
+          "value": "HEAD"
+        },
+        {
+          "value": "KOSHIN"
+        },
+        {
+          "value": "Very"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1657_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1658,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1657_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5432_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5432,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5432_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Water Pumps",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/water-pumps.png",
+          "filters": {
+            "filter_attr_1501_type": "Water Pumps"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Toilet Seats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/toilet-seats.png",
+          "filters": {
+            "filter_attr_1501_type": "Toilet Seats"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Water Tanks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/water-tanks.png",
+          "filters": {
+            "filter_attr_1501_type": "Water Tanks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Water Taps",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/water-taps.png",
+          "filters": {
+            "filter_attr_1501_type": "Water Taps"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Wash Hand Basins",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/wash-hand.png",
+          "filters": {
+            "filter_attr_1501_type": "Wash Hand Basins"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hoses",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/hoses.png",
+          "filters": {
+            "filter_attr_1501_type": "Hoses"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shower Mixers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/plumbing-and-water-supply/shower-mixers.png",
+          "filters": {
+            "filter_attr_1501_type": "Shower Mixers"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1501_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1501_type"
+    }
+  ]
+}

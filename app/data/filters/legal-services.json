@@ -1,0 +1,155 @@
+{
+  "total": 112,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 4000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 23000,
+          "label": "Under 23 K",
+          "item_count": 6
+        },
+        {
+          "from": 23000,
+          "to": 120000,
+          "label": "23 - 120 K",
+          "item_count": 26
+        },
+        {
+          "from": 120000,
+          "to": 450000,
+          "label": "120 - 450 K",
+          "item_count": 44
+        },
+        {
+          "from": 450000,
+          "to": 1200000,
+          "label": "450 K - 1.2 M",
+          "item_count": 28
+        },
+        {
+          "from": 1200000,
+          "to": null,
+          "label": "More than 1.2 M",
+          "item_count": 5
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_3286_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 3286,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3286_type",
+      "possible_values": [
+        {
+          "value": "Business Name Registration"
+        },
+        {
+          "value": "Consultation for Legal Information and Advice"
+        },
+        {
+          "value": "Consultation to Review Documents"
+        },
+        {
+          "value": "Contracts Drafting"
+        },
+        {
+          "value": "Land Search or Property Search at Land Registry"
+        },
+        {
+          "value": "Legal and Tax Consulting"
+        },
+        {
+          "value": "Legal Services For Non-Residents"
+        },
+        {
+          "value": "Preparation of Documents"
+        },
+        {
+          "value": "Preparation of Statements of Claim, Petitions, Complaints, Appeals, Inquiries and Demands"
+        },
+        {
+          "value": "Product Registration"
+        },
+        {
+          "value": "Registration of Business"
+        },
+        {
+          "value": "Registration Services"
+        },
+        {
+          "value": "Vehicle License Registration"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": []
+}

@@ -1,0 +1,1719 @@
+{
+  "total": 27454,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 240,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 20000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 60000,
+          "label": "Under 60 K",
+          "item_count": 1647
+        },
+        {
+          "from": 60000,
+          "to": 120000,
+          "label": "60 - 120 K",
+          "item_count": 6588
+        },
+        {
+          "from": 120000,
+          "to": 410000,
+          "label": "120 - 410 K",
+          "item_count": 10981
+        },
+        {
+          "from": 410000,
+          "to": 2000000,
+          "label": "410 K - 2 M",
+          "item_count": 6863
+        },
+        {
+          "from": 2000000,
+          "to": null,
+          "label": "More than 2 M",
+          "item_count": 1372
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_256_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 256,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_256_type",
+      "possible_values": [
+        {
+          "value": "Air Conditioners"
+        },
+        {
+          "value": "Air Coolers"
+        },
+        {
+          "value": "Air Purifiers"
+        },
+        {
+          "value": "Alarm Systems"
+        },
+        {
+          "value": "Bathroom Scales"
+        },
+        {
+          "value": "Dehumidifiers"
+        },
+        {
+          "value": "Door Alarms"
+        },
+        {
+          "value": "Door Phones"
+        },
+        {
+          "value": "Doorbells"
+        },
+        {
+          "value": "Fans"
+        },
+        {
+          "value": "Fire Alarms System"
+        },
+        {
+          "value": "Garment Steamer"
+        },
+        {
+          "value": "Hand Dryers"
+        },
+        {
+          "value": "High Pressure Washers",
+          "title": "High-Pressure Washers"
+        },
+        {
+          "value": "Humidifiers"
+        },
+        {
+          "value": "Irons"
+        },
+        {
+          "value": "Landline Phones"
+        },
+        {
+          "value": "Portable Clothes Dryers"
+        },
+        {
+          "value": "Room Heaters"
+        },
+        {
+          "value": "Sewing Machines"
+        },
+        {
+          "value": "Smoke Detectors"
+        },
+        {
+          "value": "Towel Warmers"
+        },
+        {
+          "value": "Vacuum Cleaners"
+        },
+        {
+          "value": "Voltage Regulators"
+        },
+        {
+          "value": "Voltage Stabilizers"
+        },
+        {
+          "value": "Washing Machines"
+        },
+        {
+          "value": "Water Heaters"
+        },
+        {
+          "value": "Water Tanks"
+        },
+        {
+          "value": "Weaving Machines"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Fans"
+        },
+        {
+          "value": "Irons"
+        },
+        {
+          "value": "Sewing Machines"
+        },
+        {
+          "value": "Vacuum Cleaners"
+        },
+        {
+          "value": "Washing Machines"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_255_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 255,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_255_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3083_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 3083,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3083_brand",
+      "possible_values": [
+        {
+          "value": "2gig"
+        },
+        {
+          "value": "3M"
+        },
+        {
+          "value": "3Q"
+        },
+        {
+          "value": "4walls"
+        },
+        {
+          "value": "A&Bt"
+        },
+        {
+          "value": "A&E Dunamis"
+        },
+        {
+          "value": "Accubrush"
+        },
+        {
+          "value": "Accumulair"
+        },
+        {
+          "value": "Accuride"
+        },
+        {
+          "value": "Accuspray"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Acme"
+        },
+        {
+          "value": "AcuRite"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "ADEMCO"
+        },
+        {
+          "value": "ADT"
+        },
+        {
+          "value": "Advantage"
+        },
+        {
+          "value": "AEG"
+        },
+        {
+          "value": "AEON"
+        },
+        {
+          "value": "Aero-Flo"
+        },
+        {
+          "value": "Aerus"
+        },
+        {
+          "value": "African Master"
+        },
+        {
+          "value": "Afrione"
+        },
+        {
+          "value": "AG"
+        },
+        {
+          "value": "Agri-Fab"
+        },
+        {
+          "value": "AIMS Power"
+        },
+        {
+          "value": "Air King"
+        },
+        {
+          "value": "Air Vent"
+        },
+        {
+          "value": "Air Wick"
+        },
+        {
+          "value": "Akai"
+        },
+        {
+          "value": "Akira"
+        },
+        {
+          "value": "Akt"
+        },
+        {
+          "value": "Akuta"
+        },
+        {
+          "value": "Aladdin"
+        },
+        {
+          "value": "Alaska"
+        },
+        {
+          "value": "ALEKO"
+        },
+        {
+          "value": "Alera"
+        },
+        {
+          "value": "Alfa"
+        },
+        {
+          "value": "Alfi"
+        },
+        {
+          "value": "All Star"
+        },
+        {
+          "value": "Allen + Roth"
+        },
+        {
+          "value": "Allied Precision"
+        },
+        {
+          "value": "Allis-Chalmers"
+        },
+        {
+          "value": "Allocacoc"
+        },
+        {
+          "value": "ALNO"
+        },
+        {
+          "value": "Alpine"
+        },
+        {
+          "value": "Altronix"
+        },
+        {
+          "value": "Amarr"
+        },
+        {
+          "value": "Amazon"
+        },
+        {
+          "value": "Amcor"
+        },
+        {
+          "value": "American Olean"
+        },
+        {
+          "value": "American Standard"
+        },
+        {
+          "value": "Amerock"
+        },
+        {
+          "value": "AmerTac"
+        },
+        {
+          "value": "AMETEK"
+        },
+        {
+          "value": "AMF"
+        },
+        {
+          "value": "AMP"
+        },
+        {
+          "value": "Amro Brother"
+        },
+        {
+          "value": "AMSEC"
+        },
+        {
+          "value": "Amtech"
+        },
+        {
+          "value": "Andrakk"
+        },
+        {
+          "value": "Anker"
+        },
+        {
+          "value": "Anvil"
+        },
+        {
+          "value": "Anysew"
+        },
+        {
+          "value": "Apc"
+        },
+        {
+          "value": "Apex"
+        },
+        {
+          "value": "Apollo"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Aquasana"
+        },
+        {
+          "value": "Arctic"
+        },
+        {
+          "value": "Arctic Air Ultra"
+        },
+        {
+          "value": "Arctic King"
+        },
+        {
+          "value": "Argo"
+        },
+        {
+          "value": "Ariston"
+        },
+        {
+          "value": "Arius"
+        },
+        {
+          "value": "ARK"
+        },
+        {
+          "value": "Arm & Hammer"
+        },
+        {
+          "value": "Arnold"
+        },
+        {
+          "value": "Ashley Norton"
+        },
+        {
+          "value": "Atlantic"
+        },
+        {
+          "value": "Aurora"
+        },
+        {
+          "value": "Austin Air"
+        },
+        {
+          "value": "Avanti"
+        },
+        {
+          "value": "Avon"
+        },
+        {
+          "value": "AYP"
+        },
+        {
+          "value": "B-P"
+        },
+        {
+          "value": "Badger"
+        },
+        {
+          "value": "Bai"
+        },
+        {
+          "value": "Bajaj"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "Barska"
+        },
+        {
+          "value": "Baseus"
+        },
+        {
+          "value": "BAVIN"
+        },
+        {
+          "value": "Baxi"
+        },
+        {
+          "value": "Bb"
+        },
+        {
+          "value": "BeA"
+        },
+        {
+          "value": "Behr"
+        },
+        {
+          "value": "Beko"
+        },
+        {
+          "value": "Bell & Gossett"
+        },
+        {
+          "value": "Belle Foret"
+        },
+        {
+          "value": "Belwith"
+        },
+        {
+          "value": "Best Buy"
+        },
+        {
+          "value": "BestAir Pro"
+        },
+        {
+          "value": "Bestek"
+        },
+        {
+          "value": "Beyond"
+        },
+        {
+          "value": "Bianco Power"
+        },
+        {
+          "value": "Bird"
+        },
+        {
+          "value": "BISSELL"
+        },
+        {
+          "value": "Black & Decker"
+        },
+        {
+          "value": "BlackBerry"
+        },
+        {
+          "value": "Blanco"
+        },
+        {
+          "value": "Blyss"
+        },
+        {
+          "value": "Bomann"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "Bosch"
+        },
+        {
+          "value": "Braeburn"
+        },
+        {
+          "value": "Braun"
+        },
+        {
+          "value": "Bravo"
+        },
+        {
+          "value": "Breville"
+        },
+        {
+          "value": "Brilliant"
+        },
+        {
+          "value": "Brimix"
+        },
+        {
+          "value": "BRK"
+        },
+        {
+          "value": "Broan"
+        },
+        {
+          "value": "Brother"
+        },
+        {
+          "value": "Brunschwig & Fils"
+        },
+        {
+          "value": "Bryant"
+        },
+        {
+          "value": "BT"
+        },
+        {
+          "value": "Buchanan"
+        },
+        {
+          "value": "Buck"
+        },
+        {
+          "value": "BUILT"
+        },
+        {
+          "value": "BURCAM"
+        },
+        {
+          "value": "Bush"
+        },
+        {
+          "value": "Butterfly"
+        },
+        {
+          "value": "C Power"
+        },
+        {
+          "value": "C2G"
+        },
+        {
+          "value": "Cal Hawk"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "Cannon"
+        },
+        {
+          "value": "Caroma"
+        },
+        {
+          "value": "Carson"
+        },
+        {
+          "value": "CBK"
+        },
+        {
+          "value": "Central Boiler"
+        },
+        {
+          "value": "Centurion"
+        },
+        {
+          "value": "CFG"
+        },
+        {
+          "value": "Channellock"
+        },
+        {
+          "value": "ChemWorld"
+        },
+        {
+          "value": "Chigo"
+        },
+        {
+          "value": "Cic Power Plus"
+        },
+        {
+          "value": "Citel"
+        },
+        {
+          "value": "Citizen"
+        },
+        {
+          "value": "Classic Home"
+        },
+        {
+          "value": "CLC"
+        },
+        {
+          "value": "Clicker"
+        },
+        {
+          "value": "Cloud"
+        },
+        {
+          "value": "CMS"
+        },
+        {
+          "value": "Cobra"
+        },
+        {
+          "value": "Conair"
+        },
+        {
+          "value": "Cool Zone"
+        },
+        {
+          "value": "Copeland"
+        },
+        {
+          "value": "Corona"
+        },
+        {
+          "value": "Country Cottage"
+        },
+        {
+          "value": "CRC"
+        },
+        {
+          "value": "Croscill"
+        },
+        {
+          "value": "Crouse-Hinds"
+        },
+        {
+          "value": "Crown"
+        },
+        {
+          "value": "CRST"
+        },
+        {
+          "value": "Crystal"
+        },
+        {
+          "value": "Cway"
+        },
+        {
+          "value": "CyberPower"
+        },
+        {
+          "value": "Cypress"
+        },
+        {
+          "value": "Daikin"
+        },
+        {
+          "value": "DBL"
+        },
+        {
+          "value": "Ddk 995+"
+        },
+        {
+          "value": "Decakila"
+        },
+        {
+          "value": "Deco"
+        },
+        {
+          "value": "DECO BREEZE"
+        },
+        {
+          "value": "Decora"
+        },
+        {
+          "value": "DeVilbiss"
+        },
+        {
+          "value": "Digi-Code"
+        },
+        {
+          "value": "Dimplex"
+        },
+        {
+          "value": "Djack"
+        },
+        {
+          "value": "DMP"
+        },
+        {
+          "value": "Dolphin"
+        },
+        {
+          "value": "Dora"
+        },
+        {
+          "value": "Dp"
+        },
+        {
+          "value": "Dp.Led Light"
+        },
+        {
+          "value": "DSC"
+        },
+        {
+          "value": "Dsp"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "DuroMax"
+        },
+        {
+          "value": "Eagle"
+        },
+        {
+          "value": "Easy Home"
+        },
+        {
+          "value": "Easy Power"
+        },
+        {
+          "value": "EasyHeat"
+        },
+        {
+          "value": "eco+"
+        },
+        {
+          "value": "Eco-Smart"
+        },
+        {
+          "value": "EDK"
+        },
+        {
+          "value": "Eemax"
+        },
+        {
+          "value": "ELC"
+        },
+        {
+          "value": "Electra"
+        },
+        {
+          "value": "Elizabethan Classics"
+        },
+        {
+          "value": "EMX"
+        },
+        {
+          "value": "Ete"
+        },
+        {
+          "value": "Eva"
+        },
+        {
+          "value": "Eva-Dry"
+        },
+        {
+          "value": "Excalibur"
+        },
+        {
+          "value": "Fantech"
+        },
+        {
+          "value": "Fire Sense"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "G&R"
+        },
+        {
+          "value": "G-Floor"
+        },
+        {
+          "value": "GB"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Geepee"
+        },
+        {
+          "value": "Geepee Tank"
+        },
+        {
+          "value": "General"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Genesis"
+        },
+        {
+          "value": "GermGuardian"
+        },
+        {
+          "value": "Gey_Kb"
+        },
+        {
+          "value": "Glentronics"
+        },
+        {
+          "value": "Global"
+        },
+        {
+          "value": "GMC"
+        },
+        {
+          "value": "Golden Diamond"
+        },
+        {
+          "value": "Gp"
+        },
+        {
+          "value": "Graff"
+        },
+        {
+          "value": "Grandstream"
+        },
+        {
+          "value": "Gree"
+        },
+        {
+          "value": "Green Lion"
+        },
+        {
+          "value": "Grothe"
+        },
+        {
+          "value": "GSR"
+        },
+        {
+          "value": "GTO"
+        },
+        {
+          "value": "HAI"
+        },
+        {
+          "value": "Haier"
+        },
+        {
+          "value": "Hallmark"
+        },
+        {
+          "value": "Hampton"
+        },
+        {
+          "value": "Happy Home"
+        },
+        {
+          "value": "HealthSmart"
+        },
+        {
+          "value": "Henry"
+        },
+        {
+          "value": "Hetian"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "Hisense"
+        },
+        {
+          "value": "Hitachi"
+        },
+        {
+          "value": "Hoffner"
+        },
+        {
+          "value": "Holmes"
+        },
+        {
+          "value": "Home Collection"
+        },
+        {
+          "value": "Home Essentials"
+        },
+        {
+          "value": "Homeline"
+        },
+        {
+          "value": "HomeSafe"
+        },
+        {
+          "value": "HON"
+        },
+        {
+          "value": "Honda"
+        },
+        {
+          "value": "Hoover"
+        },
+        {
+          "value": "Hormann"
+        },
+        {
+          "value": "Hotpoint"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Hudong"
+        },
+        {
+          "value": "IGNIS"
+        },
+        {
+          "value": "Ignis"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Intex"
+        },
+        {
+          "value": "Ionic Pro"
+        },
+        {
+          "value": "Ipower"
+        },
+        {
+          "value": "IQAir"
+        },
+        {
+          "value": "iRobot"
+        },
+        {
+          "value": "ITE"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "Jamison"
+        },
+        {
+          "value": "Janome"
+        },
+        {
+          "value": "JASCO"
+        },
+        {
+          "value": "Jason"
+        },
+        {
+          "value": "Jbl"
+        },
+        {
+          "value": "JET"
+        },
+        {
+          "value": "Jr"
+        },
+        {
+          "value": "Juki"
+        },
+        {
+          "value": "KALLISTA"
+        },
+        {
+          "value": "Karcher"
+        },
+        {
+          "value": "Kenwood"
+        },
+        {
+          "value": "KERUI"
+        },
+        {
+          "value": "Kinelco"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Kingy"
+        },
+        {
+          "value": "Kitchen"
+        },
+        {
+          "value": "Kobalt"
+        },
+        {
+          "value": "Krylon"
+        },
+        {
+          "value": "LDR"
+        },
+        {
+          "value": "Lexical"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "Little Giant"
+        },
+        {
+          "value": "Logik"
+        },
+        {
+          "value": "Lucky"
+        },
+        {
+          "value": "Lutian"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "M.Maat"
+        },
+        {
+          "value": "MAC"
+        },
+        {
+          "value": "Mainstays"
+        },
+        {
+          "value": "Makita"
+        },
+        {
+          "value": "Marinco"
+        },
+        {
+          "value": "Masterplug"
+        },
+        {
+          "value": "Maxi"
+        },
+        {
+          "value": "Maxim"
+        },
+        {
+          "value": "Maxwell"
+        },
+        {
+          "value": "Medea"
+        },
+        {
+          "value": "Mercury"
+        },
+        {
+          "value": "Mewe"
+        },
+        {
+          "value": "Midea"
+        },
+        {
+          "value": "Mika"
+        },
+        {
+          "value": "MINI"
+        },
+        {
+          "value": "Modine"
+        },
+        {
+          "value": "Morphy Richards"
+        },
+        {
+          "value": "Motorola"
+        },
+        {
+          "value": "MTD"
+        },
+        {
+          "value": "Myfan"
+        },
+        {
+          "value": "Neon"
+        },
+        {
+          "value": "NGK"
+        },
+        {
+          "value": "Norwall"
+        },
+        {
+          "value": "NSA"
+        },
+        {
+          "value": "Nunix"
+        },
+        {
+          "value": "O2 COOL"
+        },
+        {
+          "value": "Ok"
+        },
+        {
+          "value": "Optex"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Orbit"
+        },
+        {
+          "value": "Ox"
+        },
+        {
+          "value": "P&S"
+        },
+        {
+          "value": "Panamax"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Pella"
+        },
+        {
+          "value": "Perfect Home"
+        },
+        {
+          "value": "Pfaff"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "PIX"
+        },
+        {
+          "value": "Pollenex"
+        },
+        {
+          "value": "Porodo"
+        },
+        {
+          "value": "Power Deluxe"
+        },
+        {
+          "value": "Power Pro"
+        },
+        {
+          "value": "Powerology"
+        },
+        {
+          "value": "Precision"
+        },
+        {
+          "value": "Premier"
+        },
+        {
+          "value": "PRO"
+        },
+        {
+          "value": "Pump"
+        },
+        {
+          "value": "PUR"
+        },
+        {
+          "value": "Quali-Tech"
+        },
+        {
+          "value": "QuietCool Systems"
+        },
+        {
+          "value": "Raf"
+        },
+        {
+          "value": "Rainbow"
+        },
+        {
+          "value": "Rayovac"
+        },
+        {
+          "value": "Rcool"
+        },
+        {
+          "value": "Red East"
+        },
+        {
+          "value": "Ring"
+        },
+        {
+          "value": "RoadPro"
+        },
+        {
+          "value": "Rockwell"
+        },
+        {
+          "value": "ROHL"
+        },
+        {
+          "value": "Room Essentials"
+        },
+        {
+          "value": "Royal"
+        },
+        {
+          "value": "Royal Sovereign"
+        },
+        {
+          "value": "RST"
+        },
+        {
+          "value": "Russell Hobbs"
+        },
+        {
+          "value": "Saachi"
+        },
+        {
+          "value": "SAC"
+        },
+        {
+          "value": "Saisho"
+        },
+        {
+          "value": "Salpha"
+        },
+        {
+          "value": "Salsbury Industries"
+        },
+        {
+          "value": "Salter"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Sanford"
+        },
+        {
+          "value": "SANYO"
+        },
+        {
+          "value": "Scag"
+        },
+        {
+          "value": "Scanfrost"
+        },
+        {
+          "value": "Senwei"
+        },
+        {
+          "value": "Shark"
+        },
+        {
+          "value": "Sharp"
+        },
+        {
+          "value": "Shuangbao"
+        },
+        {
+          "value": "Siemens"
+        },
+        {
+          "value": "Silverline"
+        },
+        {
+          "value": "Simer"
+        },
+        {
+          "value": "Sincere"
+        },
+        {
+          "value": "Singer"
+        },
+        {
+          "value": "SK"
+        },
+        {
+          "value": "SkyTech"
+        },
+        {
+          "value": "Skyworth"
+        },
+        {
+          "value": "Sliver Crest"
+        },
+        {
+          "value": "SMA"
+        },
+        {
+          "value": "Smartc"
+        },
+        {
+          "value": "Smarten"
+        },
+        {
+          "value": "Smarthome"
+        },
+        {
+          "value": "Sokany"
+        },
+        {
+          "value": "Solar"
+        },
+        {
+          "value": "Solitec"
+        },
+        {
+          "value": "Solo"
+        },
+        {
+          "value": "Solstar"
+        },
+        {
+          "value": "Somfy"
+        },
+        {
+          "value": "Sonifer"
+        },
+        {
+          "value": "Sonik"
+        },
+        {
+          "value": "Sonoma"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "SPJ"
+        },
+        {
+          "value": "SQ"
+        },
+        {
+          "value": "Square D"
+        },
+        {
+          "value": "Squire"
+        },
+        {
+          "value": "Steamist"
+        },
+        {
+          "value": "Sumo Premium"
+        },
+        {
+          "value": "Sunbeam"
+        },
+        {
+          "value": "Suncourt"
+        },
+        {
+          "value": "SunPower"
+        },
+        {
+          "value": "Super Master"
+        },
+        {
+          "value": "SYINIX"
+        },
+        {
+          "value": "Taco"
+        },
+        {
+          "value": "TCL"
+        },
+        {
+          "value": "TEC"
+        },
+        {
+          "value": "Tefal"
+        },
+        {
+          "value": "Telemecanique"
+        },
+        {
+          "value": "Titan"
+        },
+        {
+          "value": "Tobi"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "Total"
+        },
+        {
+          "value": "Tower"
+        },
+        {
+          "value": "Toyota"
+        },
+        {
+          "value": "TrafficMaster"
+        },
+        {
+          "value": "Transparent"
+        },
+        {
+          "value": "Tuya"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Uniden"
+        },
+        {
+          "value": "Unique"
+        },
+        {
+          "value": "Universal Tool"
+        },
+        {
+          "value": "VELUX"
+        },
+        {
+          "value": "Wahl"
+        },
+        {
+          "value": "Water Ace"
+        },
+        {
+          "value": "Water Worker"
+        },
+        {
+          "value": "Watts"
+        },
+        {
+          "value": "Waxman"
+        },
+        {
+          "value": "Weber"
+        },
+        {
+          "value": "Weil-McLain"
+        },
+        {
+          "value": "Weiser"
+        },
+        {
+          "value": "WeMo"
+        },
+        {
+          "value": "WEN"
+        },
+        {
+          "value": "Westpool"
+        },
+        {
+          "value": "Whirlpool"
+        },
+        {
+          "value": "Winix"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Yinghe"
+        },
+        {
+          "value": "ZAR"
+        },
+        {
+          "value": "Zk"
+        },
+        {
+          "value": "Zurn"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "3Q"
+        },
+        {
+          "value": "Dsp"
+        },
+        {
+          "value": "Hisense"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "Philips"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Fans",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/fans.png",
+          "filters": {
+            "filter_attr_256_type": "Fans"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Irons",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/irons.png",
+          "filters": {
+            "filter_attr_256_type": "Irons"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Washing Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/washing-mahchine.png",
+          "filters": {
+            "filter_attr_256_type": "Washing Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Sewing Machines",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/sewing-mahchine.png",
+          "filters": {
+            "filter_attr_256_type": "Sewing Machines"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Vacuum Cleaners",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/vacuum-cleaners.png",
+          "filters": {
+            "filter_attr_256_type": "Vacuum Cleaners"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Garment Steamer",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/garment.png",
+          "filters": {
+            "filter_attr_256_type": "Garment Steamer"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Humidifiers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-appliances/humidifiers.png",
+          "filters": {
+            "filter_attr_256_type": "Humidifiers"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_256_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_256_type"
+    }
+  ]
+}

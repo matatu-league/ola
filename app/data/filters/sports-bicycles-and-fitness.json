@@ -1,0 +1,1139 @@
+{
+  "total": 12326,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 27500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 24000,
+          "label": "Under 24 K",
+          "item_count": 739
+        },
+        {
+          "from": 24000,
+          "to": 60000,
+          "label": "24 - 60 K",
+          "item_count": 2958
+        },
+        {
+          "from": 60000,
+          "to": 180000,
+          "label": "60 - 180 K",
+          "item_count": 4930
+        },
+        {
+          "from": 180000,
+          "to": 2000000,
+          "label": "180 K - 2 M",
+          "item_count": 3081
+        },
+        {
+          "from": 2000000,
+          "to": null,
+          "label": "More than 2 M",
+          "item_count": 616
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_387_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 387,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_387_type",
+      "possible_values": [
+        {
+          "value": "Ab Exercise Machine"
+        },
+        {
+          "value": "Ab Rollers"
+        },
+        {
+          "value": "Agility Ladders"
+        },
+        {
+          "value": "Air Hockey Tables"
+        },
+        {
+          "value": "Arm Blasters"
+        },
+        {
+          "value": "Badminton Nets"
+        },
+        {
+          "value": "Badminton Rackets"
+        },
+        {
+          "value": "Badminton Stands"
+        },
+        {
+          "value": "Balance Boards"
+        },
+        {
+          "value": "Ball Pumps"
+        },
+        {
+          "value": "Barbells"
+        },
+        {
+          "value": "Baseball Bats"
+        },
+        {
+          "value": "Baseball Gloves"
+        },
+        {
+          "value": "Basketball Balls"
+        },
+        {
+          "value": "Basketball Stands"
+        },
+        {
+          "value": "Battling Ropes"
+        },
+        {
+          "value": "Benches"
+        },
+        {
+          "value": "Bodyboards"
+        },
+        {
+          "value": "Bottle Cage"
+        },
+        {
+          "value": "Boxing Gloves"
+        },
+        {
+          "value": "Boxing Wraps"
+        },
+        {
+          "value": "Chest Press Machines"
+        },
+        {
+          "value": "Cricket Bats"
+        },
+        {
+          "value": "Cross Trainers"
+        },
+        {
+          "value": "Dartboard"
+        },
+        {
+          "value": "Dip Bars"
+        },
+        {
+          "value": "Dumbbells"
+        },
+        {
+          "value": "Exercise Bikes"
+        },
+        {
+          "value": "Exercise Ropes"
+        },
+        {
+          "value": "Flags and Flag Stands"
+        },
+        {
+          "value": "Foam Roller"
+        },
+        {
+          "value": "Football Goals"
+        },
+        {
+          "value": "Football Tables"
+        },
+        {
+          "value": "Goalkeeper Gloves"
+        },
+        {
+          "value": "Golf Balls"
+        },
+        {
+          "value": "Golf Gloves"
+        },
+        {
+          "value": "Golf Sets"
+        },
+        {
+          "value": "Gym Balls"
+        },
+        {
+          "value": "Gym Gloves"
+        },
+        {
+          "value": "Gym Mats"
+        },
+        {
+          "value": "Gymnastic Rings",
+          "title": "Gymnastics Rings"
+        },
+        {
+          "value": "Hand Grips"
+        },
+        {
+          "value": "Hockey Sticks"
+        },
+        {
+          "value": "Horse Riding Helmet"
+        },
+        {
+          "value": "Hula Hoops"
+        },
+        {
+          "value": "Jump Boxes"
+        },
+        {
+          "value": "Kettlebell"
+        },
+        {
+          "value": "Kickboards"
+        },
+        {
+          "value": "Leg Machines"
+        },
+        {
+          "value": "Medicine Balls & Slam Balls"
+        },
+        {
+          "value": "Multi Station Gym",
+          "title": "Multi-Station Gym"
+        },
+        {
+          "value": "Pedometers"
+        },
+        {
+          "value": "Protective Gear"
+        },
+        {
+          "value": "Pull-Up Bars"
+        },
+        {
+          "value": "Punching Bags"
+        },
+        {
+          "value": "Push-Up bars",
+          "title": "Push-Up Bars"
+        },
+        {
+          "value": "Resistance Power Bands"
+        },
+        {
+          "value": "Roller Skates"
+        },
+        {
+          "value": "Rowing Machines"
+        },
+        {
+          "value": "Rugby Balls"
+        },
+        {
+          "value": "Skipping Rope"
+        },
+        {
+          "value": "Snooker Balls"
+        },
+        {
+          "value": "Snooker Sticks",
+          "title": "Snooker Cue Sticks"
+        },
+        {
+          "value": "Snooker Table Accesories"
+        },
+        {
+          "value": "Snooker Tables"
+        },
+        {
+          "value": "Soccer Balls"
+        },
+        {
+          "value": "Squash Balls & Rackets"
+        },
+        {
+          "value": "Stability Balls"
+        },
+        {
+          "value": "Stair Mills"
+        },
+        {
+          "value": "Step Boards"
+        },
+        {
+          "value": "Steppers"
+        },
+        {
+          "value": "Stopwatches"
+        },
+        {
+          "value": "Substitution Boards"
+        },
+        {
+          "value": "Swimming Caps"
+        },
+        {
+          "value": "Swimming Flippers"
+        },
+        {
+          "value": "Swimming Floaters"
+        },
+        {
+          "value": "Swimming Goggles"
+        },
+        {
+          "value": "Swimming Mask",
+          "title": "Swimming Masks"
+        },
+        {
+          "value": "Swimming Pools"
+        },
+        {
+          "value": "Table Tennis Rackets"
+        },
+        {
+          "value": "Tennis Balls"
+        },
+        {
+          "value": "Tennis Nets And Posts",
+          "title": "Tennis Nets & Posts"
+        },
+        {
+          "value": "Tennis Rackets"
+        },
+        {
+          "value": "Tennis Tables"
+        },
+        {
+          "value": "Training Cones"
+        },
+        {
+          "value": "Trampolines"
+        },
+        {
+          "value": "Treadmills"
+        },
+        {
+          "value": "Twister Disc"
+        },
+        {
+          "value": "Vibrating Platforms"
+        },
+        {
+          "value": "Volleyballs"
+        },
+        {
+          "value": "Wakeboard"
+        },
+        {
+          "value": "Wearable Weights"
+        },
+        {
+          "value": "Weight Racks"
+        },
+        {
+          "value": "Weighted Bags"
+        },
+        {
+          "value": "Whistles"
+        },
+        {
+          "value": "Wrist Bandages"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Ab Exercise Machine"
+        },
+        {
+          "value": "Dumbbells"
+        },
+        {
+          "value": "Soccer Balls"
+        },
+        {
+          "value": "Swimming Pools"
+        },
+        {
+          "value": "Treadmills"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1700_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1700,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1700_brand",
+      "possible_values": [
+        {
+          "value": "3G Cardio"
+        },
+        {
+          "value": "66Fit"
+        },
+        {
+          "value": "A&W"
+        },
+        {
+          "value": "Ab Coaster"
+        },
+        {
+          "value": "Ab Doer Twist"
+        },
+        {
+          "value": "Ab Rocket"
+        },
+        {
+          "value": "Ab Slide"
+        },
+        {
+          "value": "Abgymnic"
+        },
+        {
+          "value": "Abtronic"
+        },
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Afg"
+        },
+        {
+          "value": "Afrocanfit"
+        },
+        {
+          "value": "Airex"
+        },
+        {
+          "value": "Allsix"
+        },
+        {
+          "value": "American Fitness"
+        },
+        {
+          "value": "Ancheer"
+        },
+        {
+          "value": "Apollo"
+        },
+        {
+          "value": "Aptonia"
+        },
+        {
+          "value": "Aquajogger"
+        },
+        {
+          "value": "Arena"
+        },
+        {
+          "value": "Artengo"
+        },
+        {
+          "value": "Artzt Vitality"
+        },
+        {
+          "value": "Asics"
+        },
+        {
+          "value": "Assault"
+        },
+        {
+          "value": "Avex"
+        },
+        {
+          "value": "Avon"
+        },
+        {
+          "value": "Bally"
+        },
+        {
+          "value": "Bessgym"
+        },
+        {
+          "value": "Best Choice Products"
+        },
+        {
+          "value": "Bestway"
+        },
+        {
+          "value": "Bh Fitness"
+        },
+        {
+          "value": "Biofreeze"
+        },
+        {
+          "value": "Blackroll"
+        },
+        {
+          "value": "Bmx"
+        },
+        {
+          "value": "Body Sculpture"
+        },
+        {
+          "value": "Bodyfit"
+        },
+        {
+          "value": "Bodyflex"
+        },
+        {
+          "value": "Bodygym"
+        },
+        {
+          "value": "Bodylastics"
+        },
+        {
+          "value": "Bosu"
+        },
+        {
+          "value": "Callaway"
+        },
+        {
+          "value": "Cap"
+        },
+        {
+          "value": "Capital Sports"
+        },
+        {
+          "value": "Captains Of Crush"
+        },
+        {
+          "value": "Carlifornia Fitness"
+        },
+        {
+          "value": "Century"
+        },
+        {
+          "value": "Champion"
+        },
+        {
+          "value": "Confidence Fitness"
+        },
+        {
+          "value": "Contour"
+        },
+        {
+          "value": "DHZ"
+        },
+        {
+          "value": "Drive"
+        },
+        {
+          "value": "Dunlop"
+        },
+        {
+          "value": "Dynamix"
+        },
+        {
+          "value": "Eco-Fit"
+        },
+        {
+          "value": "Elysee"
+        },
+        {
+          "value": "Emrad Billards"
+        },
+        {
+          "value": "Energetics"
+        },
+        {
+          "value": "Enjoy Fit"
+        },
+        {
+          "value": "Everlast"
+        },
+        {
+          "value": "Evo Fitness"
+        },
+        {
+          "value": "Fdf"
+        },
+        {
+          "value": "Fila"
+        },
+        {
+          "value": "Fit4Home"
+        },
+        {
+          "value": "Fitball"
+        },
+        {
+          "value": "Fitness Reality"
+        },
+        {
+          "value": "Fitnessclub"
+        },
+        {
+          "value": "Fitnex"
+        },
+        {
+          "value": "Flywheel"
+        },
+        {
+          "value": "Fox 40"
+        },
+        {
+          "value": "Fytter"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Genesis"
+        },
+        {
+          "value": "Ght"
+        },
+        {
+          "value": "Gofit"
+        },
+        {
+          "value": "Gold's Gym"
+        },
+        {
+          "value": "Gripmaster"
+        },
+        {
+          "value": "Gym Master"
+        },
+        {
+          "value": "Gymboss"
+        },
+        {
+          "value": "Head"
+        },
+        {
+          "value": "Hero"
+        },
+        {
+          "value": "Homcom"
+        },
+        {
+          "value": "Horizon"
+        },
+        {
+          "value": "Horizon Fitness"
+        },
+        {
+          "value": "Icon"
+        },
+        {
+          "value": "Intex"
+        },
+        {
+          "value": "Iron Gym"
+        },
+        {
+          "value": "J&S"
+        },
+        {
+          "value": "Jumpking"
+        },
+        {
+          "value": "Jumpsport"
+        },
+        {
+          "value": "Jx"
+        },
+        {
+          "value": "K2"
+        },
+        {
+          "value": "Kamachi"
+        },
+        {
+          "value": "Kedi"
+        },
+        {
+          "value": "Kettler"
+        },
+        {
+          "value": "Keys Fitness"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Lifespan"
+        },
+        {
+          "value": "Lonsdale"
+        },
+        {
+          "value": "Magellan"
+        },
+        {
+          "value": "Magnum Fitness"
+        },
+        {
+          "value": "Marcy"
+        },
+        {
+          "value": "Marin"
+        },
+        {
+          "value": "Matrix"
+        },
+        {
+          "value": "Matrix Fitness"
+        },
+        {
+          "value": "Mikasa"
+        },
+        {
+          "value": "Miniso"
+        },
+        {
+          "value": "Molten"
+        },
+        {
+          "value": "New Balance"
+        },
+        {
+          "value": "Next"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Nil"
+        },
+        {
+          "value": "Nordictrack"
+        },
+        {
+          "value": "Nyamba"
+        },
+        {
+          "value": "Opti"
+        },
+        {
+          "value": "Oxelo"
+        },
+        {
+          "value": "Peloton"
+        },
+        {
+          "value": "Ping"
+        },
+        {
+          "value": "Power Max"
+        },
+        {
+          "value": "Powerball"
+        },
+        {
+          "value": "Powertrain"
+        },
+        {
+          "value": "Precor"
+        },
+        {
+          "value": "Pro Fitness"
+        },
+        {
+          "value": "Pro Sport"
+        },
+        {
+          "value": "Pro Tech"
+        },
+        {
+          "value": "Proform"
+        },
+        {
+          "value": "Puma"
+        },
+        {
+          "value": "Rebounder"
+        },
+        {
+          "value": "Revolt"
+        },
+        {
+          "value": "Riley"
+        },
+        {
+          "value": "Rio"
+        },
+        {
+          "value": "Rockrider"
+        },
+        {
+          "value": "Roger Black"
+        },
+        {
+          "value": "Royalbeach"
+        },
+        {
+          "value": "Sand Socks"
+        },
+        {
+          "value": "Schwinn"
+        },
+        {
+          "value": "Scsports"
+        },
+        {
+          "value": "Serenelife"
+        },
+        {
+          "value": "Shimano"
+        },
+        {
+          "value": "Sissel"
+        },
+        {
+          "value": "Six Pack Care"
+        },
+        {
+          "value": "Slazenger"
+        },
+        {
+          "value": "Smith"
+        },
+        {
+          "value": "Sondico"
+        },
+        {
+          "value": "Spalding"
+        },
+        {
+          "value": "Spec"
+        },
+        {
+          "value": "Speedo"
+        },
+        {
+          "value": "Sport Schmidt"
+        },
+        {
+          "value": "Sportcraft"
+        },
+        {
+          "value": "Sportplus"
+        },
+        {
+          "value": "Spri"
+        },
+        {
+          "value": "Stamm"
+        },
+        {
+          "value": "Star Trac"
+        },
+        {
+          "value": "Stiga"
+        },
+        {
+          "value": "Strong"
+        },
+        {
+          "value": "Sunny Health Fitness"
+        },
+        {
+          "value": "Talon"
+        },
+        {
+          "value": "Taylormade"
+        },
+        {
+          "value": "The Step"
+        },
+        {
+          "value": "Total Core"
+        },
+        {
+          "value": "Total Gym"
+        },
+        {
+          "value": "Trek"
+        },
+        {
+          "value": "Triban"
+        },
+        {
+          "value": "Trojan"
+        },
+        {
+          "value": "Tumbl Trak"
+        },
+        {
+          "value": "Tummy Trimmer"
+        },
+        {
+          "value": "Uhlsport"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Upper Bounce"
+        },
+        {
+          "value": "V-Fit"
+        },
+        {
+          "value": "Valeo"
+        },
+        {
+          "value": "Vectra"
+        },
+        {
+          "value": "Venum"
+        },
+        {
+          "value": "Vision"
+        },
+        {
+          "value": "Vision Fitness"
+        },
+        {
+          "value": "Well Care"
+        },
+        {
+          "value": "Wilson"
+        },
+        {
+          "value": "Wonder Core"
+        },
+        {
+          "value": "Woodway"
+        },
+        {
+          "value": "Yes4All"
+        },
+        {
+          "value": "Yogarat"
+        },
+        {
+          "value": "Yonex"
+        },
+        {
+          "value": "York"
+        },
+        {
+          "value": "York Fitness"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Best Choice Products"
+        },
+        {
+          "value": "Capital Sports"
+        },
+        {
+          "value": "Intex"
+        },
+        {
+          "value": "York"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1557_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1557,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1557_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Dumbbells",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-equipment/dumbbells.png",
+          "filters": {
+            "filter_attr_387_type": "Dumbbells"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Ab Exercise Machine",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-equipment/ab-exercise-machine.png",
+          "filters": {
+            "filter_attr_387_type": "Ab Exercise Machine"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Swimming Pools",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-equipment/swimming-pools.png",
+          "filters": {
+            "filter_attr_387_type": "Swimming Pools"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Treadmills",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-equipment/treadmills.png",
+          "filters": {
+            "filter_attr_387_type": "Treadmills"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Soccer Balls",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-bicycles-and-fitness/soccer-balls.png",
+          "filters": {
+            "filter_attr_387_type": "Soccer Balls"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Gym Mats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-bicycles-and-fitness/gym-mat.png",
+          "filters": {
+            "filter_attr_387_type": "Gym Mats"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Steppers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/sports-equipment/steppers.png",
+          "filters": {
+            "filter_attr_387_type": "Steppers"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_387_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_387_type"
+    }
+  ]
+}

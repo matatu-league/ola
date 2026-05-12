@@ -1,0 +1,512 @@
+{
+  "total": 6066,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 500,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 24000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 363
+        },
+        {
+          "from": 20000,
+          "to": 45000,
+          "label": "20 - 45 K",
+          "item_count": 1455
+        },
+        {
+          "from": 45000,
+          "to": 450000,
+          "label": "45 - 450 K",
+          "item_count": 2426
+        },
+        {
+          "from": 450000,
+          "to": 2100000,
+          "label": "450 K - 2.1 M",
+          "item_count": 1516
+        },
+        {
+          "from": 2100000,
+          "to": null,
+          "label": "More than 2.1 M",
+          "item_count": 303
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_4788_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4788,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4788_brand",
+      "possible_values": [
+        {
+          "value": "A B TOOLS"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "AgroMax"
+        },
+        {
+          "value": "Allen"
+        },
+        {
+          "value": "AmazonBasics"
+        },
+        {
+          "value": "AMES"
+        },
+        {
+          "value": "Amtech"
+        },
+        {
+          "value": "Antelco"
+        },
+        {
+          "value": "Aqualin"
+        },
+        {
+          "value": "Aussie"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "Best"
+        },
+        {
+          "value": "Better Homes & Gardens"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "Bradas"
+        },
+        {
+          "value": "CAMCO"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "Carrier"
+        },
+        {
+          "value": "Craftsman"
+        },
+        {
+          "value": "Draper"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "Eco+"
+        },
+        {
+          "value": "Garden"
+        },
+        {
+          "value": "GARDENA"
+        },
+        {
+          "value": "Gardeners Supply Company"
+        },
+        {
+          "value": "GEDORE"
+        },
+        {
+          "value": "General"
+        },
+        {
+          "value": "Green Blade"
+        },
+        {
+          "value": "Heavy Duty"
+        },
+        {
+          "value": "Kingfisher"
+        },
+        {
+          "value": "Mainstays"
+        },
+        {
+          "value": "Marimekko"
+        },
+        {
+          "value": "Oxford Garden"
+        },
+        {
+          "value": "Parkside"
+        },
+        {
+          "value": "Perfect Home"
+        },
+        {
+          "value": "Savannah"
+        },
+        {
+          "value": "Sharp"
+        },
+        {
+          "value": "Stainless"
+        },
+        {
+          "value": "Toysmith"
+        },
+        {
+          "value": "Wagon"
+        },
+        {
+          "value": "Wolf"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "A B TOOLS"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Better Homes & Gardens"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "Garden"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_254_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 254,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_254_type",
+      "possible_values": [
+        {
+          "value": "Artificial Grass"
+        },
+        {
+          "value": "Artificial Plants"
+        },
+        {
+          "value": "Bird Houses"
+        },
+        {
+          "value": "Canopies"
+        },
+        {
+          "value": "Flags"
+        },
+        {
+          "value": "Flower Pots"
+        },
+        {
+          "value": "Garden & Lawn Stakes"
+        },
+        {
+          "value": "Garden Edging & Borders"
+        },
+        {
+          "value": "Garden Sun Umbrellas"
+        },
+        {
+          "value": "Garden Swings"
+        },
+        {
+          "value": "Gardening Gloves & Protective Gear"
+        },
+        {
+          "value": "Gardening Hand Tools"
+        },
+        {
+          "value": "Gazebos"
+        },
+        {
+          "value": "Ground Reinforcement"
+        },
+        {
+          "value": "Hammocks"
+        },
+        {
+          "value": "Herbicides"
+        },
+        {
+          "value": "Insect Traps & Baits"
+        },
+        {
+          "value": "Insect Zappers"
+        },
+        {
+          "value": "Insecticides"
+        },
+        {
+          "value": "Lawn Mowers"
+        },
+        {
+          "value": "Ornaments & Statues"
+        },
+        {
+          "value": "Pebbles, Stones & Step Stones"
+        },
+        {
+          "value": "Pergola"
+        },
+        {
+          "value": "Planters & Seeders"
+        },
+        {
+          "value": "Plants"
+        },
+        {
+          "value": "Plaques & Signs"
+        },
+        {
+          "value": "Pressure Washers"
+        },
+        {
+          "value": "Swimming Pool Covers"
+        },
+        {
+          "value": "Watering Equipment"
+        },
+        {
+          "value": "Weathervanes"
+        },
+        {
+          "value": "Wheelbarrow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Artificial Grass"
+        },
+        {
+          "value": "Flower Pots"
+        },
+        {
+          "value": "Garden Sun Umbrellas"
+        },
+        {
+          "value": "Lawn Mowers"
+        },
+        {
+          "value": "Pressure Washers"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_253_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 253,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_253_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Artificial Grass",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/grass.png",
+          "filters": {
+            "filter_attr_254_type": "Artificial Grass"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pressure Washers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/pressure-washers.png",
+          "filters": {
+            "filter_attr_254_type": "Pressure Washers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Flower Pots",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/flower-plots.png",
+          "filters": {
+            "filter_attr_254_type": "Flower Pots"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Garden Sun Umbrellas",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/sun-umbrella.png",
+          "filters": {
+            "filter_attr_254_type": "Garden Sun Umbrellas"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Lawn Mowers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/lawn-mowers.png",
+          "filters": {
+            "filter_attr_254_type": "Lawn Mowers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Watering Equipment",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/watering.png",
+          "filters": {
+            "filter_attr_254_type": "Watering Equipment"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Artificial Plants",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/garden/artificial-plants.png",
+          "filters": {
+            "filter_attr_254_type": "Artificial Plants"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_254_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_254_type"
+    }
+  ]
+}

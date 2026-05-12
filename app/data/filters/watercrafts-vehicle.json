@@ -1,0 +1,322 @@
+{
+  "total": 39,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 300000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 13600000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 920000,
+          "label": "Under 920 K",
+          "item_count": 2
+        },
+        {
+          "from": 920000,
+          "to": 5400000,
+          "label": "920 K - 5.4 M",
+          "item_count": 9
+        },
+        {
+          "from": 5400000,
+          "to": 15000000,
+          "label": "5.4 - 15 M",
+          "item_count": 15
+        },
+        {
+          "from": 15000000,
+          "to": 70000000,
+          "label": "15 - 70 M",
+          "item_count": 9
+        },
+        {
+          "from": 70000000,
+          "to": null,
+          "label": "More than 70 M",
+          "item_count": 1
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_237_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 237,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_237_type",
+      "possible_values": [
+        {
+          "value": "Banana Boats"
+        },
+        {
+          "value": "Bow Rider Boats"
+        },
+        {
+          "value": "Bracera"
+        },
+        {
+          "value": "Canoe"
+        },
+        {
+          "value": "Cargo Ships"
+        },
+        {
+          "value": "Centre Console Boats"
+        },
+        {
+          "value": "Deck Boats"
+        },
+        {
+          "value": "Dinghy Boats"
+        },
+        {
+          "value": "Fishing Boats"
+        },
+        {
+          "value": "Runabout Boats"
+        },
+        {
+          "value": "Yachts"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Year of Manufacture",
+      "parent_slug": null,
+      "slug": "filter_attr_4136_year_of_manufacture",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4136,
+      "attr_name": "Year of Manufacture",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4136_year_of_manufacture",
+      "possible_values": [
+        {
+          "value": 2010
+        },
+        {
+          "value": 2013
+        },
+        {
+          "value": 2015
+        },
+        {
+          "value": 2017
+        },
+        {
+          "value": 2018
+        },
+        {
+          "value": 2020
+        },
+        {
+          "value": 2022
+        },
+        {
+          "value": 2023
+        },
+        {
+          "value": 2024
+        },
+        {
+          "value": 2025
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_236_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 236,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_236_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Exchange Possible",
+      "parent_slug": null,
+      "slug": "filter_attr_1510_exchange_possible",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1510,
+      "attr_name": "Exchange Possible",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1510_exchange_possible",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Bow Rider Boats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/bow-rider-boats.png",
+          "filters": {
+            "filter_attr_237_type": "Bow Rider Boats"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Centre Console Boats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/centre-console-boats.png",
+          "filters": {
+            "filter_attr_237_type": "Centre Console Boats"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Fishing Boats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/fishing-boat.png",
+          "filters": {
+            "filter_attr_237_type": "Fishing Boats"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Canoe",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/canoe.png",
+          "filters": {
+            "filter_attr_237_type": "Canoe"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Banana Boats",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/banana-boats.png",
+          "filters": {
+            "filter_attr_237_type": "Banana Boats"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Bracera",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/bracera.png",
+          "filters": {
+            "filter_attr_237_type": "Bracera"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cargo Ships",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watercrafts/cargo-ships.png",
+          "filters": {
+            "filter_attr_237_type": "Cargo Ships"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_237_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_237_type"
+    }
+  ]
+}

@@ -1,0 +1,692 @@
+{
+  "total": 2862,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 40000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 6200000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 200000,
+          "label": "Under 200 K",
+          "item_count": 171
+        },
+        {
+          "from": 200000,
+          "to": 300000,
+          "label": "200 - 300 K",
+          "item_count": 686
+        },
+        {
+          "from": 300000,
+          "to": 580000,
+          "label": "300 - 580 K",
+          "item_count": 1144
+        },
+        {
+          "from": 580000,
+          "to": 3000000,
+          "label": "580 K - 3 M",
+          "item_count": 715
+        },
+        {
+          "from": 3000000,
+          "to": null,
+          "label": "More than 3 M",
+          "item_count": 143
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_89_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 89,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_89_brand",
+      "possible_values": [
+        {
+          "value": "ADSPEC"
+        },
+        {
+          "value": "AirTab"
+        },
+        {
+          "value": "Alcatel"
+        },
+        {
+          "value": "Alldocube"
+        },
+        {
+          "value": "Allview"
+        },
+        {
+          "value": "Amazon"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Asus"
+        },
+        {
+          "value": "Atouch"
+        },
+        {
+          "value": "BDF"
+        },
+        {
+          "value": "Bebe"
+        },
+        {
+          "value": "Blackview"
+        },
+        {
+          "value": "Blu"
+        },
+        {
+          "value": "BQ"
+        },
+        {
+          "value": "C idea"
+        },
+        {
+          "value": "Dino"
+        },
+        {
+          "value": "Discover"
+        },
+        {
+          "value": "EE"
+        },
+        {
+          "value": "G-Tab"
+        },
+        {
+          "value": "Genius Kids"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "Green Lion"
+        },
+        {
+          "value": "GTouch"
+        },
+        {
+          "value": "Honor"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Idino"
+        },
+        {
+          "value": "Infinix"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "iTouch"
+        },
+        {
+          "value": "King Touch"
+        },
+        {
+          "value": "Lenosed"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "Mediatek"
+        },
+        {
+          "value": "Microsoft"
+        },
+        {
+          "value": "Modio"
+        },
+        {
+          "value": "NODROPOUT"
+        },
+        {
+          "value": "Nokia"
+        },
+        {
+          "value": "Origimo"
+        },
+        {
+          "value": "Oteeto"
+        },
+        {
+          "value": "Realme"
+        },
+        {
+          "value": "reMarkable"
+        },
+        {
+          "value": "Sail Air"
+        },
+        {
+          "value": "SAILBook"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Smart2030"
+        },
+        {
+          "value": "Teclast"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Telzeal"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "Wintouch"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "ZTE"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Bebe"
+        },
+        {
+          "value": "Discover"
+        },
+        {
+          "value": "Idino"
+        },
+        {
+          "value": "Samsung"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Screen Size",
+      "parent_slug": null,
+      "slug": "filter_attr_218_screen_size",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 218,
+      "attr_name": "Screen Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_218_screen_size",
+      "possible_values": [
+        {
+          "value": "11-12.9 inches"
+        },
+        {
+          "value": "13 > inches"
+        },
+        {
+          "value": "7-8.9 inches"
+        },
+        {
+          "value": "9-10.9 inches"
+        },
+        {
+          "value": "< 7 inches"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_219_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 219,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_219_colour",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Operating System",
+      "parent_slug": null,
+      "slug": "filter_attr_220_operating_system",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 220,
+      "attr_name": "Operating System",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_220_operating_system",
+      "possible_values": [
+        {
+          "value": "Android"
+        },
+        {
+          "value": "iOS"
+        },
+        {
+          "value": "Windows"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Storage Capacity",
+      "parent_slug": null,
+      "slug": "filter_attr_223_storage_capacity",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 223,
+      "attr_name": "Storage Capacity",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_223_storage_capacity",
+      "possible_values": [
+        {
+          "value": "4 GB"
+        },
+        {
+          "value": "8 GB"
+        },
+        {
+          "value": "16 GB"
+        },
+        {
+          "value": "32 GB"
+        },
+        {
+          "value": "64 GB"
+        },
+        {
+          "value": "128 GB"
+        },
+        {
+          "value": "256 GB"
+        },
+        {
+          "value": "512 GB"
+        },
+        {
+          "value": "1 TB"
+        },
+        {
+          "value": "2 TB"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "RAM",
+      "parent_slug": null,
+      "slug": "filter_attr_222_ram",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 222,
+      "attr_name": "RAM",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_222_ram",
+      "possible_values": [
+        {
+          "value": "12 GB"
+        },
+        {
+          "value": "32 GB"
+        },
+        {
+          "value": "512 MB"
+        },
+        {
+          "value": "1 GB"
+        },
+        {
+          "value": "2 GB"
+        },
+        {
+          "value": "3 GB"
+        },
+        {
+          "value": "4 GB"
+        },
+        {
+          "value": "6 GB"
+        },
+        {
+          "value": "8 GB"
+        },
+        {
+          "value": "16 GB"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_225_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 225,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_225_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Exchange Possible",
+      "parent_slug": null,
+      "slug": "filter_attr_1343_exchange_possible",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1343,
+      "attr_name": "Exchange Possible",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1343_exchange_possible",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 220 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 220000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 220 - 280 K",
+          "filters": {
+            "price_min": 220000,
+            "price_max": 280000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 280 - 390 K",
+          "filters": {
+            "price_min": 280000,
+            "price_max": 390000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 390 K",
+          "filters": {
+            "price_min": 390000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Bebe",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/tablets/bebe.png",
+          "filters": {
+            "filter_attr_89_brand": "Bebe"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Samsung",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/samsung.png",
+          "filters": {
+            "filter_attr_89_brand": "Samsung"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Apple",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/brand-make-icons/apple.png",
+          "filters": {
+            "filter_attr_89_brand": "Apple"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Idino",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/tablets/idino.png",
+          "filters": {
+            "filter_attr_89_brand": "Idino"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Discover",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/tablets/discover.png",
+          "filters": {
+            "filter_attr_89_brand": "Discover"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Amazon",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/tablets/amazon.png",
+          "filters": {
+            "filter_attr_89_brand": "Amazon"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Atouch",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/tablets/atouch.png",
+          "filters": {
+            "filter_attr_89_brand": "Atouch"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_89_brand",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_89_brand"
+    }
+  ]
+}

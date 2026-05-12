@@ -1,0 +1,587 @@
+{
+  "total": 2013,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 25000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1850000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 250000,
+          "label": "Under 250 K",
+          "item_count": 120
+        },
+        {
+          "from": 250000,
+          "to": 800000,
+          "label": "250 - 800 K",
+          "item_count": 483
+        },
+        {
+          "from": 800000,
+          "to": 4500000,
+          "label": "800 K - 4.5 M",
+          "item_count": 805
+        },
+        {
+          "from": 4500000,
+          "to": 14000000,
+          "label": "4.5 - 14 M",
+          "item_count": 503
+        },
+        {
+          "from": 14000000,
+          "to": null,
+          "label": "More than 14 M",
+          "item_count": 100
+        }
+      ]
+    },
+    {
+      "label": "Property Type",
+      "parent_slug": null,
+      "slug": "filter_attr_179_property_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 179,
+      "attr_name": "Property Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_179_property_type",
+      "possible_values": [
+        {
+          "value": "Apartment"
+        },
+        {
+          "value": "Bedsitter"
+        },
+        {
+          "value": "Block of Flats"
+        },
+        {
+          "value": "Bungalow"
+        },
+        {
+          "value": "Chalet"
+        },
+        {
+          "value": "Condo"
+        },
+        {
+          "value": "Duplex"
+        },
+        {
+          "value": "House"
+        },
+        {
+          "value": "Maisonette"
+        },
+        {
+          "value": "Mansion"
+        },
+        {
+          "value": "Mini Flat"
+        },
+        {
+          "value": "Penthouse"
+        },
+        {
+          "value": "Room & Parlour"
+        },
+        {
+          "value": "Shared Apartment"
+        },
+        {
+          "value": "Studio Apartment"
+        },
+        {
+          "value": "Townhouse / Terrace"
+        },
+        {
+          "value": "Villa"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Apartment"
+        },
+        {
+          "value": "Bungalow"
+        },
+        {
+          "value": "Duplex"
+        },
+        {
+          "value": "House"
+        },
+        {
+          "value": "Studio Apartment"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Bedrooms",
+      "parent_slug": null,
+      "slug": "filter_attr_39_bedrooms",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 39,
+      "attr_name": "Bedrooms",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_39_bedrooms",
+      "possible_values": [
+        {
+          "value": 1
+        },
+        {
+          "value": 2
+        },
+        {
+          "value": 3
+        },
+        {
+          "value": 4
+        },
+        {
+          "value": 5
+        },
+        {
+          "value": 6
+        },
+        {
+          "value": 7
+        },
+        {
+          "value": 8
+        },
+        {
+          "value": 9
+        },
+        {
+          "value": 10
+        },
+        {
+          "value": 11
+        },
+        {
+          "value": 12
+        },
+        {
+          "value": 16
+        },
+        {
+          "value": 20
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1576_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1576,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1576_condition",
+      "possible_values": [
+        {
+          "value": "Fairly Used"
+        },
+        {
+          "value": "Newly Built",
+          "title": "Newly-Built"
+        },
+        {
+          "value": "Old"
+        },
+        {
+          "value": "Renovated"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Furnishing",
+      "parent_slug": null,
+      "slug": "filter_attr_1381_furnishing",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1381,
+      "attr_name": "Furnishing",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1381_furnishing",
+      "possible_values": [
+        {
+          "value": "Furnished"
+        },
+        {
+          "value": "Semi-Furnished"
+        },
+        {
+          "value": "Unfurnished"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Bathrooms",
+      "parent_slug": null,
+      "slug": "filter_attr_105_bathrooms",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 105,
+      "attr_name": "Bathrooms",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_105_bathrooms",
+      "possible_values": [
+        {
+          "value": 1
+        },
+        {
+          "value": 2
+        },
+        {
+          "value": 3
+        },
+        {
+          "value": 4
+        },
+        {
+          "value": 5
+        },
+        {
+          "value": 6
+        },
+        {
+          "value": 7
+        },
+        {
+          "value": 8
+        },
+        {
+          "value": 9
+        },
+        {
+          "value": 10
+        },
+        {
+          "value": 11
+        },
+        {
+          "value": 12
+        },
+        {
+          "value": 20
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Facilities",
+      "parent_slug": null,
+      "slug": "filter_attr_1379_facilities",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1379,
+      "attr_name": "Facilities",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1379_facilities",
+      "possible_values": [
+        {
+          "value": "24 Hours Electricity",
+          "title": "24-hour Electricity"
+        },
+        {
+          "value": "Air Conditioning"
+        },
+        {
+          "value": "Balcony"
+        },
+        {
+          "value": "Chandelier"
+        },
+        {
+          "value": "Dining Area"
+        },
+        {
+          "value": "Dishwasher"
+        },
+        {
+          "value": "Hot Water"
+        },
+        {
+          "value": "Kitchen Cabinets"
+        },
+        {
+          "value": "Kitchen Shelf"
+        },
+        {
+          "value": "Microwave"
+        },
+        {
+          "value": "Pop Ceiling"
+        },
+        {
+          "value": "Pre Paid Meter",
+          "title": "Pre-Paid Meter"
+        },
+        {
+          "value": "Refrigerator"
+        },
+        {
+          "value": "Tiled Floor"
+        },
+        {
+          "value": "TV"
+        },
+        {
+          "value": "Wardrobe"
+        },
+        {
+          "value": "Wi-Fi"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "24 Hours Electricity",
+          "title": "24-hour Electricity"
+        },
+        {
+          "value": "Balcony"
+        },
+        {
+          "value": "Hot Water"
+        },
+        {
+          "value": "Kitchen Cabinets"
+        },
+        {
+          "value": "Kitchen Shelf"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Property Size",
+      "parent_slug": null,
+      "slug": "filter_attr_185_square_meters",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 185,
+      "attr_name": "Property Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_185_square_meters",
+      "unit": "sqm",
+      "filter_data": {
+        "min": {
+          "fieldname": "filter_attr_185_square_meters__min",
+          "default": 10,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "filter_attr_185_square_meters__max",
+          "default": 5000,
+          "value": ""
+        }
+      },
+      "prefill_options": []
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 330 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 330000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 330 - 700 K",
+          "filters": {
+            "price_min": 330000,
+            "price_max": 700000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 700 K - 1.8 M",
+          "filters": {
+            "price_min": 700000,
+            "price_max": 1800000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 1.8 M",
+          "filters": {
+            "price_min": 1800000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Apartment",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/flat.png",
+          "filters": {
+            "filter_attr_179_property_type": "Apartment"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "House",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/house.png",
+          "filters": {
+            "filter_attr_179_property_type": "House"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Bungalow",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/bungalow.png",
+          "filters": {
+            "filter_attr_179_property_type": "Bungalow"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Duplex",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/duplex.png",
+          "filters": {
+            "filter_attr_179_property_type": "Duplex"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Studio Apartment",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/studio-apartment.png",
+          "filters": {
+            "filter_attr_179_property_type": "Studio Apartment"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Mansion",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/mansion.png",
+          "filters": {
+            "filter_attr_179_property_type": "Mansion"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Villa",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/houses-and-apartments/villa.png",
+          "filters": {
+            "filter_attr_179_property_type": "Villa"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_179_property_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_179_property_type"
+    }
+  ]
+}

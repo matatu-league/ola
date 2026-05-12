@@ -1,0 +1,540 @@
+{
+  "total": 259,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 120000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 11240000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 900000,
+          "label": "Under 900 K",
+          "item_count": 15
+        },
+        {
+          "from": 900000,
+          "to": 24000000,
+          "label": "900 K - 24 M",
+          "item_count": 62
+        },
+        {
+          "from": 24000000,
+          "to": 220000000,
+          "label": "24 - 220 M",
+          "item_count": 103
+        },
+        {
+          "from": 220000000,
+          "to": 650000000,
+          "label": "220 - 650 M",
+          "item_count": 64
+        },
+        {
+          "from": 650000000,
+          "to": null,
+          "label": "More than 650 M",
+          "item_count": 12
+        }
+      ]
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_234_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 234,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_234_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Foreign Used"
+        },
+        {
+          "value": "Ugandan Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_150_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 150,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_150_type",
+      "possible_values": [
+        {
+          "value": "Backhoe Loaders"
+        },
+        {
+          "value": "Bulldozers"
+        },
+        {
+          "value": "Car Lifts"
+        },
+        {
+          "value": "Compactors"
+        },
+        {
+          "value": "Compressors"
+        },
+        {
+          "value": "Concrete Mixers"
+        },
+        {
+          "value": "Concrete Pumps"
+        },
+        {
+          "value": "Container Handlers"
+        },
+        {
+          "value": "Crane Forks"
+        },
+        {
+          "value": "Cranes"
+        },
+        {
+          "value": "Crushers"
+        },
+        {
+          "value": "Dumpers"
+        },
+        {
+          "value": "Excavators"
+        },
+        {
+          "value": "Farm Machines"
+        },
+        {
+          "value": "Forklifts"
+        },
+        {
+          "value": "Graders"
+        },
+        {
+          "value": "Loaders"
+        },
+        {
+          "value": "Pallet Stackers"
+        },
+        {
+          "value": "Planes"
+        },
+        {
+          "value": "Road Roller"
+        },
+        {
+          "value": "Tractors"
+        },
+        {
+          "value": "Wheel Loaders"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Bulldozers"
+        },
+        {
+          "value": "Cranes"
+        },
+        {
+          "value": "Excavators"
+        },
+        {
+          "value": "Forklifts"
+        },
+        {
+          "value": "Tractors"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Make",
+      "parent_slug": null,
+      "slug": "filter_attr_151_make",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 151,
+      "attr_name": "Make",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_151_make",
+      "possible_values": [
+        {
+          "value": "Aichi"
+        },
+        {
+          "value": "Atlas Copco"
+        },
+        {
+          "value": "Bitelli"
+        },
+        {
+          "value": "Bobcat"
+        },
+        {
+          "value": "Bomag"
+        },
+        {
+          "value": "Case"
+        },
+        {
+          "value": "Caterpillar"
+        },
+        {
+          "value": "Daewoo"
+        },
+        {
+          "value": "Doosan"
+        },
+        {
+          "value": "Ford"
+        },
+        {
+          "value": "Grove"
+        },
+        {
+          "value": "Heli"
+        },
+        {
+          "value": "Hyundai"
+        },
+        {
+          "value": "JCB"
+        },
+        {
+          "value": "John Deere"
+        },
+        {
+          "value": "Komatsu"
+        },
+        {
+          "value": "Kubota"
+        },
+        {
+          "value": "LGMG"
+        },
+        {
+          "value": "Manitou"
+        },
+        {
+          "value": "Massey Ferguson"
+        },
+        {
+          "value": "Mecalac"
+        },
+        {
+          "value": "Mercedes Benz"
+        },
+        {
+          "value": "Mitsubishi"
+        },
+        {
+          "value": "New Holland"
+        },
+        {
+          "value": "Nissan"
+        },
+        {
+          "value": "Powerscreen"
+        },
+        {
+          "value": "Sany"
+        },
+        {
+          "value": "Scania"
+        },
+        {
+          "value": "Tadano"
+        },
+        {
+          "value": "Toyota"
+        },
+        {
+          "value": "XCMG"
+        },
+        {
+          "value": "Zoomlion"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Caterpillar"
+        },
+        {
+          "value": "Heli"
+        },
+        {
+          "value": "Massey Ferguson"
+        },
+        {
+          "value": "Sany"
+        },
+        {
+          "value": "XCMG"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Year of Manufacture",
+      "parent_slug": null,
+      "slug": "filter_attr_152_year_of_manufacture",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 152,
+      "attr_name": "Year of Manufacture",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_152_year_of_manufacture",
+      "filter_data": {
+        "min": {
+          "fieldname": "filter_attr_152_year_of_manufacture__min",
+          "default": 1972,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "filter_attr_152_year_of_manufacture__max",
+          "default": 2025,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": 2021,
+          "to": 2025,
+          "label": "2021 - 2025",
+          "item_count": 166
+        },
+        {
+          "from": 2016,
+          "to": 2020,
+          "label": "2016 - 2020",
+          "item_count": 41
+        },
+        {
+          "from": 2011,
+          "to": 2015,
+          "label": "2011 - 2015",
+          "item_count": 19
+        },
+        {
+          "from": 2006,
+          "to": 2010,
+          "label": "2006 - 2010",
+          "item_count": 20
+        },
+        {
+          "from": 2001,
+          "to": 2005,
+          "label": "2001 - 2005",
+          "item_count": 4
+        },
+        {
+          "from": 1996,
+          "to": 2000,
+          "label": "1996 - 2000",
+          "item_count": 3
+        },
+        {
+          "from": 1991,
+          "to": 1995,
+          "label": "1991 - 1995",
+          "item_count": 3
+        },
+        {
+          "from": 1986,
+          "to": 1990,
+          "label": "1986 - 1990",
+          "item_count": 1
+        },
+        {
+          "from": 1971,
+          "to": 1975,
+          "label": "1971 - 1975",
+          "item_count": 1
+        }
+      ]
+    },
+    {
+      "label": "Exchange Possible",
+      "parent_slug": null,
+      "slug": "filter_attr_1508_exchange_possible",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1508,
+      "attr_name": "Exchange Possible",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1508_exchange_possible",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Excavators",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/excavators.png",
+          "filters": {
+            "filter_attr_150_type": "Excavators"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Forklifts",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/forklifts.png",
+          "filters": {
+            "filter_attr_150_type": "Forklifts"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cranes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/cranes.png",
+          "filters": {
+            "filter_attr_150_type": "Cranes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Tractors",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/tractors.png",
+          "filters": {
+            "filter_attr_150_type": "Tractors"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Bulldozers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/bulldozers.png",
+          "filters": {
+            "filter_attr_150_type": "Bulldozers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Compactors",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/compactors.png",
+          "filters": {
+            "filter_attr_150_type": "Compactors"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Backhoe Loaders",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/heavy-equipment/backhoe-loaders.png",
+          "filters": {
+            "filter_attr_150_type": "Backhoe Loaders"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_150_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_150_type"
+    }
+  ]
+}

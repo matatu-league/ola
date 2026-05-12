@@ -1,0 +1,710 @@
+{
+  "total": 5481,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 95000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 13000,
+          "label": "Under 13 K",
+          "item_count": 328
+        },
+        {
+          "from": 13000,
+          "to": 50000,
+          "label": "13 - 50 K",
+          "item_count": 1315
+        },
+        {
+          "from": 50000,
+          "to": 210000,
+          "label": "50 - 210 K",
+          "item_count": 2192
+        },
+        {
+          "from": 210000,
+          "to": 2600000,
+          "label": "210 K - 2.6 M",
+          "item_count": 1370
+        },
+        {
+          "from": 2600000,
+          "to": null,
+          "label": "More than 2.6 M",
+          "item_count": 274
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1641_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1642,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1641_type",
+      "possible_values": [
+        {
+          "value": "Alarm Systems"
+        },
+        {
+          "value": "Baggage Scanners"
+        },
+        {
+          "value": "Barriers"
+        },
+        {
+          "value": "Biometric Machines"
+        },
+        {
+          "value": "Card Lock Systems"
+        },
+        {
+          "value": "Caution Tapes"
+        },
+        {
+          "value": "Ear Protection"
+        },
+        {
+          "value": "Emergency Eyewash Stations"
+        },
+        {
+          "value": "Face Shields"
+        },
+        {
+          "value": "Fall Protection"
+        },
+        {
+          "value": "Fire Extinguisher"
+        },
+        {
+          "value": "Gas Detectors & Alarms"
+        },
+        {
+          "value": "Helmets"
+        },
+        {
+          "value": "Key Boxes"
+        },
+        {
+          "value": "Life Jackets"
+        },
+        {
+          "value": "Lifebuoys"
+        },
+        {
+          "value": "Metal Detectors"
+        },
+        {
+          "value": "Nose Masks"
+        },
+        {
+          "value": "Reflective Tapes"
+        },
+        {
+          "value": "Respirators"
+        },
+        {
+          "value": "Safes & Cash Boxes"
+        },
+        {
+          "value": "Safety Gloves & Sleeves"
+        },
+        {
+          "value": "Safety Goggles & Glasses"
+        },
+        {
+          "value": "Safety Signs"
+        },
+        {
+          "value": "Safetywear"
+        },
+        {
+          "value": "Smoke Detectors"
+        },
+        {
+          "value": "Survival Blankets"
+        },
+        {
+          "value": "Traffic Batons"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Fire Extinguisher"
+        },
+        {
+          "value": "Helmets"
+        },
+        {
+          "value": "Safes & Cash Boxes"
+        },
+        {
+          "value": "Safety Gloves & Sleeves"
+        },
+        {
+          "value": "Safetywear"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3699_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 3699,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3699_brand",
+      "possible_values": [
+        {
+          "value": "3M"
+        },
+        {
+          "value": "Ace-Tek"
+        },
+        {
+          "value": "Afo"
+        },
+        {
+          "value": "Amagara"
+        },
+        {
+          "value": "Amblers"
+        },
+        {
+          "value": "American Safety"
+        },
+        {
+          "value": "American Steel"
+        },
+        {
+          "value": "Angus"
+        },
+        {
+          "value": "Ansell"
+        },
+        {
+          "value": "Aqara"
+        },
+        {
+          "value": "Arit"
+        },
+        {
+          "value": "Armstrong"
+        },
+        {
+          "value": "Ayg"
+        },
+        {
+          "value": "Bajik"
+        },
+        {
+          "value": "Beta"
+        },
+        {
+          "value": "Bmi"
+        },
+        {
+          "value": "Booil"
+        },
+        {
+          "value": "BRK Electronics"
+        },
+        {
+          "value": "Brk Electronics"
+        },
+        {
+          "value": "Brother"
+        },
+        {
+          "value": "Bryk"
+        },
+        {
+          "value": "Bump Cap"
+        },
+        {
+          "value": "C Tec"
+        },
+        {
+          "value": "C Tech"
+        },
+        {
+          "value": "Carhartt"
+        },
+        {
+          "value": "Cash Box"
+        },
+        {
+          "value": "CAT"
+        },
+        {
+          "value": "Classic"
+        },
+        {
+          "value": "Clemco"
+        },
+        {
+          "value": "Clixar"
+        },
+        {
+          "value": "Condor"
+        },
+        {
+          "value": "Cooper"
+        },
+        {
+          "value": "Crc"
+        },
+        {
+          "value": "Delta Plus"
+        },
+        {
+          "value": "DEWALT"
+        },
+        {
+          "value": "Drager"
+        },
+        {
+          "value": "DuPont"
+        },
+        {
+          "value": "Elten"
+        },
+        {
+          "value": "Empiral"
+        },
+        {
+          "value": "Euro Safety"
+        },
+        {
+          "value": "Firstar"
+        },
+        {
+          "value": "Flyton"
+        },
+        {
+          "value": "Galaxy"
+        },
+        {
+          "value": "Garrett"
+        },
+        {
+          "value": "Geepee"
+        },
+        {
+          "value": "Greenfield"
+        },
+        {
+          "value": "Gubabi Safe"
+        },
+        {
+          "value": "Hard Mark"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "Hochiki"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Jsp"
+        },
+        {
+          "value": "Jungle Rider"
+        },
+        {
+          "value": "Kappler"
+        },
+        {
+          "value": "Kentec"
+        },
+        {
+          "value": "Kn95"
+        },
+        {
+          "value": "Kong"
+        },
+        {
+          "value": "Lion King"
+        },
+        {
+          "value": "Made In China"
+        },
+        {
+          "value": "Masco Landjet"
+        },
+        {
+          "value": "Maxiflex"
+        },
+        {
+          "value": "Maxtech"
+        },
+        {
+          "value": "Mp"
+        },
+        {
+          "value": "Msa"
+        },
+        {
+          "value": "Nemtek"
+        },
+        {
+          "value": "Np"
+        },
+        {
+          "value": "Pioneer"
+        },
+        {
+          "value": "PiP"
+        },
+        {
+          "value": "Portwest"
+        },
+        {
+          "value": "Powder"
+        },
+        {
+          "value": "Prime Captain"
+        },
+        {
+          "value": "Pro Safe"
+        },
+        {
+          "value": "Pyramex"
+        },
+        {
+          "value": "Red Cap"
+        },
+        {
+          "value": "Red Horse"
+        },
+        {
+          "value": "Redwings"
+        },
+        {
+          "value": "Rockland"
+        },
+        {
+          "value": "Rocklander"
+        },
+        {
+          "value": "Safetoe"
+        },
+        {
+          "value": "Safety Boy"
+        },
+        {
+          "value": "Safety Jogger"
+        },
+        {
+          "value": "Sea Horse"
+        },
+        {
+          "value": "Seal"
+        },
+        {
+          "value": "Semonth"
+        },
+        {
+          "value": "Skywalker"
+        },
+        {
+          "value": "Smartlock"
+        },
+        {
+          "value": "So Safe"
+        },
+        {
+          "value": "Solas"
+        },
+        {
+          "value": "Super Steel"
+        },
+        {
+          "value": "Superscanner"
+        },
+        {
+          "value": "Suprema"
+        },
+        {
+          "value": "Thermsafe"
+        },
+        {
+          "value": "Timbarland"
+        },
+        {
+          "value": "Total"
+        },
+        {
+          "value": "Trucker"
+        },
+        {
+          "value": "Tuya"
+        },
+        {
+          "value": "Tyvek"
+        },
+        {
+          "value": "Ultimate"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Uvex"
+        },
+        {
+          "value": "Vaultex"
+        },
+        {
+          "value": "Vest"
+        },
+        {
+          "value": "Vidyut"
+        },
+        {
+          "value": "Vikings"
+        },
+        {
+          "value": "Wolwerine"
+        },
+        {
+          "value": "Yahama"
+        },
+        {
+          "value": "Yaktrax"
+        },
+        {
+          "value": "Yamaha"
+        },
+        {
+          "value": "Zeta"
+        },
+        {
+          "value": "Zion"
+        },
+        {
+          "value": "Zkteco"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "3M"
+        },
+        {
+          "value": "American Safety"
+        },
+        {
+          "value": "Cash Box"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Safety Boy"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1642_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1643,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1642_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Safetywear",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safetywear-and-equipment/safetywear.png",
+          "filters": {
+            "filter_attr_1641_type": "Safetywear"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Safes & Cash Boxes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safety-equipment/safes-and-cash-boxes.png",
+          "filters": {
+            "filter_attr_1641_type": "Safes & Cash Boxes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Helmets",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safetywear-and-equipment/helmets.png",
+          "filters": {
+            "filter_attr_1641_type": "Helmets"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Fire Extinguisher",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safetywear-and-equipment/fire-extinguisher.png",
+          "filters": {
+            "filter_attr_1641_type": "Fire Extinguisher"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Safety Gloves & Sleeves",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safetywear-and-equipment/safety-gloves.png",
+          "filters": {
+            "filter_attr_1641_type": "Safety Gloves & Sleeves"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Metal Detectors",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safetywear-and-equipment/metal-detectors.png",
+          "filters": {
+            "filter_attr_1641_type": "Metal Detectors"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Safety Signs",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/safetywear-and-equipment/safety-signs.png",
+          "filters": {
+            "filter_attr_1641_type": "Safety Signs"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1641_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1641_type"
+    }
+  ]
+}

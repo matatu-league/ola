@@ -1,0 +1,814 @@
+{
+  "total": 3977,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1500,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 8500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 238
+        },
+        {
+          "from": 20000,
+          "to": 50000,
+          "label": "20 - 50 K",
+          "item_count": 954
+        },
+        {
+          "from": 50000,
+          "to": 180000,
+          "label": "50 - 180 K",
+          "item_count": 1590
+        },
+        {
+          "from": 180000,
+          "to": 650000,
+          "label": "180 - 650 K",
+          "item_count": 994
+        },
+        {
+          "from": 650000,
+          "to": null,
+          "label": "More than 650 K",
+          "item_count": 198
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1500_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1500,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1500_type",
+      "possible_values": [
+        {
+          "value": "Automotive Tools"
+        },
+        {
+          "value": "Axes"
+        },
+        {
+          "value": "Band Saws"
+        },
+        {
+          "value": "Bolt Cutters"
+        },
+        {
+          "value": "Cable Cutters"
+        },
+        {
+          "value": "Cable Lugs"
+        },
+        {
+          "value": "Chisels"
+        },
+        {
+          "value": "Clamps & Vises"
+        },
+        {
+          "value": "Crimping Tools"
+        },
+        {
+          "value": "Cutlass"
+        },
+        {
+          "value": "Cutting Machines"
+        },
+        {
+          "value": "Cutting Torches"
+        },
+        {
+          "value": "Glass Lifters"
+        },
+        {
+          "value": "Hammers"
+        },
+        {
+          "value": "Hand Drills"
+        },
+        {
+          "value": "Hand Riveters"
+        },
+        {
+          "value": "Hand Trucks"
+        },
+        {
+          "value": "Ladders"
+        },
+        {
+          "value": "Marine Ropes"
+        },
+        {
+          "value": "Paint Rollers"
+        },
+        {
+          "value": "Paint Sprayers"
+        },
+        {
+          "value": "Pincers"
+        },
+        {
+          "value": "Pipe Benders"
+        },
+        {
+          "value": "Planers"
+        },
+        {
+          "value": "Pliers"
+        },
+        {
+          "value": "Sandpaper"
+        },
+        {
+          "value": "Saws"
+        },
+        {
+          "value": "Scrappers"
+        },
+        {
+          "value": "Screwdrivers"
+        },
+        {
+          "value": "Sealant Guns"
+        },
+        {
+          "value": "Shovels"
+        },
+        {
+          "value": "Snatch Blocks"
+        },
+        {
+          "value": "Snip Cutters"
+        },
+        {
+          "value": "Staplers"
+        },
+        {
+          "value": "Tagging Guns"
+        },
+        {
+          "value": "Tool Boxes"
+        },
+        {
+          "value": "Tool Sets"
+        },
+        {
+          "value": "Tracing Wheels"
+        },
+        {
+          "value": "Trowels"
+        },
+        {
+          "value": "Wrenches"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Crimping Tools"
+        },
+        {
+          "value": "Ladders"
+        },
+        {
+          "value": "Pliers"
+        },
+        {
+          "value": "Screwdrivers"
+        },
+        {
+          "value": "Tool Sets"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1604_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1604,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1604_brand",
+      "possible_values": [
+        {
+          "value": "3M"
+        },
+        {
+          "value": "Abro"
+        },
+        {
+          "value": "ACDelco"
+        },
+        {
+          "value": "Ace"
+        },
+        {
+          "value": "Acme"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "Aeg"
+        },
+        {
+          "value": "Afina"
+        },
+        {
+          "value": "AfriTools"
+        },
+        {
+          "value": "Aircat"
+        },
+        {
+          "value": "AJ & CMT"
+        },
+        {
+          "value": "Allen"
+        },
+        {
+          "value": "Allied"
+        },
+        {
+          "value": "Allway"
+        },
+        {
+          "value": "Alta Power"
+        },
+        {
+          "value": "Ames"
+        },
+        {
+          "value": "Amf"
+        },
+        {
+          "value": "Amp"
+        },
+        {
+          "value": "Ampco"
+        },
+        {
+          "value": "Ampro"
+        },
+        {
+          "value": "Amprobe"
+        },
+        {
+          "value": "Amtech"
+        },
+        {
+          "value": "Anex"
+        },
+        {
+          "value": "Ansell"
+        },
+        {
+          "value": "Anvil"
+        },
+        {
+          "value": "Apex"
+        },
+        {
+          "value": "Armstrong"
+        },
+        {
+          "value": "Arrow"
+        },
+        {
+          "value": "As Schwabe"
+        },
+        {
+          "value": "Atd Tools"
+        },
+        {
+          "value": "Ate"
+        },
+        {
+          "value": "Atlas"
+        },
+        {
+          "value": "Autel"
+        },
+        {
+          "value": "Awp"
+        },
+        {
+          "value": "Bahco"
+        },
+        {
+          "value": "Bandit"
+        },
+        {
+          "value": "Belle"
+        },
+        {
+          "value": "Berlan"
+        },
+        {
+          "value": "Bernardo"
+        },
+        {
+          "value": "Bessey"
+        },
+        {
+          "value": "Beta Tools"
+        },
+        {
+          "value": "BGS"
+        },
+        {
+          "value": "Big Horn"
+        },
+        {
+          "value": "Black & Decker"
+        },
+        {
+          "value": "Black Diamond"
+        },
+        {
+          "value": "Black Rhino"
+        },
+        {
+          "value": "Black+Decker"
+        },
+        {
+          "value": "Blum"
+        },
+        {
+          "value": "BMI"
+        },
+        {
+          "value": "Boa"
+        },
+        {
+          "value": "Bodum"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "Bosch"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Bricky"
+        },
+        {
+          "value": "Britool"
+        },
+        {
+          "value": "C.S. Osborne & Co."
+        },
+        {
+          "value": "Century"
+        },
+        {
+          "value": "Ck Tools"
+        },
+        {
+          "value": "Clarke"
+        },
+        {
+          "value": "Coleman"
+        },
+        {
+          "value": "Colt"
+        },
+        {
+          "value": "Connex"
+        },
+        {
+          "value": "Cox"
+        },
+        {
+          "value": "Dasco Pro"
+        },
+        {
+          "value": "Diamond"
+        },
+        {
+          "value": "Draper"
+        },
+        {
+          "value": "Dripless"
+        },
+        {
+          "value": "Durable"
+        },
+        {
+          "value": "Element"
+        },
+        {
+          "value": "Empire"
+        },
+        {
+          "value": "EMTOP"
+        },
+        {
+          "value": "Enkay"
+        },
+        {
+          "value": "Erem"
+        },
+        {
+          "value": "Essential Home"
+        },
+        {
+          "value": "Evolution"
+        },
+        {
+          "value": "Extech"
+        },
+        {
+          "value": "Fagor"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "Fowler"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "General Tools"
+        },
+        {
+          "value": "Genesis"
+        },
+        {
+          "value": "Gloor"
+        },
+        {
+          "value": "Grip"
+        },
+        {
+          "value": "H.K. Porter"
+        },
+        {
+          "value": "Handmade"
+        },
+        {
+          "value": "Harris"
+        },
+        {
+          "value": "Hdx"
+        },
+        {
+          "value": "Heavy Duty"
+        },
+        {
+          "value": "Hss"
+        },
+        {
+          "value": "INGCO"
+        },
+        {
+          "value": "Intex"
+        },
+        {
+          "value": "Jackly"
+        },
+        {
+          "value": "Jasco"
+        },
+        {
+          "value": "JCB"
+        },
+        {
+          "value": "Johnson"
+        },
+        {
+          "value": "Jumlee"
+        },
+        {
+          "value": "K Tool"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "King Tony"
+        },
+        {
+          "value": "Kitchenaid"
+        },
+        {
+          "value": "Kraftmann"
+        },
+        {
+          "value": "LDR"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "M.K. Morse"
+        },
+        {
+          "value": "Makita"
+        },
+        {
+          "value": "Maxam"
+        },
+        {
+          "value": "Milbar"
+        },
+        {
+          "value": "Mitutoyo"
+        },
+        {
+          "value": "Murex"
+        },
+        {
+          "value": "Olson"
+        },
+        {
+          "value": "Omega"
+        },
+        {
+          "value": "Peugeot"
+        },
+        {
+          "value": "Protool"
+        },
+        {
+          "value": "Raaco"
+        },
+        {
+          "value": "Raider"
+        },
+        {
+          "value": "Rider"
+        },
+        {
+          "value": "Rockwell"
+        },
+        {
+          "value": "Roper Whitney"
+        },
+        {
+          "value": "Rubi"
+        },
+        {
+          "value": "Sandflex"
+        },
+        {
+          "value": "Se"
+        },
+        {
+          "value": "Snap-On"
+        },
+        {
+          "value": "Star"
+        },
+        {
+          "value": "Sumner"
+        },
+        {
+          "value": "Tacwise"
+        },
+        {
+          "value": "Total"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Unic Kable"
+        },
+        {
+          "value": "Uniweld"
+        },
+        {
+          "value": "Upstrong"
+        },
+        {
+          "value": "Varo"
+        },
+        {
+          "value": "Vigex"
+        },
+        {
+          "value": "Von"
+        },
+        {
+          "value": "Wagner"
+        },
+        {
+          "value": "Weber"
+        },
+        {
+          "value": "Wera"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Wiss"
+        },
+        {
+          "value": "Wmf"
+        },
+        {
+          "value": "Yato"
+        },
+        {
+          "value": "Zyliss"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "3M"
+        },
+        {
+          "value": "Ace"
+        },
+        {
+          "value": "INGCO"
+        },
+        {
+          "value": "Se"
+        },
+        {
+          "value": "Total"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_593_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 593,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_593_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Tool Sets",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-tools/tools-sets.png",
+          "filters": {
+            "filter_attr_1500_type": "Tool Sets"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Ladders",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-tools/ladders.png",
+          "filters": {
+            "filter_attr_1500_type": "Ladders"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pliers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-tools/pliers.png",
+          "filters": {
+            "filter_attr_1500_type": "Pliers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Screwdrivers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-and-power-tools/screwdrivers.png",
+          "filters": {
+            "filter_attr_1500_type": "Screwdrivers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Crimping Tools",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-tools/crimping-tools.png",
+          "filters": {
+            "filter_attr_1500_type": "Crimping Tools"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Tool Boxes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-tools/tool-boxes.png",
+          "filters": {
+            "filter_attr_1500_type": "Tool Boxes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Wrenches",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hand-tools/wrenches.png",
+          "filters": {
+            "filter_attr_1500_type": "Wrenches"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1500_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1500_type"
+    }
+  ]
+}

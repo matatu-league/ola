@@ -1,0 +1,309 @@
+{
+  "total": 230,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 60000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1300000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 300000,
+          "label": "Under 300 K",
+          "item_count": 13
+        },
+        {
+          "from": 300000,
+          "to": 2200000,
+          "label": "300 K - 2.2 M",
+          "item_count": 55
+        },
+        {
+          "from": 2200000,
+          "to": 13000000,
+          "label": "2.2 - 13 M",
+          "item_count": 92
+        },
+        {
+          "from": 13000000,
+          "to": 50000000,
+          "label": "13 - 50 M",
+          "item_count": 57
+        },
+        {
+          "from": 50000000,
+          "to": null,
+          "label": "More than 50 M",
+          "item_count": 11
+        }
+      ]
+    },
+    {
+      "label": "Property Type",
+      "parent_slug": null,
+      "slug": "filter_attr_201_property_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": null,
+      "is_multiple": false,
+      "attr_id": 201,
+      "attr_name": "Property Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_201_property_type",
+      "possible_values": [
+        {
+          "value": "Apartment"
+        },
+        {
+          "value": "Complex"
+        },
+        {
+          "value": "Factory"
+        },
+        {
+          "value": "Garage"
+        },
+        {
+          "value": "Hotel"
+        },
+        {
+          "value": "Office Space"
+        },
+        {
+          "value": "Open Space"
+        },
+        {
+          "value": "Plaza"
+        },
+        {
+          "value": "Restaurant"
+        },
+        {
+          "value": "Salon"
+        },
+        {
+          "value": "School"
+        },
+        {
+          "value": "Shop"
+        },
+        {
+          "value": "Warehouse"
+        },
+        {
+          "value": "Workshop"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Square Metres",
+      "parent_slug": null,
+      "slug": "filter_attr_202_square_meters",
+      "attr_type": "int",
+      "filter_placeholder": null,
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 202,
+      "attr_name": "Square Metres",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_202_square_meters",
+      "unit": "sqm",
+      "filter_data": {
+        "min": {
+          "fieldname": "filter_attr_202_square_meters__min",
+          "default": 10,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "filter_attr_202_square_meters__max",
+          "default": 161265,
+          "value": ""
+        }
+      },
+      "prefill_options": []
+    },
+    {
+      "label": "Furnishing",
+      "parent_slug": null,
+      "slug": "filter_attr_1383_furnishing",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1383,
+      "attr_name": "Furnishing",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1383_furnishing",
+      "possible_values": [
+        {
+          "value": "Furnished"
+        },
+        {
+          "value": "Semi-Furnished"
+        },
+        {
+          "value": "Unfurnished"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1579_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1579,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1579_condition",
+      "possible_values": [
+        {
+          "value": "Fairly Used"
+        },
+        {
+          "value": "Newly Built",
+          "title": "Newly-Built"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Office Space",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property/office.png",
+          "filters": {
+            "filter_attr_201_property_type": "Office Space"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Warehouse",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property/warehouse.png",
+          "filters": {
+            "filter_attr_201_property_type": "Warehouse"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shop",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property/Shop.png",
+          "filters": {
+            "filter_attr_201_property_type": "Shop"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hotel",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property-for-rent/hotel.png",
+          "filters": {
+            "filter_attr_201_property_type": "Hotel"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Apartment",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property/apartment.png",
+          "filters": {
+            "filter_attr_201_property_type": "Apartment"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Open Space",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property/open-space.png",
+          "filters": {
+            "filter_attr_201_property_type": "Open Space"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Complex",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/commercial-property/complex.png",
+          "filters": {
+            "filter_attr_201_property_type": "Complex"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_201_property_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_201_property_type"
+    }
+  ]
+}

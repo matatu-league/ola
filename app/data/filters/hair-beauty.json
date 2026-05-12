@@ -1,0 +1,594 @@
+{
+  "total": 1927,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 90,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 4500009,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 115
+        },
+        {
+          "from": 20000,
+          "to": 35000,
+          "label": "20 - 35 K",
+          "item_count": 462
+        },
+        {
+          "from": 35000,
+          "to": 100000,
+          "label": "35 - 100 K",
+          "item_count": 770
+        },
+        {
+          "from": 100000,
+          "to": 400000,
+          "label": "100 - 400 K",
+          "item_count": 481
+        },
+        {
+          "from": 400000,
+          "to": null,
+          "label": "More than 400 K",
+          "item_count": 96
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1589_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1589,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1589_brand",
+      "possible_values": [
+        {
+          "value": "365"
+        },
+        {
+          "value": "A&G"
+        },
+        {
+          "value": "Abba"
+        },
+        {
+          "value": "Adore"
+        },
+        {
+          "value": "African Pride"
+        },
+        {
+          "value": "AfroShe"
+        },
+        {
+          "value": "Ag Adriano Goldschmied"
+        },
+        {
+          "value": "Agadir"
+        },
+        {
+          "value": "Aichun Beauty"
+        },
+        {
+          "value": "Alfaparf Milano"
+        },
+        {
+          "value": "Alorepair"
+        },
+        {
+          "value": "Alterna"
+        },
+        {
+          "value": "Amika"
+        },
+        {
+          "value": "Andalou Naturals"
+        },
+        {
+          "value": "As I Am"
+        },
+        {
+          "value": "Aunt Jackie'S"
+        },
+        {
+          "value": "Avon"
+        },
+        {
+          "value": "Beard Master"
+        },
+        {
+          "value": "Bedhead"
+        },
+        {
+          "value": "Bergamot"
+        },
+        {
+          "value": "Berina"
+        },
+        {
+          "value": "Beyond Beauty"
+        },
+        {
+          "value": "Bigen"
+        },
+        {
+          "value": "Blue Magic"
+        },
+        {
+          "value": "Bobbi Boss"
+        },
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Brazilian Blowout"
+        },
+        {
+          "value": "Cantu"
+        },
+        {
+          "value": "Caravan"
+        },
+        {
+          "value": "Clean"
+        },
+        {
+          "value": "Clinique"
+        },
+        {
+          "value": "Cover Your Gray"
+        },
+        {
+          "value": "Creme Of Nature"
+        },
+        {
+          "value": "Curls"
+        },
+        {
+          "value": "Dark & Lovely"
+        },
+        {
+          "value": "Dax"
+        },
+        {
+          "value": "Dexe"
+        },
+        {
+          "value": "Doo Gro"
+        },
+        {
+          "value": "Dove"
+        },
+        {
+          "value": "Dr. Miracle's"
+        },
+        {
+          "value": "Eco"
+        },
+        {
+          "value": "Eelhoe"
+        },
+        {
+          "value": "Eo"
+        },
+        {
+          "value": "Essence"
+        },
+        {
+          "value": "Fantasia"
+        },
+        {
+          "value": "Fashion"
+        },
+        {
+          "value": "Garnier"
+        },
+        {
+          "value": "Gatsby"
+        },
+        {
+          "value": "Ghost Bond"
+        },
+        {
+          "value": "Got2B"
+        },
+        {
+          "value": "Hawaiian Silky"
+        },
+        {
+          "value": "Head"
+        },
+        {
+          "value": "Head & Shoulders"
+        },
+        {
+          "value": "Healthy Hair"
+        },
+        {
+          "value": "Himalaya"
+        },
+        {
+          "value": "Hollywood Beauty"
+        },
+        {
+          "value": "Ion"
+        },
+        {
+          "value": "Jamaican"
+        },
+        {
+          "value": "Jamaican Mango & Lime"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Kinky-Curly"
+        },
+        {
+          "value": "Kirkland"
+        },
+        {
+          "value": "Kuza"
+        },
+        {
+          "value": "L'Oreal"
+        },
+        {
+          "value": "L'Uodais"
+        },
+        {
+          "value": "Lancome"
+        },
+        {
+          "value": "Lucky Brand"
+        },
+        {
+          "value": "Ma"
+        },
+        {
+          "value": "Mega Growth"
+        },
+        {
+          "value": "Mielle"
+        },
+        {
+          "value": "Moroccanoil"
+        },
+        {
+          "value": "Motions"
+        },
+        {
+          "value": "Movit"
+        },
+        {
+          "value": "Natura"
+        },
+        {
+          "value": "Natural Look"
+        },
+        {
+          "value": "Non Applicabile"
+        },
+        {
+          "value": "Organix"
+        },
+        {
+          "value": "Origins"
+        },
+        {
+          "value": "Ors"
+        },
+        {
+          "value": "Osmo"
+        },
+        {
+          "value": "Pantene"
+        },
+        {
+          "value": "Pureology"
+        },
+        {
+          "value": "Rogaine"
+        },
+        {
+          "value": "Royal"
+        },
+        {
+          "value": "Satin"
+        },
+        {
+          "value": "Schwarzkopf"
+        },
+        {
+          "value": "Sexy Hair"
+        },
+        {
+          "value": "Shea Moisture"
+        },
+        {
+          "value": "Sulfur 8"
+        },
+        {
+          "value": "Sunny Isle"
+        },
+        {
+          "value": "Sure"
+        },
+        {
+          "value": "Tcb"
+        },
+        {
+          "value": "The Body Shop"
+        },
+        {
+          "value": "Tigi"
+        },
+        {
+          "value": "Toppik"
+        },
+        {
+          "value": "Tresemme"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Veet"
+        },
+        {
+          "value": "Virgin"
+        },
+        {
+          "value": "Vitale"
+        },
+        {
+          "value": "Wild Growth"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "African Pride"
+        },
+        {
+          "value": "Cantu"
+        },
+        {
+          "value": "Curls"
+        },
+        {
+          "value": "Kirkland"
+        },
+        {
+          "value": "Non Applicabile"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_382_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 382,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_382_type",
+      "possible_values": [
+        {
+          "value": "Conditioners"
+        },
+        {
+          "value": "Hair Brushes & Combs"
+        },
+        {
+          "value": "Hair Care & Styling Sets"
+        },
+        {
+          "value": "Hair Color Products"
+        },
+        {
+          "value": "Hair Extensions & Wigs"
+        },
+        {
+          "value": "Hair Masks"
+        },
+        {
+          "value": "Hair Perms"
+        },
+        {
+          "value": "Hair Relaxers & Straightening Products"
+        },
+        {
+          "value": "Hair Serums"
+        },
+        {
+          "value": "Hair Treatments & Oils"
+        },
+        {
+          "value": "Heat Protectors"
+        },
+        {
+          "value": "Shampoos"
+        },
+        {
+          "value": "Styling Products"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_4334_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4334,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4334_gender",
+      "possible_values": [
+        {
+          "value": "Female"
+        },
+        {
+          "value": "Male"
+        },
+        {
+          "value": "Unisex"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Hair Extensions & Wigs",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/wigs.png",
+          "filters": {
+            "filter_attr_382_type": "Hair Extensions & Wigs"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hair Treatments & Oils",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/hair-oils.png",
+          "filters": {
+            "filter_attr_382_type": "Hair Treatments & Oils"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hair Care & Styling Sets",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/care-and-styling-sets.png",
+          "filters": {
+            "filter_attr_382_type": "Hair Care & Styling Sets"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Conditioners",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/conditioner.png",
+          "filters": {
+            "filter_attr_382_type": "Conditioners"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shampoos",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/shampoo.png",
+          "filters": {
+            "filter_attr_382_type": "Shampoos"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hair Serums",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/hair-serrums.png",
+          "filters": {
+            "filter_attr_382_type": "Hair Serums"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hair Color Products",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/hair-beauty/color-products.png",
+          "filters": {
+            "filter_attr_382_type": "Hair Color Products"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_382_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_382_type"
+    }
+  ]
+}

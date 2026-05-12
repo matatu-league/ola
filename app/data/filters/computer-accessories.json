@@ -1,0 +1,902 @@
+{
+  "total": 15387,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 500,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 9400000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 923
+        },
+        {
+          "from": 20000,
+          "to": 50000,
+          "label": "20 - 50 K",
+          "item_count": 3692
+        },
+        {
+          "from": 50000,
+          "to": 120000,
+          "label": "50 - 120 K",
+          "item_count": 6154
+        },
+        {
+          "from": 120000,
+          "to": 380000,
+          "label": "120 - 380 K",
+          "item_count": 3846
+        },
+        {
+          "from": 380000,
+          "to": null,
+          "label": "More than 380 K",
+          "item_count": 769
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_365_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 365,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_365_brand",
+      "possible_values": [
+        {
+          "value": "4K"
+        },
+        {
+          "value": "4K  Ultrahd"
+        },
+        {
+          "value": "4K Hdmi"
+        },
+        {
+          "value": "Acer"
+        },
+        {
+          "value": "Adesso"
+        },
+        {
+          "value": "Airsky"
+        },
+        {
+          "value": "Airspace"
+        },
+        {
+          "value": "Alienware"
+        },
+        {
+          "value": "Allsop"
+        },
+        {
+          "value": "Alua"
+        },
+        {
+          "value": "Aluratek"
+        },
+        {
+          "value": "Anker"
+        },
+        {
+          "value": "Aoc"
+        },
+        {
+          "value": "APC"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Arduino"
+        },
+        {
+          "value": "Arit"
+        },
+        {
+          "value": "Arozzi"
+        },
+        {
+          "value": "ASUS"
+        },
+        {
+          "value": "Atlantic"
+        },
+        {
+          "value": "Atlona"
+        },
+        {
+          "value": "Atouch"
+        },
+        {
+          "value": "AZIO"
+        },
+        {
+          "value": "Barska"
+        },
+        {
+          "value": "Baseus"
+        },
+        {
+          "value": "Belkin"
+        },
+        {
+          "value": "Benq"
+        },
+        {
+          "value": "Bolt"
+        },
+        {
+          "value": "Bracketron"
+        },
+        {
+          "value": "BTI"
+        },
+        {
+          "value": "Buyor"
+        },
+        {
+          "value": "Canon"
+        },
+        {
+          "value": "Case Logic"
+        },
+        {
+          "value": "Casio"
+        },
+        {
+          "value": "Ch-31"
+        },
+        {
+          "value": "ChargeHub"
+        },
+        {
+          "value": "Cisco"
+        },
+        {
+          "value": "Coolbell"
+        },
+        {
+          "value": "Cooler Master"
+        },
+        {
+          "value": "Cordinate"
+        },
+        {
+          "value": "Crown"
+        },
+        {
+          "value": "Cursor"
+        },
+        {
+          "value": "CyberPower"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "Dantona"
+        },
+        {
+          "value": "Das Keyboard"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Dermalog"
+        },
+        {
+          "value": "Digirich"
+        },
+        {
+          "value": "Digital Innovations"
+        },
+        {
+          "value": "Digital Persona"
+        },
+        {
+          "value": "Dintek"
+        },
+        {
+          "value": "Dynex"
+        },
+        {
+          "value": "Earldom"
+        },
+        {
+          "value": "Eggtronic"
+        },
+        {
+          "value": "Enet"
+        },
+        {
+          "value": "ENHANCE"
+        },
+        {
+          "value": "Epson"
+        },
+        {
+          "value": "Ethernet"
+        },
+        {
+          "value": "Ezcap"
+        },
+        {
+          "value": "F & K"
+        },
+        {
+          "value": "Fellowes"
+        },
+        {
+          "value": "Fujitsu"
+        },
+        {
+          "value": "Futronic"
+        },
+        {
+          "value": "Garmin"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Godox"
+        },
+        {
+          "value": "Google Chrome Cast"
+        },
+        {
+          "value": "Grandstream"
+        },
+        {
+          "value": "Green Lion"
+        },
+        {
+          "value": "Havit"
+        },
+        {
+          "value": "Haysenser"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Hsdpa"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Huion"
+        },
+        {
+          "value": "Hyper"
+        },
+        {
+          "value": "HyperX"
+        },
+        {
+          "value": "Imice"
+        },
+        {
+          "value": "Infinix"
+        },
+        {
+          "value": "Infocus"
+        },
+        {
+          "value": "IOGEAR"
+        },
+        {
+          "value": "Jabra"
+        },
+        {
+          "value": "Jaster"
+        },
+        {
+          "value": "Jbl"
+        },
+        {
+          "value": "Jedel"
+        },
+        {
+          "value": "Kaspersky"
+        },
+        {
+          "value": "Kensington"
+        },
+        {
+          "value": "Keychron"
+        },
+        {
+          "value": "Kid Lid"
+        },
+        {
+          "value": "Kingbank"
+        },
+        {
+          "value": "Kingston"
+        },
+        {
+          "value": "Kodak"
+        },
+        {
+          "value": "Kvm"
+        },
+        {
+          "value": "Lacie"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "Lexip"
+        },
+        {
+          "value": "Lg"
+        },
+        {
+          "value": "Lion"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Lowepro"
+        },
+        {
+          "value": "Mac Book"
+        },
+        {
+          "value": "Meetion"
+        },
+        {
+          "value": "Mercury"
+        },
+        {
+          "value": "Microkingdom"
+        },
+        {
+          "value": "Micron"
+        },
+        {
+          "value": "Microsoft"
+        },
+        {
+          "value": "Mind Reader"
+        },
+        {
+          "value": "Mousepad"
+        },
+        {
+          "value": "Msi"
+        },
+        {
+          "value": "N8"
+        },
+        {
+          "value": "Netlink"
+        },
+        {
+          "value": "New Age"
+        },
+        {
+          "value": "Onten"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Orico"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "Polycom"
+        },
+        {
+          "value": "Porodo"
+        },
+        {
+          "value": "Powerology"
+        },
+        {
+          "value": "Qlt"
+        },
+        {
+          "value": "Quirky"
+        },
+        {
+          "value": "Rapoo"
+        },
+        {
+          "value": "Razer"
+        },
+        {
+          "value": "Recoil"
+        },
+        {
+          "value": "ROCCAT"
+        },
+        {
+          "value": "Rocketfish"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Sandisk"
+        },
+        {
+          "value": "Santa"
+        },
+        {
+          "value": "Satechi"
+        },
+        {
+          "value": "Seagate"
+        },
+        {
+          "value": "Sencor"
+        },
+        {
+          "value": "Smaat"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Startech.Com"
+        },
+        {
+          "value": "SteelSeries"
+        },
+        {
+          "value": "Targus"
+        },
+        {
+          "value": "TG3 Electronics"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "TP-Link"
+        },
+        {
+          "value": "Transcend"
+        },
+        {
+          "value": "Transparent"
+        },
+        {
+          "value": "Ucom"
+        },
+        {
+          "value": "Ugreen"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Vivateck"
+        },
+        {
+          "value": "Wacom"
+        },
+        {
+          "value": "WD"
+        },
+        {
+          "value": "Western Digital"
+        },
+        {
+          "value": "Wiwu"
+        },
+        {
+          "value": "X&X"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Xprinter"
+        },
+        {
+          "value": "ZKTeco"
+        },
+        {
+          "value": "Zornwee"
+        },
+        {
+          "value": "ZOWIE"
+        },
+        {
+          "value": "ZTE"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Universal"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_238_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 238,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_238_type",
+      "possible_values": [
+        {
+          "value": "Adapters"
+        },
+        {
+          "value": "Barcode Printers"
+        },
+        {
+          "value": "Batteries"
+        },
+        {
+          "value": "Blank CDs & DVDs Discs",
+          "title": "Blank CD & DVD Disks"
+        },
+        {
+          "value": "Cables"
+        },
+        {
+          "value": "Capture Cards"
+        },
+        {
+          "value": "Card Readers"
+        },
+        {
+          "value": "Docking Stations"
+        },
+        {
+          "value": "Dongles"
+        },
+        {
+          "value": "Drive Enclosures & Docks"
+        },
+        {
+          "value": "Fiber-optic splitter",
+          "title": "Fiber-Optic Splitter"
+        },
+        {
+          "value": "Fingerprint Scanners"
+        },
+        {
+          "value": "Flash Drives"
+        },
+        {
+          "value": "Graphics Tablet"
+        },
+        {
+          "value": "Hard Drive Pouches"
+        },
+        {
+          "value": "HDMI Splitters"
+        },
+        {
+          "value": "Keyboard Cleaners"
+        },
+        {
+          "value": "Keyboard Protectors"
+        },
+        {
+          "value": "Keyboards"
+        },
+        {
+          "value": "Laptop Bags"
+        },
+        {
+          "value": "Laptop Cases"
+        },
+        {
+          "value": "Laptop Cooling Pads"
+        },
+        {
+          "value": "Laptop Locks"
+        },
+        {
+          "value": "Laptop Power Banks"
+        },
+        {
+          "value": "Laptop Skins"
+        },
+        {
+          "value": "Media Converters"
+        },
+        {
+          "value": "Memory Cards"
+        },
+        {
+          "value": "Mice"
+        },
+        {
+          "value": "Mouse Pads"
+        },
+        {
+          "value": "Network Patch Panels"
+        },
+        {
+          "value": "Patch Cord"
+        },
+        {
+          "value": "Portable SSD"
+        },
+        {
+          "value": "Presenters"
+        },
+        {
+          "value": "Stands & Holders"
+        },
+        {
+          "value": "Stylus Pens"
+        },
+        {
+          "value": "Tables"
+        },
+        {
+          "value": "Trackpad"
+        },
+        {
+          "value": "USB Hubs"
+        },
+        {
+          "value": "USB Lamps"
+        },
+        {
+          "value": "USB Wi-Fi Adapters",
+          "title": "USB WiFi Adapters"
+        },
+        {
+          "value": "Webcams"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Adapters"
+        },
+        {
+          "value": "Cables"
+        },
+        {
+          "value": "Keyboards"
+        },
+        {
+          "value": "Mice"
+        },
+        {
+          "value": "Stands & Holders"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_239_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 239,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_239_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Adapters",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/adapters.png",
+          "filters": {
+            "filter_attr_238_type": "Adapters"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cables",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/cables.png",
+          "filters": {
+            "filter_attr_238_type": "Cables"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Mice",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/mice.png",
+          "filters": {
+            "filter_attr_238_type": "Mice"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Keyboards",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/keyboards.png",
+          "filters": {
+            "filter_attr_238_type": "Keyboards"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Stands & Holders",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/stands-and-holders.png",
+          "filters": {
+            "filter_attr_238_type": "Stands & Holders"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USB Hubs",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/usb-hubs.png",
+          "filters": {
+            "filter_attr_238_type": "USB Hubs"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Flash Drives",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-accessories/flash-drives.png",
+          "filters": {
+            "filter_attr_238_type": "Flash Drives"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_238_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_238_type"
+    }
+  ]
+}

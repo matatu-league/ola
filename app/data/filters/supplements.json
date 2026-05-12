@@ -1,0 +1,1463 @@
+{
+  "total": 3841,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 3700000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 35000,
+          "label": "Under 35 K",
+          "item_count": 230
+        },
+        {
+          "from": 35000,
+          "to": 66000,
+          "label": "35 - 66 K",
+          "item_count": 921
+        },
+        {
+          "from": 66000,
+          "to": 140000,
+          "label": "66 - 140 K",
+          "item_count": 1536
+        },
+        {
+          "from": 140000,
+          "to": 270000,
+          "label": "140 - 270 K",
+          "item_count": 960
+        },
+        {
+          "from": 270000,
+          "to": null,
+          "label": "More than 270 K",
+          "item_count": 192
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1699_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1699,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1699_brand",
+      "possible_values": [
+        {
+          "value": "21St Century"
+        },
+        {
+          "value": "4Life"
+        },
+        {
+          "value": "5-Hour Energy"
+        },
+        {
+          "value": "A&G"
+        },
+        {
+          "value": "Abbott"
+        },
+        {
+          "value": "Ace"
+        },
+        {
+          "value": "Aci"
+        },
+        {
+          "value": "Acorbic"
+        },
+        {
+          "value": "Aichun Beauty"
+        },
+        {
+          "value": "Alfa"
+        },
+        {
+          "value": "Alli"
+        },
+        {
+          "value": "Alliance Global"
+        },
+        {
+          "value": "Allmax"
+        },
+        {
+          "value": "Amazing Herbs"
+        },
+        {
+          "value": "American Health"
+        },
+        {
+          "value": "Animal Pump"
+        },
+        {
+          "value": "Apetamin"
+        },
+        {
+          "value": "Apple Skin"
+        },
+        {
+          "value": "Applied Nutrition"
+        },
+        {
+          "value": "APS"
+        },
+        {
+          "value": "Azo"
+        },
+        {
+          "value": "Baidyanath"
+        },
+        {
+          "value": "Basic Supplement"
+        },
+        {
+          "value": "Beachbody"
+        },
+        {
+          "value": "Best Naturals"
+        },
+        {
+          "value": "Better Bodies"
+        },
+        {
+          "value": "Bf Suma"
+        },
+        {
+          "value": "Biogenic"
+        },
+        {
+          "value": "Biotrust"
+        },
+        {
+          "value": "BIYODE"
+        },
+        {
+          "value": "Body Fortress"
+        },
+        {
+          "value": "Bodybuilding Warehouse"
+        },
+        {
+          "value": "Boric Acid"
+        },
+        {
+          "value": "BPI"
+        },
+        {
+          "value": "Bragg"
+        },
+        {
+          "value": "BSN"
+        },
+        {
+          "value": "Bulk Powders"
+        },
+        {
+          "value": "California"
+        },
+        {
+          "value": "Cardiovax"
+        },
+        {
+          "value": "Cellucor"
+        },
+        {
+          "value": "Centrum"
+        },
+        {
+          "value": "Clean"
+        },
+        {
+          "value": "Crystal"
+        },
+        {
+          "value": "Daynee"
+        },
+        {
+          "value": "Detoxi Slim"
+        },
+        {
+          "value": "Doctor's Best"
+        },
+        {
+          "value": "Doterra"
+        },
+        {
+          "value": "Double Wood"
+        },
+        {
+          "value": "Douzi"
+        },
+        {
+          "value": "Dr Galaxy"
+        },
+        {
+          "value": "Dymatize"
+        },
+        {
+          "value": "Dymatize Nutrition"
+        },
+        {
+          "value": "Dynamic Health"
+        },
+        {
+          "value": "Dynance Global"
+        },
+        {
+          "value": "Earth'S Creation"
+        },
+        {
+          "value": "Edible Herbs"
+        },
+        {
+          "value": "Ensure"
+        },
+        {
+          "value": "Equate"
+        },
+        {
+          "value": "Essence"
+        },
+        {
+          "value": "Everhealth"
+        },
+        {
+          "value": "EVL"
+        },
+        {
+          "value": "Fairhaven Health"
+        },
+        {
+          "value": "Flat Tummy"
+        },
+        {
+          "value": "Flat Tummy Tea"
+        },
+        {
+          "value": "Focus Factor"
+        },
+        {
+          "value": "Fohow"
+        },
+        {
+          "value": "Force Factor"
+        },
+        {
+          "value": "Forever"
+        },
+        {
+          "value": "Forever Living"
+        },
+        {
+          "value": "Froza"
+        },
+        {
+          "value": "Frozen"
+        },
+        {
+          "value": "Futurebiotics"
+        },
+        {
+          "value": "Gaia"
+        },
+        {
+          "value": "GAT"
+        },
+        {
+          "value": "Germani"
+        },
+        {
+          "value": "Ghost"
+        },
+        {
+          "value": "Ght"
+        },
+        {
+          "value": "Gluta Berry"
+        },
+        {
+          "value": "Gluta Prime"
+        },
+        {
+          "value": "Gluta White"
+        },
+        {
+          "value": "Glutax"
+        },
+        {
+          "value": "Goli Nutrition"
+        },
+        {
+          "value": "Green World"
+        },
+        {
+          "value": "Gsk"
+        },
+        {
+          "value": "GU"
+        },
+        {
+          "value": "H.H.N.P"
+        },
+        {
+          "value": "Hairfinity"
+        },
+        {
+          "value": "Haliborange"
+        },
+        {
+          "value": "Healthaid"
+        },
+        {
+          "value": "Healthy Origins"
+        },
+        {
+          "value": "Hemani"
+        },
+        {
+          "value": "Heritage Store"
+        },
+        {
+          "value": "Himalaya"
+        },
+        {
+          "value": "Himalaya Health Care"
+        },
+        {
+          "value": "Holland & Barrett"
+        },
+        {
+          "value": "Honeymoon"
+        },
+        {
+          "value": "Horbaach"
+        },
+        {
+          "value": "Jarrow Formulas"
+        },
+        {
+          "value": "Jiangang"
+        },
+        {
+          "value": "KAL"
+        },
+        {
+          "value": "Kenbroth"
+        },
+        {
+          "value": "Kirkland Signature"
+        },
+        {
+          "value": "L'Il Critters"
+        },
+        {
+          "value": "Laroscorbine"
+        },
+        {
+          "value": "Life Extension"
+        },
+        {
+          "value": "Lilong"
+        },
+        {
+          "value": "Major"
+        },
+        {
+          "value": "Mason Natural"
+        },
+        {
+          "value": "Max International"
+        },
+        {
+          "value": "Mega"
+        },
+        {
+          "value": "Megafood"
+        },
+        {
+          "value": "Metabolic Nutrition"
+        },
+        {
+          "value": "MRM"
+        },
+        {
+          "value": "Musclemeds"
+        },
+        {
+          "value": "Muscletech"
+        },
+        {
+          "value": "Mutant"
+        },
+        {
+          "value": "Natrol"
+        },
+        {
+          "value": "Natural Factors"
+        },
+        {
+          "value": "Nature Craft"
+        },
+        {
+          "value": "Nature Leaf"
+        },
+        {
+          "value": "Nature Made"
+        },
+        {
+          "value": "Nature's Answer"
+        },
+        {
+          "value": "Nature's Blend"
+        },
+        {
+          "value": "Nature's Bounty"
+        },
+        {
+          "value": "Nature'S Field"
+        },
+        {
+          "value": "Nature's Life"
+        },
+        {
+          "value": "Nature's Plus"
+        },
+        {
+          "value": "Nature'S Truth"
+        },
+        {
+          "value": "Nature's Way"
+        },
+        {
+          "value": "Natures Aid"
+        },
+        {
+          "value": "Natures Craft"
+        },
+        {
+          "value": "Natures Cure"
+        },
+        {
+          "value": "Neocell"
+        },
+        {
+          "value": "Neolife"
+        },
+        {
+          "value": "NeoLife"
+        },
+        {
+          "value": "New Nordic"
+        },
+        {
+          "value": "Nordic Naturals"
+        },
+        {
+          "value": "Norland"
+        },
+        {
+          "value": "Now"
+        },
+        {
+          "value": "Now Foods"
+        },
+        {
+          "value": "Now Sports"
+        },
+        {
+          "value": "Nutrex"
+        },
+        {
+          "value": "Nutricost"
+        },
+        {
+          "value": "Olly"
+        },
+        {
+          "value": "One A Day"
+        },
+        {
+          "value": "Optimum Nutrition"
+        },
+        {
+          "value": "Orgain"
+        },
+        {
+          "value": "Organic Health"
+        },
+        {
+          "value": "Organic India"
+        },
+        {
+          "value": "Perfectil"
+        },
+        {
+          "value": "Pes"
+        },
+        {
+          "value": "Purely Inspired"
+        },
+        {
+          "value": "Puritan's Pride"
+        },
+        {
+          "value": "Rain"
+        },
+        {
+          "value": "Redcon1"
+        },
+        {
+          "value": "Revoobit"
+        },
+        {
+          "value": "Ronnie Coleman"
+        },
+        {
+          "value": "Satin Skinz"
+        },
+        {
+          "value": "Secret"
+        },
+        {
+          "value": "Seven Seas"
+        },
+        {
+          "value": "Shalina"
+        },
+        {
+          "value": "Six Star"
+        },
+        {
+          "value": "Slim Fast"
+        },
+        {
+          "value": "Smarty Pants"
+        },
+        {
+          "value": "Softhealth"
+        },
+        {
+          "value": "Solaray"
+        },
+        {
+          "value": "Solgar"
+        },
+        {
+          "value": "Source Naturals"
+        },
+        {
+          "value": "South Moon"
+        },
+        {
+          "value": "Sports Research"
+        },
+        {
+          "value": "Spring Valley"
+        },
+        {
+          "value": "Ssa"
+        },
+        {
+          "value": "Sundance"
+        },
+        {
+          "value": "Sundown Naturals"
+        },
+        {
+          "value": "Sunhome Technology"
+        },
+        {
+          "value": "Super Blend"
+        },
+        {
+          "value": "Superlife"
+        },
+        {
+          "value": "Supple"
+        },
+        {
+          "value": "Supreme Gluta White"
+        },
+        {
+          "value": "Swan Secret"
+        },
+        {
+          "value": "Swanson Health Products"
+        },
+        {
+          "value": "Thorne Research"
+        },
+        {
+          "value": "Tiens"
+        },
+        {
+          "value": "Ultimate Maca"
+        },
+        {
+          "value": "Ultimate Maca Plus"
+        },
+        {
+          "value": "Ultimate Nutrition"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Universal Nutrition"
+        },
+        {
+          "value": "USN"
+        },
+        {
+          "value": "Valupak"
+        },
+        {
+          "value": "Vasia Supplement"
+        },
+        {
+          "value": "Vitabiotics"
+        },
+        {
+          "value": "Vitafusion"
+        },
+        {
+          "value": "Vital"
+        },
+        {
+          "value": "Vital Proteins"
+        },
+        {
+          "value": "Viva"
+        },
+        {
+          "value": "Whey Protein"
+        },
+        {
+          "value": "Wins Town"
+        },
+        {
+          "value": "Winston"
+        },
+        {
+          "value": "WinsTown"
+        },
+        {
+          "value": "Youtheory"
+        },
+        {
+          "value": "Zarraz World"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "21St Century"
+        },
+        {
+          "value": "American Health"
+        },
+        {
+          "value": "Nature's Way"
+        },
+        {
+          "value": "Swanson Health Products"
+        },
+        {
+          "value": "Wins Town"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_523_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 523,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_523_type",
+      "possible_values": [
+        {
+          "value": "Adrenal Support Supplements"
+        },
+        {
+          "value": "Amino Acids"
+        },
+        {
+          "value": "Anti Typhoid Products"
+        },
+        {
+          "value": "Anti Aging Supplements",
+          "title": "Anti-Aging Supplements"
+        },
+        {
+          "value": "Antioxidants"
+        },
+        {
+          "value": "Ayurveda Supplements"
+        },
+        {
+          "value": "Beauty Supplements"
+        },
+        {
+          "value": "Bee Products"
+        },
+        {
+          "value": "Bladder Supplements"
+        },
+        {
+          "value": "Blood Sugar Support Supplements"
+        },
+        {
+          "value": "Blood Supplements"
+        },
+        {
+          "value": "Body Enlargement Supplements"
+        },
+        {
+          "value": "Bone, Joint & Cartilage Supplements"
+        },
+        {
+          "value": "Brain & Cognitive Supplements"
+        },
+        {
+          "value": "Children's Health Supplements"
+        },
+        {
+          "value": "Cholesterol Support Supplements"
+        },
+        {
+          "value": "Circulatory System Supplements"
+        },
+        {
+          "value": "Collagen Supplements"
+        },
+        {
+          "value": "Colon Supplements"
+        },
+        {
+          "value": "Common Cold & Flu Supplements"
+        },
+        {
+          "value": "Detox & Cleanse Supplements"
+        },
+        {
+          "value": "Detox Cleanses"
+        },
+        {
+          "value": "Diabetic Supplements"
+        },
+        {
+          "value": "Digestive System Supplements"
+        },
+        {
+          "value": "Electrolytes Supplements"
+        },
+        {
+          "value": "Energy Boosters"
+        },
+        {
+          "value": "Energy Supplements"
+        },
+        {
+          "value": "Enzyme Nutritional Supplements"
+        },
+        {
+          "value": "Eye Supplements"
+        },
+        {
+          "value": "Fat Acids"
+        },
+        {
+          "value": "Fertility Support"
+        },
+        {
+          "value": "Fish Oil & Omegas (EPA DHA)"
+        },
+        {
+          "value": "Glandular Extract Nutritional Supplements"
+        },
+        {
+          "value": "Greens & Superfoods Supplements"
+        },
+        {
+          "value": "Hair, Skin & Nails Supplements"
+        },
+        {
+          "value": "Heart & Cardiovascular System Supplements"
+        },
+        {
+          "value": "Herbal Supplements"
+        },
+        {
+          "value": "Immune System Boosters"
+        },
+        {
+          "value": "Lipid Nutritional Supplements"
+        },
+        {
+          "value": "Liver Supplements"
+        },
+        {
+          "value": "MCT Oil Nutritional Supplements"
+        },
+        {
+          "value": "Men's Health Supplements"
+        },
+        {
+          "value": "Menstrual & PMS Support Supplements"
+        },
+        {
+          "value": "Minerals Supplements"
+        },
+        {
+          "value": "Mood & Emotional Support Supplements"
+        },
+        {
+          "value": "Mushrooms Supplements"
+        },
+        {
+          "value": "Oral Health Supplements"
+        },
+        {
+          "value": "Pain Relief Supplements"
+        },
+        {
+          "value": "Prenatal Support"
+        },
+        {
+          "value": "Probiotics and Prebiotics"
+        },
+        {
+          "value": "Protein"
+        },
+        {
+          "value": "Respiratory System Supplements"
+        },
+        {
+          "value": "Seasonal Allergies Supplements"
+        },
+        {
+          "value": "Senior Health Supplements"
+        },
+        {
+          "value": "Sexual Health Supplements"
+        },
+        {
+          "value": "Sleep Supplements"
+        },
+        {
+          "value": "Sports Supplements"
+        },
+        {
+          "value": "Stem Cell Supplements"
+        },
+        {
+          "value": "Thyroid Support Supplements"
+        },
+        {
+          "value": "Urinary Tract Health Supplements"
+        },
+        {
+          "value": "Vitamin Supplements"
+        },
+        {
+          "value": "Weight-Gain Products"
+        },
+        {
+          "value": "Weight Loss Products",
+          "title": "Weight-Loss Products"
+        },
+        {
+          "value": "Women's Health Supplements"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Beauty Supplements"
+        },
+        {
+          "value": "Immune System Boosters"
+        },
+        {
+          "value": "Sports Supplements"
+        },
+        {
+          "value": "Vitamin Supplements"
+        },
+        {
+          "value": "Weight Loss Products",
+          "title": "Weight-Loss Products"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Formulation",
+      "parent_slug": null,
+      "slug": "filter_attr_583_formulation",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 583,
+      "attr_name": "Formulation",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_583_formulation",
+      "possible_values": [
+        {
+          "value": "Caplet"
+        },
+        {
+          "value": "Capsule"
+        },
+        {
+          "value": "Chewable"
+        },
+        {
+          "value": "Cream"
+        },
+        {
+          "value": "Crystal"
+        },
+        {
+          "value": "Drink"
+        },
+        {
+          "value": "Drops"
+        },
+        {
+          "value": "Effervescent Powder"
+        },
+        {
+          "value": "Effervescent Tablet"
+        },
+        {
+          "value": "Gel"
+        },
+        {
+          "value": "Granule"
+        },
+        {
+          "value": "Gum"
+        },
+        {
+          "value": "Gummy"
+        },
+        {
+          "value": "Liquid"
+        },
+        {
+          "value": "Lozenge"
+        },
+        {
+          "value": "Nutritional Bar"
+        },
+        {
+          "value": "Oil"
+        },
+        {
+          "value": "Paste"
+        },
+        {
+          "value": "Patch"
+        },
+        {
+          "value": "Pills"
+        },
+        {
+          "value": "Powder"
+        },
+        {
+          "value": "Sachet"
+        },
+        {
+          "value": "Shake"
+        },
+        {
+          "value": "Softgel"
+        },
+        {
+          "value": "Solid"
+        },
+        {
+          "value": "Spray"
+        },
+        {
+          "value": "Stick"
+        },
+        {
+          "value": "Strip"
+        },
+        {
+          "value": "Suppository"
+        },
+        {
+          "value": "Tablets"
+        },
+        {
+          "value": "Tea"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Capsule"
+        },
+        {
+          "value": "Powder"
+        },
+        {
+          "value": "Softgel"
+        },
+        {
+          "value": "Tablets"
+        },
+        {
+          "value": "Tea"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Age Group",
+      "parent_slug": null,
+      "slug": "filter_attr_589_age_group",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 589,
+      "attr_name": "Age Group",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_589_age_group",
+      "possible_values": [
+        {
+          "value": "All"
+        },
+        {
+          "value": "Baby"
+        },
+        {
+          "value": "Toddler"
+        },
+        {
+          "value": "Kids"
+        },
+        {
+          "value": "Teens"
+        },
+        {
+          "value": "Adult"
+        },
+        {
+          "value": "Senior"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Flavor",
+      "parent_slug": null,
+      "slug": "filter_attr_590_delete",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 590,
+      "attr_name": "Flavor",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_590_delete",
+      "possible_values": [
+        {
+          "value": "Watermelon"
+        },
+        {
+          "value": "Vanilla"
+        },
+        {
+          "value": "Unflavored"
+        },
+        {
+          "value": "Strawberry"
+        },
+        {
+          "value": "Spearmint"
+        },
+        {
+          "value": "Raspberry"
+        },
+        {
+          "value": "Pomegranate"
+        },
+        {
+          "value": "Pineapple"
+        },
+        {
+          "value": "Peach"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Nut"
+        },
+        {
+          "value": "Mint"
+        },
+        {
+          "value": "Matcha"
+        },
+        {
+          "value": "Mango"
+        },
+        {
+          "value": "Lime",
+          "title": "Limes"
+        },
+        {
+          "value": "Lemon"
+        },
+        {
+          "value": "Kiwi"
+        },
+        {
+          "value": "Honey"
+        },
+        {
+          "value": "Guava"
+        },
+        {
+          "value": "Grape"
+        },
+        {
+          "value": "Ginger"
+        },
+        {
+          "value": "Fruit"
+        },
+        {
+          "value": "Cranberry"
+        },
+        {
+          "value": "Coffee"
+        },
+        {
+          "value": "Coconut"
+        },
+        {
+          "value": "Citrus"
+        },
+        {
+          "value": "Cinnamon"
+        },
+        {
+          "value": "Chocolate"
+        },
+        {
+          "value": "Cherry"
+        },
+        {
+          "value": "Candy"
+        },
+        {
+          "value": "Blueberry"
+        },
+        {
+          "value": "Berry"
+        },
+        {
+          "value": "Beef"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Vanilla"
+        },
+        {
+          "value": "Unflavored"
+        },
+        {
+          "value": "Strawberry"
+        },
+        {
+          "value": "Fruit"
+        },
+        {
+          "value": "Chocolate"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "When to Take",
+      "parent_slug": null,
+      "slug": "filter_attr_3600_when_to_take",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 3600,
+      "attr_name": "When to Take",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3600_when_to_take",
+      "possible_values": [
+        {
+          "value": "After Meal"
+        },
+        {
+          "value": "After Workout"
+        },
+        {
+          "value": "Before Meal"
+        },
+        {
+          "value": "Before Workout"
+        },
+        {
+          "value": "During Meal"
+        },
+        {
+          "value": "During Workout"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 45 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 45000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 45 - 60 K",
+          "filters": {
+            "price_min": 45000,
+            "price_max": 60000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 60 - 100 K",
+          "filters": {
+            "price_min": 60000,
+            "price_max": 100000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 100 K",
+          "filters": {
+            "price_min": 100000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Immune System Boosters",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/vitamins-and-supplements/immune-sysyem-boosters.png",
+          "filters": {
+            "filter_attr_523_type": "Immune System Boosters"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Vitamin Supplements",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/vitamins-and-supplements/vitamins.png",
+          "filters": {
+            "filter_attr_523_type": "Vitamin Supplements"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Beauty Supplements",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/vitamins-and-supplements/beauty.png",
+          "filters": {
+            "filter_attr_523_type": "Beauty Supplements"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Weight-Loss Products",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/vitamins-and-supplements/weight-loss.png",
+          "filters": {
+            "filter_attr_523_type": "Weight Loss Products"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Sports Supplements",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/supplements/sports-supplements.png",
+          "filters": {
+            "filter_attr_523_type": "Sports Supplements"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Digestive System Supplements",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/supplements/digestive-system-supplements.png",
+          "filters": {
+            "filter_attr_523_type": "Digestive System Supplements"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Brain & Cognitive Supplements",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/supplements/brain-and-cognitive-supplements.png",
+          "filters": {
+            "filter_attr_523_type": "Brain & Cognitive Supplements"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_523_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_523_type"
+    }
+  ]
+}

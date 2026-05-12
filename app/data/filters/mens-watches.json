@@ -1,0 +1,868 @@
+{
+  "total": 4564,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 12000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 6000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 58000,
+          "label": "Under 58 K",
+          "item_count": 273
+        },
+        {
+          "from": 58000,
+          "to": 100000,
+          "label": "58 - 100 K",
+          "item_count": 1095
+        },
+        {
+          "from": 100000,
+          "to": 150000,
+          "label": "100 - 150 K",
+          "item_count": 1825
+        },
+        {
+          "from": 150000,
+          "to": 400000,
+          "label": "150 - 400 K",
+          "item_count": 1141
+        },
+        {
+          "from": 400000,
+          "to": null,
+          "label": "More than 400 K",
+          "item_count": 228
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_315_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 315,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_315_brand",
+      "possible_values": [
+        {
+          "value": "Acnos"
+        },
+        {
+          "value": "Aimecor"
+        },
+        {
+          "value": "Aldo"
+        },
+        {
+          "value": "Alexandre Christie"
+        },
+        {
+          "value": "Amazfit"
+        },
+        {
+          "value": "Anne Klein"
+        },
+        {
+          "value": "Antoine Preziuso"
+        },
+        {
+          "value": "Apple Watch"
+        },
+        {
+          "value": "Armani"
+        },
+        {
+          "value": "Audemars Piguet"
+        },
+        {
+          "value": "Awei"
+        },
+        {
+          "value": "Bell & Ross"
+        },
+        {
+          "value": "Bewell"
+        },
+        {
+          "value": "Biden"
+        },
+        {
+          "value": "BOBO BIRD"
+        },
+        {
+          "value": "Bomberg"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Breitling"
+        },
+        {
+          "value": "Btl"
+        },
+        {
+          "value": "Burberry"
+        },
+        {
+          "value": "Bvlgari"
+        },
+        {
+          "value": "Calvin Klein"
+        },
+        {
+          "value": "Carrera"
+        },
+        {
+          "value": "Cartier"
+        },
+        {
+          "value": "Casio"
+        },
+        {
+          "value": "Chanel"
+        },
+        {
+          "value": "Chenxi"
+        },
+        {
+          "value": "Chopard"
+        },
+        {
+          "value": "Citizen"
+        },
+        {
+          "value": "Ck"
+        },
+        {
+          "value": "Corum"
+        },
+        {
+          "value": "CT Scuderia"
+        },
+        {
+          "value": "Curren"
+        },
+        {
+          "value": "Daniel Wellington"
+        },
+        {
+          "value": "Diesel"
+        },
+        {
+          "value": "Dior"
+        },
+        {
+          "value": "Emporio Armani"
+        },
+        {
+          "value": "Fastrack"
+        },
+        {
+          "value": "Fendi"
+        },
+        {
+          "value": "Ferrari"
+        },
+        {
+          "value": "Festina"
+        },
+        {
+          "value": "Forsining"
+        },
+        {
+          "value": "Fossil"
+        },
+        {
+          "value": "Foster"
+        },
+        {
+          "value": "Franck Muller"
+        },
+        {
+          "value": "Frank Palmer"
+        },
+        {
+          "value": "G-Shock"
+        },
+        {
+          "value": "Gaiety"
+        },
+        {
+          "value": "Garmin"
+        },
+        {
+          "value": "Geneva"
+        },
+        {
+          "value": "Greenlion"
+        },
+        {
+          "value": "Gucci"
+        },
+        {
+          "value": "Guess"
+        },
+        {
+          "value": "Haiqin"
+        },
+        {
+          "value": "Hannah Martin"
+        },
+        {
+          "value": "Hiwatch"
+        },
+        {
+          "value": "Hublot"
+        },
+        {
+          "value": "Hugo Boss"
+        },
+        {
+          "value": "Ice Watch"
+        },
+        {
+          "value": "Invicta"
+        },
+        {
+          "value": "IWC Schaffhausen"
+        },
+        {
+          "value": "Jacob And Co"
+        },
+        {
+          "value": "Joefox"
+        },
+        {
+          "value": "Lamborghini"
+        },
+        {
+          "value": "LEVERET"
+        },
+        {
+          "value": "Longbo"
+        },
+        {
+          "value": "Longines"
+        },
+        {
+          "value": "Lookworld"
+        },
+        {
+          "value": "Louis Vuitton"
+        },
+        {
+          "value": "Luminous"
+        },
+        {
+          "value": "Maserati"
+        },
+        {
+          "value": "Megir"
+        },
+        {
+          "value": "Mercedes-Benz"
+        },
+        {
+          "value": "Mettle"
+        },
+        {
+          "value": "Michael Kors"
+        },
+        {
+          "value": "Mini Focus"
+        },
+        {
+          "value": "Monaco"
+        },
+        {
+          "value": "Montblanc"
+        },
+        {
+          "value": "Movado"
+        },
+        {
+          "value": "Naviforce"
+        },
+        {
+          "value": "Nibosi"
+        },
+        {
+          "value": "Nixon"
+        },
+        {
+          "value": "Olevs"
+        },
+        {
+          "value": "Omega"
+        },
+        {
+          "value": "Oraimo Smart Watch"
+        },
+        {
+          "value": "Panerai"
+        },
+        {
+          "value": "Patek Philippe"
+        },
+        {
+          "value": "Piaget"
+        },
+        {
+          "value": "Pintime Watch"
+        },
+        {
+          "value": "Poedagar"
+        },
+        {
+          "value": "Police"
+        },
+        {
+          "value": "Porsche"
+        },
+        {
+          "value": "Rado"
+        },
+        {
+          "value": "Rebirth"
+        },
+        {
+          "value": "Richard Mille"
+        },
+        {
+          "value": "Rolex"
+        },
+        {
+          "value": "Royal London"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Scuderia Ferrari"
+        },
+        {
+          "value": "Seiko"
+        },
+        {
+          "value": "Shhors"
+        },
+        {
+          "value": "Skmei"
+        },
+        {
+          "value": "Skone"
+        },
+        {
+          "value": "SOKI"
+        },
+        {
+          "value": "Special One"
+        },
+        {
+          "value": "Sveston"
+        },
+        {
+          "value": "Swarovski"
+        },
+        {
+          "value": "Swatch"
+        },
+        {
+          "value": "Swish"
+        },
+        {
+          "value": "Swisstone"
+        },
+        {
+          "value": "T55"
+        },
+        {
+          "value": "TAG Heuer"
+        },
+        {
+          "value": "Timekey"
+        },
+        {
+          "value": "Tissot"
+        },
+        {
+          "value": "Tom Dixon"
+        },
+        {
+          "value": "Tommy Hilfiger"
+        },
+        {
+          "value": "Tommy Jeans"
+        },
+        {
+          "value": "Tonino Lamborghini"
+        },
+        {
+          "value": "Vacheron Constantin"
+        },
+        {
+          "value": "Versace"
+        },
+        {
+          "value": "Victorinox"
+        },
+        {
+          "value": "Wokai"
+        },
+        {
+          "value": "Zenith"
+        },
+        {
+          "value": "Other Brand"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Casio"
+        },
+        {
+          "value": "Hublot"
+        },
+        {
+          "value": "Naviforce"
+        },
+        {
+          "value": "Patek Philippe"
+        },
+        {
+          "value": "Rolex"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_307_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 307,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_307_gender",
+      "possible_values": [
+        {
+          "value": "Men's"
+        },
+        {
+          "value": "Unisex"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Movement",
+      "parent_slug": null,
+      "slug": "filter_attr_309_movement",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 309,
+      "attr_name": "Movement",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_309_movement",
+      "possible_values": [
+        {
+          "value": "Mechanical"
+        },
+        {
+          "value": "Quartz"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Display",
+      "parent_slug": null,
+      "slug": "filter_attr_308_display",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 308,
+      "attr_name": "Display",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_308_display",
+      "possible_values": [
+        {
+          "value": "Analog"
+        },
+        {
+          "value": "Analog & Digital",
+          "title": "Analog and Digital"
+        },
+        {
+          "value": "Digital"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Band Color",
+      "parent_slug": null,
+      "slug": "filter_attr_313_band_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 313,
+      "attr_name": "Band Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_313_band_colour",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "Violet"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Band Material",
+      "parent_slug": null,
+      "slug": "filter_attr_310_band_material",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 310,
+      "attr_name": "Band Material",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_310_band_material",
+      "possible_values": [
+        {
+          "value": "Aluminum",
+          "title": "Aluminium"
+        },
+        {
+          "value": "Ceramic"
+        },
+        {
+          "value": "Faux Leather"
+        },
+        {
+          "value": "Genuine Leather"
+        },
+        {
+          "value": "Nylon"
+        },
+        {
+          "value": "Polyurethane"
+        },
+        {
+          "value": "Rubber"
+        },
+        {
+          "value": "Stainless Steel"
+        },
+        {
+          "value": "Wood"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Style",
+      "parent_slug": null,
+      "slug": "filter_attr_374_style",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 374,
+      "attr_name": "Style",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_374_style",
+      "possible_values": [
+        {
+          "value": "Business"
+        },
+        {
+          "value": "Casual"
+        },
+        {
+          "value": "Sport"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1654_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1655,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1654_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "For parts or not working",
+          "title": "For Parts or Not Working"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 75 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 75000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 75 - 100 K",
+          "filters": {
+            "price_min": 75000,
+            "price_max": 100000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 100 - 130 K",
+          "filters": {
+            "price_min": 100000,
+            "price_max": 130000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 130 K",
+          "filters": {
+            "price_min": 130000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Patek Philippe",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/patek-philippe-1.png",
+          "filters": {
+            "filter_attr_315_brand": "Patek Philippe"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Naviforce",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/naviforce.png",
+          "filters": {
+            "filter_attr_315_brand": "Naviforce"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Rolex",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/rolex.png",
+          "filters": {
+            "filter_attr_315_brand": "Rolex"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Casio",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/casio.png",
+          "filters": {
+            "filter_attr_315_brand": "Casio"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hublot",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/hublot.png",
+          "filters": {
+            "filter_attr_315_brand": "Hublot"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cartier",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/cartier.png",
+          "filters": {
+            "filter_attr_315_brand": "Cartier"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Audemars Piguet",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/watches/audemars-pigue.png",
+          "filters": {
+            "filter_attr_315_brand": "Audemars Piguet"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_315_brand",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_315_brand"
+    }
+  ]
+}

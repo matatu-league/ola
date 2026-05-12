@@ -1,0 +1,410 @@
+{
+  "total": 1975,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 20000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 130000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 220000,
+          "label": "Under 220 K",
+          "item_count": 118
+        },
+        {
+          "from": 220000,
+          "to": 550000,
+          "label": "220 - 550 K",
+          "item_count": 474
+        },
+        {
+          "from": 550000,
+          "to": 3000000,
+          "label": "550 K - 3 M",
+          "item_count": 790
+        },
+        {
+          "from": 3000000,
+          "to": 11000000,
+          "label": "3 - 11 M",
+          "item_count": 493
+        },
+        {
+          "from": 11000000,
+          "to": null,
+          "label": "More than 11 M",
+          "item_count": 98
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_245_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 245,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_245_type",
+      "possible_values": [
+        {
+          "value": "Action Cameras"
+        },
+        {
+          "value": "Camera Lenses"
+        },
+        {
+          "value": "Digital Cameras"
+        },
+        {
+          "value": "Drones"
+        },
+        {
+          "value": "DSLR Cameras"
+        },
+        {
+          "value": "Film Cameras"
+        },
+        {
+          "value": "Video Cameras"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Make",
+      "parent_slug": null,
+      "slug": "filter_attr_171_make",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 171,
+      "attr_name": "Make",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_171_make",
+      "possible_values": [
+        {
+          "value": "AEE"
+        },
+        {
+          "value": "Alpa"
+        },
+        {
+          "value": "Alpha"
+        },
+        {
+          "value": "Andoer"
+        },
+        {
+          "value": "Andowl"
+        },
+        {
+          "value": "Arit"
+        },
+        {
+          "value": "Axis"
+        },
+        {
+          "value": "Baofeng"
+        },
+        {
+          "value": "Blackmagic"
+        },
+        {
+          "value": "Canon"
+        },
+        {
+          "value": "Casio"
+        },
+        {
+          "value": "Dji"
+        },
+        {
+          "value": "Drone X Pro"
+        },
+        {
+          "value": "Emotion"
+        },
+        {
+          "value": "Epson"
+        },
+        {
+          "value": "Fujifilm"
+        },
+        {
+          "value": "GoPro"
+        },
+        {
+          "value": "Havit"
+        },
+        {
+          "value": "HDRC"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "ION"
+        },
+        {
+          "value": "Kodak"
+        },
+        {
+          "value": "Leica"
+        },
+        {
+          "value": "Lumix"
+        },
+        {
+          "value": "Mevo"
+        },
+        {
+          "value": "Nikon"
+        },
+        {
+          "value": "Olympus"
+        },
+        {
+          "value": "Ordro"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "Pentax"
+        },
+        {
+          "value": "Polaroid"
+        },
+        {
+          "value": "Powerology"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Sencor"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "Yongnuo"
+        },
+        {
+          "value": "Yunteng"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Canon"
+        },
+        {
+          "value": "Dji"
+        },
+        {
+          "value": "Fujifilm"
+        },
+        {
+          "value": "Nikon"
+        },
+        {
+          "value": "Sony"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_243_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 243,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_243_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Action Cameras",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/photo-and-video-cameras/action-cameras.png",
+          "filters": {
+            "filter_attr_245_type": "Action Cameras"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Digital Cameras",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/photo-and-video-cameras/digital-cameras.png",
+          "filters": {
+            "filter_attr_245_type": "Digital Cameras"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "DSLR Cameras",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/photo-and-video-cameras/dslr-cameras.png",
+          "filters": {
+            "filter_attr_245_type": "DSLR Cameras"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Drones",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/photo-and-video-cameras/drones.png",
+          "filters": {
+            "filter_attr_245_type": "Drones"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Video Cameras",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/photo-and-video-cameras/video-cameras.png",
+          "filters": {
+            "filter_attr_245_type": "Video Cameras"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Film Cameras",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/photo-and-video-cameras/film-cameras.png",
+          "filters": {
+            "filter_attr_245_type": "Film Cameras"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_245_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_245_type"
+    }
+  ]
+}

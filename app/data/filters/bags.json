@@ -1,0 +1,1255 @@
+{
+  "total": 8336,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 6000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1550000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 51000,
+          "label": "Under 51 K",
+          "item_count": 500
+        },
+        {
+          "from": 51000,
+          "to": 100000,
+          "label": "51 - 100 K",
+          "item_count": 2000
+        },
+        {
+          "from": 100000,
+          "to": 170000,
+          "label": "100 - 170 K",
+          "item_count": 3334
+        },
+        {
+          "from": 170000,
+          "to": 450000,
+          "label": "170 - 450 K",
+          "item_count": 2084
+        },
+        {
+          "from": 450000,
+          "to": null,
+          "label": "More than 450 K",
+          "item_count": 416
+        }
+      ]
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_299_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 299,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_299_gender",
+      "possible_values": [
+        {
+          "value": "Women's"
+        },
+        {
+          "value": "Unisex"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_301_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 301,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_301_brand",
+      "possible_values": [
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Adrienne Vittadini"
+        },
+        {
+          "value": "Akube"
+        },
+        {
+          "value": "Alba Handbags"
+        },
+        {
+          "value": "Aldo"
+        },
+        {
+          "value": "Alexander Wang"
+        },
+        {
+          "value": "Amazon"
+        },
+        {
+          "value": "American Tourister"
+        },
+        {
+          "value": "Anna Grace Uk"
+        },
+        {
+          "value": "Anne Klein"
+        },
+        {
+          "value": "Aoking"
+        },
+        {
+          "value": "Aollibao"
+        },
+        {
+          "value": "Aptonia"
+        },
+        {
+          "value": "Arctic Hunter"
+        },
+        {
+          "value": "Aristocrats"
+        },
+        {
+          "value": "Armani Exchange"
+        },
+        {
+          "value": "Artengo"
+        },
+        {
+          "value": "Az Pro"
+        },
+        {
+          "value": "Baellerry"
+        },
+        {
+          "value": "Bagco"
+        },
+        {
+          "value": "Bags 4 U"
+        },
+        {
+          "value": "Balenciaga"
+        },
+        {
+          "value": "Bally"
+        },
+        {
+          "value": "Bange"
+        },
+        {
+          "value": "Barbara Milano"
+        },
+        {
+          "value": "Bb"
+        },
+        {
+          "value": "Bead"
+        },
+        {
+          "value": "Bella"
+        },
+        {
+          "value": "Berluti"
+        },
+        {
+          "value": "Biaowang"
+        },
+        {
+          "value": "Bonheur"
+        },
+        {
+          "value": "Bonia"
+        },
+        {
+          "value": "Bonlor"
+        },
+        {
+          "value": "Bottega Veneta"
+        },
+        {
+          "value": "Brandonjoe"
+        },
+        {
+          "value": "Btwin"
+        },
+        {
+          "value": "Burberry"
+        },
+        {
+          "value": "Calvin Klein"
+        },
+        {
+          "value": "Caperlan"
+        },
+        {
+          "value": "Carpisa"
+        },
+        {
+          "value": "Cat"
+        },
+        {
+          "value": "Celine"
+        },
+        {
+          "value": "Century"
+        },
+        {
+          "value": "Chanel"
+        },
+        {
+          "value": "Channel"
+        },
+        {
+          "value": "Charles & Keith"
+        },
+        {
+          "value": "Chloe"
+        },
+        {
+          "value": "Chris Bella"
+        },
+        {
+          "value": "Christian Dior"
+        },
+        {
+          "value": "Classique Totes"
+        },
+        {
+          "value": "Classy"
+        },
+        {
+          "value": "Coach"
+        },
+        {
+          "value": "Coccinelle"
+        },
+        {
+          "value": "Coolbell"
+        },
+        {
+          "value": "Croc"
+        },
+        {
+          "value": "Cvd"
+        },
+        {
+          "value": "Dakine"
+        },
+        {
+          "value": "Danbaoly"
+        },
+        {
+          "value": "David Jones"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Diesel"
+        },
+        {
+          "value": "Dior"
+        },
+        {
+          "value": "DKNY"
+        },
+        {
+          "value": "Dolce & Gabbana"
+        },
+        {
+          "value": "Domyos"
+        },
+        {
+          "value": "Dune"
+        },
+        {
+          "value": "Dunlop"
+        },
+        {
+          "value": "Ego"
+        },
+        {
+          "value": "Elham"
+        },
+        {
+          "value": "Essential"
+        },
+        {
+          "value": "F & F"
+        },
+        {
+          "value": "Fanyroad"
+        },
+        {
+          "value": "Fendi"
+        },
+        {
+          "value": "Fiorelli"
+        },
+        {
+          "value": "Flower Bag"
+        },
+        {
+          "value": "Forever Young"
+        },
+        {
+          "value": "FSP"
+        },
+        {
+          "value": "Furla"
+        },
+        {
+          "value": "Gaston Luga"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Geologic"
+        },
+        {
+          "value": "Givenchy"
+        },
+        {
+          "value": "Glamour"
+        },
+        {
+          "value": "Goodpatner"
+        },
+        {
+          "value": "Goyard"
+        },
+        {
+          "value": "Gucci"
+        },
+        {
+          "value": "Guji"
+        },
+        {
+          "value": "H & M"
+        },
+        {
+          "value": "Hermes"
+        },
+        {
+          "value": "Hesey Designs"
+        },
+        {
+          "value": "Hobo"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "Hugo Boss"
+        },
+        {
+          "value": "Itiwit"
+        },
+        {
+          "value": "Jansport"
+        },
+        {
+          "value": "Jc Cailey"
+        },
+        {
+          "value": "Jeep"
+        },
+        {
+          "value": "Jelly Kelly"
+        },
+        {
+          "value": "Jing Pin"
+        },
+        {
+          "value": "Jordan"
+        },
+        {
+          "value": "Kangaroo"
+        },
+        {
+          "value": "Kipsta"
+        },
+        {
+          "value": "Kurgan Kenani Leather"
+        },
+        {
+          "value": "Lacoste"
+        },
+        {
+          "value": "Lanvin Paris"
+        },
+        {
+          "value": "Leaves King"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "Loewe"
+        },
+        {
+          "value": "Louis Daisy"
+        },
+        {
+          "value": "Louis Vuitton"
+        },
+        {
+          "value": "Lucy Box"
+        },
+        {
+          "value": "Lv"
+        },
+        {
+          "value": "Mamuda"
+        },
+        {
+          "value": "Manolo Blahnik"
+        },
+        {
+          "value": "Marc Jacobs"
+        },
+        {
+          "value": "Mei"
+        },
+        {
+          "value": "Meijieluo"
+        },
+        {
+          "value": "Mincol Koge"
+        },
+        {
+          "value": "Mini Weini"
+        },
+        {
+          "value": "MiuMiu"
+        },
+        {
+          "value": "Mont Blanc"
+        },
+        {
+          "value": "Moschino"
+        },
+        {
+          "value": "New Balance"
+        },
+        {
+          "value": "New Look"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Ohama"
+        },
+        {
+          "value": "Okapi"
+        },
+        {
+          "value": "OKAPI"
+        },
+        {
+          "value": "Omaya"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Oxelo"
+        },
+        {
+          "value": "Pedro"
+        },
+        {
+          "value": "Pinko"
+        },
+        {
+          "value": "Pl Power"
+        },
+        {
+          "value": "Pologood"
+        },
+        {
+          "value": "Ponasoo"
+        },
+        {
+          "value": "Prada"
+        },
+        {
+          "value": "Primark"
+        },
+        {
+          "value": "Pufandaishu"
+        },
+        {
+          "value": "Puma"
+        },
+        {
+          "value": "Qaza"
+        },
+        {
+          "value": "Saint Laurent"
+        },
+        {
+          "value": "Samsonite"
+        },
+        {
+          "value": "Sannea"
+        },
+        {
+          "value": "Sm Baby"
+        },
+        {
+          "value": "Socko"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Star Express"
+        },
+        {
+          "value": "Starever"
+        },
+        {
+          "value": "Stella McCartney"
+        },
+        {
+          "value": "Steve Madden"
+        },
+        {
+          "value": "Supreme"
+        },
+        {
+          "value": "Susen"
+        },
+        {
+          "value": "Swiss King"
+        },
+        {
+          "value": "Swiss Polo"
+        },
+        {
+          "value": "Swissgear"
+        },
+        {
+          "value": "Targus"
+        },
+        {
+          "value": "Telfar"
+        },
+        {
+          "value": "Tiroll"
+        },
+        {
+          "value": "Tom Ford"
+        },
+        {
+          "value": "Tory Burch"
+        },
+        {
+          "value": "Tovivans"
+        },
+        {
+          "value": "Urban Expressions"
+        },
+        {
+          "value": "Valentino"
+        },
+        {
+          "value": "Versace"
+        },
+        {
+          "value": "Versse"
+        },
+        {
+          "value": "Vesasan"
+        },
+        {
+          "value": "Via La Moda"
+        },
+        {
+          "value": "Victoria Beckham"
+        },
+        {
+          "value": "Wanda"
+        },
+        {
+          "value": "Wang"
+        },
+        {
+          "value": "YSL"
+        },
+        {
+          "value": "Zannoti"
+        },
+        {
+          "value": "Zara"
+        },
+        {
+          "value": "ZEMP Leathers"
+        },
+        {
+          "value": "Other Brand"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "American Tourister"
+        },
+        {
+          "value": "Chanel"
+        },
+        {
+          "value": "Generic"
+        },
+        {
+          "value": "Goodpatner"
+        },
+        {
+          "value": "Louis Vuitton"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_578_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 578,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_578_type",
+      "possible_values": [
+        {
+          "value": "Ankara Bags"
+        },
+        {
+          "value": "Art & Poster Tubes"
+        },
+        {
+          "value": "Baby & Diaper Bags"
+        },
+        {
+          "value": "Backpacks"
+        },
+        {
+          "value": "Bags Accessories"
+        },
+        {
+          "value": "Beach Bags"
+        },
+        {
+          "value": "Bra & Lingerie Travel Cases"
+        },
+        {
+          "value": "Briefcases"
+        },
+        {
+          "value": "Bucket Bags"
+        },
+        {
+          "value": "Business Bags"
+        },
+        {
+          "value": "Camera Bags"
+        },
+        {
+          "value": "Card Holders"
+        },
+        {
+          "value": "Carry-All Bags"
+        },
+        {
+          "value": "Clothes Storage Bags"
+        },
+        {
+          "value": "Clutches"
+        },
+        {
+          "value": "Crossbody Bags"
+        },
+        {
+          "value": "Cycling Bags"
+        },
+        {
+          "value": "Delivery Bags"
+        },
+        {
+          "value": "Duffle Bags"
+        },
+        {
+          "value": "Envelope Bags"
+        },
+        {
+          "value": "Envelope Clutch Bags"
+        },
+        {
+          "value": "Evening Bags"
+        },
+        {
+          "value": "Folder Bags"
+        },
+        {
+          "value": "Foldover Bags"
+        },
+        {
+          "value": "Garment Bags"
+        },
+        {
+          "value": "Gift Bags"
+        },
+        {
+          "value": "Gym & Sport Bags"
+        },
+        {
+          "value": "Handbags"
+        },
+        {
+          "value": "Hat Bags"
+        },
+        {
+          "value": "Hiking Bags"
+        },
+        {
+          "value": "Jelly Bags"
+        },
+        {
+          "value": "Laptop Bags And Cases",
+          "title": "Laptop Bags & Cases"
+        },
+        {
+          "value": "Luggage & Travel Bags"
+        },
+        {
+          "value": "Lunch Bags"
+        },
+        {
+          "value": "Makeup Bags & Organizers",
+          "title": "Make-Up Bags & Organizers"
+        },
+        {
+          "value": "Messenger Bags"
+        },
+        {
+          "value": "Mini Bags"
+        },
+        {
+          "value": "Pouch Bags"
+        },
+        {
+          "value": "Roller Skate Bags"
+        },
+        {
+          "value": "Rope Bags"
+        },
+        {
+          "value": "School Bags"
+        },
+        {
+          "value": "Shopper Bags"
+        },
+        {
+          "value": "Shoulder Bags"
+        },
+        {
+          "value": "Suitcases"
+        },
+        {
+          "value": "Top Handles Bags"
+        },
+        {
+          "value": "Tote Bags"
+        },
+        {
+          "value": "Vanity Cases"
+        },
+        {
+          "value": "Waist & Belt Bags"
+        },
+        {
+          "value": "Wallets and Purses"
+        },
+        {
+          "value": "Wristlet Bags"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Backpacks"
+        },
+        {
+          "value": "Handbags"
+        },
+        {
+          "value": "Laptop Bags And Cases",
+          "title": "Laptop Bags & Cases"
+        },
+        {
+          "value": "Luggage & Travel Bags"
+        },
+        {
+          "value": "Suitcases"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_297_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 297,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_297_colour",
+      "possible_values": [
+        {
+          "value": "Ash"
+        },
+        {
+          "value": "Baby Blue"
+        },
+        {
+          "value": "Beige"
+        },
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Bone"
+        },
+        {
+          "value": "Bronze"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Burgundy"
+        },
+        {
+          "value": "Carrot"
+        },
+        {
+          "value": "Cherry"
+        },
+        {
+          "value": "Cloud"
+        },
+        {
+          "value": "Coffee"
+        },
+        {
+          "value": "Coral"
+        },
+        {
+          "value": "Crimson"
+        },
+        {
+          "value": "Dove"
+        },
+        {
+          "value": "Fog"
+        },
+        {
+          "value": "Ginger"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Graphite"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Honey"
+        },
+        {
+          "value": "Hot Pink"
+        },
+        {
+          "value": "Khaki"
+        },
+        {
+          "value": "Lemon"
+        },
+        {
+          "value": "Light Blue"
+        },
+        {
+          "value": "Light Green"
+        },
+        {
+          "value": "Lilac"
+        },
+        {
+          "value": "Lime",
+          "title": "Limes"
+        },
+        {
+          "value": "Mauve"
+        },
+        {
+          "value": "Merigold"
+        },
+        {
+          "value": "Mint"
+        },
+        {
+          "value": "Multicolor"
+        },
+        {
+          "value": "Navy Blue"
+        },
+        {
+          "value": "Ochre"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Orchid"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Rose"
+        },
+        {
+          "value": "Rose Gold"
+        },
+        {
+          "value": "Sage"
+        },
+        {
+          "value": "Salmon"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "Tan"
+        },
+        {
+          "value": "Violet"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Wine"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Multicolor"
+        },
+        {
+          "value": "Pink"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1650_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1651,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1650_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5386_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5386,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5386_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 65 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 65000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 65 - 90 K",
+          "filters": {
+            "price_min": 65000,
+            "price_max": 90000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 90 - 130 K",
+          "filters": {
+            "price_min": 90000,
+            "price_max": 130000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 130 K",
+          "filters": {
+            "price_min": 130000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Handbags",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/handbags.png",
+          "filters": {
+            "filter_attr_578_type": "Handbags"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Luggage & Travel Bags",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/luggage.png",
+          "filters": {
+            "filter_attr_578_type": "Luggage & Travel Bags"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Backpacks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/backpacks.png",
+          "filters": {
+            "filter_attr_578_type": "Backpacks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Laptop Bags & Cases",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/laptop-bags-and-cases.png",
+          "filters": {
+            "filter_attr_578_type": "Laptop Bags And Cases"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Crossbody Bags",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/crossbody.png",
+          "filters": {
+            "filter_attr_578_type": "Crossbody Bags"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Clutches",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/clutches.png",
+          "filters": {
+            "filter_attr_578_type": "Clutches"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shoulder Bags",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/bags/shoulder-bags.png",
+          "filters": {
+            "filter_attr_578_type": "Shoulder Bags"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_578_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_578_type"
+    }
+  ]
+}

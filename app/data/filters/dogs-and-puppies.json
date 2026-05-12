@@ -1,0 +1,587 @@
+{
+  "total": 7176,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 20000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 15000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 350000,
+          "label": "Under 350 K",
+          "item_count": 430
+        },
+        {
+          "from": 350000,
+          "to": 600000,
+          "label": "350 - 600 K",
+          "item_count": 1722
+        },
+        {
+          "from": 600000,
+          "to": 1700000,
+          "label": "600 K - 1.7 M",
+          "item_count": 2870
+        },
+        {
+          "from": 1700000,
+          "to": 4000000,
+          "label": "1.7 - 4 M",
+          "item_count": 1794
+        },
+        {
+          "from": 4000000,
+          "to": null,
+          "label": "More than 4 M",
+          "item_count": 358
+        }
+      ]
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_362_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 362,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_362_gender",
+      "possible_values": [
+        {
+          "value": "Male"
+        },
+        {
+          "value": "Female"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Breed",
+      "parent_slug": null,
+      "slug": "filter_attr_532_breed",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 532,
+      "attr_name": "Breed",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_532_breed",
+      "possible_values": [
+        {
+          "value": "Affenpinscher"
+        },
+        {
+          "value": "Afghan Hound"
+        },
+        {
+          "value": "Airedale Terrier"
+        },
+        {
+          "value": "Akita"
+        },
+        {
+          "value": "Alabai"
+        },
+        {
+          "value": "Alaskan Malamute"
+        },
+        {
+          "value": "American Bulldog"
+        },
+        {
+          "value": "American Bully"
+        },
+        {
+          "value": "American Eskimo"
+        },
+        {
+          "value": "American Pit Bull Terrier"
+        },
+        {
+          "value": "Barbet"
+        },
+        {
+          "value": "Beagle"
+        },
+        {
+          "value": "Belgian Malinois"
+        },
+        {
+          "value": "Bernese Mountain"
+        },
+        {
+          "value": "Bichon Frise"
+        },
+        {
+          "value": "Bloodhound"
+        },
+        {
+          "value": "Boerboel"
+        },
+        {
+          "value": "Border Collie"
+        },
+        {
+          "value": "Boston Terrier"
+        },
+        {
+          "value": "Boxer"
+        },
+        {
+          "value": "Boykin Spaniel"
+        },
+        {
+          "value": "Bracco Italiano"
+        },
+        {
+          "value": "Bull Terrier"
+        },
+        {
+          "value": "Bulldog"
+        },
+        {
+          "value": "Bullmastiff"
+        },
+        {
+          "value": "Cane Corso"
+        },
+        {
+          "value": "Cardigan Welsh Corgi"
+        },
+        {
+          "value": "Caucasian Shepherd"
+        },
+        {
+          "value": "Chihuahua"
+        },
+        {
+          "value": "Chinook"
+        },
+        {
+          "value": "Chow Chow"
+        },
+        {
+          "value": "Clumber Spaniel"
+        },
+        {
+          "value": "Cockapoo"
+        },
+        {
+          "value": "Cocker Spaniel"
+        },
+        {
+          "value": "Collie"
+        },
+        {
+          "value": "Coton de Tulear"
+        },
+        {
+          "value": "Dachshund"
+        },
+        {
+          "value": "Doberman Pinscher"
+        },
+        {
+          "value": "Dogo Argentino"
+        },
+        {
+          "value": "Dutch Shepherd"
+        },
+        {
+          "value": "English Cocker Spaniel"
+        },
+        {
+          "value": "English Foxhound"
+        },
+        {
+          "value": "English Setter"
+        },
+        {
+          "value": "English Springer Spaniel"
+        },
+        {
+          "value": "English Toy Spaniel"
+        },
+        {
+          "value": "Finnish Spitz"
+        },
+        {
+          "value": "Flat-Coated Retriever"
+        },
+        {
+          "value": "French Bulldog"
+        },
+        {
+          "value": "German Shepherd"
+        },
+        {
+          "value": "Golden Retriever"
+        },
+        {
+          "value": "Goldendoodle"
+        },
+        {
+          "value": "Great Dane"
+        },
+        {
+          "value": "Greater Swiss Mountain"
+        },
+        {
+          "value": "Havanese"
+        },
+        {
+          "value": "Ibizan Hound"
+        },
+        {
+          "value": "Jack Russell Terrier"
+        },
+        {
+          "value": "Japanese Chin"
+        },
+        {
+          "value": "Japanese Spitz"
+        },
+        {
+          "value": "Kooikerhondje"
+        },
+        {
+          "value": "Korean Jindo"
+        },
+        {
+          "value": "Labradoodle"
+        },
+        {
+          "value": "Labrador Retriever"
+        },
+        {
+          "value": "Maltese"
+        },
+        {
+          "value": "Maltese Shih Tzu"
+        },
+        {
+          "value": "Maltipoo"
+        },
+        {
+          "value": "Mastiff"
+        },
+        {
+          "value": "Mongrel (No Breed)"
+        },
+        {
+          "value": "Neapolitan Mastiff"
+        },
+        {
+          "value": "Old English Sheepdog"
+        },
+        {
+          "value": "Pocket Beagle"
+        },
+        {
+          "value": "Pomeranian"
+        },
+        {
+          "value": "Poodle"
+        },
+        {
+          "value": "Pug"
+        },
+        {
+          "value": "Puggle"
+        },
+        {
+          "value": "Redbone Coonhound"
+        },
+        {
+          "value": "Rhodesian Ridgeback"
+        },
+        {
+          "value": "Rottweiler"
+        },
+        {
+          "value": "Saint Bernard"
+        },
+        {
+          "value": "Samoyed"
+        },
+        {
+          "value": "Schipperke"
+        },
+        {
+          "value": "Siberian Husky"
+        },
+        {
+          "value": "Swedish Vallhund"
+        },
+        {
+          "value": "Tibetan Mastiff"
+        },
+        {
+          "value": "Welsh Springer Spaniel"
+        },
+        {
+          "value": "West Highland White Terrier"
+        },
+        {
+          "value": "White Shepherd"
+        },
+        {
+          "value": "Wirehaired Pointing Griffon"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Boerboel"
+        },
+        {
+          "value": "German Shepherd"
+        },
+        {
+          "value": "Maltese"
+        },
+        {
+          "value": "Rottweiler"
+        },
+        {
+          "value": "Siberian Husky"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Breed Type",
+      "parent_slug": null,
+      "slug": "filter_attr_533_breed_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 533,
+      "attr_name": "Breed Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_533_breed_type",
+      "possible_values": [
+        {
+          "value": "Mixed Breed"
+        },
+        {
+          "value": "Purebred"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Age",
+      "parent_slug": null,
+      "slug": "filter_attr_361_age",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 361,
+      "attr_name": "Age",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_361_age",
+      "possible_values": [
+        {
+          "value": "0-1 month"
+        },
+        {
+          "value": "1-3 month",
+          "title": "1-3 months"
+        },
+        {
+          "value": "3-6 month",
+          "title": "3-6 months"
+        },
+        {
+          "value": "6-12 month",
+          "title": "6-12 months"
+        },
+        {
+          "value": "1+ year"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 380 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 380000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 380 - 510 K",
+          "filters": {
+            "price_min": 380000,
+            "price_max": 510000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 510 K - 1 M",
+          "filters": {
+            "price_min": 510000,
+            "price_max": 1000000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 1 M",
+          "filters": {
+            "price_min": 1000000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "German Shepherd",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs/german-shephard.png",
+          "filters": {
+            "filter_attr_532_breed": "German Shepherd"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Boerboel",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs/boerboel.png",
+          "filters": {
+            "filter_attr_532_breed": "Boerboel"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Maltese",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs-and-puppies/maltese-dog.png",
+          "filters": {
+            "filter_attr_532_breed": "Maltese"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Rottweiler",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs/rottweiler.png",
+          "filters": {
+            "filter_attr_532_breed": "Rottweiler"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Siberian Husky",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs/siberian-husky.png",
+          "filters": {
+            "filter_attr_532_breed": "Siberian Husky"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Golden Retriever",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs-and-puppies/golden-retriever-puppy.png",
+          "filters": {
+            "filter_attr_532_breed": "Golden Retriever"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Japanese Spitz",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/dogs-and-puppies/japanese-spitz-dog.png",
+          "filters": {
+            "filter_attr_532_breed": "Japanese Spitz"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_532_breed",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_532_breed"
+    }
+  ]
+}

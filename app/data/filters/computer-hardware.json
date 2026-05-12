@@ -1,0 +1,892 @@
+{
+  "total": 3272,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 2000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 215000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 50000,
+          "label": "Under 50 K",
+          "item_count": 196
+        },
+        {
+          "from": 50000,
+          "to": 170000,
+          "label": "50 - 170 K",
+          "item_count": 785
+        },
+        {
+          "from": 170000,
+          "to": 600000,
+          "label": "170 - 600 K",
+          "item_count": 1308
+        },
+        {
+          "from": 600000,
+          "to": 2900000,
+          "label": "600 K - 2.9 M",
+          "item_count": 818
+        },
+        {
+          "from": 2900000,
+          "to": null,
+          "label": "More than 2.9 M",
+          "item_count": 163
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3698_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 3698,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3698_brand",
+      "possible_values": [
+        {
+          "value": "1byone"
+        },
+        {
+          "value": "2-POWER"
+        },
+        {
+          "value": "2Wire"
+        },
+        {
+          "value": "3Com"
+        },
+        {
+          "value": "3DLABS"
+        },
+        {
+          "value": "3P"
+        },
+        {
+          "value": "3ware"
+        },
+        {
+          "value": "A-Tech"
+        },
+        {
+          "value": "AcBel"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Acer"
+        },
+        {
+          "value": "ADATA"
+        },
+        {
+          "value": "Afox"
+        },
+        {
+          "value": "AIC"
+        },
+        {
+          "value": "All Components"
+        },
+        {
+          "value": "AMD"
+        },
+        {
+          "value": "American Dynamics"
+        },
+        {
+          "value": "Anet"
+        },
+        {
+          "value": "Antec"
+        },
+        {
+          "value": "AORUS"
+        },
+        {
+          "value": "APC"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "ASI"
+        },
+        {
+          "value": "ASRock"
+        },
+        {
+          "value": "ASUS"
+        },
+        {
+          "value": "Atheros"
+        },
+        {
+          "value": "AVerTV"
+        },
+        {
+          "value": "Black Box"
+        },
+        {
+          "value": "Blackmagic"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Colorful"
+        },
+        {
+          "value": "Compaq"
+        },
+        {
+          "value": "Cooler Master"
+        },
+        {
+          "value": "COOLMAX"
+        },
+        {
+          "value": "Corsair"
+        },
+        {
+          "value": "Cougar"
+        },
+        {
+          "value": "CPUBuilders"
+        },
+        {
+          "value": "Crucial"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "Datacom"
+        },
+        {
+          "value": "Datalogic"
+        },
+        {
+          "value": "Deepcool"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Delta"
+        },
+        {
+          "value": "Diamond"
+        },
+        {
+          "value": "DPI"
+        },
+        {
+          "value": "EA"
+        },
+        {
+          "value": "Eagle"
+        },
+        {
+          "value": "EasyCap"
+        },
+        {
+          "value": "Eaton"
+        },
+        {
+          "value": "Elpida"
+        },
+        {
+          "value": "EMC"
+        },
+        {
+          "value": "Enhance"
+        },
+        {
+          "value": "Ever Good"
+        },
+        {
+          "value": "EVGA"
+        },
+        {
+          "value": "Extreme"
+        },
+        {
+          "value": "FIC"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "Foxconn"
+        },
+        {
+          "value": "FSP"
+        },
+        {
+          "value": "G-Technology"
+        },
+        {
+          "value": "GALAX"
+        },
+        {
+          "value": "Game Max"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Geforce"
+        },
+        {
+          "value": "Generics"
+        },
+        {
+          "value": "Genius"
+        },
+        {
+          "value": "GIGABYTE"
+        },
+        {
+          "value": "GoldenRAM"
+        },
+        {
+          "value": "Goldstar"
+        },
+        {
+          "value": "GOODRAM"
+        },
+        {
+          "value": "Hardware Labs"
+        },
+        {
+          "value": "Hayes"
+        },
+        {
+          "value": "Haysenser"
+        },
+        {
+          "value": "HDHomeRun"
+        },
+        {
+          "value": "Hgst"
+        },
+        {
+          "value": "Hikvision"
+        },
+        {
+          "value": "Hitachi"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "HPE"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Hynix"
+        },
+        {
+          "value": "Hypertec"
+        },
+        {
+          "value": "HyperX"
+        },
+        {
+          "value": "IBM"
+        },
+        {
+          "value": "Imation"
+        },
+        {
+          "value": "IMSI"
+        },
+        {
+          "value": "Infinity"
+        },
+        {
+          "value": "Inno3D"
+        },
+        {
+          "value": "Integral"
+        },
+        {
+          "value": "Intel"
+        },
+        {
+          "value": "ION"
+        },
+        {
+          "value": "Kensington"
+        },
+        {
+          "value": "Kingston"
+        },
+        {
+          "value": "Kingwin"
+        },
+        {
+          "value": "kramer"
+        },
+        {
+          "value": "LaCie"
+        },
+        {
+          "value": "Laser"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "Lexar"
+        },
+        {
+          "value": "Lexicon"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "Lian Li"
+        },
+        {
+          "value": "Lightwave"
+        },
+        {
+          "value": "Lite-On"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Manli"
+        },
+        {
+          "value": "Mars Gaming"
+        },
+        {
+          "value": "Matrix"
+        },
+        {
+          "value": "MAXDATA"
+        },
+        {
+          "value": "Maximus"
+        },
+        {
+          "value": "Maxspeed"
+        },
+        {
+          "value": "Mercury"
+        },
+        {
+          "value": "Micron"
+        },
+        {
+          "value": "MSI"
+        },
+        {
+          "value": "NComputing"
+        },
+        {
+          "value": "Netac"
+        },
+        {
+          "value": "NETGEAR"
+        },
+        {
+          "value": "Netopia"
+        },
+        {
+          "value": "Nvdia"
+        },
+        {
+          "value": "Nvida"
+        },
+        {
+          "value": "NVIDIA"
+        },
+        {
+          "value": "NZXT"
+        },
+        {
+          "value": "Onda"
+        },
+        {
+          "value": "ORICO"
+        },
+        {
+          "value": "Palit"
+        },
+        {
+          "value": "Patriot"
+        },
+        {
+          "value": "Pc Cooler"
+        },
+        {
+          "value": "PDP Systems, Inc"
+        },
+        {
+          "value": "Pinnacle"
+        },
+        {
+          "value": "PNY"
+        },
+        {
+          "value": "Point of Sale"
+        },
+        {
+          "value": "PORT"
+        },
+        {
+          "value": "PowerMan"
+        },
+        {
+          "value": "Powervar"
+        },
+        {
+          "value": "Pro Link"
+        },
+        {
+          "value": "QNAP"
+        },
+        {
+          "value": "RAM"
+        },
+        {
+          "value": "Ramaxel"
+        },
+        {
+          "value": "Raspberry Pi"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "SanDisk"
+        },
+        {
+          "value": "SAPPHIRE"
+        },
+        {
+          "value": "SATO"
+        },
+        {
+          "value": "Seagate"
+        },
+        {
+          "value": "SK hynix"
+        },
+        {
+          "value": "Smart"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Speed"
+        },
+        {
+          "value": "ST"
+        },
+        {
+          "value": "Super Talent"
+        },
+        {
+          "value": "TallyGenicom"
+        },
+        {
+          "value": "Team Group"
+        },
+        {
+          "value": "Thermalright"
+        },
+        {
+          "value": "Thermaltake"
+        },
+        {
+          "value": "Toshiba"
+        },
+        {
+          "value": "Tower"
+        },
+        {
+          "value": "TP-LINK"
+        },
+        {
+          "value": "Transcend"
+        },
+        {
+          "value": "Trendware"
+        },
+        {
+          "value": "Tripp Lite"
+        },
+        {
+          "value": "TwinMOS"
+        },
+        {
+          "value": "TX"
+        },
+        {
+          "value": "Ubiquiti - Us"
+        },
+        {
+          "value": "Ugreen"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Verbatim"
+        },
+        {
+          "value": "Vision"
+        },
+        {
+          "value": "Vivanco"
+        },
+        {
+          "value": "VulTech"
+        },
+        {
+          "value": "Walram"
+        },
+        {
+          "value": "WD"
+        },
+        {
+          "value": "Western Digital"
+        },
+        {
+          "value": "XFX"
+        },
+        {
+          "value": "Zalman"
+        },
+        {
+          "value": "Zkteco"
+        },
+        {
+          "value": "ZONE"
+        },
+        {
+          "value": "Zotac"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "APC"
+        },
+        {
+          "value": "Lexar"
+        },
+        {
+          "value": "Seagate"
+        },
+        {
+          "value": "Transcend"
+        },
+        {
+          "value": "WD"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_269_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 269,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_269_type",
+      "possible_values": [
+        {
+          "value": "CD/DVD Drives"
+        },
+        {
+          "value": "Computer Cases"
+        },
+        {
+          "value": "Cooling Fans"
+        },
+        {
+          "value": "CPU Processors"
+        },
+        {
+          "value": "Hard Drive Enclosures"
+        },
+        {
+          "value": "HDD (Hard Drives)"
+        },
+        {
+          "value": "Heatsinks"
+        },
+        {
+          "value": "Memory"
+        },
+        {
+          "value": "Motherboards"
+        },
+        {
+          "value": "Network Cards"
+        },
+        {
+          "value": "Personal Cloud"
+        },
+        {
+          "value": "Power Supplies"
+        },
+        {
+          "value": "Serial Port Cards"
+        },
+        {
+          "value": "Server Racks"
+        },
+        {
+          "value": "SSD (Solid State Drives)"
+        },
+        {
+          "value": "UPS (Uninterruptible Power Supplies)",
+          "title": "UPS (Uninterruptible Power Supply)"
+        },
+        {
+          "value": "UPS Batteries"
+        },
+        {
+          "value": "Video Graphics Cards"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "HDD (Hard Drives)"
+        },
+        {
+          "value": "Memory"
+        },
+        {
+          "value": "SSD (Solid State Drives)"
+        },
+        {
+          "value": "UPS (Uninterruptible Power Supplies)",
+          "title": "UPS (Uninterruptible Power Supply)"
+        },
+        {
+          "value": "Video Graphics Cards"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_270_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 270,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_270_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "HDD (Hard Drives)",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/hdd.png",
+          "filters": {
+            "filter_attr_269_type": "HDD (Hard Drives)"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "SSD (Solid State Drives)",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/ssd.png",
+          "filters": {
+            "filter_attr_269_type": "SSD (Solid State Drives)"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "UPS (Uninterruptible Power Supply)",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/ups-uninterruptible-power-supplies.png",
+          "filters": {
+            "filter_attr_269_type": "UPS (Uninterruptible Power Supplies)"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Memory",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/memory.png",
+          "filters": {
+            "filter_attr_269_type": "Memory"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Video Graphics Cards",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/video-graphics-cards.png",
+          "filters": {
+            "filter_attr_269_type": "Video Graphics Cards"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Hard Drive Enclosures",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/hard-drive-enclosures.png",
+          "filters": {
+            "filter_attr_269_type": "Hard Drive Enclosures"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Power Supplies",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/computer-hardware/power-supplies.png",
+          "filters": {
+            "filter_attr_269_type": "Power Supplies"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_269_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_269_type"
+    }
+  ]
+}

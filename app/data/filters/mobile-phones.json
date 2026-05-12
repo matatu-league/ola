@@ -1,0 +1,998 @@
+{
+  "total": 18292,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 20000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 20000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 190000,
+          "label": "Under 190 K",
+          "item_count": 1097
+        },
+        {
+          "from": 190000,
+          "to": 350000,
+          "label": "190 - 350 K",
+          "item_count": 4390
+        },
+        {
+          "from": 350000,
+          "to": 950000,
+          "label": "350 - 950 K",
+          "item_count": 7316
+        },
+        {
+          "from": 950000,
+          "to": 3200000,
+          "label": "950 K - 3.2 M",
+          "item_count": 4573
+        },
+        {
+          "from": 3200000,
+          "to": null,
+          "label": "More than 3.2 M",
+          "item_count": 914
+        }
+      ]
+    },
+    {
+      "label": "Popular Filters",
+      "parent_slug": null,
+      "slug": "filter_attr_6373_popular_filters",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 6373,
+      "attr_name": "Popular Filters",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6373_popular_filters",
+      "possible_values": [
+        {
+          "value": "5000 mAh and above"
+        },
+        {
+          "value": "NFC"
+        },
+        {
+          "value": "Dust & Water Resistant Phone"
+        },
+        {
+          "value": "Wireless Charging"
+        },
+        {
+          "value": "Foldable Smartphone"
+        },
+        {
+          "value": "Phone with two SIM Cards"
+        },
+        {
+          "value": "eSIM Support"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_45_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 45,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_45_brand",
+      "possible_values": [
+        {
+          "value": "Alcatel"
+        },
+        {
+          "value": "Amazon"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Archos"
+        },
+        {
+          "value": "Benco"
+        },
+        {
+          "value": "BenQ"
+        },
+        {
+          "value": "BlackBerry"
+        },
+        {
+          "value": "Bontel"
+        },
+        {
+          "value": "CALME"
+        },
+        {
+          "value": "Calus"
+        },
+        {
+          "value": "Casper"
+        },
+        {
+          "value": "EL"
+        },
+        {
+          "value": "Fujitsu"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "Gretel"
+        },
+        {
+          "value": "Hisense"
+        },
+        {
+          "value": "HMD"
+        },
+        {
+          "value": "Honor"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Infinix"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "JX"
+        },
+        {
+          "value": "Kgtel"
+        },
+        {
+          "value": "Kingzone"
+        },
+        {
+          "value": "Kyocera"
+        },
+        {
+          "value": "Leica"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "M-Horse"
+        },
+        {
+          "value": "Mione"
+        },
+        {
+          "value": "Motorola"
+        },
+        {
+          "value": "Nokia"
+        },
+        {
+          "value": "Nothing Phone"
+        },
+        {
+          "value": "Oale"
+        },
+        {
+          "value": "OnePlus"
+        },
+        {
+          "value": "Oppo"
+        },
+        {
+          "value": "Oukitel"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "Realme"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Sharp"
+        },
+        {
+          "value": "Siccoo"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "Sowhat"
+        },
+        {
+          "value": "SQ"
+        },
+        {
+          "value": "Sugar"
+        },
+        {
+          "value": "TCL"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Thuraya"
+        },
+        {
+          "value": "Ulefone"
+        },
+        {
+          "value": "Vestel"
+        },
+        {
+          "value": "Villaon"
+        },
+        {
+          "value": "Vivo"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "ZTE"
+        },
+        {
+          "value": "Other Brand"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Xiaomi"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_221_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 221,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_221_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Refurbished"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Internal Storage",
+      "parent_slug": null,
+      "slug": "filter_attr_1010_internal_storage",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1010,
+      "attr_name": "Internal Storage",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1010_internal_storage",
+      "possible_values": [
+        {
+          "value": "Under 4 GB"
+        },
+        {
+          "value": "8 GB"
+        },
+        {
+          "value": "64 GB"
+        },
+        {
+          "value": "512 GB"
+        },
+        {
+          "value": "4 GB"
+        },
+        {
+          "value": "32 GB"
+        },
+        {
+          "value": "256 GB"
+        },
+        {
+          "value": "2 TB"
+        },
+        {
+          "value": "16 GB"
+        },
+        {
+          "value": "128 GB"
+        },
+        {
+          "value": "12 GB"
+        },
+        {
+          "value": "1 TB"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Ram",
+      "parent_slug": null,
+      "slug": "filter_attr_1006_ram_auto",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1006,
+      "attr_name": "Ram",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1006_ram_auto",
+      "possible_values": [
+        {
+          "value": "Under 4 GB"
+        },
+        {
+          "value": "Under 1 GB"
+        },
+        {
+          "value": "8 GB"
+        },
+        {
+          "value": "6 GB"
+        },
+        {
+          "value": "4 GB"
+        },
+        {
+          "value": "3 GB"
+        },
+        {
+          "value": "256 GB"
+        },
+        {
+          "value": "24 GB"
+        },
+        {
+          "value": "2 GB"
+        },
+        {
+          "value": "16 GB"
+        },
+        {
+          "value": "12 GB"
+        },
+        {
+          "value": "1 GB"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Exchange Possible",
+      "parent_slug": null,
+      "slug": "filter_attr_1340_exchange_possible",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1340,
+      "attr_name": "Exchange Possible",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1340_exchange_possible",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_108_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 108,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_108_colour",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Bronze"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Rose Gold"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "SIM",
+      "parent_slug": null,
+      "slug": "filter_attr_1007_sim",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1007,
+      "attr_name": "SIM",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1007_sim",
+      "possible_values": [
+        {
+          "value": "Triple SIM"
+        },
+        {
+          "value": "Single SIM"
+        },
+        {
+          "value": "Single Nano/e-SIM"
+        },
+        {
+          "value": "Single Nano-SIM/eSIM"
+        },
+        {
+          "value": "Single Nano-SIM/e-SIM"
+        },
+        {
+          "value": "Single Nano-SIM"
+        },
+        {
+          "value": "Single Mini-SIM"
+        },
+        {
+          "value": "Single Micro-SIM"
+        },
+        {
+          "value": "Nano-SIM/eSIM"
+        },
+        {
+          "value": "Nano-SIM and eSIM"
+        },
+        {
+          "value": "Nano-SIM + eSIM"
+        },
+        {
+          "value": "Nano-SIM"
+        },
+        {
+          "value": "Mini-SIM"
+        },
+        {
+          "value": "Micro-SIM"
+        },
+        {
+          "value": "Hybrid Dual Nano-SIM"
+        },
+        {
+          "value": "Hybrid Dual Micro/Nano-SIM"
+        },
+        {
+          "value": "Hybrid Dual Micro-SIM"
+        },
+        {
+          "value": "eSIM"
+        },
+        {
+          "value": "Dual SIM (2 Nano-SIMs or SIM & eSIM)"
+        },
+        {
+          "value": "Dual SIM"
+        },
+        {
+          "value": "Dual Nano-SIMs and eSIM"
+        },
+        {
+          "value": "Dual Nano-SIM/eSIM"
+        },
+        {
+          "value": "Dual Nano-SIM and eSIM"
+        },
+        {
+          "value": "Dual Nano-SIM + eSIM"
+        },
+        {
+          "value": "Dual Nano-SIM"
+        },
+        {
+          "value": "Dual Mini/Micro-SIM"
+        },
+        {
+          "value": "Dual Mini-SIM"
+        },
+        {
+          "value": "Dual Micro/Nano-SIM"
+        },
+        {
+          "value": "Dual Micro-SIM"
+        },
+        {
+          "value": "Dual eSIM"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Single Nano/e-SIM"
+        },
+        {
+          "value": "Single Nano-SIM"
+        },
+        {
+          "value": "Nano-SIM and eSIM"
+        },
+        {
+          "value": "Nano-SIM"
+        },
+        {
+          "value": "Dual Nano-SIM"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Display Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1572_display_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1572,
+      "attr_name": "Display Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1572_display_type",
+      "possible_values": [
+        {
+          "value": "WVGA"
+        },
+        {
+          "value": "TN"
+        },
+        {
+          "value": "TFT LCD"
+        },
+        {
+          "value": "TFT"
+        },
+        {
+          "value": "Super Retina OLED"
+        },
+        {
+          "value": "Super AMOLED Plus"
+        },
+        {
+          "value": "Super AMOLED"
+        },
+        {
+          "value": "Retina IPS LCD"
+        },
+        {
+          "value": "Retina IPS"
+        },
+        {
+          "value": "QVGA"
+        },
+        {
+          "value": "QQVGA"
+        },
+        {
+          "value": "POLED"
+        },
+        {
+          "value": "PLS LCD"
+        },
+        {
+          "value": "PLS"
+        },
+        {
+          "value": "P-OLED+"
+        },
+        {
+          "value": "P-OLED"
+        },
+        {
+          "value": "OLED"
+        },
+        {
+          "value": "Monochrome"
+        },
+        {
+          "value": "LTPO OLED"
+        },
+        {
+          "value": "LTPO AMOLED"
+        },
+        {
+          "value": "LCD"
+        },
+        {
+          "value": "IPS LCD"
+        },
+        {
+          "value": "IPS"
+        },
+        {
+          "value": "IGZO"
+        },
+        {
+          "value": "Dynamic LTPO"
+        },
+        {
+          "value": "Dynamic AMOLED"
+        },
+        {
+          "value": "Dynamic"
+        },
+        {
+          "value": "CSTN"
+        },
+        {
+          "value": "AMOLED"
+        },
+        {
+          "value": "6.8"
+        },
+        {
+          "value": "6.78"
+        },
+        {
+          "value": "6.67"
+        },
+        {
+          "value": "1.77"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Super Retina OLED"
+        },
+        {
+          "value": "Super AMOLED"
+        },
+        {
+          "value": "OLED"
+        },
+        {
+          "value": "IPS LCD"
+        },
+        {
+          "value": "AMOLED"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Display Size",
+      "parent_slug": null,
+      "slug": "filter_attr_514_model_delete",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 514,
+      "attr_name": "Display Size",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_514_model_delete",
+      "possible_values": [
+        {
+          "value": "5.1 - 5.5\""
+        },
+        {
+          "value": "5.6 - 6\""
+        },
+        {
+          "value": "6.1 - 6.5\""
+        },
+        {
+          "value": "6.6 - 6.8\""
+        },
+        {
+          "value": "< 5\""
+        },
+        {
+          "value": "> 6.8\""
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 230 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 230000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 230 - 330 K",
+          "filters": {
+            "price_min": 230000,
+            "price_max": 330000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 330 - 580 K",
+          "filters": {
+            "price_min": 330000,
+            "price_max": 580000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 580 K",
+          "filters": {
+            "price_min": 580000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Samsung",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/samsung.png",
+          "filters": {
+            "filter_attr_45_brand": "Samsung"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Apple",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/brand-make-icons/apple.png",
+          "filters": {
+            "filter_attr_45_brand": "Apple"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Tecno",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/tecno.png",
+          "filters": {
+            "filter_attr_45_brand": "Tecno"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Xiaomi",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/smart-watches-and-trackers/xiaomi.png",
+          "filters": {
+            "filter_attr_45_brand": "Xiaomi"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Google",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/google.png",
+          "filters": {
+            "filter_attr_45_brand": "Google"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Infinix",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/infinix.png",
+          "filters": {
+            "filter_attr_45_brand": "Infinix"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Oppo",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/mobile-phones/oppo.png",
+          "filters": {
+            "filter_attr_45_brand": "Oppo"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_45_brand",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_45_brand"
+    }
+  ]
+}

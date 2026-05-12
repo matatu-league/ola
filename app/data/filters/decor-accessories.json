@@ -1,0 +1,1812 @@
+{
+  "total": 44277,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 500,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 19000000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 21000,
+          "label": "Under 21 K",
+          "item_count": 2656
+        },
+        {
+          "from": 21000,
+          "to": 50000,
+          "label": "21 - 50 K",
+          "item_count": 10626
+        },
+        {
+          "from": 50000,
+          "to": 130000,
+          "label": "50 - 130 K",
+          "item_count": 17710
+        },
+        {
+          "from": 130000,
+          "to": 350000,
+          "label": "130 - 350 K",
+          "item_count": 11069
+        },
+        {
+          "from": 350000,
+          "to": null,
+          "label": "More than 350 K",
+          "item_count": 2213
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_563_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 563,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_563_type",
+      "possible_values": [
+        {
+          "value": "3D Wall Panels"
+        },
+        {
+          "value": "Air Fresheners and Diffusers",
+          "title": "Air Fresheners & Diffusers"
+        },
+        {
+          "value": "Bath Mats"
+        },
+        {
+          "value": "Bathroom Textiles"
+        },
+        {
+          "value": "Bedding"
+        },
+        {
+          "value": "Candle Holders & Candle Accessories"
+        },
+        {
+          "value": "Candles"
+        },
+        {
+          "value": "Chair Covers"
+        },
+        {
+          "value": "Christmas Tree"
+        },
+        {
+          "value": "Cleaning Tools & Accessories"
+        },
+        {
+          "value": "Clocks"
+        },
+        {
+          "value": "Clothes Dryers"
+        },
+        {
+          "value": "Clothes Racks"
+        },
+        {
+          "value": "Clothesline"
+        },
+        {
+          "value": "Coat Racks"
+        },
+        {
+          "value": "Curtain Rods & Rails"
+        },
+        {
+          "value": "Curtain Tiebacks"
+        },
+        {
+          "value": "Curtains, Drapes & Shades"
+        },
+        {
+          "value": "Decorative Accessories"
+        },
+        {
+          "value": "Decorative Figurines and Statues",
+          "title": "Decorative Figurines & Statues"
+        },
+        {
+          "value": "Decorative Pillows & Cushion Covers"
+        },
+        {
+          "value": "Decorative Plates, Bowls & Dishes"
+        },
+        {
+          "value": "Dish Cloths"
+        },
+        {
+          "value": "Dish Rack & Dish Drainers"
+        },
+        {
+          "value": "Doormats"
+        },
+        {
+          "value": "Gloves"
+        },
+        {
+          "value": "Grab Bars"
+        },
+        {
+          "value": "Incense Burners"
+        },
+        {
+          "value": "Ironing Boards"
+        },
+        {
+          "value": "Key Holders"
+        },
+        {
+          "value": "Kitchen Linens & Textiles"
+        },
+        {
+          "value": "Lanterns"
+        },
+        {
+          "value": "Laundry Accessories"
+        },
+        {
+          "value": "Laundry Cabinets & Shelving"
+        },
+        {
+          "value": "Lint Removers"
+        },
+        {
+          "value": "Mirrors"
+        },
+        {
+          "value": "Mops"
+        },
+        {
+          "value": "Mosquito Killer"
+        },
+        {
+          "value": "Mosquito Lamps"
+        },
+        {
+          "value": "Mosquito Nets"
+        },
+        {
+          "value": "Noticeboards, Memo boards & Bulletin Boards"
+        },
+        {
+          "value": "Padlocks"
+        },
+        {
+          "value": "Pegs"
+        },
+        {
+          "value": "Personal Scales"
+        },
+        {
+          "value": "Photo Frames"
+        },
+        {
+          "value": "Plant Pots & Stands"
+        },
+        {
+          "value": "Plants & Flowers"
+        },
+        {
+          "value": "Rugs"
+        },
+        {
+          "value": "Soap Dispensers"
+        },
+        {
+          "value": "Soap Racks"
+        },
+        {
+          "value": "Table Mats & Placemats"
+        },
+        {
+          "value": "Tablecloths & Runners"
+        },
+        {
+          "value": "Toilet Brushes"
+        },
+        {
+          "value": "Toilet Paper & Paper Towels"
+        },
+        {
+          "value": "Toilet Roll Holder"
+        },
+        {
+          "value": "Toilet Seat Covers"
+        },
+        {
+          "value": "Toothbrush Holders"
+        },
+        {
+          "value": "Toothpaste Dispensers"
+        },
+        {
+          "value": "Towel Racks"
+        },
+        {
+          "value": "Vases"
+        },
+        {
+          "value": "Wall Brackets"
+        },
+        {
+          "value": "Wall Decor"
+        },
+        {
+          "value": "Wall Hangers & Hooks"
+        },
+        {
+          "value": "Wallpaper"
+        },
+        {
+          "value": "Wardrobe Liners"
+        },
+        {
+          "value": "Windows Blinds"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Bedding"
+        },
+        {
+          "value": "Curtains, Drapes & Shades"
+        },
+        {
+          "value": "Decorative Accessories"
+        },
+        {
+          "value": "Mosquito Nets"
+        },
+        {
+          "value": "Rugs"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_265_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 265,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_265_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_267_patterns",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 267,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_267_patterns",
+      "possible_values": [
+        {
+          "value": "A Nice Night"
+        },
+        {
+          "value": "A&S"
+        },
+        {
+          "value": "Abercrombie & Ferguson"
+        },
+        {
+          "value": "Adairs"
+        },
+        {
+          "value": "Adairs Kids"
+        },
+        {
+          "value": "Adam Home"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "AFC"
+        },
+        {
+          "value": "Afro Home Creations"
+        },
+        {
+          "value": "Agent Provocateur"
+        },
+        {
+          "value": "Agiville"
+        },
+        {
+          "value": "Air Wick"
+        },
+        {
+          "value": "AirCloud"
+        },
+        {
+          "value": "Akai"
+        },
+        {
+          "value": "Akt"
+        },
+        {
+          "value": "Aladdin"
+        },
+        {
+          "value": "Alamode Home"
+        },
+        {
+          "value": "Alfresco"
+        },
+        {
+          "value": "Alibert"
+        },
+        {
+          "value": "Allen"
+        },
+        {
+          "value": "ALLURE"
+        },
+        {
+          "value": "Aloha"
+        },
+        {
+          "value": "Alpine"
+        },
+        {
+          "value": "Amazon Elements"
+        },
+        {
+          "value": "AmazonBasics"
+        },
+        {
+          "value": "Ambesonne"
+        },
+        {
+          "value": "Ambiance"
+        },
+        {
+          "value": "AmeliaHome"
+        },
+        {
+          "value": "Amity Home"
+        },
+        {
+          "value": "Ammybeddings"
+        },
+        {
+          "value": "Amrapur"
+        },
+        {
+          "value": "Amsons"
+        },
+        {
+          "value": "Amy Butler"
+        },
+        {
+          "value": "Andersen"
+        },
+        {
+          "value": "Anka"
+        },
+        {
+          "value": "ANN"
+        },
+        {
+          "value": "Ann Gish"
+        },
+        {
+          "value": "Anna Griffin"
+        },
+        {
+          "value": "Anne Stokes"
+        },
+        {
+          "value": "Anthology"
+        },
+        {
+          "value": "Anthropologie"
+        },
+        {
+          "value": "Any"
+        },
+        {
+          "value": "Apartmento"
+        },
+        {
+          "value": "Apc"
+        },
+        {
+          "value": "Apex"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "April Cornell"
+        },
+        {
+          "value": "Archipelago"
+        },
+        {
+          "value": "Arctic"
+        },
+        {
+          "value": "Ardor"
+        },
+        {
+          "value": "Argos Home"
+        },
+        {
+          "value": "ARIGHTEX"
+        },
+        {
+          "value": "Ariston"
+        },
+        {
+          "value": "ARK"
+        },
+        {
+          "value": "Aroma"
+        },
+        {
+          "value": "Aromatique"
+        },
+        {
+          "value": "Artistic Accents"
+        },
+        {
+          "value": "Arya"
+        },
+        {
+          "value": "Ashley Furniture"
+        },
+        {
+          "value": "At Home"
+        },
+        {
+          "value": "Atlantique"
+        },
+        {
+          "value": "August Grove"
+        },
+        {
+          "value": "Aussie"
+        },
+        {
+          "value": "Authentic Models"
+        },
+        {
+          "value": "Avc"
+        },
+        {
+          "value": "Avondale Manor"
+        },
+        {
+          "value": "Azalea Skye"
+        },
+        {
+          "value": "Azan"
+        },
+        {
+          "value": "Balenciaga"
+        },
+        {
+          "value": "Bali"
+        },
+        {
+          "value": "Balichun"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "Ballard Designs"
+        },
+        {
+          "value": "Baloo"
+        },
+        {
+          "value": "Baltic Linen"
+        },
+        {
+          "value": "Bambury"
+        },
+        {
+          "value": "Bar III"
+        },
+        {
+          "value": "Bare Home"
+        },
+        {
+          "value": "Baseus"
+        },
+        {
+          "value": "Bassett"
+        },
+        {
+          "value": "Bassetti"
+        },
+        {
+          "value": "Bb"
+        },
+        {
+          "value": "BeA"
+        },
+        {
+          "value": "Beautissu"
+        },
+        {
+          "value": "Becky Cameron"
+        },
+        {
+          "value": "Bed Bath & Beyond"
+        },
+        {
+          "value": "Bedding House"
+        },
+        {
+          "value": "BeddingOutlet"
+        },
+        {
+          "value": "Bedmaker"
+        },
+        {
+          "value": "Bedsure"
+        },
+        {
+          "value": "BedVoyage"
+        },
+        {
+          "value": "Beekman 1802"
+        },
+        {
+          "value": "Beldray"
+        },
+        {
+          "value": "Bella"
+        },
+        {
+          "value": "bella notte"
+        },
+        {
+          "value": "Bella Russo"
+        },
+        {
+          "value": "Belledorm"
+        },
+        {
+          "value": "Bellissimo"
+        },
+        {
+          "value": "Bellora"
+        },
+        {
+          "value": "Belmondo"
+        },
+        {
+          "value": "Beresford Roberts"
+        },
+        {
+          "value": "Bespoke"
+        },
+        {
+          "value": "Better Homes & Gardens"
+        },
+        {
+          "value": "BHS"
+        },
+        {
+          "value": "Bianca"
+        },
+        {
+          "value": "Bianca Elegance"
+        },
+        {
+          "value": "Binatone"
+        },
+        {
+          "value": "Bird"
+        },
+        {
+          "value": "Bktd"
+        },
+        {
+          "value": "Blancho Bedding"
+        },
+        {
+          "value": "BlessLiving"
+        },
+        {
+          "value": "Blissliving"
+        },
+        {
+          "value": "BLOCK"
+        },
+        {
+          "value": "bluebellgray"
+        },
+        {
+          "value": "Bluestone"
+        },
+        {
+          "value": "Boho Boutique"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "Boulevard"
+        },
+        {
+          "value": "Brandream"
+        },
+        {
+          "value": "Braun"
+        },
+        {
+          "value": "Brentfords"
+        },
+        {
+          "value": "Brimix"
+        },
+        {
+          "value": "Brooklyn Loom"
+        },
+        {
+          "value": "Broomhill"
+        },
+        {
+          "value": "Brother"
+        },
+        {
+          "value": "Bull"
+        },
+        {
+          "value": "Bulldog"
+        },
+        {
+          "value": "BuLuTu"
+        },
+        {
+          "value": "Burlington"
+        },
+        {
+          "value": "Bush"
+        },
+        {
+          "value": "BW"
+        },
+        {
+          "value": "Byourbed"
+        },
+        {
+          "value": "Caleffi"
+        },
+        {
+          "value": "California Design Den"
+        },
+        {
+          "value": "Calming Comfort"
+        },
+        {
+          "value": "Candlelight"
+        },
+        {
+          "value": "Candy"
+        },
+        {
+          "value": "CANIC"
+        },
+        {
+          "value": "Cannon"
+        },
+        {
+          "value": "Carlton"
+        },
+        {
+          "value": "Carnation Home Fashions"
+        },
+        {
+          "value": "Casablanca"
+        },
+        {
+          "value": "Cascade Home"
+        },
+        {
+          "value": "Case"
+        },
+        {
+          "value": "CAT"
+        },
+        {
+          "value": "Cath Kidston"
+        },
+        {
+          "value": "Cathay Home"
+        },
+        {
+          "value": "Catimini"
+        },
+        {
+          "value": "Chaps"
+        },
+        {
+          "value": "Character World"
+        },
+        {
+          "value": "Charisma"
+        },
+        {
+          "value": "Charlotte Thomas"
+        },
+        {
+          "value": "Charlton Home"
+        },
+        {
+          "value": "Cheapest"
+        },
+        {
+          "value": "Chic Home"
+        },
+        {
+          "value": "Ciesa"
+        },
+        {
+          "value": "Circo"
+        },
+        {
+          "value": "CL"
+        },
+        {
+          "value": "Classic Home"
+        },
+        {
+          "value": "Clean"
+        },
+        {
+          "value": "Clorox"
+        },
+        {
+          "value": "Cloth & Canopy"
+        },
+        {
+          "value": "Coast"
+        },
+        {
+          "value": "Coastal"
+        },
+        {
+          "value": "Coloroll"
+        },
+        {
+          "value": "Comfort Spaces"
+        },
+        {
+          "value": "Comfytex"
+        },
+        {
+          "value": "Company Store"
+        },
+        {
+          "value": "Cooper"
+        },
+        {
+          "value": "Cotton House"
+        },
+        {
+          "value": "Country Curtains"
+        },
+        {
+          "value": "Covers & Co"
+        },
+        {
+          "value": "Cozy Shop"
+        },
+        {
+          "value": "CRAFT"
+        },
+        {
+          "value": "Creative Home"
+        },
+        {
+          "value": "Crystal"
+        },
+        {
+          "value": "CTI"
+        },
+        {
+          "value": "Cynthia Rowley"
+        },
+        {
+          "value": "D.light"
+        },
+        {
+          "value": "Darby Home Co"
+        },
+        {
+          "value": "DaVinci"
+        },
+        {
+          "value": "DC"
+        },
+        {
+          "value": "De Lavish"
+        },
+        {
+          "value": "DEA"
+        },
+        {
+          "value": "Debenhams"
+        },
+        {
+          "value": "Deco"
+        },
+        {
+          "value": "DecoKing"
+        },
+        {
+          "value": "DENY Designs"
+        },
+        {
+          "value": "Design Art"
+        },
+        {
+          "value": "Designers Choice"
+        },
+        {
+          "value": "DEWALT"
+        },
+        {
+          "value": "Disney"
+        },
+        {
+          "value": "DKNY"
+        },
+        {
+          "value": "Dodoma Comfy"
+        },
+        {
+          "value": "Dora"
+        },
+        {
+          "value": "Dp"
+        },
+        {
+          "value": "Dream House"
+        },
+        {
+          "value": "Dream World"
+        },
+        {
+          "value": "Dreamaker"
+        },
+        {
+          "value": "Dreams 'n' Drapes"
+        },
+        {
+          "value": "Dreamscene"
+        },
+        {
+          "value": "Dreamtex"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "Duracell"
+        },
+        {
+          "value": "Eagle"
+        },
+        {
+          "value": "East Urban Home"
+        },
+        {
+          "value": "EasyFit"
+        },
+        {
+          "value": "ECHO"
+        },
+        {
+          "value": "EDS"
+        },
+        {
+          "value": "Egyptian Bedding"
+        },
+        {
+          "value": "Elegance"
+        },
+        {
+          "value": "Elegant Home"
+        },
+        {
+          "value": "Elegant Sleep"
+        },
+        {
+          "value": "Elizabeth Jayne"
+        },
+        {
+          "value": "Essential Home"
+        },
+        {
+          "value": "Essentials"
+        },
+        {
+          "value": "Estella"
+        },
+        {
+          "value": "Everyday"
+        },
+        {
+          "value": "Expressions"
+        },
+        {
+          "value": "Fab Organizers"
+        },
+        {
+          "value": "Fabulous"
+        },
+        {
+          "value": "Family"
+        },
+        {
+          "value": "Fashion"
+        },
+        {
+          "value": "FenDie"
+        },
+        {
+          "value": "Fine Linens"
+        },
+        {
+          "value": "French Connection"
+        },
+        {
+          "value": "GANZ"
+        },
+        {
+          "value": "Geepee"
+        },
+        {
+          "value": "General"
+        },
+        {
+          "value": "Genie"
+        },
+        {
+          "value": "Ginger"
+        },
+        {
+          "value": "Grace Home Fashions"
+        },
+        {
+          "value": "Gravity Blanket"
+        },
+        {
+          "value": "Great Knot"
+        },
+        {
+          "value": "Gree"
+        },
+        {
+          "value": "Green Lion"
+        },
+        {
+          "value": "Handboss"
+        },
+        {
+          "value": "Handmade"
+        },
+        {
+          "value": "Hanson"
+        },
+        {
+          "value": "Happy Linen Company"
+        },
+        {
+          "value": "Heart"
+        },
+        {
+          "value": "Hem"
+        },
+        {
+          "value": "HEMA"
+        },
+        {
+          "value": "HiEnd Accents"
+        },
+        {
+          "value": "Highline Bedding Co."
+        },
+        {
+          "value": "Home & Co"
+        },
+        {
+          "value": "Home and Living"
+        },
+        {
+          "value": "Home Collection"
+        },
+        {
+          "value": "Home Decorators Collection"
+        },
+        {
+          "value": "Home Essentials"
+        },
+        {
+          "value": "Home Interiors"
+        },
+        {
+          "value": "HOMEIDEAS"
+        },
+        {
+          "value": "Homescapes"
+        },
+        {
+          "value": "Homestead"
+        },
+        {
+          "value": "Hotel Collection"
+        },
+        {
+          "value": "Hotel Style"
+        },
+        {
+          "value": "House & Home"
+        },
+        {
+          "value": "HUGO BOSS"
+        },
+        {
+          "value": "Ideal Textiles"
+        },
+        {
+          "value": "ienjoy Home"
+        },
+        {
+          "value": "Impressions"
+        },
+        {
+          "value": "In Home"
+        },
+        {
+          "value": "Ingco"
+        },
+        {
+          "value": "Intex"
+        },
+        {
+          "value": "Italian Bed Linen"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "JANINE"
+        },
+        {
+          "value": "Joseph Joseph"
+        },
+        {
+          "value": "Joy"
+        },
+        {
+          "value": "Just Home"
+        },
+        {
+          "value": "Jyl"
+        },
+        {
+          "value": "KA"
+        },
+        {
+          "value": "Kamisafe"
+        },
+        {
+          "value": "Karcher"
+        },
+        {
+          "value": "Kelly Wearstler"
+        },
+        {
+          "value": "Kenyon"
+        },
+        {
+          "value": "KIND"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Kylie Minogue at Home"
+        },
+        {
+          "value": "La Marvel"
+        },
+        {
+          "value": "Laura Secret Home"
+        },
+        {
+          "value": "Levtex"
+        },
+        {
+          "value": "Liberty"
+        },
+        {
+          "value": "Lincoln"
+        },
+        {
+          "value": "LINEN HOME"
+        },
+        {
+          "value": "Liz Claiborne"
+        },
+        {
+          "value": "Logan & Mason"
+        },
+        {
+          "value": "Louisiana Bedding"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "Majestic"
+        },
+        {
+          "value": "Marc O'Polo"
+        },
+        {
+          "value": "Marvel"
+        },
+        {
+          "value": "Master"
+        },
+        {
+          "value": "Maxim"
+        },
+        {
+          "value": "Mindy"
+        },
+        {
+          "value": "Mmaat"
+        },
+        {
+          "value": "Moda de Casa"
+        },
+        {
+          "value": "Moonlight Bedding"
+        },
+        {
+          "value": "Morrisons"
+        },
+        {
+          "value": "Mothercare"
+        },
+        {
+          "value": "NANKO"
+        },
+        {
+          "value": "National"
+        },
+        {
+          "value": "Nedens"
+        },
+        {
+          "value": "Nest"
+        },
+        {
+          "value": "New Look"
+        },
+        {
+          "value": "Night Comfort"
+        },
+        {
+          "value": "Nimsay Home"
+        },
+        {
+          "value": "Noble Excellence"
+        },
+        {
+          "value": "Nordstrom At Home"
+        },
+        {
+          "value": "Normal Bedcover"
+        },
+        {
+          "value": "Nova"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Ox"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "Patricia Rose"
+        },
+        {
+          "value": "Peacock Alley"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "PERI"
+        },
+        {
+          "value": "Pest Reject"
+        },
+        {
+          "value": "Peter Reed"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "Pom Pom at Home"
+        },
+        {
+          "value": "Power Deluxe"
+        },
+        {
+          "value": "Prime"
+        },
+        {
+          "value": "PUR"
+        },
+        {
+          "value": "Pure Comfort"
+        },
+        {
+          "value": "Rainbow"
+        },
+        {
+          "value": "Raymond Waites"
+        },
+        {
+          "value": "Red Nomad"
+        },
+        {
+          "value": "Retro Home"
+        },
+        {
+          "value": "Room Essentials"
+        },
+        {
+          "value": "Sanford"
+        },
+        {
+          "value": "Scala Bedding"
+        },
+        {
+          "value": "Sharp"
+        },
+        {
+          "value": "Sheridan"
+        },
+        {
+          "value": "Shoe Rack"
+        },
+        {
+          "value": "Signature Bedding"
+        },
+        {
+          "value": "Silentnight"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "Silver Crest"
+        },
+        {
+          "value": "Silverline"
+        },
+        {
+          "value": "Simple Luxury"
+        },
+        {
+          "value": "Simplicity"
+        },
+        {
+          "value": "SK"
+        },
+        {
+          "value": "Skye"
+        },
+        {
+          "value": "Sleep & Beyond"
+        },
+        {
+          "value": "Sleep Philosophy"
+        },
+        {
+          "value": "Sleepbella"
+        },
+        {
+          "value": "Sleepcomfort"
+        },
+        {
+          "value": "Sleepdown"
+        },
+        {
+          "value": "Sleeptime"
+        },
+        {
+          "value": "Sleepwell"
+        },
+        {
+          "value": "Sleepwish"
+        },
+        {
+          "value": "Smoby"
+        },
+        {
+          "value": "Soak&Sleep"
+        },
+        {
+          "value": "Softan"
+        },
+        {
+          "value": "Sokany"
+        },
+        {
+          "value": "Sona"
+        },
+        {
+          "value": "Sonoma"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "SoulBedroom"
+        },
+        {
+          "value": "Spiral"
+        },
+        {
+          "value": "Stanley"
+        },
+        {
+          "value": "Studio Home Exclusive"
+        },
+        {
+          "value": "Style&co."
+        },
+        {
+          "value": "Superior"
+        },
+        {
+          "value": "Supremebedding"
+        },
+        {
+          "value": "Surya"
+        },
+        {
+          "value": "Swanson Beddings"
+        },
+        {
+          "value": "Sweet Home Collection"
+        },
+        {
+          "value": "Tache Home Fashion"
+        },
+        {
+          "value": "TAG"
+        },
+        {
+          "value": "TEC"
+        },
+        {
+          "value": "The Bed Linen Store"
+        },
+        {
+          "value": "The Better Sleep Company"
+        },
+        {
+          "value": "The Big Sleep"
+        },
+        {
+          "value": "The Nights Range"
+        },
+        {
+          "value": "The Texture Collection"
+        },
+        {
+          "value": "Thermolineo"
+        },
+        {
+          "value": "Tony's Textiles"
+        },
+        {
+          "value": "Town"
+        },
+        {
+          "value": "Trina Turk"
+        },
+        {
+          "value": "Truly Soft"
+        },
+        {
+          "value": "Tuya"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Uozzi Bedding"
+        },
+        {
+          "value": "Urban Habitat"
+        },
+        {
+          "value": "Urban Unique"
+        },
+        {
+          "value": "Utopia Bedding"
+        },
+        {
+          "value": "Vallila"
+        },
+        {
+          "value": "VCNY"
+        },
+        {
+          "value": "VCNY HOME"
+        },
+        {
+          "value": "Vellmax"
+        },
+        {
+          "value": "Veratex"
+        },
+        {
+          "value": "Versace"
+        },
+        {
+          "value": "Viceroy Bedding"
+        },
+        {
+          "value": "Victoria"
+        },
+        {
+          "value": "Victoria Classics"
+        },
+        {
+          "value": "Vintage Design Homewares"
+        },
+        {
+          "value": "VIP"
+        },
+        {
+          "value": "Vitafoam"
+        },
+        {
+          "value": "Vital Choice"
+        },
+        {
+          "value": "Wagon"
+        },
+        {
+          "value": "Wake In Cloud"
+        },
+        {
+          "value": "Wallace"
+        },
+        {
+          "value": "Water Drum"
+        },
+        {
+          "value": "Waterford"
+        },
+        {
+          "value": "Weave"
+        },
+        {
+          "value": "WestPoint Home"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Whitney Home Textile"
+        },
+        {
+          "value": "Wildon Home"
+        },
+        {
+          "value": "Williams"
+        },
+        {
+          "value": "Williams Sonoma Home"
+        },
+        {
+          "value": "Windsor"
+        },
+        {
+          "value": "Winning Star"
+        },
+        {
+          "value": "Wongs Bedding"
+        },
+        {
+          "value": "Woolrich"
+        },
+        {
+          "value": "Word of Dream"
+        },
+        {
+          "value": "Xcellent"
+        },
+        {
+          "value": "Xforce"
+        },
+        {
+          "value": "Xg"
+        },
+        {
+          "value": "Yh"
+        },
+        {
+          "value": "YORK"
+        },
+        {
+          "value": "Yves Delorme"
+        },
+        {
+          "value": "ZAR"
+        },
+        {
+          "value": "ZENSATION"
+        },
+        {
+          "value": "ZHH"
+        },
+        {
+          "value": "Zodiac"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Better Homes & Gardens"
+        },
+        {
+          "value": "CL"
+        },
+        {
+          "value": "Home Interiors"
+        },
+        {
+          "value": "VIP"
+        },
+        {
+          "value": "ZHH"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5374_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5374,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5374_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Bedding",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-accessories/bedding-sets.png",
+          "filters": {
+            "filter_attr_563_type": "Bedding"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Rugs",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/decor-accessories/rugs.png",
+          "filters": {
+            "filter_attr_563_type": "Rugs"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Curtains, Drapes & Shades",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-accessories/curtains.png",
+          "filters": {
+            "filter_attr_563_type": "Curtains, Drapes & Shades"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Mosquito Nets",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/decor-accessories/mosquito-nets.png",
+          "filters": {
+            "filter_attr_563_type": "Mosquito Nets"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Decorative Accessories",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/decor-accessories/decorative-accessories.png",
+          "filters": {
+            "filter_attr_563_type": "Decorative Accessories"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Wallpaper",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/home-accessories/wallpapers.png",
+          "filters": {
+            "filter_attr_563_type": "Wallpaper"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Bathroom Textiles",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/decor-accessories/bathroom-textiles.png",
+          "filters": {
+            "filter_attr_563_type": "Bathroom Textiles"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_563_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_563_type"
+    }
+  ]
+}

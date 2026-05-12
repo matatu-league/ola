@@ -1,0 +1,90 @@
+{
+  "total": 13,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 10000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 200000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 11000,
+          "label": "Under 11 K",
+          "item_count": 0
+        },
+        {
+          "from": 11000,
+          "to": 15000,
+          "label": "11 - 15 K",
+          "item_count": 3
+        },
+        {
+          "from": 15000,
+          "to": 74000,
+          "label": "15 - 74 K",
+          "item_count": 5
+        },
+        {
+          "from": 74000,
+          "to": 190000,
+          "label": "74 - 190 K",
+          "item_count": 3
+        },
+        {
+          "from": 190000,
+          "to": null,
+          "label": "More than 190 K",
+          "item_count": 0
+        }
+      ]
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": []
+}

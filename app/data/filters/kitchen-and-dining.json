@@ -1,0 +1,1385 @@
+{
+  "total": 44197,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 1000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 11500000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 30000,
+          "label": "Under 30 K",
+          "item_count": 2651
+        },
+        {
+          "from": 30000,
+          "to": 50000,
+          "label": "30 - 50 K",
+          "item_count": 10607
+        },
+        {
+          "from": 50000,
+          "to": 120000,
+          "label": "50 - 120 K",
+          "item_count": 17678
+        },
+        {
+          "from": 120000,
+          "to": 350000,
+          "label": "120 - 350 K",
+          "item_count": 11049
+        },
+        {
+          "from": 350000,
+          "to": null,
+          "label": "More than 350 K",
+          "item_count": 2209
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3988_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 3988,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3988_brand",
+      "possible_values": [
+        {
+          "value": "3M"
+        },
+        {
+          "value": "AbsorbaStone"
+        },
+        {
+          "value": "Accoutrements"
+        },
+        {
+          "value": "Accurate"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Acme"
+        },
+        {
+          "value": "AcuRite"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "Adler"
+        },
+        {
+          "value": "AEG"
+        },
+        {
+          "value": "aerolatte"
+        },
+        {
+          "value": "AeroPress"
+        },
+        {
+          "value": "AfriHome"
+        },
+        {
+          "value": "Aicok"
+        },
+        {
+          "value": "Al-De-Chef"
+        },
+        {
+          "value": "Aladdin"
+        },
+        {
+          "value": "Alices Cottage"
+        },
+        {
+          "value": "All American"
+        },
+        {
+          "value": "All Star"
+        },
+        {
+          "value": "All-Clad"
+        },
+        {
+          "value": "Alpine"
+        },
+        {
+          "value": "Amana"
+        },
+        {
+          "value": "AMCO"
+        },
+        {
+          "value": "Amco Houseworks"
+        },
+        {
+          "value": "American Atelier"
+        },
+        {
+          "value": "American Expedition"
+        },
+        {
+          "value": "American Harvest"
+        },
+        {
+          "value": "American Weigh Scales"
+        },
+        {
+          "value": "AMF"
+        },
+        {
+          "value": "Amway"
+        },
+        {
+          "value": "Amway Queen"
+        },
+        {
+          "value": "Anchor Hocking"
+        },
+        {
+          "value": "Anne Taintor"
+        },
+        {
+          "value": "Anolon"
+        },
+        {
+          "value": "Anova"
+        },
+        {
+          "value": "Apex"
+        },
+        {
+          "value": "Apilco"
+        },
+        {
+          "value": "Arcoroc"
+        },
+        {
+          "value": "Arcos"
+        },
+        {
+          "value": "Arctic Zone"
+        },
+        {
+          "value": "Armstrong"
+        },
+        {
+          "value": "AROMA"
+        },
+        {
+          "value": "Aroma Coffee"
+        },
+        {
+          "value": "Arrow"
+        },
+        {
+          "value": "ArtGlass"
+        },
+        {
+          "value": "Artland"
+        },
+        {
+          "value": "Ashley Furniture"
+        },
+        {
+          "value": "Astra"
+        },
+        {
+          "value": "Astro"
+        },
+        {
+          "value": "Avanti"
+        },
+        {
+          "value": "Baccarat"
+        },
+        {
+          "value": "BALL"
+        },
+        {
+          "value": "bamix"
+        },
+        {
+          "value": "Baumalu"
+        },
+        {
+          "value": "Berndes"
+        },
+        {
+          "value": "Better Chef"
+        },
+        {
+          "value": "Better Homes"
+        },
+        {
+          "value": "Betty Crocker"
+        },
+        {
+          "value": "Bialetti"
+        },
+        {
+          "value": "Bird"
+        },
+        {
+          "value": "BKR"
+        },
+        {
+          "value": "Blanco"
+        },
+        {
+          "value": "Blendtec"
+        },
+        {
+          "value": "BLOCK"
+        },
+        {
+          "value": "Bloomfield"
+        },
+        {
+          "value": "Blum"
+        },
+        {
+          "value": "BODUM"
+        },
+        {
+          "value": "Bond"
+        },
+        {
+          "value": "Bormioli Rocco"
+        },
+        {
+          "value": "Bosch"
+        },
+        {
+          "value": "Boyd"
+        },
+        {
+          "value": "Braun"
+        },
+        {
+          "value": "Breadman"
+        },
+        {
+          "value": "Brentwood"
+        },
+        {
+          "value": "Bruno"
+        },
+        {
+          "value": "BUILT"
+        },
+        {
+          "value": "Bull"
+        },
+        {
+          "value": "Bush"
+        },
+        {
+          "value": "Butler"
+        },
+        {
+          "value": "CaddyO"
+        },
+        {
+          "value": "Cake Boss"
+        },
+        {
+          "value": "Calvin Klein"
+        },
+        {
+          "value": "CamelBak"
+        },
+        {
+          "value": "Camry"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "Carico"
+        },
+        {
+          "value": "Carrier"
+        },
+        {
+          "value": "Case"
+        },
+        {
+          "value": "CBK"
+        },
+        {
+          "value": "CENTURY"
+        },
+        {
+          "value": "Certified"
+        },
+        {
+          "value": "Chemex"
+        },
+        {
+          "value": "Chicago Metallic"
+        },
+        {
+          "value": "Cook's Companion"
+        },
+        {
+          "value": "Cook's Essentials"
+        },
+        {
+          "value": "Cooking Concepts"
+        },
+        {
+          "value": "Cooper"
+        },
+        {
+          "value": "Corelle"
+        },
+        {
+          "value": "Crane"
+        },
+        {
+          "value": "Creative Co-Op"
+        },
+        {
+          "value": "Creative Home"
+        },
+        {
+          "value": "Crystal Quest"
+        },
+        {
+          "value": "Cucina"
+        },
+        {
+          "value": "CUTIPOL"
+        },
+        {
+          "value": "Daiso"
+        },
+        {
+          "value": "Danby"
+        },
+        {
+          "value": "Danco"
+        },
+        {
+          "value": "Dansk"
+        },
+        {
+          "value": "DASH"
+        },
+        {
+          "value": "Deco"
+        },
+        {
+          "value": "Delta"
+        },
+        {
+          "value": "Deni"
+        },
+        {
+          "value": "Dior"
+        },
+        {
+          "value": "Dora"
+        },
+        {
+          "value": "Drinkwear"
+        },
+        {
+          "value": "Duck"
+        },
+        {
+          "value": "DURABLE"
+        },
+        {
+          "value": "Duralex"
+        },
+        {
+          "value": "Eagle"
+        },
+        {
+          "value": "Ello"
+        },
+        {
+          "value": "Euro-Pro"
+        },
+        {
+          "value": "Falcon"
+        },
+        {
+          "value": "Flex"
+        },
+        {
+          "value": "FoodSaver"
+        },
+        {
+          "value": "Ford"
+        },
+        {
+          "value": "Freshware"
+        },
+        {
+          "value": "Frette"
+        },
+        {
+          "value": "Fringe Studio"
+        },
+        {
+          "value": "Furi"
+        },
+        {
+          "value": "Fusion"
+        },
+        {
+          "value": "Gaggia"
+        },
+        {
+          "value": "Galaxy"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Genius"
+        },
+        {
+          "value": "Gevalia"
+        },
+        {
+          "value": "Gibson"
+        },
+        {
+          "value": "GLASSLOCK"
+        },
+        {
+          "value": "Golden Rabbit"
+        },
+        {
+          "value": "Good Cook"
+        },
+        {
+          "value": "Gorham"
+        },
+        {
+          "value": "Gotham Steel"
+        },
+        {
+          "value": "GRIP"
+        },
+        {
+          "value": "Handmade"
+        },
+        {
+          "value": "Happycall"
+        },
+        {
+          "value": "Heart"
+        },
+        {
+          "value": "Hexagon"
+        },
+        {
+          "value": "Hickory"
+        },
+        {
+          "value": "Highland Graphics, Inc."
+        },
+        {
+          "value": "Hisense"
+        },
+        {
+          "value": "Hoffmaster"
+        },
+        {
+          "value": "Honey-Can-Do"
+        },
+        {
+          "value": "Honeywell"
+        },
+        {
+          "value": "Hydro Flask"
+        },
+        {
+          "value": "iCoffee"
+        },
+        {
+          "value": "Ideal"
+        },
+        {
+          "value": "IKEA"
+        },
+        {
+          "value": "iSi"
+        },
+        {
+          "value": "J.K. Adams"
+        },
+        {
+          "value": "Jason"
+        },
+        {
+          "value": "JET"
+        },
+        {
+          "value": "Johnson Brothers"
+        },
+        {
+          "value": "JOIE"
+        },
+        {
+          "value": "Joseph Joseph"
+        },
+        {
+          "value": "Joy"
+        },
+        {
+          "value": "Jupiter"
+        },
+        {
+          "value": "Kaiser"
+        },
+        {
+          "value": "Kalita"
+        },
+        {
+          "value": "Kenmore"
+        },
+        {
+          "value": "Kenwood"
+        },
+        {
+          "value": "King"
+        },
+        {
+          "value": "Kitchen Concepts"
+        },
+        {
+          "value": "Kitchen Craft"
+        },
+        {
+          "value": "Kitchen Selectives"
+        },
+        {
+          "value": "KitchenAid"
+        },
+        {
+          "value": "KitchenIQ"
+        },
+        {
+          "value": "Kiwi"
+        },
+        {
+          "value": "Klean Kanteen"
+        },
+        {
+          "value": "Kraftware"
+        },
+        {
+          "value": "Legacy"
+        },
+        {
+          "value": "LEM"
+        },
+        {
+          "value": "Lifetime"
+        },
+        {
+          "value": "Luminarc"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "Magic Chef"
+        },
+        {
+          "value": "Master"
+        },
+        {
+          "value": "Max Factory"
+        },
+        {
+          "value": "Maxcera"
+        },
+        {
+          "value": "Maxim"
+        },
+        {
+          "value": "Mega"
+        },
+        {
+          "value": "Member's Mark"
+        },
+        {
+          "value": "Midea"
+        },
+        {
+          "value": "Mirro"
+        },
+        {
+          "value": "MOTIV"
+        },
+        {
+          "value": "Mukwano"
+        },
+        {
+          "value": "National"
+        },
+        {
+          "value": "Natura"
+        },
+        {
+          "value": "Nautica"
+        },
+        {
+          "value": "Nespresso"
+        },
+        {
+          "value": "Nice House of Plastics"
+        },
+        {
+          "value": "Nikko"
+        },
+        {
+          "value": "Nobility Plate"
+        },
+        {
+          "value": "NOVA"
+        },
+        {
+          "value": "Olympia"
+        },
+        {
+          "value": "ORCA"
+        },
+        {
+          "value": "Orrefors"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "PARK"
+        },
+        {
+          "value": "Pasabahce"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Popeil"
+        },
+        {
+          "value": "Prime"
+        },
+        {
+          "value": "Princess House"
+        },
+        {
+          "value": "Prodyne"
+        },
+        {
+          "value": "PUR"
+        },
+        {
+          "value": "PYREX"
+        },
+        {
+          "value": "Rainbow"
+        },
+        {
+          "value": "Regal"
+        },
+        {
+          "value": "Rema"
+        },
+        {
+          "value": "Revol"
+        },
+        {
+          "value": "Rival"
+        },
+        {
+          "value": "Roland"
+        },
+        {
+          "value": "Royal Prestige"
+        },
+        {
+          "value": "Royalty"
+        },
+        {
+          "value": "Rtic"
+        },
+        {
+          "value": "Russ"
+        },
+        {
+          "value": "Saachi"
+        },
+        {
+          "value": "Sachi"
+        },
+        {
+          "value": "SANYO"
+        },
+        {
+          "value": "Sears"
+        },
+        {
+          "value": "Sharp"
+        },
+        {
+          "value": "Shun"
+        },
+        {
+          "value": "Signature Housewares"
+        },
+        {
+          "value": "SiliconeZone"
+        },
+        {
+          "value": "Silpat"
+        },
+        {
+          "value": "simplehuman"
+        },
+        {
+          "value": "Simplicity"
+        },
+        {
+          "value": "Slitzer"
+        },
+        {
+          "value": "Solo"
+        },
+        {
+          "value": "Spicy Shelf"
+        },
+        {
+          "value": "Square D"
+        },
+        {
+          "value": "Stanley"
+        },
+        {
+          "value": "Stanley Roberts"
+        },
+        {
+          "value": "Starbucks"
+        },
+        {
+          "value": "Sticks"
+        },
+        {
+          "value": "Strahl"
+        },
+        {
+          "value": "Summit"
+        },
+        {
+          "value": "Sunbeam"
+        },
+        {
+          "value": "Sur La Table"
+        },
+        {
+          "value": "Susquehanna Glass"
+        },
+        {
+          "value": "SWING"
+        },
+        {
+          "value": "Swiss Diamond"
+        },
+        {
+          "value": "SYLVANIA"
+        },
+        {
+          "value": "TAG"
+        },
+        {
+          "value": "Tanita"
+        },
+        {
+          "value": "TASSIMO"
+        },
+        {
+          "value": "Taylor"
+        },
+        {
+          "value": "Tefal"
+        },
+        {
+          "value": "Terraillon"
+        },
+        {
+          "value": "Thermos"
+        },
+        {
+          "value": "Tiger"
+        },
+        {
+          "value": "Tools of the Trade"
+        },
+        {
+          "value": "Toucan"
+        },
+        {
+          "value": "Tramontina"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Unicorn"
+        },
+        {
+          "value": "Universal"
+        },
+        {
+          "value": "Victorio"
+        },
+        {
+          "value": "Villeroy & Boch"
+        },
+        {
+          "value": "Waterford"
+        },
+        {
+          "value": "Watts"
+        },
+        {
+          "value": "WECK"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Wilton"
+        },
+        {
+          "value": "Woodbridge"
+        },
+        {
+          "value": "World Tableware"
+        },
+        {
+          "value": "Zepter"
+        },
+        {
+          "value": "Ziploc"
+        },
+        {
+          "value": "Zodiac"
+        },
+        {
+          "value": "Zojirushi"
+        },
+        {
+          "value": "Zoku"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "3M"
+        },
+        {
+          "value": "Accurate"
+        },
+        {
+          "value": "CAN"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "King"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_263_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 263,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_263_type",
+      "possible_values": [
+        {
+          "value": "Airfryer Liners"
+        },
+        {
+          "value": "Aprons"
+        },
+        {
+          "value": "Baking Utensils"
+        },
+        {
+          "value": "Bar & Cocktails Tools",
+          "title": "Bar & Cocktail Tools"
+        },
+        {
+          "value": "Bottle Stoppers & Corks"
+        },
+        {
+          "value": "Bowls"
+        },
+        {
+          "value": "Bread Boxes"
+        },
+        {
+          "value": "Butter Dishes"
+        },
+        {
+          "value": "Cake Decorations"
+        },
+        {
+          "value": "Cake Stands"
+        },
+        {
+          "value": "Can Openers"
+        },
+        {
+          "value": "Canisters & Jars"
+        },
+        {
+          "value": "Carafes & Water Pitchers"
+        },
+        {
+          "value": "Chippers"
+        },
+        {
+          "value": "Citrus Press"
+        },
+        {
+          "value": "Cling Film, Foil & Food Wraps"
+        },
+        {
+          "value": "Colanders, Strainers & Sifters"
+        },
+        {
+          "value": "Cooking Utensils"
+        },
+        {
+          "value": "Cooler Bags"
+        },
+        {
+          "value": "Corkscrews & Openers"
+        },
+        {
+          "value": "Cutting Boards"
+        },
+        {
+          "value": "Dinner Sets"
+        },
+        {
+          "value": "Fish Scrapers"
+        },
+        {
+          "value": "Flasks"
+        },
+        {
+          "value": "Flatware Sets"
+        },
+        {
+          "value": "Food Dispensers"
+        },
+        {
+          "value": "Food Storage Bags"
+        },
+        {
+          "value": "Food Storage Containers"
+        },
+        {
+          "value": "Fratware Storage"
+        },
+        {
+          "value": "Garlic Press"
+        },
+        {
+          "value": "Gas Stove Protectors"
+        },
+        {
+          "value": "Glassware"
+        },
+        {
+          "value": "Graters & Zesters"
+        },
+        {
+          "value": "Ice Buckets"
+        },
+        {
+          "value": "Ice Cubes, Trays & Molds"
+        },
+        {
+          "value": "Kettles & Teapots"
+        },
+        {
+          "value": "Kitchen & Steak Knives"
+        },
+        {
+          "value": "Kitchen Holders"
+        },
+        {
+          "value": "Kitchen Peelers & Slicers"
+        },
+        {
+          "value": "Kitchen Racks"
+        },
+        {
+          "value": "Lids & Covers"
+        },
+        {
+          "value": "Measuring Utensils"
+        },
+        {
+          "value": "Meat Tenderizers"
+        },
+        {
+          "value": "Microwave Cooking Gadgets"
+        },
+        {
+          "value": "Mortar And Pestle"
+        },
+        {
+          "value": "Mugs"
+        },
+        {
+          "value": "Napkins"
+        },
+        {
+          "value": "Oil Filters"
+        },
+        {
+          "value": "Oven Mitts & Pot Holders"
+        },
+        {
+          "value": "Pie, Flan & Tart Tins"
+        },
+        {
+          "value": "Plastic Dishes, Cups & Cutlery"
+        },
+        {
+          "value": "Plates"
+        },
+        {
+          "value": "Platters"
+        },
+        {
+          "value": "Pots & Pans"
+        },
+        {
+          "value": "Salt & Pepper Shakers & Mills"
+        },
+        {
+          "value": "Scissors & Shears"
+        },
+        {
+          "value": "Sharpeners"
+        },
+        {
+          "value": "Single Flatware Pieces"
+        },
+        {
+          "value": "Skewers"
+        },
+        {
+          "value": "Straws"
+        },
+        {
+          "value": "Trays"
+        },
+        {
+          "value": "Wine Racks & Bottle Holders"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Baking Utensils"
+        },
+        {
+          "value": "Flasks"
+        },
+        {
+          "value": "Food Storage Containers"
+        },
+        {
+          "value": "Kitchen Racks"
+        },
+        {
+          "value": "Pots & Pans"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_3976_color",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 3976,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3976_color",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_262_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 262,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_262_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Flasks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dinning/food-flasks.png",
+          "filters": {
+            "filter_attr_263_type": "Flasks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pots & Pans",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dinning/plots-and-pans.png",
+          "filters": {
+            "filter_attr_263_type": "Pots & Pans"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Kitchen Racks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dining/kitchen-racks.png",
+          "filters": {
+            "filter_attr_263_type": "Kitchen Racks"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Baking Utensils",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dining/baking.png",
+          "filters": {
+            "filter_attr_263_type": "Baking Utensils"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Plastic Dishes, Cups & Cutlery",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dining/plastic-dishes-cups-and-cutlery.png",
+          "filters": {
+            "filter_attr_263_type": "Plastic Dishes, Cups & Cutlery"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Glassware",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dining/glassware.png",
+          "filters": {
+            "filter_attr_263_type": "Glassware"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Plates",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/kitchen-and-dining/plates.png",
+          "filters": {
+            "filter_attr_263_type": "Plates"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_263_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_263_type"
+    }
+  ]
+}

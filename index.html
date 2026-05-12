@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video.js Pro Player - TV Show Manager</title>
+    
+    <!-- Tailwind CSS for layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- STABLE Video.js v8 Core -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+    <!-- YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <style>
+        /* ==========================================================================
+           VIDEO.JS CUSTOM THEME & LAYOUT
+           ========================================================================== */
+        :root {
+            --vjs-theme-primary: #ec4899; 
+            --ad-accent-color: #eab308; 
+            --player-border-radius: 0.75rem;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            background: #1e3a8a; 
+            border-radius: var(--player-border-radius);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+        }
+
+        .video-js-scaler {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.5s ease;
+            transform-origin: center right;
+            z-index: 2;
+        }
+
+        .video-wrapper.squeeze-active .video-js-scaler {
+            transform: scale(0.65) translateX(-5%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: -15px 15px 40px rgba(0,0,0,0.8);
+        }
+
+        .squeeze-ad-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .video-wrapper.squeeze-active .squeeze-ad-bg {
+            opacity: 1;
+        }
+
+        .video-js { font-family: inherit; }
+        .video-js .vjs-big-play-button {
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            line-height: 76px;
+            margin-left: -40px;
+            margin-top: -40px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        .video-js:hover .vjs-big-play-button {
+            background-color: var(--vjs-theme-primary);
+            border-color: var(--vjs-theme-primary);
+            transform: scale(1.05);
+        }
+        .video-js .vjs-play-progress,
+        .video-js .vjs-volume-level { background-color: var(--vjs-theme-primary); }
+
+        /* ==========================================================================
+           FULLSCREEN YOUTUBE AD PLUGIN STYLES
+           ========================================================================== */
+        .vjs-ad-ui-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2147483647; 
+            display: flex; flex-direction: column;
+            visibility: hidden; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .vjs-ad-ui-overlay.active { visibility: visible; opacity: 1; }
+        .yt-iframe-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .vjs-ad-click-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: default; }
+        .vjs-ad-badge { position: absolute; top: 20px; left: 20px; background: var(--ad-accent-color); color: black; padding: 6px 14px; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 6px rgba(0,0,0,0.5); z-index: 10; }
+        .vjs-ad-notice { position: absolute; bottom: 30px; right: 30px; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 8px; font-size: 1rem; font-weight: 500; z-index: 10; backdrop-filter: blur(4px); }
+        .vjs-resume-notice { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; z-index: 50; pointer-events: none; transition: opacity 0.5s ease; backdrop-filter: blur(4px); }
+
+        /* ==========================================================================
+           TV SHOW MANAGER STYLES (Episodes Overlay)
+           ========================================================================== */
+        .vjs-tv-show-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 100;
+            display: flex; flex-direction: row;
+            visibility: hidden; opacity: 0; transition: opacity 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .vjs-tv-show-overlay.active { visibility: visible; opacity: 1; }
+        
+        .tv-close-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: none; color: white;
+            font-size: 2rem; cursor: pointer; z-index: 110; line-height: 1;
+        }
+        .tv-close-btn:hover { color: var(--vjs-theme-primary); }
+
+        .tv-seasons-col {
+            width: 30%; border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 20px; overflow-y: auto;
+        }
+        .tv-episodes-col {
+            width: 70%; padding: 40px 30px; overflow-y: auto;
+        }
+
+        .tv-season-btn {
+            display: block; width: 100%; text-align: left;
+            background: none; border: none; color: #aaa;
+            padding: 12px 15px; font-size: 1.1rem; font-weight: bold;
+            cursor: pointer; border-radius: 6px; margin-bottom: 5px;
+            transition: all 0.2s;
+        }
+        .tv-season-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        .tv-season-btn.active { background: rgba(255,255,255,0.15); color: var(--vjs-theme-primary); border-left: 4px solid var(--vjs-theme-primary); }
+
+        .tv-episode-card {
+            display: flex; align-items: center; gap: 15px;
+            padding: 15px; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s; border: 1px solid transparent;
+            margin-bottom: 10px;
+        }
+        .tv-episode-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+        .tv-episode-card.active { border-color: var(--vjs-theme-primary); background: rgba(236, 72, 153, 0.1); }
+        
+        .tv-ep-number { font-size: 1.5rem; font-weight: bold; color: #555; width: 30px; text-align: center; }
+        .tv-episode-card.active .tv-ep-number { color: var(--vjs-theme-primary); }
+        .tv-ep-details h4 { margin: 0; font-size: 1.1rem; color: white; font-weight: 600; }
+        .tv-ep-details p { margin: 5px 0 0 0; font-size: 0.85rem; color: #999; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* Custom Button Icon in Control Bar */
+        .vjs-icon-episodes { font-family: inherit; }
+        .vjs-icon-episodes::before {
+            content: ""; display: block; width: 20px; height: 20px; margin: 5px auto;
+            background: currentColor;
+            clip-path: polygon(0 2px, 20px 2px, 20px 6px, 0 6px, 0 8px, 20px 8px, 20px 12px, 0 12px, 0 14px, 20px 14px, 20px 18px, 0 18px);
+        }
+
+        /* ==========================================================================
+           UP NEXT / YOUTUBE-STYLE ENDCARD STYLES
+           ========================================================================== */
+        .vjs-up-next-popup {
+            position: absolute;
+            bottom: 60px; /* Sits just above the control bar */
+            right: 20px;
+            width: 320px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            gap: 12px;
+            z-index: 50;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s; /* Bouncy slide-in */
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .vjs-up-next-popup.active {
+            transform: translateX(0);
+        }
+        .vjs-up-next-popup:hover {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: var(--vjs-theme-primary);
+        }
+        .up-next-thumb {
+            width: 110px;
+            height: 62px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #000;
+        }
+        .up-next-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .up-next-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #94a3b8;
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+        .up-next-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .up-next-btn {
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: var(--vjs-theme-primary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="w-full max-w-4xl mx-auto flex flex-col gap-6">
+        
+        <div class="text-center">
+            <h1 class="text-3xl font-bold mb-2">Pro Streaming Player</h1>
+            <p class="text-gray-400">Integrated TV Show Manager with Auto-play, Resuming, and Ads.</p>
+        </div>
+
+        <div class="video-wrapper" id="master-wrapper">
+            
+            <div class="squeeze-ad-bg">
+                <div class="pl-8 pt-8">
+                    <span class="bg-yellow-500 text-black px-2 py-1 text-xs font-bold uppercase rounded mb-3 inline-block">Sponsor</span>
+                    <h2 class="text-3xl font-bold text-white mb-2 leading-tight">Live Sports<br>Betting</h2>
+                    <p class="text-blue-200 text-sm mb-5">Get the best in-play odds right now.</p>
+                    <button class="bg-white text-blue-900 px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-200 transition">Play Now</button>
+                </div>
+            </div>
+
+            <div class="video-js-scaler">
+                <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" playsinline>
+                    <!-- Initial source will be injected by the TV Show Manager -->
+                    <p class="vjs-no-js">To view this video please enable JavaScript.</p>
+                </video>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <script>
+        const Plugin = videojs.getPlugin('plugin');
+
+        // ==========================================================================
+        // SAMPLE TV SHOW DATA (Added thumbnails)
+        // ==========================================================================
+        const myTvShowData = {
+            title: "Open Source Adventures",
+            seasons: [
+                {
+                    seasonNumber: 1,
+                    episodes: [
+                        { epNumber: 1, title: "The Big Bunny (Pilot)", desc: "A large bunny deals with pesky rodents.", src: "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4#S1E1", thumb: "https://picsum.photos/seed/bunny/250/140" },
+                        { epNumber: 2, title: "Elephants Dream", desc: "Two friends explore a strange mechanical world.", src: "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4#S1E2", thumb: "https://picsum.photos/seed/elephant/250/140" }
+                    ]
+                },
+                {
+                    seasonNumber: 2,
+                    episodes: [
+                        { epNumber: 1, title: "Sintel's Quest", desc: "A girl searches for her baby dragon.", src: "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4#S2E1", thumb: "https://picsum.photos/seed/sintel/250/140" },
+                        { epNumber: 2, title: "Tears of Steel", desc: "Sci-fi action in a futuristic Amsterdam.", src: "https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4#S2E2", thumb: "https://picsum.photos/seed/steel/250/140" }
+                    ]
+                }
+            ]
+        };
+
+        // ==========================================================================
+        // PLUGIN 1: TV SHOW MANAGER (Seasons, Episodes, Auto-Play, Up Next)
+        // ==========================================================================
+        
+        // 1A: Register Custom Control Bar Button
+        const Button = videojs.getComponent('Button');
+        class EpisodesButton extends Button {
+            constructor(player, options) {
+                super(player, options);
+                this.controlText('Episodes');
+            }
+            buildCSSClass() { return `vjs-icon-episodes ${super.buildCSSClass()}`; }
+            handleClick() { this.player().trigger('toggleEpisodesMenu'); }
+        }
+        videojs.registerComponent('EpisodesButton', EpisodesButton);
+
+        // 1B: The Core Plugin Logic
+        class TvShowManagerPlugin extends Plugin {
+            constructor(player, options) {
+                super(player, options);
+                this.showData = options.showData;
+                this.currentSeasonIdx = 0;
+                this.currentEpisodeIdx = 0;
+                this.upNextShown = false;
+                
+                // Add the Episodes Button to the control bar (before fullscreen button)
+                player.ready(() => {
+                    const controlBar = player.controlBar;
+                    controlBar.addChild('EpisodesButton', {}, controlBar.children().length - 1);
+                    this.buildUI();
+                    this.bindEvents();
+                    
+                    // Load the first episode initially
+                    this.loadEpisode(0, 0, false);
+                });
+            }
+
+            buildUI() {
+                // 1. Build the Main Menu Overlay
+                this.overlay = document.createElement('div');
+                this.overlay.className = 'vjs-tv-show-overlay';
+                
+                this.overlay.innerHTML = `
+                    <button class="tv-close-btn">&times;</button>
+                    <div class="tv-seasons-col" id="tv-seasons-container"></div>
+                    <div class="tv-episodes-col" id="tv-episodes-container"></div>
+                `;
+                this.player.el().appendChild(this.overlay);
+
+                this.overlay.querySelector('.tv-close-btn').addEventListener('click', () => {
+                    this.overlay.classList.remove('active');
+                });
+
+                this.renderSeasons();
+
+                // 2. Build the Up Next Popup Container
+                this.upNextPopup = document.createElement('div');
+                this.upNextPopup.className = 'vjs-up-next-popup';
+                this.player.el().appendChild(this.upNextPopup);
+
+                this.upNextPopup.addEventListener('click', () => {
+                    if (this.nextEpInfo) {
+                        this.loadEpisode(this.nextEpInfo.seasonIdx, this.nextEpInfo.epIdx, true);
+                    }
+                });
+            }
+
+            renderSeasons() {
+                const container = this.overlay.querySelector('#tv-seasons-container');
+                container.innerHTML = '';
+                
+                this.showData.seasons.forEach((season, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = `tv-season-btn ${index === this.currentSeasonIdx ? 'active' : ''}`;
+                    btn.innerText = `Season ${season.seasonNumber}`;
+                    btn.addEventListener('click', () => {
+                        // Update active state
+                        container.querySelectorAll('.tv-season-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.renderEpisodes(index);
+                    });
+                    container.appendChild(btn);
+                });
+                
+                // Initial render of episodes for the current season
+                this.renderEpisodes(this.currentSeasonIdx);
+            }
+
+            renderEpisodes(seasonIdx) {
+                const container = this.overlay.querySelector('#tv-episodes-container');
+                container.innerHTML = `<h3 class="text-white text-xl font-bold mb-4 border-b border-gray-600 pb-2">Season ${this.showData.seasons[seasonIdx].seasonNumber} Episodes</h3>`;
+                
+                this.showData.seasons[seasonIdx].episodes.forEach((ep, epIdx) => {
+                    const isActive = (seasonIdx === this.currentSeasonIdx && epIdx === this.currentEpisodeIdx);
+                    
+                    const card = document.createElement('div');
+                    card.className = `tv-episode-card ${isActive ? 'active' : ''}`;
+                    card.innerHTML = `
+                        <div class="tv-ep-number">${ep.epNumber}</div>
+                        <div class="tv-ep-details">
+                            <h4>${ep.title}</h4>
+                            <p>${ep.desc}</p>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        this.loadEpisode(seasonIdx, epIdx, true);
+                        this.overlay.classList.remove('active');
+                    });
+                    
+                    container.appendChild(card);
+                });
+            }
+
+            loadEpisode(seasonIdx, epIdx, autoPlay = true) {
+                this.currentSeasonIdx = seasonIdx;
+                this.currentEpisodeIdx = epIdx;
+                
+                const episodeData = this.showData.seasons[seasonIdx].episodes[epIdx];
+                
+                // Reset Up Next Popup
+                this.hideUpNext();
+                
+                // Change Source
+                this.player.src({ src: episodeData.src, type: 'video/mp4' });
+                
+                // Update UI visually
+                this.renderSeasons(); 
+                
+                if (autoPlay) {
+                    this.player.play();
+                }
+            }
+
+            getNextEpisodeInfo() {
+                const currentSeason = this.showData.seasons[this.currentSeasonIdx];
+                
+                // Check if there is another episode in this season
+                if (this.currentEpisodeIdx + 1 < currentSeason.episodes.length) {
+                    return {
+                        seasonIdx: this.currentSeasonIdx,
+                        epIdx: this.currentEpisodeIdx + 1,
+                        data: currentSeason.episodes[this.currentEpisodeIdx + 1],
+                        isNextSeason: false
+                    };
+                } 
+                // Check if there is another season
+                else if (this.currentSeasonIdx + 1 < this.showData.seasons.length) {
+                    return {
+                        seasonIdx: this.currentSeasonIdx + 1,
+                        epIdx: 0,
+                        data: this.showData.seasons[this.currentSeasonIdx + 1].episodes[0],
+                        isNextSeason: true
+                    };
+                }
+                return null; // Series finale
+            }
+
+            showUpNext() {
+                this.nextEpInfo = this.getNextEpisodeInfo();
+                if (!this.nextEpInfo) return; // Don't show if series is over
+
+                this.upNextShown = true;
+                
+                // Customize label based on Season Finale vs normal episode
+                const label = this.nextEpInfo.isNextSeason 
+                    ? `Next Season &bull; S${this.showData.seasons[this.nextEpInfo.seasonIdx].seasonNumber} E1` 
+                    : `Up Next &bull; Ep ${this.nextEpInfo.data.epNumber}`;
+
+                this.upNextPopup.innerHTML = `
+                    <img src="${this.nextEpInfo.data.thumb}" class="up-next-thumb" alt="Thumbnail">
+                    <div class="up-next-info">
+                        <div class="up-next-label">${label}</div>
+                        <div class="up-next-title">${this.nextEpInfo.data.title}</div>
+                        <div class="up-next-btn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> 
+                            Play Now
+                        </div>
+                    </div>
+                `;
+                
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    this.upNextPopup.classList.add('active');
+                });
+            }
+
+            hideUpNext() {
+                this.upNextShown = false;
+                if (this.upNextPopup) {
+                    this.upNextPopup.classList.remove('active');
+                }
+            }
+
+            bindEvents() {
+                // Toggle Menu Event
+                this.player.on('toggleEpisodesMenu', () => {
+                    this.overlay.classList.toggle('active');
+                    if (this.overlay.classList.contains('active')) {
+                        // Pause video while browsing
+                        this.player.pause();
+                    }
+                });
+
+                // Check Time for 'Up Next' Trigger (10 seconds before end)
+                this.player.on('timeupdate', () => {
+                    if (this.player.duration()) {
+                        const timeLeft = this.player.duration() - this.player.currentTime();
+                        
+                        if (timeLeft <= 10 && timeLeft > 0) {
+                            if (!this.upNextShown) this.showUpNext();
+                        } else {
+                            if (this.upNextShown) this.hideUpNext();
+                        }
+                    }
+                });
+
+                // Hide Up Next if video starts loading
+                this.player.on('loadstart', () => {
+                    this.hideUpNext();
+                });
+
+                // Auto-Play Next Episode Logic
+                this.player.on('ended', () => {
+                    const nextEp = this.getNextEpisodeInfo();
+                    if (nextEp) {
+                        console.log(`Auto-playing: ${nextEp.isNextSeason ? 'Next Season' : 'Next Episode'}`);
+                        this.loadEpisode(nextEp.seasonIdx, nextEp.epIdx, true);
+                    } else {
+                        console.log("Series Finished.");
+                    }
+                });
+            }
+        }
+        videojs.registerPlugin('tvShowManagerPlugin', TvShowManagerPlugin);
+
+
+        // ==========================================================================
+        // PLUGIN 2: SQUEEZE-BACK AD
+        // ==========================================================================
+        class SqueezeBackAdPlugin extends Plugin {
+            constructor(player, options) {
+                super(player, options);
+                this.triggerAt = options.triggerAt || 5;
+                this.duration = options.duration || 5;
+                this.hasPlayed = false;
+                this.isSqueezed = false;
+                this.wrapper = document.getElementById('master-wrapper');
+
+                // RESET state when a new episode loads
+                this.player.on('loadstart', () => {
+                    this.hasPlayed = false;
+                    this.isSqueezed = false;
+                    this.wrapper.classList.remove('squeeze-active');
+                });
+
+                this.player.on('timeupdate', () => {
+                    const time = this.player.currentTime();
+                    if (!this.hasPlayed && time > this.triggerAt + this.duration + 1) { this.hasPlayed = true; return; }
+                    if (!this.hasPlayed && !this.isSqueezed && time >= this.triggerAt && time < this.triggerAt + this.duration) { this.triggerSqueeze(); }
+                    if (this.isSqueezed && time >= this.triggerAt + this.duration) { this.endSqueeze(); }
+                });
+            }
+            triggerSqueeze() { this.isSqueezed = true; this.hasPlayed = true; this.wrapper.classList.add('squeeze-active'); }
+            endSqueeze() { this.isSqueezed = false; this.wrapper.classList.remove('squeeze-active'); }
+        }
+        videojs.registerPlugin('squeezeBackAdPlugin', SqueezeBackAdPlugin);
+
+
+        // ==========================================================================
+        // PLUGIN 3: YOUTUBE EMBED AD 
+        // ==========================================================================
+        class YouTubeEmbedAdPlugin extends Plugin {
+            constructor(player, options) {
+                super(player, options);
+                this.adIframe = options.adIframe;
+                this.triggerAt = options.triggerAt || 11; 
+                this.isAdPlaying = false;
+                this.hasPlayed = false; 
+                this.ytPlayerReady = false;
+
+                this.setupAdUI();
+
+                // RESET state when a new episode loads so ad triggers on every episode
+                this.player.on('loadstart', () => {
+                    this.hasPlayed = false;
+                    this.isAdPlaying = false;
+                });
+
+                this.bindPlayerEvents();
+            }
+
+            setupAdUI() {
+                this.adOverlay = document.createElement('div');
+                this.adOverlay.className = 'vjs-ad-ui-overlay';
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(this.adIframe, 'text/html');
+                const iframeElement = doc.querySelector('iframe');
+                
+                let srcUrl = new URL(iframeElement.src);
+                srcUrl.searchParams.set('enablejsapi', '1');
+                srcUrl.searchParams.set('autoplay', '0'); 
+                srcUrl.searchParams.set('controls', '0'); 
+                srcUrl.searchParams.set('disablekb', '1'); 
+                
+                iframeElement.src = srcUrl.toString();
+                iframeElement.id = 'yt-ad-iframe';
+                iframeElement.style.width = '100%';
+                iframeElement.style.height = '100%';
+                
+                this.adOverlay.innerHTML = `
+                    <div class="yt-iframe-wrapper" id="yt-wrapper"></div>
+                    <div class="vjs-ad-click-blocker"></div>
+                    <div class="vjs-ad-badge">Advertisement</div>
+                    <div class="vjs-ad-notice">Video will resume automatically</div>
+                `;
+
+                this.adOverlay.querySelector('#yt-wrapper').appendChild(iframeElement);
+                this.player.el().appendChild(this.adOverlay);
+
+                const checkYT = setInterval(() => {
+                    if (window.YT && window.YT.Player) {
+                        clearInterval(checkYT);
+                        this.ytPlayer = new YT.Player('yt-ad-iframe', {
+                            events: {
+                                'onReady': () => { this.ytPlayerReady = true; this.ytPlayer.mute(); },
+                                'onStateChange': (event) => { if (event.data === YT.PlayerState.ENDED && this.isAdPlaying) this.endAd(); }
+                            }
+                        });
+                    }
+                }, 100);
+            }
+
+            bindPlayerEvents() {
+                this.player.on('timeupdate', () => {
+                    const time = this.player.currentTime();
+                    if (!this.hasPlayed && time > this.triggerAt + 2) { this.hasPlayed = true; return; }
+                    if (!this.isAdPlaying && !this.hasPlayed && this.ytPlayerReady && time >= this.triggerAt) { this.triggerAd(); }
+                });
+                
+                this.player.on('play', () => { if (this.isAdPlaying) this.player.pause(); });
+            }
+
+            triggerAd() {
+                if (this.isAdPlaying || !this.ytPlayerReady) return;
+                this.isAdPlaying = true; this.hasPlayed = true; 
+                this.player.pause(); this.player.controls(false); this.adOverlay.classList.add('active');
+                if (this.player.muted()) this.ytPlayer.mute(); else { this.ytPlayer.unMute(); this.ytPlayer.setVolume(this.player.volume() * 100); }
+                this.ytPlayer.playVideo();
+            }
+
+            endAd() {
+                if (!this.isAdPlaying) return;
+                this.isAdPlaying = false; this.adOverlay.classList.remove('active');
+                this.ytPlayer.pauseVideo();
+                this.player.controls(true); this.player.play();
+            }
+        }
+        videojs.registerPlugin('youtubeEmbedAdPlugin', YouTubeEmbedAdPlugin);
+
+
+        // ==========================================================================
+        // PLUGIN 4: RESUME PLAYBACK (Caching)
+        // ==========================================================================
+        class ResumePlaybackPlugin extends Plugin {
+            constructor(player, options) {
+                super(player, options);
+                this.hasResumed = false; 
+                
+                // Reset hasResumed flag when source changes (new episode)
+                this.player.on('loadstart', () => {
+                    this.hasResumed = false;
+                });
+
+                this.player.ready(() => { this.bindEvents(); });
+            }
+
+            getCacheKey() {
+                const src = this.player.currentSrc();
+                if (!src) return null;
+                return `vjs_resume_${encodeURIComponent(src)}`; // Unique per episode!
+            }
+
+            bindEvents() {
+                const processResume = () => {
+                    if (this.hasResumed) return;
+                    this.hasResumed = true; 
+                    
+                    const key = this.getCacheKey();
+                    if (!key) return;
+                    
+                    const savedTime = localStorage.getItem(key);
+                    if (savedTime !== null && parseFloat(savedTime) > 0) {
+                        const time = parseFloat(savedTime);
+                        if (time < this.player.duration() - 2) {
+                            this.player.currentTime(time);
+                            this.showResumeNotice(time);
+                        } else {
+                            localStorage.removeItem(key); 
+                        }
+                    }
+                };
+
+                this.player.on('loadedmetadata', processResume);
+
+                let lastSaveTime = 0;
+                this.player.on('timeupdate', () => {
+                    if (!this.hasResumed) return;
+                    const ct = this.player.currentTime();
+                    if (ct === 0) return; 
+                    const now = Date.now();
+                    if (now - lastSaveTime > 1000) {
+                        const key = this.getCacheKey();
+                        if (key && !this.player.ended()) { localStorage.setItem(key, ct); lastSaveTime = now; }
+                    }
+                });
+
+                this.player.on('ended', () => {
+                    const key = this.getCacheKey();
+                    if (key) localStorage.removeItem(key);
+                });
+            }
+
+            showResumeNotice(time) {
+                const mins = Math.floor(time / 60); const secs = Math.floor(time % 60).toString().padStart(2, '0');
+                const notice = document.createElement('div'); notice.className = 'vjs-resume-notice';
+                notice.innerHTML = `Resumed from ${mins}:${secs}`;
+                this.player.el().appendChild(notice);
+                setTimeout(() => { notice.style.opacity = '0'; setTimeout(() => notice.remove(), 500); }, 4000);
+            }
+        }
+        videojs.registerPlugin('resumePlaybackPlugin', ResumePlaybackPlugin);
+
+
+        // ==========================================================================
+        // INITIALIZE PLAYER & PLUGINS
+        // ==========================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const player = videojs('my-video', {
+                fill: true, 
+                playbackRates: [0.5, 1, 1.5, 2] 
+            });
+
+            // 1. TV Show Manager 
+            player.tvShowManagerPlugin({
+                showData: myTvShowData // Uses the JSON payload defined above
+            });
+
+            // 2. Squeeze-Back Ad
+            player.squeezeBackAdPlugin({
+                triggerAt: 5,   
+                duration: 5     
+            });
+
+            // 3. Fullscreen Video Ad
+            player.youtubeEmbedAdPlugin({
+                triggerAt: 11,  
+                adIframe: `<iframe width="560" height="315" src="https://www.youtube.com/embed/xPPLbEFbCAo?si=ZvNIYIACjqNWJ6cI&amp;start=17" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+            });
+
+            // 4. Resume Playback Engine
+            player.resumePlaybackPlugin({});
+
+        });
+    </script>
+</body>
+</html>

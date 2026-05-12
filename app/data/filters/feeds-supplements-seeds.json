@@ -1,0 +1,275 @@
+{
+  "total": 1102,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 300,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 4800000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 2000,
+          "label": "Under 2 K",
+          "item_count": 66
+        },
+        {
+          "from": 2000,
+          "to": 20000,
+          "label": "2 - 20 K",
+          "item_count": 264
+        },
+        {
+          "from": 20000,
+          "to": 60000,
+          "label": "20 - 60 K",
+          "item_count": 440
+        },
+        {
+          "from": 60000,
+          "to": 250000,
+          "label": "60 - 250 K",
+          "item_count": 275
+        },
+        {
+          "from": 250000,
+          "to": null,
+          "label": "More than 250 K",
+          "item_count": 55
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_1697_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1697,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1697_type",
+      "possible_values": [
+        {
+          "value": "Fertilizers"
+        },
+        {
+          "value": "Flower Seeds"
+        },
+        {
+          "value": "Fruit Seeds"
+        },
+        {
+          "value": "Herb Seeds"
+        },
+        {
+          "value": "Perennial Seeds"
+        },
+        {
+          "value": "Vegetables Seeds"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_4858_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4858,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4858_brand",
+      "possible_values": [
+        {
+          "value": "1st Choice"
+        },
+        {
+          "value": "Acana"
+        },
+        {
+          "value": "Active Aqua"
+        },
+        {
+          "value": "Adjust-A-Wings"
+        },
+        {
+          "value": "Advanced Nutrients"
+        },
+        {
+          "value": "AeroGarden"
+        },
+        {
+          "value": "Alaska"
+        },
+        {
+          "value": "Almo Nature"
+        },
+        {
+          "value": "American Mills"
+        },
+        {
+          "value": "Animonda"
+        },
+        {
+          "value": "AutoPot"
+        },
+        {
+          "value": "Bio Green"
+        },
+        {
+          "value": "Bio Nova"
+        },
+        {
+          "value": "Biobizz"
+        },
+        {
+          "value": "Bluecrown"
+        },
+        {
+          "value": "Braun"
+        },
+        {
+          "value": "COMPO"
+        },
+        {
+          "value": "Earth Alive Soil Activator"
+        },
+        {
+          "value": "ECOMAX"
+        },
+        {
+          "value": "ECOWORKS EC"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "General Organics"
+        },
+        {
+          "value": "GreenGro"
+        },
+        {
+          "value": "House & Garden"
+        },
+        {
+          "value": "Mantis"
+        },
+        {
+          "value": "Master"
+        },
+        {
+          "value": "Nelson"
+        },
+        {
+          "value": "Nutriculture"
+        },
+        {
+          "value": "OMEGA"
+        },
+        {
+          "value": "Pearl"
+        },
+        {
+          "value": "Plagron"
+        },
+        {
+          "value": "Power of Nature"
+        },
+        {
+          "value": "Root"
+        },
+        {
+          "value": "Roots Organics"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "1st Choice"
+        },
+        {
+          "value": "Acana"
+        },
+        {
+          "value": "Active Aqua"
+        },
+        {
+          "value": "Alaska"
+        },
+        {
+          "value": "Almo Nature"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": []
+}

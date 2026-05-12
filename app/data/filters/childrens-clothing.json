@@ -1,0 +1,1031 @@
+{
+  "total": 2313,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 3500,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 700000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 20000,
+          "label": "Under 20 K",
+          "item_count": 138
+        },
+        {
+          "from": 20000,
+          "to": 35000,
+          "label": "20 - 35 K",
+          "item_count": 555
+        },
+        {
+          "from": 35000,
+          "to": 74000,
+          "label": "35 - 74 K",
+          "item_count": 925
+        },
+        {
+          "from": 74000,
+          "to": 180000,
+          "label": "74 - 180 K",
+          "item_count": 578
+        },
+        {
+          "from": 180000,
+          "to": null,
+          "label": "More than 180 K",
+          "item_count": 115
+        }
+      ]
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_3696_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 3696,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_3696_brand",
+      "possible_values": [
+        {
+          "value": "2B Real"
+        },
+        {
+          "value": "2XU"
+        },
+        {
+          "value": "3M"
+        },
+        {
+          "value": "3pommes"
+        },
+        {
+          "value": "5th & Ocean"
+        },
+        {
+          "value": "686"
+        },
+        {
+          "value": "7 For All Mankind"
+        },
+        {
+          "value": "77kids"
+        },
+        {
+          "value": "A&BC"
+        },
+        {
+          "value": "A&G"
+        },
+        {
+          "value": "A&W"
+        },
+        {
+          "value": "a.n.a"
+        },
+        {
+          "value": "Absorba"
+        },
+        {
+          "value": "Academy"
+        },
+        {
+          "value": "Accent"
+        },
+        {
+          "value": "acdc"
+        },
+        {
+          "value": "Active"
+        },
+        {
+          "value": "AD"
+        },
+        {
+          "value": "Adam"
+        },
+        {
+          "value": "Adams"
+        },
+        {
+          "value": "Addison"
+        },
+        {
+          "value": "adidas"
+        },
+        {
+          "value": "Adio"
+        },
+        {
+          "value": "Admiral"
+        },
+        {
+          "value": "Aerie"
+        },
+        {
+          "value": "Aero"
+        },
+        {
+          "value": "After Six"
+        },
+        {
+          "value": "AG Adriano Goldschmied"
+        },
+        {
+          "value": "Aigle"
+        },
+        {
+          "value": "Air force"
+        },
+        {
+          "value": "AIRWALK"
+        },
+        {
+          "value": "Alberta Ferretti"
+        },
+        {
+          "value": "AllSaints"
+        },
+        {
+          "value": "Almost Famous"
+        },
+        {
+          "value": "Alviero Martini"
+        },
+        {
+          "value": "Amanda Remembered"
+        },
+        {
+          "value": "Ann Taylor"
+        },
+        {
+          "value": "Anthropologie"
+        },
+        {
+          "value": "April Cornell"
+        },
+        {
+          "value": "Armani Exchange"
+        },
+        {
+          "value": "Ash"
+        },
+        {
+          "value": "Atelier"
+        },
+        {
+          "value": "Atlantic"
+        },
+        {
+          "value": "Avenger"
+        },
+        {
+          "value": "Avon"
+        },
+        {
+          "value": "Babyshah"
+        },
+        {
+          "value": "Black & White"
+        },
+        {
+          "value": "Blank"
+        },
+        {
+          "value": "Blaze"
+        },
+        {
+          "value": "Bloom"
+        },
+        {
+          "value": "Box"
+        },
+        {
+          "value": "Brooks Brothers"
+        },
+        {
+          "value": "Cargo"
+        },
+        {
+          "value": "Carter's"
+        },
+        {
+          "value": "Champion"
+        },
+        {
+          "value": "Character"
+        },
+        {
+          "value": "CL"
+        },
+        {
+          "value": "Combat"
+        },
+        {
+          "value": "Country Kids"
+        },
+        {
+          "value": "Customized & Personalized"
+        },
+        {
+          "value": "Denim & Co."
+        },
+        {
+          "value": "Diplomat"
+        },
+        {
+          "value": "EF"
+        },
+        {
+          "value": "ESS"
+        },
+        {
+          "value": "ET"
+        },
+        {
+          "value": "Fanatics"
+        },
+        {
+          "value": "Flora"
+        },
+        {
+          "value": "GANT"
+        },
+        {
+          "value": "GC"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Genuine Kids"
+        },
+        {
+          "value": "Gina"
+        },
+        {
+          "value": "GOL"
+        },
+        {
+          "value": "H&M"
+        },
+        {
+          "value": "Hello Kitty"
+        },
+        {
+          "value": "Icon"
+        },
+        {
+          "value": "JBS"
+        },
+        {
+          "value": "JERZEES"
+        },
+        {
+          "value": "Jump"
+        },
+        {
+          "value": "Key"
+        },
+        {
+          "value": "Laundry"
+        },
+        {
+          "value": "Lee"
+        },
+        {
+          "value": "Line"
+        },
+        {
+          "value": "mamas & papas"
+        },
+        {
+          "value": "Marvel"
+        },
+        {
+          "value": "ND"
+        },
+        {
+          "value": "NEXT"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Op"
+        },
+        {
+          "value": "Otto"
+        },
+        {
+          "value": "Pilot"
+        },
+        {
+          "value": "Police"
+        },
+        {
+          "value": "Polo Ralph Lauren"
+        },
+        {
+          "value": "Polo Sport"
+        },
+        {
+          "value": "PUMA"
+        },
+        {
+          "value": "sea"
+        },
+        {
+          "value": "Single"
+        },
+        {
+          "value": "SO"
+        },
+        {
+          "value": "Sunny Fashion"
+        },
+        {
+          "value": "Ty"
+        },
+        {
+          "value": "Umbro"
+        },
+        {
+          "value": "Unique"
+        },
+        {
+          "value": "Vintage Havana"
+        },
+        {
+          "value": "Waterproof"
+        },
+        {
+          "value": "Zara"
+        },
+        {
+          "value": "Zen"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "77kids"
+        },
+        {
+          "value": "A&BC"
+        },
+        {
+          "value": "Active"
+        },
+        {
+          "value": "adidas"
+        },
+        {
+          "value": "ESS"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_335_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 335,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_335_type",
+      "possible_values": [
+        {
+          "value": "Agbada"
+        },
+        {
+          "value": "Anti-Scratch Mittens"
+        },
+        {
+          "value": "Ball Gowns"
+        },
+        {
+          "value": "Ballet Camisole"
+        },
+        {
+          "value": "Ballet Dresses"
+        },
+        {
+          "value": "Bibs"
+        },
+        {
+          "value": "Blazers"
+        },
+        {
+          "value": "Blouses"
+        },
+        {
+          "value": "Bodysuits"
+        },
+        {
+          "value": "Caps"
+        },
+        {
+          "value": "Clothing Sets"
+        },
+        {
+          "value": "Costumes"
+        },
+        {
+          "value": "Dresses"
+        },
+        {
+          "value": "Hoodies"
+        },
+        {
+          "value": "Jeans"
+        },
+        {
+          "value": "Jeggings"
+        },
+        {
+          "value": "Jerseys"
+        },
+        {
+          "value": "Jumpsuits"
+        },
+        {
+          "value": "Leggings"
+        },
+        {
+          "value": "Nightwear"
+        },
+        {
+          "value": "Outwear"
+        },
+        {
+          "value": "Overalls"
+        },
+        {
+          "value": "Pants"
+        },
+        {
+          "value": "Pantyhose"
+        },
+        {
+          "value": "Polo Shirts"
+        },
+        {
+          "value": "Pullovers"
+        },
+        {
+          "value": "Rompers"
+        },
+        {
+          "value": "School Uniforms"
+        },
+        {
+          "value": "Shirts"
+        },
+        {
+          "value": "Shorts"
+        },
+        {
+          "value": "Skirts"
+        },
+        {
+          "value": "Socks"
+        },
+        {
+          "value": "Suits"
+        },
+        {
+          "value": "Sweaters"
+        },
+        {
+          "value": "Swimwear"
+        },
+        {
+          "value": "T-Shirts"
+        },
+        {
+          "value": "Tops"
+        },
+        {
+          "value": "Tracksuits"
+        },
+        {
+          "value": "Trousers"
+        },
+        {
+          "value": "Underwear"
+        },
+        {
+          "value": "Vests"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Clothing Sets"
+        },
+        {
+          "value": "Dresses"
+        },
+        {
+          "value": "Pants"
+        },
+        {
+          "value": "Suits"
+        },
+        {
+          "value": "Swimwear"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Age",
+      "parent_slug": null,
+      "slug": "filter_attr_1661_age",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1662,
+      "attr_name": "Age",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1661_age",
+      "possible_values": [
+        {
+          "value": "0-3M"
+        },
+        {
+          "value": "10-16Y"
+        },
+        {
+          "value": "12-24M"
+        },
+        {
+          "value": "2-3Y"
+        },
+        {
+          "value": "3-5Y"
+        },
+        {
+          "value": "3-6M"
+        },
+        {
+          "value": "6-9M"
+        },
+        {
+          "value": "6-9Y"
+        },
+        {
+          "value": "9-12M"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Material",
+      "parent_slug": null,
+      "slug": "filter_attr_4538_material",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 4538,
+      "attr_name": "Material",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_4538_material",
+      "possible_values": [
+        {
+          "value": "Acetate"
+        },
+        {
+          "value": "Alginate"
+        },
+        {
+          "value": "Alpaca"
+        },
+        {
+          "value": "Angora"
+        },
+        {
+          "value": "Animal Hair"
+        },
+        {
+          "value": "Bamboo"
+        },
+        {
+          "value": "Beaver"
+        },
+        {
+          "value": "Blended Fabric"
+        },
+        {
+          "value": "Boucle"
+        },
+        {
+          "value": "Brocade"
+        },
+        {
+          "value": "Cashgora"
+        },
+        {
+          "value": "Cashmere"
+        },
+        {
+          "value": "Chiffon"
+        },
+        {
+          "value": "Chlorofiber"
+        },
+        {
+          "value": "Cotton"
+        },
+        {
+          "value": "Crochet"
+        },
+        {
+          "value": "Denim"
+        },
+        {
+          "value": "Elastolefin"
+        },
+        {
+          "value": "Faux Fur"
+        },
+        {
+          "value": "Faux Leather"
+        },
+        {
+          "value": "Fish Net"
+        },
+        {
+          "value": "Fleece"
+        },
+        {
+          "value": "Grosgrain"
+        },
+        {
+          "value": "Jacquard"
+        },
+        {
+          "value": "Jersey"
+        },
+        {
+          "value": "Knit"
+        },
+        {
+          "value": "Leather"
+        },
+        {
+          "value": "Linen"
+        },
+        {
+          "value": "Lyocell"
+        },
+        {
+          "value": "Merino Wool"
+        },
+        {
+          "value": "Muslin"
+        },
+        {
+          "value": "Nylon"
+        },
+        {
+          "value": "Plastic"
+        },
+        {
+          "value": "Polycarbamide"
+        },
+        {
+          "value": "Polycotton"
+        },
+        {
+          "value": "Polyester"
+        },
+        {
+          "value": "Polyurethane"
+        },
+        {
+          "value": "PVC"
+        },
+        {
+          "value": "Rubber"
+        },
+        {
+          "value": "Satin"
+        },
+        {
+          "value": "Silk"
+        },
+        {
+          "value": "Spandex"
+        },
+        {
+          "value": "Velvet"
+        },
+        {
+          "value": "Viscose"
+        },
+        {
+          "value": "Wool"
+        },
+        {
+          "value": "Woven"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Blended Fabric"
+        },
+        {
+          "value": "Cotton"
+        },
+        {
+          "value": "Polycotton"
+        },
+        {
+          "value": "Polyester"
+        },
+        {
+          "value": "Wool"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_336_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 336,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_336_colour",
+      "possible_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Multicolor"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Violet"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1629_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1630,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1629_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 25 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 25000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 25 - 35 K",
+          "filters": {
+            "price_min": 25000,
+            "price_max": 35000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 35 - 55 K",
+          "filters": {
+            "price_min": 35000,
+            "price_max": 55000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 55 K",
+          "filters": {
+            "price_min": 55000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Clothing Sets",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/sets.png",
+          "filters": {
+            "filter_attr_335_type": "Clothing Sets"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Suits",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/suits.png",
+          "filters": {
+            "filter_attr_335_type": "Suits"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Dresses",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/dresses.png",
+          "filters": {
+            "filter_attr_335_type": "Dresses"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pants",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/pants.png",
+          "filters": {
+            "filter_attr_335_type": "Pants"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Swimwear",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/swimwear.png",
+          "filters": {
+            "filter_attr_335_type": "Swimwear"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Shirts",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/shirt.png",
+          "filters": {
+            "filter_attr_335_type": "Shirts"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Overalls",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/childrens-clothing/overalls.png",
+          "filters": {
+            "filter_attr_335_type": "Overalls"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_335_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_335_type"
+    }
+  ]
+}

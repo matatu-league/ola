@@ -1,0 +1,252 @@
+{
+  "total": 1523,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 7000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1350000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 35000,
+          "label": "Under 35 K",
+          "item_count": 91
+        },
+        {
+          "from": 35000,
+          "to": 75000,
+          "label": "35 - 75 K",
+          "item_count": 365
+        },
+        {
+          "from": 75000,
+          "to": 130000,
+          "label": "75 - 130 K",
+          "item_count": 609
+        },
+        {
+          "from": 130000,
+          "to": 250000,
+          "label": "130 - 250 K",
+          "item_count": 380
+        },
+        {
+          "from": 250000,
+          "to": null,
+          "label": "More than 250 K",
+          "item_count": 76
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_566_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 566,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_566_type",
+      "possible_values": [
+        {
+          "value": "Breast Pads"
+        },
+        {
+          "value": "Breast Pumps"
+        },
+        {
+          "value": "Breastmilk Storage Bags"
+        },
+        {
+          "value": "Disposable Pants"
+        },
+        {
+          "value": "Dresses"
+        },
+        {
+          "value": "Fetal Doppler"
+        },
+        {
+          "value": "Hospital Delivery Package"
+        },
+        {
+          "value": "Nipple Shields"
+        },
+        {
+          "value": "Nursing & Pregnancy Pillows"
+        },
+        {
+          "value": "Nursing Bras"
+        },
+        {
+          "value": "Nursing Covers"
+        },
+        {
+          "value": "Sitz Bath"
+        },
+        {
+          "value": "Stretch Marks Cream"
+        },
+        {
+          "value": "Support Belts"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1633_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1634,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1633_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Breast Pumps",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/breast-pumps.png",
+          "filters": {
+            "filter_attr_566_type": "Breast Pumps"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Nursing & Pregnancy Pillows",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/nurcing-pillows.png",
+          "filters": {
+            "filter_attr_566_type": "Nursing & Pregnancy Pillows"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Breast Pads",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/breast-pads.png",
+          "filters": {
+            "filter_attr_566_type": "Breast Pads"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Breastmilk Storage Bags",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/breastmilk-storage-bags-breastmilk.png",
+          "filters": {
+            "filter_attr_566_type": "Breastmilk Storage Bags"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Nursing Bras",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/nursing-bras.png",
+          "filters": {
+            "filter_attr_566_type": "Nursing Bras"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Disposable Pants",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/disposable-pants.png",
+          "filters": {
+            "filter_attr_566_type": "Disposable Pants"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Fetal Doppler",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/maternity-and-pregnancy/fetal-doppler-fetal-doppler.png",
+          "filters": {
+            "filter_attr_566_type": "Fetal Doppler"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_566_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_566_type"
+    }
+  ]
+}

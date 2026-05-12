@@ -1,0 +1,1447 @@
+{
+  "total": 16127,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 150,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 5700000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 25000,
+          "label": "Under 25 K",
+          "item_count": 967
+        },
+        {
+          "from": 25000,
+          "to": 65000,
+          "label": "25 - 65 K",
+          "item_count": 3870
+        },
+        {
+          "from": 65000,
+          "to": 170000,
+          "label": "65 - 170 K",
+          "item_count": 6450
+        },
+        {
+          "from": 170000,
+          "to": 450000,
+          "label": "170 - 450 K",
+          "item_count": 4031
+        },
+        {
+          "from": 450000,
+          "to": null,
+          "label": "More than 450 K",
+          "item_count": 806
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_359_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 359,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_359_type",
+      "possible_values": [
+        {
+          "value": "Batteries"
+        },
+        {
+          "value": "Bluetooth Mono Headsets"
+        },
+        {
+          "value": "Cables"
+        },
+        {
+          "value": "Cases"
+        },
+        {
+          "value": "Chargers & Power Adapters"
+        },
+        {
+          "value": "Charging Stations"
+        },
+        {
+          "value": "Cleaning Products"
+        },
+        {
+          "value": "Clip-On Lens"
+        },
+        {
+          "value": "Finger Sleeves"
+        },
+        {
+          "value": "Gamepads / Controllers"
+        },
+        {
+          "value": "Grips"
+        },
+        {
+          "value": "Lanyards"
+        },
+        {
+          "value": "Memory Cards"
+        },
+        {
+          "value": "Mobile Flashes & Selfie Lights"
+        },
+        {
+          "value": "MP3 Sunglasses"
+        },
+        {
+          "value": "Phone Charms"
+        },
+        {
+          "value": "Phone Coolers"
+        },
+        {
+          "value": "Phone Fans"
+        },
+        {
+          "value": "Phone Pouches"
+        },
+        {
+          "value": "Phone Rings"
+        },
+        {
+          "value": "Phone Screens"
+        },
+        {
+          "value": "Power Bank"
+        },
+        {
+          "value": "Replacement Parts"
+        },
+        {
+          "value": "Screen & Camera Covers"
+        },
+        {
+          "value": "Screen Magnifiers"
+        },
+        {
+          "value": "Screen Protector"
+        },
+        {
+          "value": "Screen Repair Kits"
+        },
+        {
+          "value": "Selfie Sticks"
+        },
+        {
+          "value": "Signal Boosters"
+        },
+        {
+          "value": "SIM Card"
+        },
+        {
+          "value": "SIM Card Adapter"
+        },
+        {
+          "value": "Smart Tags"
+        },
+        {
+          "value": "Stands & Holders"
+        },
+        {
+          "value": "Stylus"
+        },
+        {
+          "value": "Tablet Keyboards"
+        },
+        {
+          "value": "Virtual Reality (VR) Headsets"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Cables"
+        },
+        {
+          "value": "Cases"
+        },
+        {
+          "value": "Chargers & Power Adapters"
+        },
+        {
+          "value": "Power Bank"
+        },
+        {
+          "value": "Stands & Holders"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_1745_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1745,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1745_brand",
+      "possible_values": [
+        {
+          "value": "8BitDo"
+        },
+        {
+          "value": "A+D"
+        },
+        {
+          "value": "A-Tach"
+        },
+        {
+          "value": "A4TECH"
+        },
+        {
+          "value": "Aastra"
+        },
+        {
+          "value": "AB Soft"
+        },
+        {
+          "value": "Abit"
+        },
+        {
+          "value": "ABUS"
+        },
+        {
+          "value": "Accellorize"
+        },
+        {
+          "value": "Access-Discount"
+        },
+        {
+          "value": "ACCO"
+        },
+        {
+          "value": "ACE"
+        },
+        {
+          "value": "Ace Case"
+        },
+        {
+          "value": "Acer"
+        },
+        {
+          "value": "AceSoft"
+        },
+        {
+          "value": "Acterna"
+        },
+        {
+          "value": "Adaptec"
+        },
+        {
+          "value": "ADATA"
+        },
+        {
+          "value": "ADDTOP"
+        },
+        {
+          "value": "adidas"
+        },
+        {
+          "value": "Adonit"
+        },
+        {
+          "value": "ADOPTED"
+        },
+        {
+          "value": "Aduro"
+        },
+        {
+          "value": "Aegis"
+        },
+        {
+          "value": "Afrione"
+        },
+        {
+          "value": "Agent18"
+        },
+        {
+          "value": "AGF"
+        },
+        {
+          "value": "Agptek"
+        },
+        {
+          "value": "AIAIAI"
+        },
+        {
+          "value": "AICase"
+        },
+        {
+          "value": "aigo"
+        },
+        {
+          "value": "Aiino"
+        },
+        {
+          "value": "Aimus"
+        },
+        {
+          "value": "AIO"
+        },
+        {
+          "value": "Airtel"
+        },
+        {
+          "value": "Alcatel"
+        },
+        {
+          "value": "ALDHOFA"
+        },
+        {
+          "value": "Alivo"
+        },
+        {
+          "value": "Allpowers"
+        },
+        {
+          "value": "ALOGIC"
+        },
+        {
+          "value": "Alpatronix"
+        },
+        {
+          "value": "Alston Craig"
+        },
+        {
+          "value": "Amazon"
+        },
+        {
+          "value": "AmazonBasics"
+        },
+        {
+          "value": "Ample"
+        },
+        {
+          "value": "AMS"
+        },
+        {
+          "value": "Anccer"
+        },
+        {
+          "value": "Andoer"
+        },
+        {
+          "value": "Anker"
+        },
+        {
+          "value": "Annart"
+        },
+        {
+          "value": "Anymode"
+        },
+        {
+          "value": "Apex"
+        },
+        {
+          "value": "Apexel"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Aquapac"
+        },
+        {
+          "value": "Arkon"
+        },
+        {
+          "value": "Astro"
+        },
+        {
+          "value": "ASUS"
+        },
+        {
+          "value": "Atouch X11"
+        },
+        {
+          "value": "Audi"
+        },
+        {
+          "value": "Awei"
+        },
+        {
+          "value": "Ay-49"
+        },
+        {
+          "value": "AZDOME"
+        },
+        {
+          "value": "Azuri"
+        },
+        {
+          "value": "BASEUS"
+        },
+        {
+          "value": "Bastex"
+        },
+        {
+          "value": "Bavin"
+        },
+        {
+          "value": "Beats by Dr. Dre"
+        },
+        {
+          "value": "Belkin"
+        },
+        {
+          "value": "BESTSUIT"
+        },
+        {
+          "value": "BEZ"
+        },
+        {
+          "value": "BlackBerry"
+        },
+        {
+          "value": "Blackview"
+        },
+        {
+          "value": "Blekim"
+        },
+        {
+          "value": "BLU"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "BMW"
+        },
+        {
+          "value": "BOROFONE"
+        },
+        {
+          "value": "Boya"
+        },
+        {
+          "value": "Bracket"
+        },
+        {
+          "value": "BRAVEN"
+        },
+        {
+          "value": "Brother"
+        },
+        {
+          "value": "Buddee"
+        },
+        {
+          "value": "Bvot"
+        },
+        {
+          "value": "Bytech"
+        },
+        {
+          "value": "Caseflex"
+        },
+        {
+          "value": "Casesmart"
+        },
+        {
+          "value": "Casetify"
+        },
+        {
+          "value": "CAT"
+        },
+        {
+          "value": "CECT"
+        },
+        {
+          "value": "ChargeTech"
+        },
+        {
+          "value": "Classic"
+        },
+        {
+          "value": "Colorfone"
+        },
+        {
+          "value": "Comma"
+        },
+        {
+          "value": "Cyclone"
+        },
+        {
+          "value": "D-Link"
+        },
+        {
+          "value": "Dado"
+        },
+        {
+          "value": "Datalogic"
+        },
+        {
+          "value": "Dell"
+        },
+        {
+          "value": "Discovery"
+        },
+        {
+          "value": "Disney"
+        },
+        {
+          "value": "DJI"
+        },
+        {
+          "value": "Dji"
+        },
+        {
+          "value": "Earldom"
+        },
+        {
+          "value": "Ego"
+        },
+        {
+          "value": "Elegant Choise"
+        },
+        {
+          "value": "EQUIPD"
+        },
+        {
+          "value": "ESR"
+        },
+        {
+          "value": "Essential"
+        },
+        {
+          "value": "Exact Design"
+        },
+        {
+          "value": "EXCELLENT"
+        },
+        {
+          "value": "Express"
+        },
+        {
+          "value": "Extreme Pro"
+        },
+        {
+          "value": "eyn"
+        },
+        {
+          "value": "FACEVER"
+        },
+        {
+          "value": "Ferrari"
+        },
+        {
+          "value": "Floating Ark"
+        },
+        {
+          "value": "Floureon"
+        },
+        {
+          "value": "Fone Stuff"
+        },
+        {
+          "value": "FoneM8"
+        },
+        {
+          "value": "French Bull"
+        },
+        {
+          "value": "Fuji"
+        },
+        {
+          "value": "G-Color"
+        },
+        {
+          "value": "Galaxy Note"
+        },
+        {
+          "value": "Garmin"
+        },
+        {
+          "value": "GE"
+        },
+        {
+          "value": "Gear Beast"
+        },
+        {
+          "value": "General"
+        },
+        {
+          "value": "Genius"
+        },
+        {
+          "value": "Ghostek"
+        },
+        {
+          "value": "Gimbal"
+        },
+        {
+          "value": "Globalstar"
+        },
+        {
+          "value": "Go Travel"
+        },
+        {
+          "value": "Godox"
+        },
+        {
+          "value": "Golla"
+        },
+        {
+          "value": "Google"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Green Lion"
+        },
+        {
+          "value": "GSmart"
+        },
+        {
+          "value": "GUESS"
+        },
+        {
+          "value": "Halo"
+        },
+        {
+          "value": "HAWEEL"
+        },
+        {
+          "value": "Hoco"
+        },
+        {
+          "value": "HOLD-IT"
+        },
+        {
+          "value": "Honor"
+        },
+        {
+          "value": "HOT"
+        },
+        {
+          "value": "HP"
+        },
+        {
+          "value": "HTC"
+        },
+        {
+          "value": "Huawei"
+        },
+        {
+          "value": "Humixx"
+        },
+        {
+          "value": "iATO"
+        },
+        {
+          "value": "IDS"
+        },
+        {
+          "value": "IN1"
+        },
+        {
+          "value": "Infinix"
+        },
+        {
+          "value": "Innext"
+        },
+        {
+          "value": "Insta360"
+        },
+        {
+          "value": "Iphoria"
+        },
+        {
+          "value": "Ipow"
+        },
+        {
+          "value": "IRIS"
+        },
+        {
+          "value": "Itel"
+        },
+        {
+          "value": "J Jecent"
+        },
+        {
+          "value": "J Mary"
+        },
+        {
+          "value": "Jackery"
+        },
+        {
+          "value": "JBL"
+        },
+        {
+          "value": "Jbq"
+        },
+        {
+          "value": "JEMACHE"
+        },
+        {
+          "value": "Jiayu"
+        },
+        {
+          "value": "Joyroom"
+        },
+        {
+          "value": "Jsaux"
+        },
+        {
+          "value": "JT Berlin"
+        },
+        {
+          "value": "Just Mobile"
+        },
+        {
+          "value": "K35"
+        },
+        {
+          "value": "K8"
+        },
+        {
+          "value": "K9"
+        },
+        {
+          "value": "K9 Wireless Mic"
+        },
+        {
+          "value": "Kaisi"
+        },
+        {
+          "value": "KENZO"
+        },
+        {
+          "value": "Kingston"
+        },
+        {
+          "value": "Kit"
+        },
+        {
+          "value": "Kodak"
+        },
+        {
+          "value": "Lamicall"
+        },
+        {
+          "value": "Lapinette"
+        },
+        {
+          "value": "LAX"
+        },
+        {
+          "value": "LD"
+        },
+        {
+          "value": "LDNIO"
+        },
+        {
+          "value": "LefRight"
+        },
+        {
+          "value": "Lenovo"
+        },
+        {
+          "value": "Lepow"
+        },
+        {
+          "value": "Levenger"
+        },
+        {
+          "value": "Levin"
+        },
+        {
+          "value": "Lexar"
+        },
+        {
+          "value": "LG"
+        },
+        {
+          "value": "Liebeskind"
+        },
+        {
+          "value": "Ljj"
+        },
+        {
+          "value": "Logitech"
+        },
+        {
+          "value": "Lovewlb"
+        },
+        {
+          "value": "Lucky Brand"
+        },
+        {
+          "value": "Lux"
+        },
+        {
+          "value": "M-Edge"
+        },
+        {
+          "value": "Macally"
+        },
+        {
+          "value": "MagicMount"
+        },
+        {
+          "value": "Max Case"
+        },
+        {
+          "value": "Maxboost"
+        },
+        {
+          "value": "MCA"
+        },
+        {
+          "value": "McDodo"
+        },
+        {
+          "value": "MI"
+        },
+        {
+          "value": "Micro-Tech"
+        },
+        {
+          "value": "Microdigit"
+        },
+        {
+          "value": "MINI"
+        },
+        {
+          "value": "Mobilis"
+        },
+        {
+          "value": "Modio"
+        },
+        {
+          "value": "Monarch Specialties"
+        },
+        {
+          "value": "Moozy"
+        },
+        {
+          "value": "Mophie"
+        },
+        {
+          "value": "mophie"
+        },
+        {
+          "value": "Motorola"
+        },
+        {
+          "value": "Moxie"
+        },
+        {
+          "value": "Mtn"
+        },
+        {
+          "value": "MTN"
+        },
+        {
+          "value": "MTT"
+        },
+        {
+          "value": "Multi Brand"
+        },
+        {
+          "value": "MyPhone"
+        },
+        {
+          "value": "Nano"
+        },
+        {
+          "value": "NEC"
+        },
+        {
+          "value": "NeePho"
+        },
+        {
+          "value": "NEM"
+        },
+        {
+          "value": "Neon"
+        },
+        {
+          "value": "New Age Power Bank"
+        },
+        {
+          "value": "Nilkin"
+        },
+        {
+          "value": "Nillkin"
+        },
+        {
+          "value": "NN"
+        },
+        {
+          "value": "Nokia"
+        },
+        {
+          "value": "Nomad"
+        },
+        {
+          "value": "NOVADA"
+        },
+        {
+          "value": "Noziroh"
+        },
+        {
+          "value": "ObaStyle"
+        },
+        {
+          "value": "Oculus"
+        },
+        {
+          "value": "Olax"
+        },
+        {
+          "value": "OMOTON"
+        },
+        {
+          "value": "OMP"
+        },
+        {
+          "value": "OnePlus"
+        },
+        {
+          "value": "OPPO"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Oria"
+        },
+        {
+          "value": "Otium"
+        },
+        {
+          "value": "OTTERBOX"
+        },
+        {
+          "value": "Ouio"
+        },
+        {
+          "value": "OXO"
+        },
+        {
+          "value": "Pacha"
+        },
+        {
+          "value": "Pama"
+        },
+        {
+          "value": "Panasonic"
+        },
+        {
+          "value": "PDP"
+        },
+        {
+          "value": "PenDrive"
+        },
+        {
+          "value": "Philips"
+        },
+        {
+          "value": "Phonix"
+        },
+        {
+          "value": "PISEN"
+        },
+        {
+          "value": "PITAKA"
+        },
+        {
+          "value": "PLUS"
+        },
+        {
+          "value": "Polanfo"
+        },
+        {
+          "value": "Porodo"
+        },
+        {
+          "value": "Powerocks"
+        },
+        {
+          "value": "Powerology"
+        },
+        {
+          "value": "PREMYO"
+        },
+        {
+          "value": "Pro-Tec"
+        },
+        {
+          "value": "PROMAX"
+        },
+        {
+          "value": "PULEN"
+        },
+        {
+          "value": "PureGear"
+        },
+        {
+          "value": "Qcy"
+        },
+        {
+          "value": "Que"
+        },
+        {
+          "value": "Quikcell"
+        },
+        {
+          "value": "Quirky"
+        },
+        {
+          "value": "RAM"
+        },
+        {
+          "value": "RAVPower"
+        },
+        {
+          "value": "Realme"
+        },
+        {
+          "value": "Recrsi"
+        },
+        {
+          "value": "Redmi"
+        },
+        {
+          "value": "Rgb"
+        },
+        {
+          "value": "Rl"
+        },
+        {
+          "value": "Rocstor"
+        },
+        {
+          "value": "Rode"
+        },
+        {
+          "value": "Samsung"
+        },
+        {
+          "value": "SanDisk"
+        },
+        {
+          "value": "Sandstrom"
+        },
+        {
+          "value": "Scala"
+        },
+        {
+          "value": "Screen Guard"
+        },
+        {
+          "value": "Seneo"
+        },
+        {
+          "value": "Sharp"
+        },
+        {
+          "value": "Shinecon"
+        },
+        {
+          "value": "Ske"
+        },
+        {
+          "value": "Smart"
+        },
+        {
+          "value": "Smoothtalker"
+        },
+        {
+          "value": "Socket"
+        },
+        {
+          "value": "Solar"
+        },
+        {
+          "value": "Sony"
+        },
+        {
+          "value": "SoSkild"
+        },
+        {
+          "value": "Spigen"
+        },
+        {
+          "value": "Sporty"
+        },
+        {
+          "value": "Square"
+        },
+        {
+          "value": "Star"
+        },
+        {
+          "value": "Supreme"
+        },
+        {
+          "value": "Swiss Charger"
+        },
+        {
+          "value": "TCL"
+        },
+        {
+          "value": "TEC"
+        },
+        {
+          "value": "TECHNO"
+        },
+        {
+          "value": "Tecno"
+        },
+        {
+          "value": "Thuraya"
+        },
+        {
+          "value": "Tile"
+        },
+        {
+          "value": "Titan"
+        },
+        {
+          "value": "TORRAS"
+        },
+        {
+          "value": "Trina Turk"
+        },
+        {
+          "value": "Ugreen"
+        },
+        {
+          "value": "Ultra"
+        },
+        {
+          "value": "UniqueMe"
+        },
+        {
+          "value": "UNITEK"
+        },
+        {
+          "value": "Universel"
+        },
+        {
+          "value": "uNu"
+        },
+        {
+          "value": "URBAN ARMOR GEAR"
+        },
+        {
+          "value": "VARTA"
+        },
+        {
+          "value": "VERTECH"
+        },
+        {
+          "value": "VIBE"
+        },
+        {
+          "value": "Villaon"
+        },
+        {
+          "value": "Viva"
+        },
+        {
+          "value": "VIVO"
+        },
+        {
+          "value": "Voyager"
+        },
+        {
+          "value": "VR3"
+        },
+        {
+          "value": "VRS"
+        },
+        {
+          "value": "Weifeng"
+        },
+        {
+          "value": "Wiwu"
+        },
+        {
+          "value": "X.One"
+        },
+        {
+          "value": "Xiaomi"
+        },
+        {
+          "value": "XIT"
+        },
+        {
+          "value": "XUNDD"
+        },
+        {
+          "value": "YESDA"
+        },
+        {
+          "value": "Yesido"
+        },
+        {
+          "value": "Yunfeng"
+        },
+        {
+          "value": "Zhiyun"
+        },
+        {
+          "value": "Ziglint"
+        },
+        {
+          "value": "ZNP"
+        },
+        {
+          "value": "Zover"
+        },
+        {
+          "value": "ZTE"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Anker"
+        },
+        {
+          "value": "Apple"
+        },
+        {
+          "value": "Green Lion"
+        },
+        {
+          "value": "Oraimo"
+        },
+        {
+          "value": "Samsung"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_227_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 227,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_227_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Bulk Price",
+      "parent_slug": null,
+      "slug": "filter_attr_5364_bulk_price",
+      "attr_type": "other",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5364,
+      "attr_name": "Bulk Price",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5364_bulk_price",
+      "possible_values": [
+        {
+          "value": "Yes"
+        },
+        {
+          "value": "No"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Discount",
+      "parent_slug": null,
+      "slug": "filter_discount",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000004,
+      "attr_name": "Discount",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_discount",
+      "possible_values": [
+        {
+          "value": "yes",
+          "title": "With discount"
+        },
+        {
+          "value": "no",
+          "title": "Without discount"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Power Bank",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/power-banks.png",
+          "filters": {
+            "filter_attr_359_type": "Power Bank"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Chargers & Power Adapters",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/chargers.png",
+          "filters": {
+            "filter_attr_359_type": "Chargers & Power Adapters"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Stands & Holders",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/stands.png",
+          "filters": {
+            "filter_attr_359_type": "Stands & Holders"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cases",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/cases.png",
+          "filters": {
+            "filter_attr_359_type": "Cases"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Cables",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/cables-adapters.png",
+          "filters": {
+            "filter_attr_359_type": "Cables"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Phone Screens",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/phone-screens.png",
+          "filters": {
+            "filter_attr_359_type": "Phone Screens"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Selfie Sticks",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/accessories-for-mobile-phones/selfie-sticks.png",
+          "filters": {
+            "filter_attr_359_type": "Selfie Sticks"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_359_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_359_type"
+    }
+  ]
+}

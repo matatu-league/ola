@@ -1,0 +1,1266 @@
+{
+  "total": 9494,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 12000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 1350000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 60000,
+          "label": "Under 60 K",
+          "item_count": 569
+        },
+        {
+          "from": 60000,
+          "to": 95000,
+          "label": "60 - 95 K",
+          "item_count": 2278
+        },
+        {
+          "from": 95000,
+          "to": 160000,
+          "label": "95 - 160 K",
+          "item_count": 3797
+        },
+        {
+          "from": 160000,
+          "to": 210000,
+          "label": "160 - 210 K",
+          "item_count": 2373
+        },
+        {
+          "from": 210000,
+          "to": null,
+          "label": "More than 210 K",
+          "item_count": 474
+        }
+      ]
+    },
+    {
+      "label": "Type",
+      "parent_slug": null,
+      "slug": "filter_attr_116_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 116,
+      "attr_name": "Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_116_type",
+      "possible_values": [
+        {
+          "value": "Ankle Boots"
+        },
+        {
+          "value": "Army Boots"
+        },
+        {
+          "value": "Ballerinas Shoes",
+          "title": "Ballet Shoes"
+        },
+        {
+          "value": "Ballet Shoes"
+        },
+        {
+          "value": "Barefoot Shoes"
+        },
+        {
+          "value": "Basketball Shoes"
+        },
+        {
+          "value": "Beach Water Shoes"
+        },
+        {
+          "value": "Blucher Shoes"
+        },
+        {
+          "value": "Boat Shoes"
+        },
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Bowling Shoes"
+        },
+        {
+          "value": "Boxing Shoes"
+        },
+        {
+          "value": "Brogues"
+        },
+        {
+          "value": "Canvas Shoes"
+        },
+        {
+          "value": "Chelsea Boots"
+        },
+        {
+          "value": "Chukka Boots"
+        },
+        {
+          "value": "Chunky Shoes"
+        },
+        {
+          "value": "Climbing Shoes"
+        },
+        {
+          "value": "Clogs"
+        },
+        {
+          "value": "Cowboy Boots"
+        },
+        {
+          "value": "Crocs"
+        },
+        {
+          "value": "Desert Boots"
+        },
+        {
+          "value": "Docksides"
+        },
+        {
+          "value": "Elevator Shoes"
+        },
+        {
+          "value": "Flats Shoes",
+          "title": "Flat Shoes"
+        },
+        {
+          "value": "Flip Flops",
+          "title": "Flip-Flops"
+        },
+        {
+          "value": "Football Boots"
+        },
+        {
+          "value": "Golf Shoes"
+        },
+        {
+          "value": "Half Shoes"
+        },
+        {
+          "value": "Heeled Sandals"
+        },
+        {
+          "value": "Hiking Boots"
+        },
+        {
+          "value": "Karah"
+        },
+        {
+          "value": "Kitten Heel"
+        },
+        {
+          "value": "Loafers"
+        },
+        {
+          "value": "Moccasins"
+        },
+        {
+          "value": "Monks Shoes",
+          "title": "Monk Shoes"
+        },
+        {
+          "value": "Mules"
+        },
+        {
+          "value": "Oxfords"
+        },
+        {
+          "value": "Pumps"
+        },
+        {
+          "value": "Rain Boots"
+        },
+        {
+          "value": "Saddle Shoes"
+        },
+        {
+          "value": "Safety Footwear"
+        },
+        {
+          "value": "Sandals"
+        },
+        {
+          "value": "Shoes Accessories"
+        },
+        {
+          "value": "Slides"
+        },
+        {
+          "value": "Slip-Ons",
+          "title": "Slip-ons"
+        },
+        {
+          "value": "Slippers"
+        },
+        {
+          "value": "Sneakers"
+        },
+        {
+          "value": "Spool Heel Shoes"
+        },
+        {
+          "value": "Stiletto Shoes"
+        },
+        {
+          "value": "Tennis Shoes"
+        },
+        {
+          "value": "Thigh-High Boots"
+        },
+        {
+          "value": "Trainers"
+        },
+        {
+          "value": "Water Shoes"
+        },
+        {
+          "value": "Wedge Shoes"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Boots"
+        },
+        {
+          "value": "Crocs"
+        },
+        {
+          "value": "Flats Shoes",
+          "title": "Flat Shoes"
+        },
+        {
+          "value": "Sandals"
+        },
+        {
+          "value": "Sneakers"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Gender",
+      "parent_slug": null,
+      "slug": "filter_attr_48_gender",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 48,
+      "attr_name": "Gender",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_48_gender",
+      "possible_values": [
+        {
+          "value": "Women's"
+        },
+        {
+          "value": "Unisex"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_117_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 117,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_117_brand",
+      "possible_values": [
+        {
+          "value": "A Bathing Ape"
+        },
+        {
+          "value": "Aaronfaiy"
+        },
+        {
+          "value": "Abryanz"
+        },
+        {
+          "value": "Achock"
+        },
+        {
+          "value": "AD Maurizio"
+        },
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Adir"
+        },
+        {
+          "value": "Afa Sports"
+        },
+        {
+          "value": "AfriShoes"
+        },
+        {
+          "value": "AfriTrek"
+        },
+        {
+          "value": "Air Jordan"
+        },
+        {
+          "value": "Airavata"
+        },
+        {
+          "value": "Akatie"
+        },
+        {
+          "value": "Akube"
+        },
+        {
+          "value": "Alagzi"
+        },
+        {
+          "value": "Alberta Zizi"
+        },
+        {
+          "value": "Alberto Fellini"
+        },
+        {
+          "value": "Alberto Gilardino"
+        },
+        {
+          "value": "Aldo"
+        },
+        {
+          "value": "Alexander McQueen"
+        },
+        {
+          "value": "Alexander Wang"
+        },
+        {
+          "value": "Alfani"
+        },
+        {
+          "value": "Altama"
+        },
+        {
+          "value": "Amblers Safety"
+        },
+        {
+          "value": "American Eagle"
+        },
+        {
+          "value": "Ami"
+        },
+        {
+          "value": "Amina Muaddi"
+        },
+        {
+          "value": "Amiri"
+        },
+        {
+          "value": "Anax"
+        },
+        {
+          "value": "And1"
+        },
+        {
+          "value": "Andarina"
+        },
+        {
+          "value": "Andrea Nobile"
+        },
+        {
+          "value": "Angelo Luffo"
+        },
+        {
+          "value": "Any Shoes"
+        },
+        {
+          "value": "Aquazzura"
+        },
+        {
+          "value": "Aristocrats"
+        },
+        {
+          "value": "Armani Exchange"
+        },
+        {
+          "value": "Armani Jeans"
+        },
+        {
+          "value": "Artengo"
+        },
+        {
+          "value": "Asics"
+        },
+        {
+          "value": "Asos"
+        },
+        {
+          "value": "Atlanta Mocassin"
+        },
+        {
+          "value": "Atmosphere"
+        },
+        {
+          "value": "Authentic"
+        },
+        {
+          "value": "Avia"
+        },
+        {
+          "value": "Baldi"
+        },
+        {
+          "value": "Balenciaga"
+        },
+        {
+          "value": "Bally"
+        },
+        {
+          "value": "Balmain"
+        },
+        {
+          "value": "Bata"
+        },
+        {
+          "value": "Bebe"
+        },
+        {
+          "value": "Big Boss"
+        },
+        {
+          "value": "Bigtree"
+        },
+        {
+          "value": "Billionaire"
+        },
+        {
+          "value": "Birkenstock"
+        },
+        {
+          "value": "Boss"
+        },
+        {
+          "value": "Bottega Veneta"
+        },
+        {
+          "value": "Breckelle's"
+        },
+        {
+          "value": "Brogue"
+        },
+        {
+          "value": "Buffalo"
+        },
+        {
+          "value": "Burberry"
+        },
+        {
+          "value": "Bvdg"
+        },
+        {
+          "value": "Caecrlof"
+        },
+        {
+          "value": "Caft"
+        },
+        {
+          "value": "Calvin & Kate"
+        },
+        {
+          "value": "Calvin Klein"
+        },
+        {
+          "value": "Camper"
+        },
+        {
+          "value": "Campus"
+        },
+        {
+          "value": "Cape Robbin"
+        },
+        {
+          "value": "Carvela"
+        },
+        {
+          "value": "Caterpillar"
+        },
+        {
+          "value": "Champion"
+        },
+        {
+          "value": "Channel"
+        },
+        {
+          "value": "Christian Dior"
+        },
+        {
+          "value": "Clark"
+        },
+        {
+          "value": "Clarks"
+        },
+        {
+          "value": "Clowse"
+        },
+        {
+          "value": "Cloxx"
+        },
+        {
+          "value": "Coach"
+        },
+        {
+          "value": "Comfy"
+        },
+        {
+          "value": "Converse"
+        },
+        {
+          "value": "Cora"
+        },
+        {
+          "value": "Crabkids"
+        },
+        {
+          "value": "Crocs"
+        },
+        {
+          "value": "De Freshest"
+        },
+        {
+          "value": "Della"
+        },
+        {
+          "value": "Delta Plus"
+        },
+        {
+          "value": "Dior"
+        },
+        {
+          "value": "DMD"
+        },
+        {
+          "value": "Dolce & Gabbana"
+        },
+        {
+          "value": "Dorothy Perkins"
+        },
+        {
+          "value": "Dr Martens"
+        },
+        {
+          "value": "Dsquared2"
+        },
+        {
+          "value": "Dune London"
+        },
+        {
+          "value": "Dunnes"
+        },
+        {
+          "value": "Ecco"
+        },
+        {
+          "value": "EGO"
+        },
+        {
+          "value": "Emporio Armani"
+        },
+        {
+          "value": "Essense"
+        },
+        {
+          "value": "Fashion Nova"
+        },
+        {
+          "value": "Fendi"
+        },
+        {
+          "value": "Find"
+        },
+        {
+          "value": "Fitravel"
+        },
+        {
+          "value": "Full Love"
+        },
+        {
+          "value": "Gant"
+        },
+        {
+          "value": "Gee"
+        },
+        {
+          "value": "Gg"
+        },
+        {
+          "value": "Gina"
+        },
+        {
+          "value": "Givenchy"
+        },
+        {
+          "value": "Gucci"
+        },
+        {
+          "value": "Guess"
+        },
+        {
+          "value": "Heelys"
+        },
+        {
+          "value": "Hermes"
+        },
+        {
+          "value": "Hoka"
+        },
+        {
+          "value": "Hw"
+        },
+        {
+          "value": "Impo"
+        },
+        {
+          "value": "Jimmy Choo"
+        },
+        {
+          "value": "John Foster"
+        },
+        {
+          "value": "Kadulang"
+        },
+        {
+          "value": "La"
+        },
+        {
+          "value": "Lacoste"
+        },
+        {
+          "value": "Lanvin"
+        },
+        {
+          "value": "Levis"
+        },
+        {
+          "value": "Lilian"
+        },
+        {
+          "value": "Lisha"
+        },
+        {
+          "value": "Literide"
+        },
+        {
+          "value": "Lito"
+        },
+        {
+          "value": "Loewe"
+        },
+        {
+          "value": "Louis Vuitton"
+        },
+        {
+          "value": "Louis Vuitton Etc."
+        },
+        {
+          "value": "Lowa"
+        },
+        {
+          "value": "Luca Sandali"
+        },
+        {
+          "value": "Lugz"
+        },
+        {
+          "value": "Luna Sandals"
+        },
+        {
+          "value": "Mango"
+        },
+        {
+          "value": "Manolo Blahnik"
+        },
+        {
+          "value": "Marco De Vincenzo"
+        },
+        {
+          "value": "Mario Bruni"
+        },
+        {
+          "value": "MAX"
+        },
+        {
+          "value": "Mister Shoes"
+        },
+        {
+          "value": "Miu Miu"
+        },
+        {
+          "value": "Moon Boots"
+        },
+        {
+          "value": "Naked Wolfe"
+        },
+        {
+          "value": "Necked Wolf"
+        },
+        {
+          "value": "New Balance"
+        },
+        {
+          "value": "New Look"
+        },
+        {
+          "value": "Nice"
+        },
+        {
+          "value": "Nike"
+        },
+        {
+          "value": "Nike Air"
+        },
+        {
+          "value": "Nine West"
+        },
+        {
+          "value": "NK"
+        },
+        {
+          "value": "Off-White"
+        },
+        {
+          "value": "Office"
+        },
+        {
+          "value": "Offload"
+        },
+        {
+          "value": "Ogiy"
+        },
+        {
+          "value": "Ogyi"
+        },
+        {
+          "value": "Palm Angel'S"
+        },
+        {
+          "value": "Palm Angels"
+        },
+        {
+          "value": "Panda"
+        },
+        {
+          "value": "Peak"
+        },
+        {
+          "value": "Philipp Plein"
+        },
+        {
+          "value": "Polo"
+        },
+        {
+          "value": "Prada"
+        },
+        {
+          "value": "Primark"
+        },
+        {
+          "value": "Puma"
+        },
+        {
+          "value": "Quark"
+        },
+        {
+          "value": "Quechua"
+        },
+        {
+          "value": "Reebok"
+        },
+        {
+          "value": "Reef"
+        },
+        {
+          "value": "Rene Caovilla"
+        },
+        {
+          "value": "Rhinestone"
+        },
+        {
+          "value": "Rossi"
+        },
+        {
+          "value": "Safetoe"
+        },
+        {
+          "value": "Safety Joggers"
+        },
+        {
+          "value": "Salomon"
+        },
+        {
+          "value": "Santiago"
+        },
+        {
+          "value": "Santoni"
+        },
+        {
+          "value": "Saucony"
+        },
+        {
+          "value": "Savida"
+        },
+        {
+          "value": "Sebago"
+        },
+        {
+          "value": "Shein"
+        },
+        {
+          "value": "Simmi"
+        },
+        {
+          "value": "Skechers"
+        },
+        {
+          "value": "Special"
+        },
+        {
+          "value": "Steve Madden"
+        },
+        {
+          "value": "Supreme"
+        },
+        {
+          "value": "Sweet Shoes"
+        },
+        {
+          "value": "Three Show"
+        },
+        {
+          "value": "Timberland"
+        },
+        {
+          "value": "Tod's"
+        },
+        {
+          "value": "Tom Ford"
+        },
+        {
+          "value": "Tommy Hilfiger"
+        },
+        {
+          "value": "Top Notch"
+        },
+        {
+          "value": "Under Armour"
+        },
+        {
+          "value": "Unique"
+        },
+        {
+          "value": "Valentino"
+        },
+        {
+          "value": "Valentino Garavani"
+        },
+        {
+          "value": "Vans"
+        },
+        {
+          "value": "Versace"
+        },
+        {
+          "value": "Wed'ze"
+        },
+        {
+          "value": "Y-3"
+        },
+        {
+          "value": "Yeezy"
+        },
+        {
+          "value": "Zara"
+        },
+        {
+          "value": "Other Brand"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Adidas"
+        },
+        {
+          "value": "Air Jordan"
+        },
+        {
+          "value": "Clarks"
+        },
+        {
+          "value": "New Balance"
+        },
+        {
+          "value": "Nike"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_290_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 290,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_290_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Color",
+      "parent_slug": null,
+      "slug": "filter_attr_303_colour",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 303,
+      "attr_name": "Color",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_303_colour",
+      "possible_values": [
+        {
+          "value": "Ash"
+        },
+        {
+          "value": "Azure"
+        },
+        {
+          "value": "Baby Blue"
+        },
+        {
+          "value": "Beige"
+        },
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Blue"
+        },
+        {
+          "value": "Bone"
+        },
+        {
+          "value": "Bronze"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Burgundy"
+        },
+        {
+          "value": "Cherry"
+        },
+        {
+          "value": "Chestnut"
+        },
+        {
+          "value": "Coffee"
+        },
+        {
+          "value": "Crimson"
+        },
+        {
+          "value": "Fuchsia"
+        },
+        {
+          "value": "Gold"
+        },
+        {
+          "value": "Graphite"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Green"
+        },
+        {
+          "value": "Hot Pink"
+        },
+        {
+          "value": "Khaki"
+        },
+        {
+          "value": "Lemon"
+        },
+        {
+          "value": "Light Blue"
+        },
+        {
+          "value": "Light Green"
+        },
+        {
+          "value": "Mauve"
+        },
+        {
+          "value": "Mint"
+        },
+        {
+          "value": "Multicolor"
+        },
+        {
+          "value": "Navy Blue"
+        },
+        {
+          "value": "Orange"
+        },
+        {
+          "value": "Orange-Red"
+        },
+        {
+          "value": "Orchid"
+        },
+        {
+          "value": "Pink"
+        },
+        {
+          "value": "Purple"
+        },
+        {
+          "value": "Red"
+        },
+        {
+          "value": "Sage"
+        },
+        {
+          "value": "Silver"
+        },
+        {
+          "value": "Tan"
+        },
+        {
+          "value": "White"
+        },
+        {
+          "value": "Wine"
+        },
+        {
+          "value": "Yellow"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [
+        {
+          "value": "Black"
+        },
+        {
+          "value": "Brown"
+        },
+        {
+          "value": "Gray"
+        },
+        {
+          "value": "Multicolor"
+        },
+        {
+          "value": "White"
+        }
+      ],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 70 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 70000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 70 - 85 K",
+          "filters": {
+            "price_min": 70000,
+            "price_max": 85000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 85 - 120 K",
+          "filters": {
+            "price_min": 85000,
+            "price_max": 120000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 120 K",
+          "filters": {
+            "price_min": 120000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Sneakers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/sneakers.png",
+          "filters": {
+            "filter_attr_116_type": "Sneakers"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Boots",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/boots.png",
+          "filters": {
+            "filter_attr_116_type": "Boots"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Sandals",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/sandals.png",
+          "filters": {
+            "filter_attr_116_type": "Sandals"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Flat Shoes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/flat-shoes.png",
+          "filters": {
+            "filter_attr_116_type": "Flats Shoes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Wedge Shoes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/wedge-shoes.png",
+          "filters": {
+            "filter_attr_116_type": "Wedge Shoes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Canvas Shoes",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/canvas-shoes.png",
+          "filters": {
+            "filter_attr_116_type": "Canvas Shoes"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Loafers",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/shoes/loafers.png",
+          "filters": {
+            "filter_attr_116_type": "Loafers"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_116_type",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_116_type"
+    }
+  ]
+}

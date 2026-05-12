@@ -1,0 +1,504 @@
+{
+  "total": 271,
+  "schema": [
+    {
+      "label": "Price, USh",
+      "parent_slug": null,
+      "slug": "price",
+      "attr_type": "int",
+      "filter_placeholder": "Price",
+      "filter_type": "range",
+      "visual_type": "slider",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000002,
+      "attr_name": "Price, USh",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "price",
+      "unit": "USh",
+      "filter_data": {
+        "min": {
+          "fieldname": "price_min",
+          "default": 10000,
+          "value": ""
+        },
+        "max": {
+          "fieldname": "price_max",
+          "default": 2600000,
+          "value": ""
+        }
+      },
+      "prefill_options": [
+        {
+          "from": null,
+          "to": 150000,
+          "label": "Under 150 K",
+          "item_count": 16
+        },
+        {
+          "from": 150000,
+          "to": 330000,
+          "label": "150 - 330 K",
+          "item_count": 65
+        },
+        {
+          "from": 330000,
+          "to": 500000,
+          "label": "330 - 500 K",
+          "item_count": 108
+        },
+        {
+          "from": 500000,
+          "to": 940000,
+          "label": "500 - 940 K",
+          "item_count": 67
+        },
+        {
+          "from": 940000,
+          "to": null,
+          "label": "More than 940 K",
+          "item_count": 13
+        }
+      ]
+    },
+    {
+      "label": "Window Style",
+      "parent_slug": null,
+      "slug": "filter_attr_5312_window_style",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 5312,
+      "attr_name": "Window Style",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5312_window_style",
+      "possible_values": [
+        {
+          "value": "Awning"
+        },
+        {
+          "value": "Bay"
+        },
+        {
+          "value": "Bi-Fold"
+        },
+        {
+          "value": "Casement"
+        },
+        {
+          "value": "Double-Hung"
+        },
+        {
+          "value": "Fixed"
+        },
+        {
+          "value": "Picture"
+        },
+        {
+          "value": "Single-Hung"
+        },
+        {
+          "value": "Sliding"
+        },
+        {
+          "value": "Specialty Shapes"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Brand",
+      "parent_slug": null,
+      "slug": "filter_attr_6810_brand",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 6810,
+      "attr_name": "Brand",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_6810_brand",
+      "possible_values": [
+        {
+          "value": "Alta Power"
+        },
+        {
+          "value": "Geonor"
+        },
+        {
+          "value": "Megfin"
+        },
+        {
+          "value": "Novo Abrasive"
+        },
+        {
+          "value": "Shakti"
+        },
+        {
+          "value": "Sodeca"
+        },
+        {
+          "value": "Tom Green"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Type of Glass",
+      "parent_slug": null,
+      "slug": "filter_attr_1486_type_of_glass",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1486,
+      "attr_name": "Type of Glass",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1486_type_of_glass",
+      "possible_values": [
+        {
+          "value": "Armoured"
+        },
+        {
+          "value": "Float"
+        },
+        {
+          "value": "Heat Retention Coating"
+        },
+        {
+          "value": "Insulated"
+        },
+        {
+          "value": "Laminated"
+        },
+        {
+          "value": "Low-E"
+        },
+        {
+          "value": "Obscure"
+        },
+        {
+          "value": "Reflective"
+        },
+        {
+          "value": "Standard"
+        },
+        {
+          "value": "Tempered"
+        },
+        {
+          "value": "Tinted"
+        },
+        {
+          "value": "Wired"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Glazing Type",
+      "parent_slug": null,
+      "slug": "filter_attr_5313_glaze_type",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 5313,
+      "attr_name": "Glazing Type",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_5313_glaze_type",
+      "possible_values": [
+        {
+          "value": "Clear Glass"
+        },
+        {
+          "value": "Laminated Glass"
+        },
+        {
+          "value": "Low-E"
+        },
+        {
+          "value": "Obscure Glass"
+        },
+        {
+          "value": "Tempered Glass"
+        },
+        {
+          "value": "Single Glaze"
+        },
+        {
+          "value": "Double Glaze"
+        },
+        {
+          "value": "Triple Glaze"
+        },
+        {
+          "value": "Other"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Shape",
+      "parent_slug": null,
+      "slug": "filter_attr_1488_shape",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1488,
+      "attr_name": "Shape",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1488_shape",
+      "possible_values": [
+        {
+          "value": "Circle"
+        },
+        {
+          "value": "Eyebrow",
+          "title": "Eyebrows"
+        },
+        {
+          "value": "Half Circle"
+        },
+        {
+          "value": "Pentagone"
+        },
+        {
+          "value": "Rectangle"
+        },
+        {
+          "value": "Square"
+        },
+        {
+          "value": "Triangle"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Frame Material",
+      "parent_slug": null,
+      "slug": "filter_attr_1487_frame_material",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1487,
+      "attr_name": "Frame Material",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1487_frame_material",
+      "possible_values": [
+        {
+          "value": "Aluminum",
+          "title": "Aluminium"
+        },
+        {
+          "value": "Fiberglass"
+        },
+        {
+          "value": "Stainless Steel"
+        },
+        {
+          "value": "Vinyl"
+        },
+        {
+          "value": "Wood"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Condition",
+      "parent_slug": null,
+      "slug": "filter_attr_1485_condition",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "terms",
+      "visual_type": "multiselect",
+      "for_header": false,
+      "is_multiple": false,
+      "attr_id": 1485,
+      "attr_name": "Condition",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_attr_1485_condition",
+      "possible_values": [
+        {
+          "value": "Brand New"
+        },
+        {
+          "value": "Used"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    },
+    {
+      "label": "Verified sellers",
+      "parent_slug": null,
+      "slug": "filter_id_verify",
+      "attr_type": "str",
+      "filter_placeholder": null,
+      "filter_type": "term",
+      "visual_type": "select",
+      "for_header": true,
+      "is_multiple": false,
+      "attr_id": 1000003,
+      "attr_name": "Verified sellers",
+      "attr_parent_id": null,
+      "attr_parent_name": null,
+      "filter_name": "filter_id_verify",
+      "possible_values": [
+        {
+          "value": "Verified sellers"
+        },
+        {
+          "value": "Unverified sellers"
+        }
+      ],
+      "popular_values": [],
+      "value": null
+    }
+  ],
+  "top_selection": [
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "< USh 200 K",
+          "filters": {
+            "price_min": null,
+            "price_max": 200000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 200 - 300 K",
+          "filters": {
+            "price_min": 200000,
+            "price_max": 300000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "USh 300 - 420 K",
+          "filters": {
+            "price_min": 300000,
+            "price_max": 420000
+          }
+        },
+        {
+          "type": "filters",
+          "title": "> USh 420 K",
+          "filters": {
+            "price_min": 420000,
+            "price_max": null
+          }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "type": "filters",
+          "title": "Rectangle",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/rectangle.png",
+          "filters": {
+            "filter_attr_1488_shape": "Rectangle"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Square",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/square.png",
+          "filters": {
+            "filter_attr_1488_shape": "Square"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Triangle",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/shape-triangle.png",
+          "filters": {
+            "filter_attr_1488_shape": "Triangle"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Half Circle",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/half-circle.png",
+          "filters": {
+            "filter_attr_1488_shape": "Half Circle"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Circle",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/shape-circle.png",
+          "filters": {
+            "filter_attr_1488_shape": "Circle"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Eyebrows",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/shape-eyebrow.png",
+          "filters": {
+            "filter_attr_1488_shape": "Eyebrow"
+          }
+        },
+        {
+          "type": "filters",
+          "title": "Pentagone",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/windows/shape-pentagone.png",
+          "filters": {
+            "filter_attr_1488_shape": "Pentagone"
+          }
+        },
+        {
+          "type": "manual_select",
+          "title": "Other",
+          "filter_name": "filter_attr_1488_shape",
+          "image_url": "https://assets.jijistatic.com/art/attributes/top-selection/other2x-tinifield.png"
+        }
+      ],
+      "filter_name": "filter_attr_1488_shape"
+    }
+  ]
+}
