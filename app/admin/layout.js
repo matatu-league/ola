@@ -29,6 +29,7 @@ const navigationGroups = [
     title: 'Overview',
     items: [
       { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+      { name: 'System Monitoring', href: '/admin/monitoring', icon: Activity },
     ]
   },
   {
@@ -38,27 +39,18 @@ const navigationGroups = [
       { name: 'Orders & Transactions', href: '/admin/orders', icon: ClipboardList },
       { name: 'All Products', href: '/admin/products', icon: Package },
       { name: 'Users & Customers', href: '/admin/users', icon: Users },
-      { name: 'Vendors & Stores', href: '/admin/vendors', icon: Store },
+      { name: 'Stores', href: '/admin/stores', icon: Store },
     ]
   },
   {
     title: 'Communication',
     items: [
       { name: 'Live Chat', href: '/admin/chat', icon: MessageSquare },
-      { name: 'Support Tickets', href: '/admin/support', icon: LifeBuoy },
-    ]
-  },
-  {
-    title: 'System Operations',
-    items: [
-      { name: 'System Monitoring', href: '/admin/monitoring', icon: Activity },
-      { name: 'Audit Logs', href: '/admin/logs', icon: ScrollText },
     ]
   },
   {
     title: 'Configuration',
     items: [
-      { name: 'Roles & Access', href: '/admin/roles', icon: ShieldCheck },
       { name: 'Global Settings', href: '/admin/settings', icon: Settings },
     ]
   }

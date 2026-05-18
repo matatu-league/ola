@@ -52,6 +52,7 @@ const ReviewSchema = new mongoose.Schema({
 const ProductGridSchema = new mongoose.Schema({
   // Ownership & Organization
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store', index: true },
   
   // DUAL CATEGORY SYSTEM
   categoryRef: { type: mongoose.Schema.Types.ObjectId, ref: 'MarketplaceCategory', index: true }, // Global Taxonomy
