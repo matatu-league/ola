@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { connectToDatabase } from '../../lib/mongodb';
 import { MarketplaceCategory, ProductGrid, ProductReview } from '../../models/Marketplace';
+import '../../models/Store'; // <-- ADDED: Ensure Store models are registered so populate('storeCategoryRef') works
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -41,6 +42,7 @@ export async function GET(request) {
     const skip = (page - 1) * limit;
     
     const categorySlug = searchParams.get('category');
+    const storeCategoryRef = searchParams.get('storeCategoryRef'); // <-- ADDED: Extract store subcategory ID
     const isOwnerQuery = searchParams.get('owner') === 'true';
     const storeId = searchParams.get('storeId'); 
     
@@ -58,6 +60,11 @@ export async function GET(request) {
     // If requesting products for a specific storefront UI
     if (storeId) {
        query.owner = storeId;
+    }
+
+    // <-- ADDED: Filter by store subcategory if provided
+    if (storeCategoryRef) {
+       query.storeCategoryRef = storeCategoryRef;
     }
 
     if (categorySlug) {
@@ -98,6 +105,7 @@ export async function GET(request) {
     const [products, total, categories] = await Promise.all([
       ProductGrid.find(query)
         .populate('categoryRef', 'name')
+        .populate('storeCategoryRef', 'name slug') // <-- ADDED: Populate the merchant's custom subcategory
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -137,10 +145,15 @@ export async function POST(request) {
     const body = await request.json();
     await connectToDatabase();
 
-    const newProduct = await ProductGrid.create({
+    // Map fields safely in case frontend sends 'category' instead of 'categoryRef'
+    const payload = {
       ...body,
       owner: userId,
-    });
+      ...(body.category && { categoryRef: body.category }),
+      ...(body.storeCategory && { storeCategoryRef: body.storeCategory }) // <-- ADDED
+    };
+
+    const newProduct = await ProductGrid.create(payload);
 
     return NextResponse.json({ success: true, data: newProduct }, { status: 201 });
   } catch (error) {
@@ -158,11 +171,18 @@ export async function PUT(request) {
     if (!userId) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
-    const { id, ...updateData } = body;
+    const { id, ...updateDataRaw } = body;
 
     if (!id) return NextResponse.json({ success: false, message: 'Product ID is required for updating' }, { status: 400 });
 
     await connectToDatabase();
+
+    // Map fields safely for updates
+    const updateData = {
+      ...updateDataRaw,
+      ...(updateDataRaw.category && { categoryRef: updateDataRaw.category }),
+      ...(updateDataRaw.storeCategory && { storeCategoryRef: updateDataRaw.storeCategory }) // <-- ADDED
+    };
 
     const updatedProduct = await ProductGrid.findOneAndUpdate(
       { _id: id, owner: userId },

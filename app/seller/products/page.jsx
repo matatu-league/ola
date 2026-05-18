@@ -2,20 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, Plus, Filter, MoreHorizontal, Edit, Trash2, Package, CheckCircle2, Loader2 } from 'lucide-react';
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('All Products');
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Dynamic States
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const tabs = ['All Products', 'Active', 'Drafts', 'Out of Stock'];
 
-  // 1. Fetch Products from Backend (Using the Unified API Endpoint)
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -40,16 +40,15 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // 2. Handle Deletion
   const handleDelete = async (id) => {
     setMessage({ type: '', text: '' });
     
-    if (!window.confirm("Are you sure you want to delete this product? This cannot be undone.")) {
+    if (!confirm("Are you sure you want to delete this product? This cannot be undone.")) {
       return;
     }
 
     try {
-      const response = await fetch(`/api/products?id=${id}`, {
+      const response = await fetch(`/api/products/${id}`, {
         method: 'DELETE',
         headers: { 'ngrok-skip-browser-warning': 'true' }
       });
@@ -69,19 +68,19 @@ export default function ProductsPage() {
     }
   };
 
-  // 3. Dynamic Stats Calculation
-  const totalProducts = products.length;
-  const activeListings = products.filter(p => p.status === 'Active').length;
-  const outOfStock = products.filter(p => {
-    const stock = p.hasVariants && Array.isArray(p.variants) 
-      ? p.variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) 
-      : Number(p.stock) || 0;
-    return stock === 0;
-  }).length;
+  const counts = {
+    'All Products': products.length,
+    'Active': products.filter(p => p.status === 'Active').length,
+    'Drafts': products.filter(p => p.status === 'Draft').length,
+    'Out of Stock': products.filter(p => {
+      const stock = p.hasVariants && Array.isArray(p.variants) 
+        ? p.variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) 
+        : Number(p.stock) || 0;
+      return stock === 0;
+    }).length
+  };
 
-  // 4. Filter Logic (Search + Tabs)
   const filteredProducts = products.filter(product => {
-    // Tab filtering
     if (activeTab === 'Active' && product.status !== 'Active') return false;
     if (activeTab === 'Drafts' && product.status !== 'Draft') return false;
     if (activeTab === 'Out of Stock') {
@@ -91,7 +90,6 @@ export default function ProductsPage() {
       if (stock > 0) return false;
     }
 
-    // Search filtering
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       const matchesTitle = product.title?.toLowerCase().includes(query);
@@ -111,7 +109,10 @@ export default function ProductsPage() {
           <h1 className="text-xl font-bold text-[#161823] tracking-tight">Products</h1>
           <p className="text-[13px] text-[#8A8B91] mt-0.5">Manage your store inventory and listings.</p>
         </div>
-        <Link href="/seller/products/add" className="flex items-center justify-center gap-1.5 px-4 py-2 bg-[#FE2C55] rounded-sm text-[13px] font-semibold text-white hover:bg-[#e0264b] transition-colors shadow-sm">
+        <Link
+          href="/seller/products/add"
+          className="flex items-center justify-center gap-1.5 px-4 py-2 bg-[#FE2C55] rounded-sm text-[13px] font-semibold text-white hover:bg-[#e0264b] transition-colors shadow-sm"
+        >
           <Plus size={16} /> Add Product
         </Link>
       </div>
@@ -124,37 +125,6 @@ export default function ProductsPage() {
         </div>
       )}
 
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white border border-[#E3E3E4] rounded-sm p-4 flex items-center gap-4">
-          <div className="w-10 h-10 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm flex items-center justify-center">
-            <Package size={18} className="text-[#161823]" />
-          </div>
-          <div>
-            <p className="text-[11px] font-bold text-[#8A8B91] uppercase tracking-wider">Total Products</p>
-            <p className="text-xl font-bold text-[#161823] leading-none mt-1">{isLoading ? '-' : totalProducts}</p>
-          </div>
-        </div>
-        <div className="bg-white border border-[#E3E3E4] rounded-sm p-4 flex items-center gap-4">
-          <div className="w-10 h-10 bg-[#E6F4EA] border border-[#16A34A]/20 rounded-sm flex items-center justify-center">
-            <CheckCircle2 size={18} className="text-[#16A34A]" />
-          </div>
-          <div>
-            <p className="text-[11px] font-bold text-[#8A8B91] uppercase tracking-wider">Active Listings</p>
-            <p className="text-xl font-bold text-[#161823] leading-none mt-1">{isLoading ? '-' : activeListings}</p>
-          </div>
-        </div>
-        <div className="bg-white border border-[#E3E3E4] rounded-sm p-4 flex items-center gap-4">
-          <div className="w-10 h-10 bg-[#FEE2E2] border border-[#FE2C55]/20 rounded-sm flex items-center justify-center">
-            <Trash2 size={18} className="text-[#FE2C55]" />
-          </div>
-          <div>
-            <p className="text-[11px] font-bold text-[#8A8B91] uppercase tracking-wider">Out of Stock</p>
-            <p className="text-xl font-bold text-[#161823] leading-none mt-1">{isLoading ? '-' : outOfStock}</p>
-          </div>
-        </div>
-      </div>
-
       {/* Tabs */}
       <div className="flex overflow-x-auto hide-scrollbar border-b border-[#E3E3E4] mb-4">
         {tabs.map((tab) => (
@@ -165,7 +135,7 @@ export default function ProductsPage() {
               activeTab === tab ? 'text-[#161823]' : 'text-[#8A8B91] hover:text-[#161823]'
             }`}
           >
-            {tab}
+            {tab} {!isLoading && <span className="ml-1 opacity-70">({counts[tab]})</span>}
             {activeTab === tab && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#161823]"></div>
             )}
@@ -216,74 +186,78 @@ export default function ProductsPage() {
               </thead>
               <tbody className="divide-y divide-[#E3E3E4]">
                 {filteredProducts.map((product) => {
-                  // Calculate total stock for variants dynamically
                   const totalStock = product.hasVariants && Array.isArray(product.variants)
                     ? product.variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0)
                     : Number(product.stock) || 0;
 
                   return (
-                  <tr key={product._id} className="hover:bg-[#F8F8F8] transition-colors group">
-                    <td className="px-4 py-3">
-                      <div className="w-10 h-10 rounded-sm border border-[#E3E3E4] overflow-hidden bg-[#F8F8F8] shrink-0 relative">
-                        {product.image ? (
-                           <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
-                        ) : (
-                           <div className="w-full h-full flex items-center justify-center">
+                    <tr key={product._id} className="hover:bg-[#F8F8F8] transition-colors group">
+                      <td className="px-4 py-3">
+                        <div className="w-10 h-10 rounded-sm border border-[#E3E3E4] overflow-hidden bg-[#F8F8F8] shrink-0">
+                          {product.image ? (
+                            <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
                               <Package size={16} className="text-[#8A8B91]" />
-                           </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <div className="font-semibold text-[#161823] truncate max-w-[180px] lg:max-w-[250px]">{product.title}</div>
-                        {product.isFlashItem && (
-                          <span className="bg-[#FE2C55] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm uppercase tracking-wider shrink-0">Flash</span>
-                        )}
-                      </div>
-                      <div className="text-[11px] text-[#8A8B91]">{product.sku || (product.hasVariants ? 'Multiple SKUs' : 'No SKU')}</div>
-                    </td>
-                    <td className="px-4 py-3 text-[#8A8B91] font-medium">{product.categoryRef?.name || 'Uncategorized'}</td>
-                    <td className="px-4 py-3 font-bold text-[#161823]">
-                      {product.hasVariants && product.variantsHaveDifferentPrices 
-                        ? <span className="text-[#8A8B91] font-medium text-[12px] bg-[#F8F8F8] px-2 py-1 border border-[#E3E3E4] rounded-sm">Variable</span>
-                        : product.price ? `USh ${Number(product.price).toLocaleString()}` : '-'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-col">
-                        <span className={`font-semibold ${totalStock === 0 ? 'text-[#FE2C55]' : 'text-[#161823]'}`}>
-                          {totalStock} {totalStock === 0 && '(Empty)'}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <div className="font-semibold text-[#161823] truncate max-w-[180px] lg:max-w-[250px]">{product.title}</div>
+                          {product.isFlashItem && (
+                            <span className="bg-[#FE2C55] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm uppercase tracking-wider shrink-0">Flash</span>
+                          )}
+                        </div>
+                        <div className="text-[11px] text-[#8A8B91]">{product.sku || (product.hasVariants ? 'Multiple SKUs' : 'No SKU')}</div>
+                      </td>
+                      <td className="px-4 py-3 text-[#8A8B91] font-medium">{product.categoryRef?.name || 'Uncategorized'}</td>
+                      <td className="px-4 py-3 font-bold text-[#161823]">
+                        {product.hasVariants && product.variantsHaveDifferentPrices 
+                          ? <span className="text-[#8A8B91] font-medium text-[12px] bg-[#F8F8F8] px-2 py-1 border border-[#E3E3E4] rounded-sm">Variable</span>
+                          : product.price ? `USh ${Number(product.price).toLocaleString()}` : '-'}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-col">
+                          <span className={`font-semibold ${totalStock === 0 ? 'text-[#FE2C55]' : 'text-[#161823]'}`}>
+                            {totalStock} {totalStock === 0 && '(Empty)'}
+                          </span>
+                          {product.hasVariants && (
+                            <span className="text-[10px] font-medium text-[#8A8B91] mt-0.5">{product.variants?.length || 0} Variants</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider border ${
+                          product.status === 'Active' ? 'bg-[#E6F4EA] text-[#16A34A] border-[#16A34A]/20' : 
+                          product.status === 'Draft' ? 'bg-[#F8F8F8] text-[#8A8B91] border-[#E3E3E4]' : 
+                          'bg-[#FEE2E2] text-[#FE2C55] border-[#FE2C55]/20'
+                        }`}>
+                          {product.status || 'Active'}
                         </span>
-                        {product.hasVariants && (
-                          <span className="text-[10px] font-medium text-[#8A8B91] mt-0.5">{product.variants?.length || 0} Variants</span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex items-center px-1.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider border ${
-                        product.status === 'Active' ? 'bg-[#E6F4EA] text-[#16A34A] border-[#16A34A]/20' : 
-                        product.status === 'Draft' ? 'bg-[#F8F8F8] text-[#8A8B91] border-[#E3E3E4]' : 
-                        'bg-[#FEE2E2] text-[#FE2C55] border-[#FE2C55]/20'
-                      }`}>
-                        {product.status || 'Active'}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <Link href={`/seller/products/add?id=${product._id}`} className="p-1.5 text-[#8A8B91] hover:text-[#161823] hover:bg-[#E3E3E4] rounded-sm transition-colors flex items-center justify-center" title="Edit Product">
-                          <Edit size={14} />
-                        </Link>
-                        <button 
-                          onClick={() => handleDelete(product._id)}
-                          className="p-1.5 text-[#8A8B91] hover:text-[#FE2C55] hover:bg-[#FEE2E2] rounded-sm transition-colors" 
-                          title="Delete Product"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )})}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <Link
+                            href={`/seller/products/edit/${product._id}`}
+                            className="p-1.5 text-[#8A8B91] hover:text-[#161823] hover:bg-[#E3E3E4] rounded-sm transition-colors flex items-center justify-center"
+                            title="Edit Product"
+                          >
+                            <Edit size={14} />
+                          </Link>
+                          <button 
+                            onClick={() => handleDelete(product._id)}
+                            className="p-1.5 text-[#8A8B91] hover:text-[#FE2C55] hover:bg-[#FEE2E2] rounded-sm transition-colors" 
+                            title="Delete Product"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}

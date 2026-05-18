@@ -13,7 +13,7 @@ import {
   Bell, 
   Search,
   Store,
-  Palette, // <-- MAKE SURE TO IMPORT PALETTE
+  Palette,
   X,
 } from 'lucide-react';
 
@@ -22,7 +22,7 @@ const navigation = [
   { name: 'Products', href: '/seller/products', icon: Package },
   { name: 'Orders', href: '/seller/orders', icon: ClipboardList },
   { name: 'Store Profile', href: '/seller/profile', icon: Store },
-  { name: 'Theme & Design', href: '/seller/theme', icon: Palette }, // <-- ADDED THIS LINE
+  { name: 'Theme & Design', href: '/seller/theme', icon: Palette },
   { name: 'Settings', href: '/seller/settings', icon: Settings },
 ];
 
@@ -31,41 +31,54 @@ export default function SellerLayout({ children }) {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
-  
   const [isCheckingStore, setIsCheckingStore] = useState(true);
 
   useEffect(() => {
-    const localUser = localStorage.getItem('ola_seller_user');
-    
-    if (localUser) {
-      try {
-        const parsedUser = JSON.parse(localUser);
-        setUser(parsedUser);
+    const getSessionUser = () => {
+      if (typeof document === 'undefined') return null;
+      const cookies = document.cookie.split(';');
+      const sessionCookie = cookies.find(c => c.trim().startsWith('user_session='));
 
-        fetch('/api/seller/store', { headers: { 'ngrok-skip-browser-warning': 'true' } })
-          .then(res => res.json())
-          .then(data => {
-            if (data.hasStore === false && !pathname.includes('/seller/onboarding')) {
-              router.push('/seller/onboarding');
-            } else if (data.hasStore === true && pathname.includes('/seller/onboarding')) {
-              router.push('/seller/dashboard');
-            } else {
-              setIsCheckingStore(false);
-            }
-          })
-          .catch((err) => {
-            console.error("Store check failed", err);
-            if (!pathname.includes('/seller/onboarding')) {
-              router.push('/seller/onboarding');
-            } else {
-              setIsCheckingStore(false);
-            }
-          });
-
-      } catch (e) {
-        console.error("Failed to parse local user data");
-        router.push('/');
+      if (sessionCookie) {
+        try {
+          const rawValue = sessionCookie.substring(sessionCookie.indexOf('=') + 1);
+          let decodedValue = decodeURIComponent(rawValue);
+          if (decodedValue.startsWith('%7B')) {
+            decodedValue = decodeURIComponent(decodedValue);
+          }
+          return JSON.parse(decodedValue);
+        } catch (e) {
+          console.error("Failed to parse session cookie", e);
+          return null;
+        }
       }
+      return null;
+    };
+
+    const parsedUser = getSessionUser();
+
+    if (parsedUser) {
+      setUser(parsedUser);
+
+      fetch('/api/seller/store', { headers: { 'ngrok-skip-browser-warning': 'true' } })
+        .then(res => res.json())
+        .then(data => {
+          if (data.hasStore === false && !pathname.includes('/seller/onboarding')) {
+            router.push('/seller/onboarding');
+          } else if (data.hasStore === true && pathname.includes('/seller/onboarding')) {
+            router.push('/seller/dashboard');
+          } else {
+            setIsCheckingStore(false);
+          }
+        })
+        .catch((err) => {
+          console.error("Store check failed", err);
+          if (!pathname.includes('/seller/onboarding')) {
+            router.push('/seller/onboarding');
+          } else {
+            setIsCheckingStore(false);
+          }
+        });
     } else {
       router.push('/');
     }
@@ -73,7 +86,6 @@ export default function SellerLayout({ children }) {
 
   const handleSignOut = () => {
     document.cookie = 'user_session=; Max-Age=0; path=/';
-    localStorage.removeItem('ola_seller_user');
     router.push('/');
   };
 
@@ -99,16 +111,16 @@ export default function SellerLayout({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] flex text-[#161823]">
+    <div className="min-h-screen bg-white flex text-[#161823]">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
-      {/* Sidebar - Flat & Square */}
+      {/* Sidebar */}
       <aside className={`
         fixed lg:sticky top-0 left-0 z-50 h-screen w-[240px] bg-white border-r border-[#E3E3E4] flex flex-col transition-transform duration-300 ease-in-out
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -133,10 +145,11 @@ export default function SellerLayout({ children }) {
               <Link
                 key={item.name}
                 href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-sm text-[13px] font-semibold transition-colors
-                  ${isActive 
-                    ? 'bg-[#F8F8F8] text-[#161823]' 
+                  ${isActive
+                    ? 'bg-[#F8F8F8] text-[#161823]'
                     : 'text-[#8A8B91] hover:bg-[#F8F8F8] hover:text-[#161823]'}
                 `}
               >
@@ -149,7 +162,7 @@ export default function SellerLayout({ children }) {
 
         {/* Bottom User Area */}
         <div className="p-3 border-t border-[#E3E3E4]">
-          <div 
+          <div
             onClick={handleSignOut}
             className="flex items-center gap-3 px-3 py-2.5 rounded-sm text-[13px] font-semibold text-[#8A8B91] hover:bg-[#F8F8F8] hover:text-[#FE2C55] cursor-pointer transition-colors"
           >
@@ -160,11 +173,11 @@ export default function SellerLayout({ children }) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-white">
         {/* Top Header */}
         <header className="h-[60px] bg-white border-b border-[#E3E3E4] flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30 shrink-0">
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="p-1.5 -ml-1.5 rounded-sm lg:hidden text-[#161823] hover:bg-[#F8F8F8]"
             >
@@ -176,12 +189,12 @@ export default function SellerLayout({ children }) {
           </div>
 
           <div className="flex items-center gap-4 lg:gap-5">
-            {/* Global Search - Square & Flat */}
+            {/* Global Search */}
             <div className="relative hidden md:block">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8B91]" />
-              <input 
-                type="text" 
-                placeholder="Search..." 
+              <input
+                type="text"
+                placeholder="Search..."
                 className="w-[220px] pl-8 pr-3 py-1.5 bg-[#F8F8F8] border border-transparent rounded-sm text-[13px] font-medium focus:outline-none focus:border-[#E3E3E4] focus:bg-white transition-all placeholder:text-[#8A8B91]"
               />
             </div>
@@ -211,7 +224,7 @@ export default function SellerLayout({ children }) {
 
         {/* Page Content Wrapper */}
         <div className="flex-1 overflow-y-auto p-4 lg:p-6">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto bg-white">
             {children}
           </div>
         </div>

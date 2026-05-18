@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import ProductDetails from '@/components/marketplace/ProductDetails'; // Adjust this import path to match your project
+import TopNav from "@/components/shared/TopNav";
 
 export default async function ProductPage({ params }) {
   // In Next.js 15+, params is a promise that must be awaited
@@ -33,7 +34,7 @@ export default async function ProductPage({ params }) {
 
     return (
       <main>
-        {/* Pass the clean object down to the UI */}
+        <TopNav />
         <ProductDetails product={safeProductData} />
       </main>
     );

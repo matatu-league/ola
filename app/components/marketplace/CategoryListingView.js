@@ -365,7 +365,7 @@ const CategoryListingView = ({ initialCategory = null }) => {
                   {data.products.map((product) => (
                     /* REFACTORED: Using Next.js Link to route securely to the product details page */
                     <Link 
-                      href={`/product/${product._id || product.id}`} 
+                      href={`/products/${product._id || product.id}`} 
                       key={product._id || product.id} 
                       className="bg-white p-2 md:p-3 cursor-pointer flex flex-col group border border-transparent hover:border-gray-200 hover:shadow-sm transition-all duration-300 rounded-none"
                     >

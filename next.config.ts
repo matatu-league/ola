@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 1. Add it here at the root level to fix the HMR warning
-  allowedDevOrigins: ['simple-maggot-expert.ngrok-free.app'],
+  // 1. Add wildcard to allow HMR (Hot Module Replacement) across all subdomains
+  allowedDevOrigins: ['ola.ug', '*.ola.ug'],
   
-  // 2. Keep serverActions allowedOrigins just in case for API POST requests
+  // 2. Add wildcard to allow Server Actions (form submissions, etc.) across all subdomains
   experimental: {
     serverActions: {
-      allowedOrigins: ['simple-maggot-expert.ngrok-free.app'],
+      allowedOrigins: ['ola.ug', '*.ola.ug'],
     },
   },
   images: {

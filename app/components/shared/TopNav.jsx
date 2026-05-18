@@ -1,12 +1,17 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { 
   Search, ShoppingCart, User, Menu, ChevronDown, MapPin, 
   Inbox, ChevronRight, LogOut, LayoutDashboard, Loader2, MessageSquare 
 } from 'lucide-react';
 
-export default function TopNav({ onCategorySelect, showSearch = false }) {
+export default function TopNav({ showSearch = false }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [user, setUser] = useState(null);
   const [showCategories, setShowCategories] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(0); 
@@ -111,32 +116,36 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
     window.location.reload();
   };
 
-  // 5. RESTORED: Secure TikTok PKCE Authentication Logic
   const handleTikTokLogin = async () => {
     setIsAuthenticating(true);
     try {
-      const clientKey = 'sbawx7ufskuzcslm8j'; // Your App Credentials
+      const clientKey = 'sbawx7ufskuzcslm8j'; 
       const redirectUri = `${window.location.origin}/api/auth/tiktok/callback`;
 
       const generateRandomString = (length) => {
         const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
         let result = '';
-        const randomValues = new Uint8Array(length);
-        window.crypto.getRandomValues(randomValues);
         for (let i = 0; i < length; i++) {
-          result += charset[randomValues[i] % charset.length];
+          result += charset[Math.floor(Math.random() * charset.length)];
         }
         return result;
       };
 
       const generateCodeChallenge = async (verifier) => {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(verifier);
-        const digest = await window.crypto.subtle.digest('SHA-256', data);
-        return btoa(String.fromCharCode(...new Uint8Array(digest)))
-          .replace(/\+/g, '-')
-          .replace(/\//g, '_')
-          .replace(/=+$/, '');
+          try {
+             if (window.crypto && window.crypto.subtle) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(verifier);
+                const digest = await window.crypto.subtle.digest('SHA-256', data);
+                return btoa(String.fromCharCode(...new Uint8Array(digest)))
+                  .replace(/\+/g, '-')
+                  .replace(/\//g, '_')
+                  .replace(/=+$/, '');
+             }
+             return btoa(verifier).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          } catch (e) {
+             return btoa(verifier).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          }
       };
 
       const state = generateRandomString(32);
@@ -162,15 +171,35 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
     }
   };
 
+  // NEW: Internal Navigation Handler for URL Updates
+  const handleInternalCategorySelect = (slug) => {
+    setShowCategories(false);
+    
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', 'Products');
+    
+    if (slug) {
+      params.set('category', slug);
+    } else {
+      params.delete('category');
+    }
+
+    // Update the browser URL (This triggers MarketplaceContent to update automatically)
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header className="bg-white flex flex-col w-full z-50 relative">
-      {/* ================= LEVEL 1: Top Bar (Logo, Search, Account) ================= */}
       <div className="max-w-[1400px] w-full mx-auto px-4 py-4 flex items-center justify-between gap-6 lg:gap-10 relative z-40">
         
-        {/* Left: Logo */}
+        {/* Left: Logo - Click clears category */}
         <div 
           className="shrink-0 cursor-pointer select-none" 
-          onClick={() => onCategorySelect && onCategorySelect(null)}
+          onClick={(e) => {
+            e.preventDefault();
+            handleInternalCategorySelect(null);
+          }}
         >
           <a href="/">
             <span className="text-3xl font-extrabold text-[#FE2C55] tracking-tighter">
@@ -202,7 +231,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
         {/* Right: User Actions (Cart, Account, Orders) */}
         <div className="shrink-0 flex items-center gap-5 lg:gap-7">
           
-          {/* Deliver To (Hidden on Mobile) */}
           <div className="hidden lg:flex items-center gap-2 cursor-pointer group">
             <MapPin size={18} className="text-gray-400 group-hover:text-[#FE2C55] transition-colors" />
             <div className="flex flex-col">
@@ -211,7 +239,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
             </div>
           </div>
 
-          {/* DYNAMIC User Account Dropdown */}
           <div 
             className="flex items-center gap-2 cursor-pointer group relative py-2"
             onMouseEnter={() => setShowAccountMenu(true)}
@@ -232,7 +259,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
               </span>
             </div>
 
-            {/* Account Hover Menu */}
             {showAccountMenu && (
               <div className="absolute top-full right-0 w-64 bg-white border border-gray-200 shadow-xl rounded-none py-2 z-50 transform translate-y-0">
                 {user ? (
@@ -256,8 +282,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
                 ) : (
                   <div className="px-4 py-5 text-center">
                     <p className="text-[13px] font-bold text-gray-900 mb-4">Welcome to Ola.com</p>
-                    
-                    {/* UPDATED: Black TikTok Login Button with Official SVG Logo */}
                     <button 
                       onClick={handleTikTokLogin}
                       disabled={isAuthenticating}
@@ -280,7 +304,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
             )}
           </div>
 
-          {/* MESSAGES (NEWLY ADDED) */}
           <a href="/messages" className="flex flex-col items-center cursor-pointer group relative">
             <div className="relative">
               <MessageSquare size={22} className="text-gray-700 group-hover:text-[#FE2C55] transition-colors" />
@@ -291,13 +314,11 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
             <span className="text-[11px] font-medium text-gray-700 mt-1 hidden md:block">Messages</span>
           </a>
 
-          {/* Orders */}
           <div className="flex flex-col items-center cursor-pointer group">
             <Inbox size={22} className="text-gray-700 group-hover:text-[#FE2C55] transition-colors" />
             <span className="text-[11px] font-medium text-gray-700 mt-1 hidden md:block">Orders</span>
           </div>
 
-          {/* Cart with Badge */}
           <div className="flex flex-col items-center cursor-pointer group relative">
             <div className="relative">
               <ShoppingCart size={22} className="text-gray-700 group-hover:text-[#FE2C55] transition-colors" />
@@ -315,10 +336,8 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
       <div className="w-full border-b border-gray-200 bg-white relative z-30">
         <div className="max-w-[1400px] mx-auto px-4 flex items-center justify-between text-[13px] font-medium text-gray-700 h-10">
           
-          {/* Left: Category Menu & Primary Links */}
           <div className="flex items-center gap-6 h-full">
             
-            {/* MEGA MENU: Category Cascader */}
             <div className="relative h-full flex items-center" ref={categoryMenuRef}>
               <div 
                 className={`flex items-center gap-2 cursor-pointer transition-colors h-full px-1 ${showCategories ? 'text-[#FE2C55]' : 'hover:text-[#FE2C55]'}`}
@@ -328,7 +347,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
                 <span className="font-bold text-gray-900">All categories</span>
               </div>
               
-              {/* Dynamic Category Mega Menu (Split Layout) */}
               {showCategories && (
                 <div className="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-50 flex rounded-none mt-[1px] min-h-[420px]">
                   
@@ -343,7 +361,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
                      </div>
                   ) : (
                     <>
-                      {/* Left Column: Primary Categories (Hover Triggers) */}
                       <div className="w-64 border-r border-gray-100 py-2 bg-white shrink-0">
                         {categoryTree.map((cat, idx) => (
                           <div 
@@ -364,7 +381,6 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
                         ))}
                       </div>
 
-                      {/* Right Column: Subcategories (Clickable Links) */}
                       <div className="w-[500px] p-6 bg-white shrink-0">
                         {categoryTree[hoveredCategory] && (
                           <>
@@ -377,10 +393,7 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
                                 <div 
                                   key={sub._id || sub.slug}
                                   className="text-[13px] text-gray-600 hover:text-[#FE2C55] cursor-pointer transition-colors flex items-center group capitalize"
-                                  onClick={() => {
-                                    if(onCategorySelect) onCategorySelect(sub.slug);
-                                    setShowCategories(false);
-                                  }}
+                                  onClick={() => handleInternalCategorySelect(sub.slug)}
                                 >
                                   <span className="w-1.5 h-1.5 rounded-full bg-gray-300 mr-2 group-hover:bg-[#FE2C55] transition-colors"></span>
                                   {sub.name}
@@ -402,13 +415,11 @@ export default function TopNav({ onCategorySelect, showSearch = false }) {
             </div>
           </div>
 
-          {/* Right: Secondary Links */}
           <div className="hidden lg:flex items-center gap-5 h-full text-[12px]">
             <span className="cursor-pointer hover:text-[#FE2C55] transition-colors">Ola Work</span>
             <span className="cursor-pointer hover:text-[#FE2C55] transition-colors">Buyer Central</span>
             <span className="cursor-pointer hover:text-[#FE2C55] transition-colors">App & extensions</span>
             <div className="h-4 w-px bg-gray-300 mx-1"></div>
-            {/* Dynamic Seller Link */}
             <a 
               href={user?.hasStore ? "/seller/dashboard" : "/seller/onboarding"} 
               className="cursor-pointer hover:text-[#FE2C55] transition-colors font-bold text-gray-900"

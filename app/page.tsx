@@ -82,7 +82,7 @@ function MarketplaceContent() {
   return (
     <div className="font-sans text-gray-800 flex flex-col min-h-screen">
       <div className={`transition-colors duration-500 relative ${activeTab === 'Products' ? 'bg-gradient-to-tr from-white via-white to-[#fff0f4] animate-bg-gradient' : 'bg-gradient-to-br from-white via-white to-red-50'}`}>
-        <TopNav onCategorySelect={handleCategorySelect} />
+        <TopNav />
         
         {/* Hide SearchHeader when browsing a specific category */}
         {!activeCategory && (

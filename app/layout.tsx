@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-// Import your Top Navigation component here
-import TopNav from "@/components/shared/TopNav";
-
 const geistSans = Geist({
 variable: "--font-geist-sans",
 subsets: ["latin"],
@@ -32,10 +29,6 @@ className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
 >
   <body>
 
-
-    {/* Render the consistent TopNav globally on every page */}
-    {/* <TopNav /> */}
-    
     {/* The rest of your pages render inside {children} */}
     <main className="flex-1">
       {children}

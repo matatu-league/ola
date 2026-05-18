@@ -7,7 +7,7 @@ import { Palette, Save, Loader2, CheckCircle2, LayoutTemplate, Zap } from 'lucid
 const StoreLivePreview = ({ layout, color, title, logo, showFlashSale }) => {
   return (
     <div className="w-full h-full min-h-[500px] border border-[#E3E3E4] rounded-sm bg-white flex flex-col overflow-hidden shadow-sm sticky top-6">
-      {/* Mock Browser Chrome - Squared */}
+      {/* Mock Browser Chrome */}
       <div className="bg-[#F8F8F8] h-8 flex items-center px-3 gap-1.5 border-b border-[#E3E3E4] shrink-0">
         <div className="w-2.5 h-2.5 rounded-sm bg-red-400"></div>
         <div className="w-2.5 h-2.5 rounded-sm bg-amber-400"></div>
@@ -18,55 +18,26 @@ const StoreLivePreview = ({ layout, color, title, logo, showFlashSale }) => {
       {/* Mock Store Content */}
       <div className="flex-1 overflow-hidden pointer-events-none select-none relative bg-white">
         
-        {/* 1. CLASSIC PREVIEW */}
+        {/* 1. CLASSIC */}
         {layout === 'Classic' && (
           <div className="flex flex-col h-full">
             <div className="h-8 border-b border-[#E3E3E4] flex items-center px-3 gap-2">
-               {logo ? (
-                 <img src={logo} alt="Logo" className="w-4 h-4 object-cover border border-[#E3E3E4] rounded-sm" />
-               ) : (
-                 <div className="w-4 h-4 rounded-sm text-[8px] text-white flex items-center justify-center font-bold" style={{backgroundColor: color}}>C</div>
-               )}
+               {logo ? <img src={logo} alt="Logo" className="w-4 h-4 object-cover border border-[#E3E3E4] rounded-sm" /> : <div className="w-4 h-4 rounded-sm text-[8px] text-white flex items-center justify-center font-bold" style={{backgroundColor: color}}>C</div>}
                <div className="w-16 h-1.5 bg-[#E3E3E4] rounded-sm"></div>
             </div>
-            <div className="h-28 w-full relative flex items-center justify-center px-4 text-center">
-               <div className="absolute inset-0 bg-[#F8F8F8]"></div>
-               <div className="relative z-10 w-full flex flex-col items-center">
-                 <div className="text-sm font-bold text-[#161823] mb-1.5 truncate w-full">{title}</div>
+            <div className="h-28 w-full relative flex items-center justify-center bg-[#F8F8F8]">
+               <div className="flex flex-col items-center">
+                 <div className="text-sm font-bold text-[#161823] mb-1.5">{title}</div>
                  <div className="w-20 h-3 rounded-sm" style={{backgroundColor: color}}></div>
                </div>
             </div>
             <div className="p-4 flex-1">
-               {/* NEW: Classic Flash Sale Mock */}
-               {showFlashSale && (
-                 <div className="mb-3 bg-white border border-[#E3E3E4] p-1.5 rounded-sm flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between px-1">
-                       <div className="flex items-center gap-1.5">
-                          <div className="w-1 h-2.5 rounded-sm" style={{backgroundColor: color}}></div>
-                          <div className="text-[8px] font-bold text-[#161823] uppercase">Flash Sale</div>
-                       </div>
-                       <div className="flex gap-0.5">
-                          <div className="w-2.5 h-2.5 bg-[#161823] text-white text-[5px] flex items-center justify-center rounded-sm">02</div>
-                          <div className="w-2.5 h-2.5 bg-[#161823] text-white text-[5px] flex items-center justify-center rounded-sm">45</div>
-                       </div>
-                    </div>
-                    <div className="flex gap-1.5 overflow-hidden px-1">
-                      {[1,2,3].map(i => (
-                        <div key={i} className="w-10 shrink-0 aspect-[3/4] bg-[#F8F8F8] rounded-sm border border-[#E3E3E4] relative">
-                          <div className="absolute top-0 right-0 w-3 h-3 text-[5px] text-white flex items-center justify-center font-bold rounded-bl-sm" style={{backgroundColor: color}}>-20%</div>
-                        </div>
-                      ))}
-                    </div>
-                 </div>
-               )}
-
-               <div className="w-16 h-2 bg-[#E3E3E4] rounded-sm mb-3"></div>
                <div className="grid grid-cols-3 gap-3">
                  {[1,2,3].map(i => (
-                   <div key={i} className="aspect-square bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm flex flex-col p-2">
+                   <div key={i} className="aspect-square bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm p-2 flex flex-col">
                      <div className="flex-1 bg-[#E3E3E4] rounded-sm mb-1.5"></div>
                      <div className="w-full h-1.5 bg-[#E3E3E4] rounded-sm mb-1"></div>
-                     <div className="w-1/2 h-2 rounded-sm mt-auto" style={{backgroundColor: color}}></div>
+                     <div className="w-1/2 h-2 rounded-sm" style={{backgroundColor: color}}></div>
                    </div>
                  ))}
                </div>
@@ -74,164 +45,367 @@ const StoreLivePreview = ({ layout, color, title, logo, showFlashSale }) => {
           </div>
         )}
 
-        {/* 2. MODERN PREVIEW */}
+        {/* 2. MODERN */}
         {layout === 'Modern' && (
           <div className="flex flex-col h-full p-3">
             <div className="flex gap-3 h-28 mb-3">
-              <div className="w-1/2 bg-[#F8F8F8] rounded-sm border border-[#E3E3E4] flex items-center justify-center overflow-hidden">
-                {logo && <img src={logo} alt="Logo" className="w-12 h-12 object-cover opacity-80" />}
-              </div>
+              <div className="w-1/2 bg-[#F8F8F8] rounded-sm border border-[#E3E3E4]"></div>
               <div className="w-1/2 flex flex-col justify-center">
-                 <div className="w-10 h-1.5 rounded-sm mb-1.5" style={{backgroundColor: color}}></div>
-                 <div className="text-xs font-bold text-[#161823] leading-tight mb-2 truncate">{title}</div>
+                 <div className="text-xs font-bold text-[#161823] mb-2">{title}</div>
                  <div className="w-16 h-4 rounded-sm" style={{backgroundColor: color}}></div>
               </div>
             </div>
-
-            {/* NEW: Modern Flash Sale Mock */}
-            {showFlashSale && (
-              <div className="w-full mb-3 bg-[#161823] rounded-sm p-1.5 flex gap-2 overflow-hidden items-center">
-                 <div className="shrink-0 text-white flex flex-col items-center justify-center w-8">
-                    <div className="text-[6px] uppercase font-bold text-[#8A8B91]">Ends In</div>
-                    <div className="text-[8px] font-bold" style={{color: color}}>02:45</div>
-                 </div>
-                 <div className="flex-1 flex gap-1">
-                   {[1,2].map(i => (
-                     <div key={i} className="h-8 flex-1 bg-white rounded-sm relative border border-white/20">
-                       <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-t from-black/50 to-transparent"></div>
-                     </div>
-                   ))}
-                 </div>
-              </div>
-            )}
-
-            <div className="w-full flex-1 flex flex-col items-center">
-               <div className="w-20 h-2 bg-[#161823] rounded-sm mb-3"></div>
-               <div className="grid grid-cols-2 gap-3 w-full">
-                 {[1,2].map(i => (
-                   <div key={i} className="bg-white rounded-sm p-2 aspect-square flex flex-col items-center justify-center border border-[#E3E3E4]">
-                     <div className="w-10 h-10 bg-[#F8F8F8] rounded-sm mb-2 border border-[#E3E3E4]"></div>
-                     <div className="w-1/2 h-1.5 bg-[#E3E3E4] rounded-sm mb-1.5"></div>
-                     <div className="w-1/3 h-2 rounded-sm" style={{backgroundColor: color}}></div>
-                   </div>
-                 ))}
-               </div>
+            <div className="grid grid-cols-2 gap-3 w-full">
+              {[1,2].map(i => (
+                <div key={i} className="bg-white rounded-sm p-2 aspect-square border border-[#E3E3E4] flex flex-col items-center justify-center">
+                  <div className="w-10 h-10 bg-[#F8F8F8] rounded-sm mb-2"></div>
+                  <div className="w-1/2 h-1.5 bg-[#E3E3E4] rounded-sm mb-1"></div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* 3. BOLD PREVIEW */}
+        {/* 3. BOLD */}
         {layout === 'Bold' && (
           <div className="flex flex-col h-full border-b-4" style={{borderColor: color}}>
-            <div className="h-32 bg-[#161823] flex flex-col items-center justify-center p-4 text-center border-b" style={{borderColor: color}}>
-               {logo && <img src={logo} alt="Logo" className="w-10 h-10 object-cover mb-2 border border-white/20 rounded-sm" />}
-               <div className="text-white font-bold text-sm uppercase tracking-tight truncate w-full">{title}</div>
-               <div className="mt-3 w-20 h-4 bg-white rounded-sm flex items-center justify-center">
-                 <div className="w-10 h-0.5 bg-[#161823] rounded-sm"></div>
-               </div>
+            <div className="h-32 bg-[#161823] flex flex-col items-center justify-center p-4 border-b" style={{borderColor: color}}>
+               <div className="text-white font-bold uppercase tracking-tight">{title}</div>
+               <div className="mt-3 w-20 h-4 bg-white rounded-sm"></div>
             </div>
-            <div className="p-4">
-               {/* NEW: Bold Flash Sale Mock */}
-               {showFlashSale && (
-                 <div className="mb-4 bg-[#FE2C55] rounded-sm p-2 flex flex-col items-center" style={{backgroundColor: color}}>
-                    <div className="text-white text-[8px] font-black tracking-widest uppercase mb-1.5 border-b border-white/30 pb-1 w-full text-center">Lightning Deals</div>
-                    <div className="w-full h-8 bg-white rounded-sm flex items-center justify-between px-2">
-                       <div className="w-8 h-1.5 bg-[#161823] rounded-sm"></div>
-                       <div className="text-[8px] font-black" style={{color: color}}>-50%</div>
-                    </div>
-                 </div>
-               )}
-
-               <div className="w-24 h-2 bg-[#161823] mb-4 border-l-2 pl-1 rounded-sm" style={{borderColor: color}}></div>
-               <div className="flex flex-col gap-3">
-                 {[1,2].map(i => (
-                   <div key={i} className="flex gap-3 p-2 border border-[#E3E3E4] rounded-sm">
-                     <div className="w-12 h-12 bg-[#F8F8F8] shrink-0 rounded-sm"></div>
-                     <div className="flex flex-col justify-center w-full">
-                       <div className="w-3/4 h-2 bg-[#161823] mb-1.5 rounded-sm"></div>
-                       <div className="w-full h-2 rounded-sm mt-1" style={{backgroundColor: color}}></div>
-                     </div>
-                   </div>
-                 ))}
-               </div>
+            <div className="p-4 flex flex-col gap-3">
+              {[1,2].map(i => (
+                <div key={i} className="flex gap-3 p-2 border border-[#E3E3E4] rounded-sm">
+                  <div className="w-12 h-12 bg-[#F8F8F8] rounded-sm"></div>
+                  <div className="flex flex-col justify-center w-full">
+                    <div className="w-3/4 h-2 bg-[#161823] mb-1.5 rounded-sm"></div>
+                    <div className="w-1/2 h-2 rounded-sm" style={{backgroundColor: color}}></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* 4. FURNITURE PREVIEW */}
+        {/* 4. FURNITURE */}
         {layout === 'Furniture' && (
           <div className="flex flex-col h-full bg-[#FAFAFA]">
-            <div className="h-28 relative overflow-hidden bg-[#E3E3E4] m-1.5 rounded-sm">
-               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-3 text-center items-center">
-                 {logo && <img src={logo} alt="Logo" className="w-8 h-8 object-cover mb-1 border border-white/30 rounded-sm" />}
-                 <div className="text-white font-serif text-sm tracking-wide mb-1 w-full truncate">{title}</div>
-                 <div className="w-16 h-1 bg-white/50 rounded-sm"></div>
-               </div>
+            <div className="h-28 bg-[#E3E3E4] m-1.5 rounded-sm flex items-end p-3">
+               <div className="text-white font-serif text-sm">{title}</div>
             </div>
-            <div className="p-4 flex flex-col items-center">
-               {/* NEW: Furniture Flash Sale Mock */}
-               {showFlashSale && (
-                 <div className="mb-4 w-full border border-[#E3E3E4] bg-[#F8F8F8] rounded-sm flex items-center p-1.5">
-                    <div className="w-12 text-center border-r border-[#E3E3E4] pr-1.5 mr-1.5">
-                       <div className="text-[6px] font-serif text-[#161823] uppercase">Limited</div>
-                       <div className="text-[8px] font-serif" style={{color: color}}>02:45:00</div>
-                    </div>
-                    <div className="flex-1 h-8 bg-white border border-[#E3E3E4] rounded-sm flex items-center justify-center">
-                       <div className="w-1/2 h-1 bg-[#E3E3E4] rounded-sm"></div>
-                    </div>
-                 </div>
-               )}
-
-               <div className="w-20 h-1.5 bg-[#E3E3E4] rounded-sm mb-4"></div>
-               <div className="grid grid-cols-2 gap-3 w-full">
-                 {[1,2].map(i => (
-                   <div key={i} className="flex flex-col border border-[#E3E3E4] p-1.5 bg-white rounded-sm">
-                     <div className="w-full aspect-[4/3] bg-[#F8F8F8] rounded-sm mb-2"></div>
-                     <div className="flex justify-between items-center px-1 pb-0.5">
-                       <div className="w-1/2 h-1.5 bg-[#E3E3E4] rounded-sm"></div>
-                       <div className="w-1/4 h-2 rounded-sm" style={{backgroundColor: color}}></div>
-                     </div>
-                   </div>
-                 ))}
-               </div>
+            <div className="p-4 grid grid-cols-2 gap-3">
+              {[1,2].map(i => (
+                <div key={i} className="bg-white border border-[#E3E3E4] p-1.5 rounded-sm">
+                  <div className="w-full aspect-[4/3] bg-[#F8F8F8] rounded-sm mb-2"></div>
+                  <div className="w-1/2 h-1.5 bg-[#E3E3E4] rounded-sm mb-1"></div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* 5. APPAREL PREVIEW */}
+        {/* 5. APPAREL */}
         {layout === 'Apparel' && (
           <div className="flex flex-col h-full">
-            <div className="py-4 flex flex-col items-center justify-center">
-               {logo && <img src={logo} alt="Logo" className="w-8 h-8 object-cover mb-2 rounded-sm" />}
-               <div className="text-sm font-bold uppercase tracking-tight mb-1 truncate w-3/4 text-center text-[#161823]">{title}</div>
-               <div className="w-16 h-4 border flex items-center justify-center rounded-sm" style={{borderColor: color}}>
-                 <div className="w-8 h-0.5 rounded-sm" style={{backgroundColor: color}}></div>
-               </div>
+            <div className="py-4 flex flex-col items-center">
+               <div className="text-sm font-bold uppercase">{title}</div>
             </div>
-
-            {/* NEW: Apparel Flash Sale Mock */}
-            {showFlashSale && (
-              <div className="mb-3 w-full bg-[#F8F8F8] border-y border-[#E3E3E4] p-1.5 flex flex-col items-center">
-                 <div className="text-[7px] font-black uppercase tracking-widest text-[#161823] mb-1.5 mt-0.5">Flash Drop</div>
-                 <div className="flex gap-1 w-full px-2 mb-1">
-                   {[1,2,3].map(i => (
-                      <div key={i} className="flex-1 aspect-[4/5] bg-white border border-[#E3E3E4] rounded-sm relative">
-                        <div className="absolute top-0.5 left-0.5 bg-[#161823] text-white text-[4px] px-0.5 py-0.5 font-bold uppercase rounded-sm">Sale</div>
-                      </div>
-                   ))}
-                 </div>
-              </div>
-            )}
-
             <div className="px-4 grid grid-cols-3 gap-2">
                {[1,2,3].map(i => (
-                 <div key={i} className="flex flex-col items-center border border-[#E3E3E4] p-1.5 rounded-sm">
-                   <div className="w-full aspect-[3/4] bg-[#F8F8F8] rounded-sm mb-1.5"></div>
-                   <div className="w-full h-1.5 bg-[#161823] rounded-sm mb-1"></div>
-                   <div className="w-1/2 h-1.5 bg-[#E3E3E4] rounded-sm"></div>
+                 <div key={i} className="flex flex-col items-center">
+                   <div className="w-full aspect-[3/4] bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm mb-1.5"></div>
+                   <div className="w-full h-1 bg-[#161823] rounded-sm"></div>
                  </div>
                ))}
             </div>
+          </div>
+        )}
+
+        {/* 6. BEAUTY */}
+        {layout === 'Beauty' && (
+          <div className="flex flex-col h-full bg-[#FFF0F5]">
+            <div className="py-6 flex flex-col items-center">
+               <div className="w-12 h-12 rounded-full bg-white border border-[#E3E3E4] mb-2"></div>
+               <div className="text-xs font-light text-[#161823] tracking-widest">{title}</div>
+            </div>
+            <div className="px-4 grid grid-cols-2 gap-4">
+               {[1,2].map(i => (
+                 <div key={i} className="flex flex-col items-center p-2 bg-white rounded-t-full rounded-b-sm border border-[#E3E3E4]">
+                   <div className="w-full aspect-square bg-[#F8F8F8] rounded-full mb-2"></div>
+                   <div className="w-1/2 h-1 bg-[#E3E3E4] rounded-sm"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 7. MINIMAL */}
+        {layout === 'Minimal' && (
+          <div className="flex flex-col h-full p-6">
+            <div className="text-sm font-light text-gray-400 mb-8">{title}</div>
+            <div className="flex flex-col gap-6">
+               {[1,2].map(i => (
+                 <div key={i} className="w-full flex items-center justify-between border-b border-gray-100 pb-2">
+                   <div className="w-1/3 h-2 bg-gray-200 rounded-sm"></div>
+                   <div className="w-12 h-12 bg-gray-50"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 8. TECH */}
+        {layout === 'Tech' && (
+          <div className="flex flex-col h-full bg-[#0F172A] text-white">
+            <div className="p-4 border-b border-white/10 flex justify-between items-center">
+              <div className="text-xs font-mono">{title}</div>
+              <div className="w-4 h-4 rounded-sm" style={{backgroundColor: color}}></div>
+            </div>
+            <div className="p-4 grid grid-cols-1 gap-2">
+               {[1,2].map(i => (
+                 <div key={i} className="bg-[#1E293B] p-2 rounded-sm border border-white/5 flex gap-2">
+                   <div className="w-10 h-10 bg-black/50 rounded-sm"></div>
+                   <div className="flex-1 flex flex-col justify-center gap-1">
+                     <div className="w-3/4 h-1.5 bg-white/50 rounded-sm"></div>
+                     <div className="w-1/4 h-1.5 bg-white/20 rounded-sm"></div>
+                   </div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 9. MARKET */}
+        {layout === 'Market' && (
+          <div className="flex flex-col h-full">
+            <div className="p-3 bg-[#16A34A] text-white font-bold">{title}</div>
+            <div className="p-2 grid grid-cols-4 gap-1.5">
+               {[1,2,3,4,5,6,7,8].map(i => (
+                 <div key={i} className="aspect-square bg-white border border-[#E3E3E4] rounded-sm p-1 flex flex-col">
+                   <div className="flex-1 bg-[#F8F8F8] rounded-sm mb-1"></div>
+                   <div className="w-full h-3 bg-[#16A34A] rounded-sm mt-auto"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 10. LUXURY */}
+        {layout === 'Luxury' && (
+          <div className="flex flex-col h-full bg-white border-8 border-gray-100">
+            <div className="h-40 bg-gray-900 m-2 flex items-center justify-center text-white font-serif text-lg tracking-widest">
+              {title.substring(0, 1) || 'L'}
+            </div>
+            <div className="p-4 flex justify-center gap-4">
+               {[1,2].map(i => (
+                 <div key={i} className="w-16 h-24 border border-gray-200 p-1">
+                   <div className="w-full h-full bg-gray-50"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 11. AUTO */}
+        {layout === 'Auto' && (
+          <div className="flex flex-col h-full bg-gray-100">
+            <div className="h-24 bg-gray-800 text-white p-3 flex flex-col justify-between">
+              <div className="font-bold italic">{title}</div>
+              <div className="w-full h-6 bg-white/20 rounded-sm"></div>
+            </div>
+            <div className="p-2 flex flex-col gap-2">
+               {[1,2].map(i => (
+                 <div key={i} className="bg-white p-2 rounded-sm shadow-sm">
+                   <div className="w-full h-16 bg-gray-200 rounded-sm mb-2"></div>
+                   <div className="flex justify-between">
+                     <div className="w-1/2 h-2 bg-gray-800 rounded-sm"></div>
+                     <div className="w-1/4 h-2" style={{backgroundColor: color}}></div>
+                   </div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 12. CAMPUS */}
+        {layout === 'Campus' && (
+          <div className="flex flex-col h-full">
+            <div className="h-20 flex items-center justify-center border-b-4" style={{backgroundColor: color, borderColor: '#161823'}}>
+              <div className="text-white font-black text-xl tracking-tighter">{title}</div>
+            </div>
+            <div className="p-3 grid grid-cols-2 gap-3">
+               {[1,2,3,4].map(i => (
+                 <div key={i} className="bg-gray-100 p-2 border-2 border-gray-800 rounded-sm text-center">
+                   <div className="w-full aspect-square bg-white border border-gray-300 rounded-sm mb-1"></div>
+                   <div className="w-1/2 h-2 bg-gray-800 mx-auto"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 13. HOTEL */}
+        {layout === 'Hotel' && (
+          <div className="flex flex-col h-full">
+            <div className="h-32 bg-gray-200 relative">
+               <div className="absolute inset-x-2 bottom-2 bg-white p-2 rounded-sm shadow-sm flex gap-1">
+                 <div className="flex-1 h-4 bg-gray-100 rounded-sm"></div>
+                 <div className="flex-1 h-4 bg-gray-100 rounded-sm"></div>
+                 <div className="w-6 h-4 rounded-sm" style={{backgroundColor: color}}></div>
+               </div>
+            </div>
+            <div className="p-3 flex flex-col gap-2">
+               {[1,2].map(i => (
+                 <div key={i} className="flex gap-2 border border-gray-200 p-1.5 rounded-sm">
+                   <div className="w-16 h-12 bg-gray-100 rounded-sm"></div>
+                   <div className="flex flex-col justify-between py-1 w-full">
+                     <div className="w-3/4 h-1.5 bg-gray-800 rounded-sm"></div>
+                     <div className="w-1/4 h-1.5" style={{backgroundColor: color}}></div>
+                   </div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 14. DIGITAL */}
+        {layout === 'Digital' && (
+          <div className="flex flex-col h-full bg-[#F8FAFC]">
+            <div className="p-4 border-b border-gray-200">
+              <div className="text-lg font-extrabold text-blue-600 mb-2">{title}</div>
+              <div className="w-full h-8 bg-blue-600 rounded-sm text-white flex items-center justify-center text-[10px]">Buy Now</div>
+            </div>
+            <div className="p-4 flex flex-col gap-3">
+               <div className="w-full h-32 bg-white border border-gray-200 rounded-sm shadow-sm p-3">
+                 <div className="w-1/2 h-2 bg-gray-800 rounded-sm mb-4"></div>
+                 {[1,2,3].map(i => (
+                   <div key={i} className="flex items-center gap-2 mb-2">
+                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                     <div className="w-3/4 h-1 bg-gray-300 rounded-sm"></div>
+                   </div>
+                 ))}
+               </div>
+            </div>
+          </div>
+        )}
+
+        {/* 15. PROPERTY */}
+        {layout === 'Property' && (
+          <div className="flex flex-col h-full">
+            <div className="h-12 border-b flex items-center px-3 justify-between">
+              <div className="font-bold text-gray-800">{title}</div>
+              <div className="w-4 h-4 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="h-24 bg-blue-50 flex items-center justify-center text-blue-200 text-xs border-b">Map View</div>
+            <div className="p-2 grid grid-cols-2 gap-2">
+               {[1,2].map(i => (
+                 <div key={i} className="border border-gray-200 rounded-sm overflow-hidden">
+                   <div className="w-full h-16 bg-gray-100"></div>
+                   <div className="p-1.5">
+                     <div className="w-full h-1.5 bg-gray-800 rounded-sm mb-1"></div>
+                     <div className="w-1/2 h-1 bg-gray-400 rounded-sm"></div>
+                   </div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 16. CAFE */}
+        {layout === 'Cafe' && (
+          <div className="flex flex-col h-full bg-[#FFFBF0]">
+            <div className="py-4 flex flex-col items-center border-b border-orange-200">
+               <div className="text-xl font-serif text-orange-900">{title}</div>
+            </div>
+            <div className="p-4 flex flex-col gap-4">
+               {[1,2,3].map(i => (
+                 <div key={i} className="flex justify-between items-center border-b border-orange-100 pb-2">
+                   <div className="flex flex-col gap-1 w-2/3">
+                     <div className="w-full h-2 bg-orange-900 rounded-sm"></div>
+                     <div className="w-1/2 h-1 bg-orange-300 rounded-sm"></div>
+                   </div>
+                   <div className="w-8 h-8 rounded-full border border-orange-200 flex items-center justify-center text-orange-600 text-[8px]">+</div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 17. FITNESS */}
+        {layout === 'Fitness' && (
+          <div className="flex flex-col h-full bg-black">
+            <div className="h-20 bg-zinc-900 flex items-center justify-center -skew-y-3 mt-4 mb-6">
+              <div className="text-white font-black text-xl italic skew-y-3 uppercase">{title}</div>
+            </div>
+            <div className="px-4 flex flex-col gap-3">
+               {[1,2].map(i => (
+                 <div key={i} className="bg-zinc-900 border-l-4 p-2" style={{borderColor: color}}>
+                   <div className="w-1/2 h-2 bg-white mb-2"></div>
+                   <div className="w-full h-1 bg-zinc-700"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 18. PET */}
+        {layout === 'Pet' && (
+          <div className="flex flex-col h-full bg-[#F0FDF4]">
+            <div className="h-20 flex items-center justify-center">
+              <div className="font-bold text-green-800 flex items-center gap-2">
+                <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                {title}
+              </div>
+            </div>
+            <div className="bg-white rounded-t-[2rem] flex-1 p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] grid grid-cols-2 gap-3">
+               {[1,2,3,4].map(i => (
+                 <div key={i} className="bg-green-50 rounded-xl p-2 flex flex-col items-center">
+                   <div className="w-12 h-12 bg-white rounded-full mb-2"></div>
+                   <div className="w-3/4 h-1.5 bg-green-800 rounded-sm"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 19. BOOK */}
+        {layout === 'Book' && (
+          <div className="flex flex-col h-full bg-[#F5EFE6]">
+            <div className="p-4 border-b border-[#D5CABB]">
+              <div className="font-serif text-[#4A3B2C] text-lg">{title}</div>
+            </div>
+            <div className="p-4 grid grid-cols-3 gap-3">
+               {[1,2,3,4,5,6].map(i => (
+                 <div key={i} className="flex flex-col">
+                   <div className="w-full aspect-[2/3] bg-[#E8DFD1] border-l-4 border-l-[#4A3B2C]/20 shadow-sm mb-1"></div>
+                   <div className="w-full h-1 bg-[#4A3B2C] rounded-sm"></div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 20. ART */}
+        {layout === 'Art' && (
+          <div className="flex flex-col h-full bg-white">
+            <div className="py-6 px-4">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1">Gallery</div>
+              <div className="text-xl font-light text-black">{title}</div>
+            </div>
+            <div className="px-4 columns-2 gap-2 space-y-2">
+               <div className="w-full h-24 bg-gray-100"></div>
+               <div className="w-full h-16 bg-gray-100"></div>
+               <div className="w-full h-32 bg-gray-100"></div>
+               <div className="w-full h-20 bg-gray-100"></div>
+            </div>
+          </div>
+        )}
+
+        {/* FLASH SALE OVERLAY (Applies to all) */}
+        {showFlashSale && (
+          <div className="absolute top-8 left-0 right-0 bg-[#FE2C55] text-white text-[8px] font-bold py-1 px-3 flex justify-between items-center shadow-md z-50">
+             <span>⚡ FLASH SALE</span>
+             <span>ENDS IN: 02:45:00</span>
           </div>
         )}
 
@@ -249,36 +423,30 @@ export default function ThemePage() {
   const [storeData, setStoreData] = useState({ title: '', logo: '' });
   const [layoutStyle, setLayoutStyle] = useState('Classic');
   const [themeColor, setThemeColor] = useState('#161823');
-  
-  // Flash Sales feature state
   const [flashSalesEnabled, setFlashSalesEnabled] = useState(false);
 
+  // Expanded 20 Layout Options
   const layoutOptions = [
-    { 
-      name: 'Classic', 
-      desc: 'Clean & reliable. Great for electronics and mixed inventories.',
-      image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=80&fit=crop&h=300'
-    },
-    { 
-      name: 'Modern', 
-      desc: 'Minimalist & tech-focused with split-screen imagery.',
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80&fit=crop&h=300'
-    },
-    { 
-      name: 'Bold', 
-      desc: 'High contrast & stark. Perfect for industrial or machinery.',
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=80&fit=crop&h=300'
-    },
-    { 
-      name: 'Furniture', 
-      desc: 'Elegant serif typography & soft editorial photography.',
-      image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=500&q=80&fit=crop&h=300'
-    },
-    { 
-      name: 'Apparel', 
-      desc: 'Fashion-forward lookbook style with massive imagery.',
-      image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80&fit=crop&h=300'
-    }
+    { name: 'Classic', desc: 'Clean & reliable. Great for electronics and mixed inventories.', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=80&fit=crop&h=300' },
+    { name: 'Modern', desc: 'Minimalist & tech-focused with split-screen imagery.', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80&fit=crop&h=300' },
+    { name: 'Bold', desc: 'High contrast & stark. Perfect for industrial or machinery.', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=80&fit=crop&h=300' },
+    { name: 'Furniture', desc: 'Elegant serif typography & soft editorial photography.', image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=500&q=80&fit=crop&h=300' },
+    { name: 'Apparel', desc: 'Fashion-forward lookbook style with massive imagery.', image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&q=80&fit=crop&h=300' },
+    { name: 'Beauty', desc: 'Soft edges, circular framing, and pastel-friendly.', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&q=80&fit=crop&h=300' },
+    { name: 'Minimal', desc: 'Extreme whitespace. Let the products speak for themselves.', image: 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=500&q=80&fit=crop&h=300' },
+    { name: 'Tech', desc: 'Dark mode native, sleek borders, and specification grids.', image: 'https://images.unsplash.com/photo-1550009158-9a37b35c09e5?w=500&q=80&fit=crop&h=300' },
+    { name: 'Market', desc: 'High density grid for groceries and fast-moving goods.', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&q=80&fit=crop&h=300' },
+    { name: 'Luxury', desc: 'Heavy borders, serif fonts, and exclusive aesthetic.', image: 'https://images.unsplash.com/photo-1515562141207-7a8ea4114e17?w=500&q=80&fit=crop&h=300' },
+    { name: 'Auto', desc: 'Built for vehicles, parts, and detailed specifications.', image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500&q=80&fit=crop&h=300' },
+    { name: 'Campus', desc: 'Collegiate styling, perfect for school merchandise.', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80&fit=crop&h=300' },
+    { name: 'Hotel', desc: 'Optimized for bookings, dates, and property galleries.', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80&fit=crop&h=300' },
+    { name: 'Digital', desc: 'Focused on software, courses, and instant downloads.', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80&fit=crop&h=300' },
+    { name: 'Property', desc: 'Real estate specific with map integration support.', image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&q=80&fit=crop&h=300' },
+    { name: 'Cafe', desc: 'Restaurant menus, dietary badges, and warm tones.', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&q=80&fit=crop&h=300' },
+    { name: 'Fitness', desc: 'High energy, angled layouts, and membership tiers.', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&q=80&fit=crop&h=300' },
+    { name: 'Pet', desc: 'Playful UI, rounded corners, and category icons.', image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=500&q=80&fit=crop&h=300' },
+    { name: 'Book', desc: 'List views formatted for book covers and authors.', image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=500&q=80&fit=crop&h=300' },
+    { name: 'Art', desc: 'Masonry grids to let varied artwork dimensions shine.', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&q=80&fit=crop&h=300' }
   ];
 
   const colorOptions = ['#161823', '#FE2C55', '#25F4EE', '#2563EB', '#16A34A', '#8B5CF6', '#F59E0B', '#10B981'];
@@ -383,7 +551,8 @@ export default function ThemePage() {
             </div>
             <p className="text-[12px] text-[#8A8B91] mb-5">Select a structural layout for your product catalog and store headers.</p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* SCROLLABLE GRID CONTAINER FOR 20 ITEMS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
               {layoutOptions.map((layout) => (
                 <div 
                   key={layout.name}
@@ -402,12 +571,19 @@ export default function ThemePage() {
                        {layoutStyle === layout.name && <CheckCircle2 size={16} className="text-[#FE2C55]" fill="white" />}
                     </div>
                   </div>
-                  <div className="p-3 bg-white">
+                  <div className="p-3 bg-white h-full">
                     <p className="text-[11px] text-[#8A8B91] leading-relaxed">{layout.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
+            {/* Add a tiny style block to ensure the scrollbar looks clean */}
+            <style dangerouslySetInnerHTML={{__html: `
+              .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+              .custom-scrollbar::-webkit-scrollbar-track { background: #F8F8F8; border-radius: 4px; }
+              .custom-scrollbar::-webkit-scrollbar-thumb { background: #E3E3E4; border-radius: 4px; }
+              .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #8A8B91; }
+            `}} />
           </div>
 
           <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
@@ -433,7 +609,6 @@ export default function ThemePage() {
             </div>
           </div>
 
-          {/* NEW: Store Features / Modules */}
           <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
             <div className="flex items-center gap-2 mb-4 border-b border-[#E3E3E4] pb-3">
               <Zap size={18} className="text-[#161823]" />
@@ -471,7 +646,6 @@ export default function ThemePage() {
                </span>
              </div>
              
-             {/* Pass showFlashSale to dynamically control the preview mock */}
              <StoreLivePreview 
                layout={layoutStyle} 
                color={themeColor} 

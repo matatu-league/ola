@@ -7,7 +7,7 @@ import Store from '@/models/Store'; // <-- ADDED: Import Store model
 const TIKTOK_CLIENT_KEY = 'sbawx7ufskuzcslm8j';
 const TIKTOK_CLIENT_SECRET = '0AmPhoUVIk2mvXKm6buK0H9e1C3Ryy4W';
 
-const APP_URL = 'https://simple-maggot-expert.ngrok-free.app';
+const APP_URL = 'https://ola.ug';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
