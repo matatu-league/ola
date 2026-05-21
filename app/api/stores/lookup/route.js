@@ -1,13 +1,8 @@
+// File: app/api/store/lookup/route.js
 import { NextResponse } from 'next/server';
-import mongoose from 'mongoose';
-import Store from '@/models/Store'; // Adjust to your actual model path
-import { ProductGrid } from '@/models/Marketplace'; // Adjust path to where ProductGrid is exported
-
-// Replace with your actual DB connection logic if different
-const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
-  await mongoose.connect(process.env.MONGODB_URI);
-};
+import { connectToDatabase } from '@/lib/mongodb';
+import Store from '@/models/Store';
+import { Product } from '@/models/Marketplace';
 
 export async function GET(request) {
   try {
@@ -16,37 +11,50 @@ export async function GET(request) {
 
     if (!domain) {
       return NextResponse.json(
-        { success: false, error: 'Domain parameter is required' }, 
-        { status: 400 }
+        { success: false, error: 'Domain parameter is required' },
+        { status: 400 },
       );
     }
 
-    await connectDB();
+    // Connect using your shared database utility
+    await connectToDatabase();
 
-    // 1. Query the database for the exact domain (e.g., 'gogo.ola.ug')
-    // .lean() converts the Mongoose document to a plain Javascript object
-    const store = await Store.findOne({ domain: domain }).lean();
+    // Query for the exact domain (lowercased & trimmed for matching consistency)
+    const store = await Store.findOne({
+      domain: domain.toLowerCase().trim(),
+    }).lean();
 
+    // 404 indicates the domain is totally free to register!
     if (!store) {
       return NextResponse.json(
-        { success: false, error: 'Store not found' }, 
-        { status: 404 }
+        { success: false, error: 'Store not found' },
+        { status: 404 },
       );
     }
 
-    // 2. Fetch all products where the product owner matches the store owner
-    const products = await ProductGrid.find({ owner: store.owner }).lean();
+    // Fetch products belonging to this specific store owner
+    const products = await Product.find({ owner: store.owner }).lean();
 
-    // 3. Overwrite the store's internal products array with the real fetched products
-    store.products = products;
-
-    return NextResponse.json({ success: true, data: store });
-
-  } catch (error) {
-    console.error("Store Lookup API Error:", error);
+    // Construct the structured response with safe fallbacks matching your Theme API logic
     return NextResponse.json(
-      { success: false, error: 'Internal Server Error' }, 
-      { status: 500 }
+      {
+        success: true,
+        data: {
+          ...store,
+          products: products || [],
+          layoutStyle: store.layoutStyle || 'Classic',
+          themeColor: store.themeColor || '#161823',
+          flashSales: store.features?.flashSales || false,
+          themeTemplate: store.themeTemplate || null,
+        },
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error('Store Lookup API Error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Internal Server Error' },
+      { status: 500 },
     );
   }
 }

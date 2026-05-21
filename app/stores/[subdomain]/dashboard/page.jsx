@@ -59,7 +59,7 @@ export default function SellerDashboard() {
     const fetchDashboardData = async () => {
       try {
         const [storeRes, productsRes] = await Promise.all([
-          fetch('/api/seller/store', { headers: { 'ngrok-skip-browser-warning': 'true' } }),
+          fetch('/api/stores'),
           fetch('/api/products?owner=true&limit=1', { headers: { 'ngrok-skip-browser-warning': 'true' } })
         ]);
         
@@ -119,7 +119,7 @@ export default function SellerDashboard() {
       desc: 'Completed during onboarding', 
       icon: Store, 
       isCompleted: !!storeData?.title,
-      link: '/seller/profile'
+      link: '/profile'
     },
     { 
       id: 2, 
@@ -127,7 +127,7 @@ export default function SellerDashboard() {
       desc: 'Add your store logo and banner', 
       icon: ImageIcon, 
       isCompleted: !!(storeData?.logo && storeData?.banner),
-      link: '/seller/profile#media'
+      link: '/profile'
     },
     { 
       id: 3, 
@@ -135,7 +135,7 @@ export default function SellerDashboard() {
       desc: 'Add business address details', 
       icon: MapPin, 
       isCompleted: !!storeData?.location?.address,
-      link: '/seller/profile#location'
+      link: '/profile'
     },
     { 
       id: 4, 
@@ -143,7 +143,7 @@ export default function SellerDashboard() {
       desc: 'Start selling items to customers', 
       icon: PackagePlus, 
       isCompleted: hasProducts,
-      link: '/seller/products/add'
+      link: '/products/add'
     },
   ];
   

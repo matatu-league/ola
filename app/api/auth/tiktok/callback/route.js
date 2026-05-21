@@ -82,7 +82,7 @@ export async function GET(request) {
       dbUserId = dbUser._id.toString();
 
       // 2. CHECK IF USER ALREADY HAS A STORE
-      const existingStore = await Store.findOne({ owner: dbUserId });
+      const existingStore = await Store.findOne({ userId: dbUserId });
       if (existingStore) {
         userHasStore = true;
       }
@@ -92,7 +92,7 @@ export async function GET(request) {
     }
     
     // 3. DYNAMIC REDIRECT (Sends them to onboarding if no store exists)
-    const destinationPath = userHasStore ? '/seller/dashboard' : '/seller/onboarding';
+    const destinationPath = userHasStore ? '/seller/dashboard' : '/stores/onboarding';
     const response = safeRedirect(destinationPath);
 
     response.cookies.delete('tiktok_code_verifier');

@@ -3,32 +3,203 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
-// --- Original 7 Variants ---
-import ClassicStore from './variants/ClassicStore';
-import ModernStore from './variants/ModernStore';
-import BoldStore from './variants/BoldStore';
-import FurnitureStore from './variants/FurnitureStore';
-import ApparelStore from './variants/ApparelStore';
-import BeautyStore from './variants/BeautyStore';
-import MinimalStore from './variants/MinimalStore';
+// --- Mock Components for Missing Variants ---
+const ClassicStore = ({ store }) => <div className="p-8 text-center"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Classic Store'}</h1><p>Classic Layout Preview</p></div>;
+const ModernStore = ({ store }) => <div className="p-8 text-center bg-gray-50"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Modern Store'}</h1><p>Modern Layout Preview</p></div>;
+const BoldStore = ({ store }) => <div className="p-8 text-center bg-black text-white"><h1 className="text-2xl font-black uppercase">{store?.title || store?.storeName || 'Bold Store'}</h1><p>Bold Layout Preview</p></div>;
+const FurnitureStore = ({ store }) => <div className="p-8 text-center font-serif"><h1 className="text-2xl font-bold text-amber-900">{store?.title || store?.storeName || 'Furniture Store'}</h1><p>Furniture Layout Preview</p></div>;
+const ApparelStore = ({ store }) => <div className="p-8 text-center"><h1 className="text-2xl font-light tracking-widest">{store?.title || store?.storeName || 'Apparel Store'}</h1><p>Apparel Layout Preview</p></div>;
+const BeautyStore = ({ store }) => <div className="p-8 text-center bg-pink-50 text-pink-900"><h1 className="text-2xl font-medium">{store?.title || store?.storeName || 'Beauty Store'}</h1><p>Beauty Layout Preview</p></div>;
+const MinimalStore = ({ store }) => <div className="p-8 text-center"><h1 className="text-xl font-normal tracking-tight">{store?.title || store?.storeName || 'Minimal Store'}</h1><p>Minimal Layout Preview</p></div>;
+const TechStore = ({ store }) => <div className="p-8 text-center bg-gray-900 text-cyan-400 font-mono"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Tech Store'}</h1><p>Tech Layout Preview</p></div>;
+const MarketStore = ({ store }) => <div className="p-8 text-center border-t-4 border-orange-500"><h1 className="text-2xl font-bold text-orange-600">{store?.title || store?.storeName || 'Market Store'}</h1><p>Market Layout Preview</p></div>;
+const LuxuryStore = ({ store }) => <div className="p-8 text-center bg-[#0a0a0a] text-[#d4af37] font-serif"><h1 className="text-2xl tracking-widest uppercase">{store?.title || store?.storeName || 'Luxury Store'}</h1><p>Luxury Layout Preview</p></div>;
+const AutoStore = ({ store }) => <div className="p-8 text-center bg-red-50 text-red-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Auto Store'}</h1><p>Auto Layout Preview</p></div>;
+const CampusStore = ({ store }) => <div className="p-8 text-center bg-blue-50 text-blue-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Campus Store'}</h1><p>Campus Layout Preview</p></div>;
+const HotelStore = ({ store }) => <div className="p-8 text-center bg-indigo-50 text-indigo-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Hotel Store'}</h1><p>Hotel Layout Preview</p></div>;
+const DigitalStore = ({ store }) => <div className="p-8 text-center bg-purple-50 text-purple-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Digital Store'}</h1><p>Digital Layout Preview</p></div>;
+const PropertyStore = ({ store }) => <div className="p-8 text-center bg-teal-50 text-teal-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Property Store'}</h1><p>Property Layout Preview</p></div>;
+const CafeStore = ({ store }) => <div className="p-8 text-center bg-yellow-50 text-yellow-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Cafe Store'}</h1><p>Cafe Layout Preview</p></div>;
+const FitnessStore = ({ store }) => <div className="p-8 text-center bg-green-50 text-green-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Fitness Store'}</h1><p>Fitness Layout Preview</p></div>;
+const PetStore = ({ store }) => <div className="p-8 text-center bg-orange-50 text-orange-900"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Pet Store'}</h1><p>Pet Layout Preview</p></div>;
+const BookStore = ({ store }) => <div className="p-8 text-center bg-slate-50 text-slate-900 font-serif"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Book Store'}</h1><p>Book Layout Preview</p></div>;
+const ArtStore = ({ store }) => <div className="p-8 text-center bg-zinc-50 text-zinc-900"><h1 className="text-2xl font-light italic">{store?.title || store?.storeName || 'Art Store'}</h1><p>Art Layout Preview</p></div>;
 
-// --- Previous 3 Additions ---
-import TechStore from './variants/TechStore';
-import MarketStore from './variants/MarketStore';
-import LuxuryStore from './variants/LuxuryStore';
+// --- CUSTOM AI RENDERER ---
+// This safely executes the raw React JSX generated by the AI inside an isolated sandbox
+const CustomAIStore = ({ store }) => {
+  const srcDoc = React.useMemo(() => {
+    // Standardize the product data so the AI template knows exactly what to expect
+    const formattedProducts = (store.products || []).map(p => {
+      // FIX: Ensure price is a Number so AI templates calling .toFixed() don't crash
+      let numericPrice = 0;
+      if (typeof p.price === 'number') {
+        numericPrice = p.price;
+      } else if (typeof p.price === 'string') {
+        // Strip out any currency symbols or commas before parsing
+        const cleanString = p.price.replace(/[^0-9.-]+/g, "");
+        numericPrice = parseFloat(cleanString);
+      }
+      
+      return {
+        id: p._id || p.id || Math.random().toString(),
+        name: p.title || p.name,
+        price: isNaN(numericPrice) ? 0 : numericPrice,
+        image: p.image || p.images?.[0] || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=500&auto=format&fit=crop'
+      };
+    });
 
-// --- 10 New Industry-Specific Variants ---
-import AutoStore from './variants/AutoStore';           // Car sales, dealerships
-import CampusStore from './variants/CampusStore';       // School/University merchandise
-import HotelStore from './variants/HotelStore';         // Hotel bookings, hospitality
-import DigitalStore from './variants/DigitalStore';     // Software, courses, digital downloads
-import PropertyStore from './variants/PropertyStore';   // Real estate, apartment listings
-import CafeStore from './variants/CafeStore';           // Restaurants, food delivery, coffee shops
-import FitnessStore from './variants/FitnessStore';     // Gym gear, supplements, memberships
-import PetStore from './variants/PetStore';             // Pet supplies and accessories
-import BookStore from './variants/BookStore';           // Books, publishing, magazines
-import ArtStore from './variants/ArtStore';             // Art galleries, prints, sculptures
+    // Safely map categories preventing crashes if undefined or nested objects
+    const formattedCategories = Array.isArray(store.categories) && store.categories.length > 0
+      ? store.categories.map(c => typeof c === 'string' ? c : (c.name || 'Category'))
+      : ["Featured", "New Arrivals", "Trending"];
 
+    // Map the actual store data from your MongoDB document to the AI props
+    const dynamicStoreData = {
+      storeName: store.title || "My Store",
+      storeLogo: store.logo || "",
+      storeBanner: store.banner || "",
+      contactEmail: store.contact?.email || "",
+      contactPhone: store.contact?.phone || "",
+      themeColor: store.themeColor || "#111",
+      products: formattedProducts,
+      categories: formattedCategories // Injected safely into the template
+    };
+
+    // If no template exists yet, show a fallback gracefully, implementing the redirect logic
+    const fallbackTemplate = `
+      const App = ({ storeName, products, themeColor }) => {
+        const handleProductClick = (id) => {
+          window.top.location.href = "https://ola.ug/products/" + id;
+        };
+
+        return (
+          <div className="min-h-screen bg-gray-50 text-gray-800 p-8 text-center font-sans">
+            <h1 className="text-3xl font-bold mb-2">{storeName}</h1>
+            <p className="mb-8 text-gray-500">AI Theme Pending. Displaying fallback catalog.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {products.map(p => (
+                <div key={p.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                  <img 
+                    src={p.image} 
+                    alt={p.name} 
+                    className="w-full h-56 object-cover cursor-pointer" 
+                    onClick={() => handleProductClick(p.id)} 
+                  />
+                  <div className="p-4 flex flex-col h-full">
+                    <h3 className="font-bold text-lg mb-1 truncate cursor-pointer hover:text-gray-600" onClick={() => handleProductClick(p.id)}>{p.name}</h3>
+                    <p className="text-gray-600 mb-4">$\\{Number(p.price).toFixed(2)}</p>
+                    <button 
+                      onClick={() => handleProductClick(p.id)}
+                      className="w-full py-2.5 px-4 rounded-md text-white font-bold transition-opacity hover:opacity-85 mt-auto"
+                      style={{ backgroundColor: themeColor }}
+                    >
+                      Buy on ola.ug
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+    `;
+
+    const templateCode = store.themeTemplate || fallbackTemplate;
+
+    const processedCode = templateCode
+      .replace(/import\s+(?:React,\s+)?(?:\{[^}]+\}\s+from\s+)?['"]react['"];?/gi, '')
+      .replace(/import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"];?/gi, 'const { $1 } = window.lucide || window.lucideFallback || {};')
+      .replace(/export\s+default\s+[a-zA-Z0-9_]+;?/gi, '');
+
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+          <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+          <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <script src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script>
+          <style>
+            body { margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+            ::-webkit-scrollbar { width: 6px; }
+            ::-webkit-scrollbar-track { background: transparent; }
+            ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+            ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
+          </style>
+        </head>
+        <body>
+          <div id="root"></div>
+          <script type="text/babel">
+            const { useState, useEffect, useRef, useMemo } = React;
+            
+            // Generate fallback placeholder blocks if icon library misses a load
+            window.lucideFallback = new Proxy({}, { 
+              get: (_, prop) => (p) => React.createElement('div', { 
+                ...p, 
+                style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: p.size||24, height: p.size||24, border: '1px dashed currentColor', borderRadius: '4px', fontSize: '10px' } 
+              }, prop.slice(0, 2)) 
+            });
+
+            // Global helper injected for AI convenience
+            window.redirectToProduct = function(id) {
+              window.top.location.href = "https://ola.ug/products/" + id;
+            };
+            
+            const dynamicStoreData = ${JSON.stringify(dynamicStoreData)};
+            try {
+              ${processedCode}
+              
+              // Vital ErrorBoundary to catch asynchronous React rendering errors gracefully
+              class ErrorBoundary extends React.Component {
+                constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+                static getDerivedStateFromError(error) { return { hasError: true, error }; }
+                render() {
+                  if (this.state.hasError) {
+                    return (
+                      <div style={{ padding: '32px', color: '#e53e3e', fontFamily: 'monospace', fontSize: '13px', backgroundColor: '#fef2f2', minHeight: '100vh', boxSizing: 'border-box' }}>
+                        <h2 style={{ marginBottom: '12px', fontWeight: 'bold', fontSize: '16px' }}>AI Render Error</h2>
+                        <pre style={{ whiteSpace: 'pre-wrap', backgroundColor: '#fee2e2', padding: '16px', borderRadius: '8px' }}>{this.state.error.toString()}</pre>
+                        <p style={{ marginTop: '16px', color: '#991b1b' }}>The AI generated code crashed. Try regenerating the design.</p>
+                      </div>
+                    );
+                  }
+                  return this.props.children;
+                }
+              }
+
+              const root = ReactDOM.createRoot(document.getElementById('root'));
+              root.render(<ErrorBoundary><App {...dynamicStoreData} /></ErrorBoundary>);
+            } catch (err) {
+              document.getElementById('root').innerHTML = \`
+                <div style="padding:20px;color:#FE2C55;font-family:monospace;background:#FEE2E2;min-height:100vh;">
+                  <h2 style="font-size:20px;font-weight:bold;margin-bottom:16px;">Syntax Error in Generated Code</h2>
+                  <pre>\${err.toString()}</pre>
+                </div>
+              \`;
+            }
+          </script>
+        </body>
+      </html>
+    `;
+  }, [store]);
+
+  return (
+    <iframe
+      srcDoc={srcDoc}
+      className="w-full min-h-screen border-0"
+      // Added allow-top-navigation-by-user-activation to permit redirecting the parent tab!
+      sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups"
+      title={store.title}
+    />
+  );
+};
+
+
+// --- MAIN STOREFRONT ROUTER ---
 const Storefront = ({ store: initialStore, onBack }) => {
   const productsRef = useRef(null);
   const contactRef = useRef(null);
@@ -88,7 +259,11 @@ const Storefront = ({ store: initialStore, onBack }) => {
     };
     
     switch (activeStore.layoutStyle?.toLowerCase()) {
-      // Original 10
+      // --- AI DYNAMIC RENDERER ---
+      case 'custom':
+      case 'custom_ai': return <CustomAIStore store={activeStore} />;
+
+      // --- Original 10 ---
       case 'modern': return <ModernStore {...props} />;
       case 'bold': return <BoldStore {...props} />;
       case 'furniture': return <FurnitureStore {...props} />;
@@ -99,7 +274,7 @@ const Storefront = ({ store: initialStore, onBack }) => {
       case 'market': return <MarketStore {...props} />;
       case 'luxury': return <LuxuryStore {...props} />;
       
-      // 10 New Variants (with fallbacks for similar terms)
+      // --- 10 New Variants (with fallbacks for similar terms) ---
       case 'auto':
       case 'cars': return <AutoStore {...props} />;
       

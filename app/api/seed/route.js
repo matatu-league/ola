@@ -1,111 +1,141 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
-import Store from '@/models/Store';
-import { TopDeal, TailoredSelection, ProductGrid, NewArrival, MarketplaceCategory } from '@/models/Marketplace';
+import Store, { StoreCategory, StoreCollection } from '@/models/Store';
+import { Category, Collection, Product, ProductReview } from '@/models/Marketplace';
 
 // Import local data
-import { topDeals, tailoredSelections, productGrid, newArrivals, marketplaceCategories, stores } from '../../data/mockData';
+import {
+  topDeals,
+  tailoredSelections,
+  productGrid,
+  newArrivals,
+  marketplaceCategories,
+  stores,
+} from '../../data/mockData';
 
 export async function POST(req) {
-  console.log("🚀 --- STARTING DATABASE SEED PROCESS --- 🚀");
-  
+  console.log('🚀 --- STARTING DATABASE SEED PROCESS --- 🚀');
+
   try {
-    console.log("1️⃣ Connecting to database...");
+    console.log('1️⃣ Connecting to database...');
     await connectToDatabase();
-    console.log("✅ Database connected successfully.");
+    console.log('✅ Database connected successfully.');
 
-    console.log("2️⃣ Wiping existing collections...");
-    await MarketplaceCategory.deleteMany({});
+    console.log('2️⃣ Wiping existing collections...');
+    await Category.deleteMany({});
     await Store.deleteMany({});
-    await TopDeal.deleteMany({});
-    await TailoredSelection.deleteMany({});
-    await ProductGrid.deleteMany({});
-    await NewArrival.deleteMany({});
-    console.log("✅ Old data wiped.");
+    await StoreCategory.deleteMany({});
+    await StoreCollection.deleteMany({});
+    await Collection.deleteMany({});
+    await Product.deleteMany({});
+    await ProductReview.deleteMany({});
+    console.log('✅ Old data wiped.');
 
-    console.log("3️⃣ Seeding Marketplace Categories & Subcategories...");
-    const categoryMap = {}; // We will map category names to their new _ids
-    
+    console.log('3️⃣ Seeding Marketplace Categories & Subcategories...');
+    const categoryMap = {}; // name → _id
+
     for (const parentCat of marketplaceCategories) {
-      // Create the Parent Category
-      const createdParent = await MarketplaceCategory.create({
-        name: parentCat.name,
-        slug: parentCat.slug,
-        image: parentCat.image,
-        description: parentCat.description
+      // Create the parent — Category model requires: name, slug (unique), optional image/description
+      // parentId defaults to null for top-level entries
+      const createdParent = await Category.create({
+        name:        parentCat.name,
+        slug:        parentCat.slug,
+        image:       parentCat.image,
+        description: parentCat.description,
+        parentId:    null,
       });
-      
-      // Save Parent ID to map so stores can link to it
+
       categoryMap[createdParent.name] = createdParent._id;
 
-      // Create the Children linking to the Parent
-      if (parentCat.subCategories && parentCat.subCategories.length > 0) {
-        const subCategoryDocs = parentCat.subCategories.map(sub => ({
-          name: sub.name,
-          slug: sub.slug,
-          parentRef: createdParent._id // Link to the parent!
+      if (parentCat.subCategories?.length) {
+        const subCategoryDocs = parentCat.subCategories.map((sub) => ({
+          name:     sub.name,
+          slug:     sub.slug,
+          parentId: createdParent._id, // ← correct field name per Category model
         }));
-        
-        const createdChildren = await MarketplaceCategory.insertMany(subCategoryDocs);
-        
-        // Add children to the map too, so products/stores can link directly to a specific subcategory
-        createdChildren.forEach(child => {
+
+        const createdChildren = await Category.insertMany(subCategoryDocs);
+
+        createdChildren.forEach((child) => {
           categoryMap[child.name] = child._id;
         });
       }
     }
-    console.log(`✅ Categories seeded successfully. Indexed ${Object.keys(categoryMap).length} total categories & subcategories.`);
 
-    console.log("4️⃣ Preparing Store data with Category References...");
-    const storesToInsert = stores.map(store => {
-      // Map global categories to store.categories array
-      const mappedCategoryIds = store.categories
-        ?.map(catName => categoryMap[catName])
-        .filter(Boolean) || [];
+    console.log(
+      `✅ Categories seeded. Indexed ${Object.keys(categoryMap).length} total categories & subcategories.`,
+    );
 
-      // Map product category references
-      const mappedProducts = store.products?.map(prod => ({
-        ...prod,
-        categoryRef: categoryMap[prod.categoryName] || null
-      })) || [];
+    console.log('4️⃣ Preparing Store data with Category references...');
+    const storesToInsert = stores.map((store) => {
+      // Store.categories → [ObjectId] refs to Category
+      const mappedCategoryIds =
+        store.categories
+          ?.map((catName) => categoryMap[catName])
+          .filter(Boolean) ?? [];
+
+      // Strip any product-level fields that don't belong on the Store schema
+      // (products are a separate Product collection, not embedded on Store)
+      const { products: _products, ...storeFields } = store;
 
       return {
-        ...store,
+        ...storeFields,
         categories: mappedCategoryIds,
-        products: mappedProducts
       };
     });
 
-    console.log("5️⃣ Inserting Stores into DB...");
+    console.log('5️⃣ Inserting Stores into DB...');
     const insertedStores = await Store.insertMany(storesToInsert);
     console.log(`✅ Successfully inserted ${insertedStores.length} Stores.`);
 
-    console.log("6️⃣ Inserting Marketplace feeds (Deals, Arrivals, etc.)...");
-    await TopDeal.insertMany(topDeals);
-    await TailoredSelection.insertMany(tailoredSelections);
-    await ProductGrid.insertMany(productGrid);
-    await NewArrival.insertMany(newArrivals);
-    console.log("✅ Marketplace feeds inserted.");
-
-    console.log("🎉 --- SEEDING COMPLETE --- 🎉");
-    return NextResponse.json({ 
-      success: true, 
-      message: `Database seeded successfully! Categories, Subcategories, and ${insertedStores.length} Stores were inserted.` 
-    }, { status: 200 });
-
-  } catch (error) {
-    console.error("❌ SEEDING FATAL ERROR ❌");
-    console.error("Error Name:", error.name);
-    console.error("Error Message:", error.message);
-    
-    if (error.errors) {
-      console.error("Validation Details:", error.errors);
+    // ── Seed standalone Products (linked to stores + categories) ──────────────
+    if (productGrid?.length) {
+      console.log('6️⃣ Seeding Products...');
+      const productsToInsert = productGrid.map((prod) => ({
+        ...prod,
+        categoryId: prod.categoryName ? categoryMap[prod.categoryName] ?? null : null,
+      }));
+      await Product.insertMany(productsToInsert);
+      console.log(`✅ Inserted ${productsToInsert.length} Products.`);
     }
-    
-    return NextResponse.json({ 
-      success: false, 
-      error: error.message,
-      details: error.errors || null
-    }, { status: 500 });
+
+    // ── Seed top-level marketplace Collections (if any) ───────────────────────
+    if (topDeals?.length || tailoredSelections?.length || newArrivals?.length) {
+      console.log('7️⃣ Seeding Marketplace Collections (deals, arrivals, etc.)...');
+
+      const allCollections = [
+        ...(topDeals          ?? []),
+        ...(tailoredSelections ?? []),
+        ...(newArrivals        ?? []),
+      ];
+
+      if (allCollections.length) {
+        await Collection.insertMany(allCollections);
+        console.log(`✅ Inserted ${allCollections.length} Collection entries.`);
+      }
+    }
+
+    console.log('🎉 --- SEEDING COMPLETE --- 🎉');
+    return NextResponse.json(
+      {
+        success: true,
+        message: `Database seeded successfully! ${Object.keys(categoryMap).length} categories and ${insertedStores.length} stores inserted.`,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error('❌ SEEDING FATAL ERROR ❌');
+    console.error('Error Name:',    error.name);
+    console.error('Error Message:', error.message);
+    if (error.errors) console.error('Validation Details:', error.errors);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error:   error.message,
+        details: error.errors ?? null,
+      },
+      { status: 500 },
+    );
   }
 }

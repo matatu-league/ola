@@ -1,113 +1,85 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
-import { ProductGrid, ProductReview, MarketplaceCategory } from '@/models/Marketplace';
-import Store, { StoreCategory } from '@/models/Store'; // Ensure StoreCategory is imported to allow population
-import '@/models/User'; 
+import { Category, Product, ProductReview } from '@/models/Marketplace';
+import Store from '@/models/Store';
+import '@/models/User';
 
 export async function GET(request, { params }) {
   try {
     await connectToDatabase();
-    
-    //    // In Next.js 15+, params must be awaited
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
+    const { id } = await params;
 
-    //    // 1. Fetch Product, Increment Views, and Populate References
-    // We use findByIdAndUpdate with $inc to track views efficiently
-    const product = await ProductGrid.findByIdAndUpdate(
+    const product = await Product.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } },
-      { new: true } // Returns the document AFTER the update
+      { new: true },
     )
-      .populate('owner')
-      .populate('categoryRef') // Global Marketplace Category
-      .populate('storeCategoryRef') // Merchant's Custom Subcategory
+      .populate('userId')
+      .populate('categoryId')
+      .populate('storeCategoryId')
       .lean();
 
-    if (!product) {
-      return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
-    }
+    if (!product) return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
 
-    //    // 2. Fetch Store Details Manually
-    if (product.owner) {
-      const userIdString = product.owner._id ? product.owner._id.toString() : product.owner.toString();
-      
-      const storeDetails = await Store.findOne({ 
+    if (product.userId) {
+      const userIdString = product.userId._id?.toString() ?? product.userId.toString();
+
+      const storeDetails = await Store.findOne({
         $or: [
           { owner: userIdString },
-          ...(product.owner.clerkId ? [{ owner: product.owner.clerkId }] : []) 
-        ]
+          ...(product.userId.clerkId ? [{ owner: product.userId.clerkId }] : []),
+        ],
       })
-      .select('title domain contact bannerImages verified location years logo banner rating')
-      .lean();
+        .select('title domain contact bannerImages verified location years logo banner rating')
+        .lean();
 
-      product.owner = storeDetails || { 
-         title: "Independent Seller", 
-         verified: false,
-         domain: ""
-      };
+      product.store = storeDetails || { title: 'Independent Seller', verified: false, domain: '' };
     }
 
-    //    // 3. Fetch Reviews & Calculate Stats
-    const reviews = await ProductReview.find({ productRef: id }).sort({ createdAt: -1 }).lean();
-    
+    const reviews = await ProductReview.find({ productId: id }).sort({ createdAt: -1 }).lean();
+
     const reviewStats = {
-      average: product.rating || 5.0,
-      total: reviews.length || product.reviewsCount || 0,
-      distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+      average:      product.rating || 5.0,
+      total:        reviews.length || product.reviewsCount || 0,
+      distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
     };
 
     if (reviews.length > 0) {
-       let sum = 0;
-       reviews.forEach(r => {
-         sum += r.rating;
-         if (reviewStats.distribution[r.rating] !== undefined) {
-           reviewStats.distribution[r.rating]++;
-         }
-       });
-       reviewStats.average = Number((sum / reviews.length).toFixed(1));
+      const sum = reviews.reduce((acc, r) => {
+        reviewStats.distribution[r.rating]++;
+        return acc + r.rating;
+      }, 0);
+      reviewStats.average = Number((sum / reviews.length).toFixed(1));
     }
 
-    //    // 4. Build Breadcrumbs efficiently
     let breadcrumbs = ['Home'];
-    if (product.categoryRef) {
-       const currentCat = product.categoryRef;
-       if (currentCat.parentRef) {
-          const parentCat = await MarketplaceCategory.findById(currentCat.parentRef).lean();
-          if (parentCat) breadcrumbs.push(parentCat.name);
-       }
-       breadcrumbs.push(currentCat.name);
+    if (product.categoryId) {
+      if (product.categoryId.parentId) {
+        const parentCat = await Category.findById(product.categoryId.parentId).lean();
+        if (parentCat) breadcrumbs.push(parentCat.name);
+      }
+      breadcrumbs.push(product.categoryId.name);
     }
-    // Optional: Add store subcategory to breadcrumbs if it exists
-    if (product.storeCategoryRef) {
-       breadcrumbs.push(product.storeCategoryRef.name);
-    }
+    if (product.storeCategoryId) breadcrumbs.push(product.storeCategoryId.name);
     breadcrumbs.push(product.title);
 
-    //    // 5. Fetch Recommendations (Same category, but not this product)
     let recommendations = [];
-    if (product.categoryRef) {
-      recommendations = await ProductGrid.find({ 
-        categoryRef: product.categoryRef._id,
-        _id: { $ne: id }
+    if (product.categoryId) {
+      recommendations = await Product.find({
+        categoryId: product.categoryId._id,
+        _id:        { $ne: id },
       })
-      .select('title price moq image')
-      .limit(4)
-      .lean();
+        .select('title price moq image')
+        .limit(4)
+        .lean();
     }
 
-    //    // 6. Structure the clean payload
-    const structuredData = {
-      ...product,
-      breadcrumbs,
-      reviews,
-      reviewStats,
-      recommendations
-    };
-
-    return NextResponse.json({ success: true, data: structuredData });
+    return NextResponse.json({
+      success: true,
+      data: { ...product, breadcrumbs, reviews, reviewStats, recommendations },
+    });
   } catch (error) {
-    console.error("Error fetching single product:", error);
+    console.error('Product GET error:', error);
     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
   }
 }
@@ -115,58 +87,40 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await connectToDatabase();
-    
-    //    const resolvedParams = await params;
-    const { id } = resolvedParams;
-    const body = await request.json();
-
-    if (!id) {
-      return NextResponse.json({ success: false, message: "Product ID is required" }, { status: 400 });
-    }
+    const { id } = await params;
+    const body   = await request.json();
 
     const updatePayload = {
       ...body,
-      ...(body.category && { categoryRef: body.category }),
-      ...(body.storeCategory && { storeCategoryRef: body.storeCategory }) // Handle custom store category updates
+      ...(body.category      && { categoryId:      body.category }),
+      ...(body.storeCategory && { storeCategoryId: body.storeCategory }),
     };
 
-    const updatedProduct = await ProductGrid.findByIdAndUpdate(
-      id, 
-      updatePayload, 
-      { new: true, runValidators: true }
-    ).lean();
+    const updatedProduct = await Product.findByIdAndUpdate(id, updatePayload, {
+      new:           true,
+      runValidators: true,
+    }).lean();
 
-    if (!updatedProduct) {
-      return NextResponse.json({ success: false, message: "Product not found" }, { status: 404 });
-    }
+    if (!updatedProduct) return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
 
-    return NextResponse.json({ success: true, message: "Product updated successfully", data: updatedProduct }, { status: 200 });
+    return NextResponse.json({ success: true, data: updatedProduct });
   } catch (error) {
-    console.error("PUT Product Error:", error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+    console.error('Product PUT error:', error);
+    return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function DELETE(request, { params }) {
   try {
     await connectToDatabase();
-    
-    //    const resolvedParams = await params;
-    const { id } = resolvedParams;
+    const { id } = await params;
 
-    if (!id) {
-      return NextResponse.json({ success: false, message: "Product ID is required" }, { status: 400 });
-    }
+    const deleted = await Product.findByIdAndDelete(id);
+    if (!deleted) return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
 
-    const deletedProduct = await ProductGrid.findByIdAndDelete(id);
-
-    if (!deletedProduct) {
-       return NextResponse.json({ success: false, message: "Product not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true, message: "Product deleted successfully" }, { status: 200 });
+    return NextResponse.json({ success: true, message: 'Product deleted successfully' });
   } catch (error) {
-    console.error("DELETE Product Error:", error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+    console.error('Product DELETE error:', error);
+    return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 });
   }
 }

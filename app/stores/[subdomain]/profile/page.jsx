@@ -12,7 +12,7 @@ import { uploadFileToFirebase } from '@/lib/firebaseLib';
 // CONFIG — swap these to point at any backend / AI provider
 // ============================================================================
 const API_ENDPOINTS = {
-  store: '/api/seller/store',          // GET + PUT
+  store: '/api/stores',          // GET + PUT
 };
 
 const AI_IMAGE_CONFIG = {

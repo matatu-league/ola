@@ -1,21 +1,15 @@
+// File: models/User.js
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
     // --- AUTHENTICATION IDENTIFIERS ---
-    // Made sparse so users can sign up via Google WITHOUT a TikTok account
+    // Sparse allows multiple users to NOT have this field without triggering unique constraint errors
     tiktokId: { 
       type: String, 
       unique: true,
       sparse: true,
       index: true 
-    },
-    // NEW: Allowance for Firebase / Google Login
-    firebaseUid: {
-      type: String,
-      unique: true,
-      sparse: true,
-      index: true
     },
     googleId: {
       type: String,
@@ -24,10 +18,10 @@ const UserSchema = new mongoose.Schema(
       index: true
     },
     
-    // Tracks which methods the user has linked (e.g., ['tiktok'], ['google'], or ['tiktok', 'google'])
+    // Tracks which methods the user has linked
     authProviders: [{
       type: String,
-      enum: ['tiktok', 'google', 'firebase', 'email']
+      enum: ['tiktok', 'google', 'email']
     }],
 
     // --- TIKTOK SPECIFIC DATA (Optional) ---
@@ -55,7 +49,7 @@ const UserSchema = new mongoose.Schema(
     email: { 
       type: String, 
       unique: true, 
-      sparse: true // Allows multiple users to have NO email, but enforces uniqueness if provided
+      sparse: true 
     },
     phone: { 
       type: String 
@@ -73,13 +67,13 @@ const UserSchema = new mongoose.Schema(
       default: 'active'
     },
     
-    // --- OPTIONAL: USER PREFERENCES ---
+    // --- USER PREFERENCES ---
     preferences: {
       emailNotifications: { type: Boolean, default: true },
       currency: { type: String, default: 'UGX' }
     }
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true }
 );
 
 // Prevent mongoose from recompiling the model upon hot reloads in Next.js

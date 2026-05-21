@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { ArrowRight, ArrowLeft, CheckCircle2, Store, Globe, Palette, Loader2, LayoutDashboard } from 'lucide-react';
 
 // --- LIVE PREVIEW COMPONENT (TikTok Flat Aesthetic) ---
@@ -34,7 +33,6 @@ const StoreLivePreview = ({ layout, color, title, logo }) => {
                </div>
             </div>
             <div className="p-3 flex-1">
-               {/* NEW: Classic Flash Sale Mock */}
                <div className="mb-2.5 bg-white border border-[#E3E3E4] p-1.5 rounded-sm flex flex-col gap-1.5">
                   <div className="flex items-center justify-between px-1">
                      <div className="flex items-center gap-1.5">
@@ -81,7 +79,6 @@ const StoreLivePreview = ({ layout, color, title, logo }) => {
               </div>
             </div>
             
-            {/* NEW: Modern Flash Sale Mock */}
             <div className="w-full mb-3 bg-[#161823] rounded-sm p-1.5 flex gap-2 overflow-hidden items-center">
                <div className="shrink-0 text-white flex flex-col items-center justify-center w-8">
                   <div className="text-[5px] uppercase font-bold text-[#8A8B91]">Ends In</div>
@@ -119,7 +116,6 @@ const StoreLivePreview = ({ layout, color, title, logo }) => {
                </div>
             </div>
             <div className="p-3">
-               {/* NEW: Bold Flash Sale Mock */}
                <div className="mb-3 bg-[#FE2C55] rounded-sm p-1.5 flex flex-col items-center" style={{backgroundColor: color}}>
                   <div className="text-white text-[7px] font-black tracking-widest uppercase mb-1 border-b border-white/30 pb-0.5 w-full text-center">Lightning Deals</div>
                   <div className="w-full h-6 bg-white rounded-sm flex items-center justify-between px-2">
@@ -154,7 +150,6 @@ const StoreLivePreview = ({ layout, color, title, logo }) => {
                </div>
             </div>
             <div className="p-3 flex flex-col items-center">
-               {/* NEW: Furniture Flash Sale Mock */}
                <div className="mb-3 w-full border border-[#E3E3E4] bg-[#F8F8F8] rounded-sm flex items-center p-1">
                   <div className="w-10 text-center border-r border-[#E3E3E4] pr-1.5 mr-1.5">
                      <div className="text-[5px] font-serif text-[#161823] uppercase">Limited</div>
@@ -189,7 +184,6 @@ const StoreLivePreview = ({ layout, color, title, logo }) => {
                </div>
             </div>
 
-            {/* NEW: Apparel Flash Sale Mock */}
             <div className="mb-2 w-full bg-[#F8F8F8] border-y border-[#E3E3E4] p-1 flex flex-col items-center">
                <div className="text-[6px] font-black uppercase tracking-widest text-[#161823] mb-1">Flash Drop</div>
                <div className="flex gap-1 w-full px-2">
@@ -219,7 +213,6 @@ const StoreLivePreview = ({ layout, color, title, logo }) => {
 };
 
 export default function StoreOnboarding() {
-  const router = useRouter();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -261,7 +254,7 @@ export default function StoreOnboarding() {
     setError('');
 
     try {
-      const response = await fetch('/api/seller/store', {
+      const response = await fetch('/api/stores', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -273,7 +266,8 @@ export default function StoreOnboarding() {
       const result = await response.json();
 
       if (result.success) {
-        window.location.href = '/seller/dashboard';
+        // FIXED: Redirect the user to their newly created custom domain dashboard
+        window.location.href = `https://${formData.domain}/dashboard`;
       } else {
         setError(result.message || 'Failed to create store. Please try again.');
         setIsSubmitting(false);

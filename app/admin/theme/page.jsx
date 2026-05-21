@@ -454,9 +454,7 @@ export default function ThemePage() {
   useEffect(() => {
     const fetchStore = async () => {
       try {
-        const response = await fetch('/api/seller/store', {
-          headers: { 'ngrok-skip-browser-warning': 'true' }
-        });
+        const response = await fetch('/api/stores');
         const result = await response.json();
         
         if (result.success && result.store) {
@@ -481,7 +479,7 @@ export default function ThemePage() {
     setMessage({ type: '', text: '' });
 
     try {
-      const response = await fetch('/api/seller/store', {
+      const response = await fetch('/api/stores', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
