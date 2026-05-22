@@ -2,18 +2,32 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
-  Save, UploadCloud, Loader2, Trash2, ChevronDown,
-  ChevronRight, Plus, Image as ImageIcon, Sparkles, Wand2,
-  FileAudio, Video, Palette, Ruler, Box, ArrowLeft, Link as LinkIcon,
+  Save,
+  UploadCloud,
+  Loader2,
+  Trash2,
+  ChevronDown,
+  ChevronRight,
+  Plus,
+  Image as ImageIcon,
+  Sparkles,
+  Wand2,
+  FileAudio,
+  Video,
+  Palette,
+  Ruler,
+  Box,
+  ArrowLeft,
+  Link as LinkIcon,
+  X,
+  Layers
 } from 'lucide-react';
 import Link from 'next/link';
 
-// ─── Firebase ─────────────────────────────────────────────────────────────────
 import { storage } from '@/lib/firebaseLib';
 import { uploadFileToFirebase, deleteFileFromFirebase, moveTempFileToPermanent } from '@/lib/firebaseLib';
 import { ref } from 'firebase/storage';
 
-// ─── AI Service ───────────────────────────────────────────────────────────────
 import {
   fileToBase64,
   extractBase64FromUrl,
@@ -26,8 +40,6 @@ import {
   suggestVariantsAIList,
   runGeminiTTS,
 } from '@/lib/ai';
-
-// ─── Loading Overlay ──────────────────────────────────────────────────────────
 
 const LOADING_PHRASES = [
   'Analyzing product composition...',
@@ -67,24 +79,18 @@ const MagicalLoader = ({ status }) => {
   );
 };
 
-// ─── Default form state ───────────────────────────────────────────────────────
-
 const DEFAULT_FORM = {
   title: '', description: '', price: '', moq: '1', sku: '', stock: '1',
-  category: '', storeCategory: '', tags: '', status: 'Active',
+  category: '', storeCategory: '', collectionId: '', tags: '', status: 'active',
   isFlashItem: false, discountPercentage: '',
   attributes: [], videoDescription: '', audioDescription: '',
 };
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function ProductForm({ initialData = null, onSubmit, isSaving = false }) {
-  // ── Misc state ──────────────────────────────────────────────────────────────
   const [formData, setFormData]             = useState(DEFAULT_FORM);
   const [images, setImages]                 = useState([]);
   const [errorMessage, setErrorMessage]     = useState('');
   const [internalIsSaving, setInternalIsSaving] = useState(false);
-
   const [isUploading, setIsUploading]       = useState({ image: false, video: false, audio: false });
 
   const isEditing   = !!initialData;
@@ -93,7 +99,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     ? 'Update your product details, inventory, and variants.'
     : 'Create a new item listing for your store catalog.';
 
-  // ── Draft session ────────────────────────────────────────────────────────────
   const sessionId = useRef('');
   useEffect(() => {
     if (!sessionId.current) {
@@ -101,13 +106,11 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     }
   }, []);
 
-  // ── Category state ───────────────────────────────────────────────────────────
   const [dbCategories, setDbCategories]         = useState([]);
   const [showCategoryCascader, setShowCategoryCascader] = useState(false);
   const [activeParentId, setActiveParentId]     = useState(null);
   const cascaderRef = useRef(null);
 
-  // ── Store category state ─────────────────────────────────────────────────────
   const [storeCategories, setStoreCategories]           = useState([]);
   const [suggestedStoreCategories, setSuggestedStoreCategories] = useState([]);
   const [isSuggestingStoreCats, setIsSuggestingStoreCats] = useState(false);
@@ -117,16 +120,18 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
   const [isSavingCategory, setIsSavingCategory]         = useState(false);
   const storeCatRef = useRef(null);
 
-  // ── Variants state ───────────────────────────────────────────────────────────
+  const [storeCollections, setStoreCollections]         = useState([]);
+
+  const [dynamicSchema, setDynamicSchema]       = useState([]);
+  const [dynamicValues, setDynamicValues]       = useState({});
+  const [isLoadingSchema, setIsLoadingSchema]   = useState(false);
+
   const [hasVariants, setHasVariants]                   = useState(false);
   const [activeVariantTab, setActiveVariantTab]         = useState('Color');
   const [variantsHaveDifferentPrices, setVariantsHaveDifferentPrices] = useState(false);
   const [variants, setVariants]                         = useState([]);
-
-  // ── Media state ──────────────────────────────────────────────────────────────
   const [videoMode, setVideoMode] = useState('upload');
 
-  // ── AI state ─────────────────────────────────────────────────────────────────
   const [aiMode, setAiMode]               = useState(true);
   const [imageGenModel, setImageGenModel] = useState('custom');
   const [keepOriginalBg, setKeepOriginalBg] = useState(false);
@@ -137,17 +142,9 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
   const [showAiPrompts, setShowAiPrompts] = useState(false);
   const [recommendedViews, setRecommendedViews] = useState([]);
 
-  /** In-memory cache so we avoid re-fetching Firebase URLs. */
   const localBase64Cache = useRef({});
-
-  // ── Computed bg preference ───────────────────────────────────────────────────
   const bgPreference = keepOriginalBg ? 'original' : aiBgColor;
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Effects
-  // ════════════════════════════════════════════════════════════════════════════
-
-  // Load draft from localStorage (new form only)
   useEffect(() => {
     if (initialData) return;
     try {
@@ -159,17 +156,16 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
       if (parsed.variants)         setVariants(parsed.variants);
       if (parsed.sessionId)        sessionId.current = parsed.sessionId;
       if (parsed.storeCategoryInput) setStoreCategoryInput(parsed.storeCategoryInput);
+      if (parsed.dynamicValues)    setDynamicValues(parsed.dynamicValues);
     } catch { /* ignore corrupt draft */ }
   }, [initialData]);
 
-  // Auto-save draft
   useEffect(() => {
     if (initialData || (!formData.title && images.length === 0)) return;
-    const draft = { formData, images, variants, sessionId: sessionId.current, storeCategoryInput };
+    const draft = { formData, images, variants, sessionId: sessionId.current, storeCategoryInput, dynamicValues };
     localStorage.setItem('product_draft', JSON.stringify(draft));
-  }, [formData, images, variants, storeCategoryInput, initialData]);
+  }, [formData, images, variants, storeCategoryInput, dynamicValues, initialData]);
 
-  // Fetch categories on mount
   useEffect(() => {
     const load = async (endpoint, setter) => {
       try {
@@ -178,11 +174,39 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
         if (result.success && result.data) setter(result.data);
       } catch (e) { console.error(`Failed to fetch ${endpoint}`, e); }
     };
-    load('/api/categories',        setDbCategories);
-    load('/api/stores/categories', setStoreCategories);
+    load('/api/categories',             setDbCategories);
+    load('/api/stores/categories',      setStoreCategories);
+    load('/api/stores/collections',            setStoreCollections);
   }, []);
 
-  // Sync marketplace category → store category
+  useEffect(() => {
+    if (!formData.category) {
+      setDynamicSchema([]);
+      return;
+    }
+    const cat = dbCategories.find(c => c._id === formData.category);
+    
+    // Fetch schema if it's a subcategory with a slug
+    if (cat && cat.parentId && cat.slug) {
+      setIsLoadingSchema(true);
+      fetch(`/api/filters/${cat.slug}`)
+        .then(res => {
+          if (!res.ok) throw new Error('No schema file found');
+          return res.json();
+        })
+        .then(data => {
+          if (data.schema) setDynamicSchema(data.schema);
+        })
+        .catch(err => {
+          console.warn(`No dynamic schema found for ${cat.slug}`);
+          setDynamicSchema([]);
+        })
+        .finally(() => setIsLoadingSchema(false));
+    } else {
+      setDynamicSchema([]);
+    }
+  }, [formData.category, dbCategories]);
+
   useEffect(() => {
     if (!syncMarketplaceCat || !formData.category || !dbCategories.length) return;
     const selected = dbCategories.find(c => c._id === formData.category);
@@ -192,7 +216,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     setFormData(prev => ({ ...prev, storeCategory: match?._id ?? '' }));
   }, [formData.category, syncMarketplaceCat, dbCategories, storeCategories]);
 
-  // AI-suggest store categories when marketplace cat changes (manual mode)
   useEffect(() => {
     if (!formData.category || !aiMode || syncMarketplaceCat) {
       setSuggestedStoreCategories([]);
@@ -213,7 +236,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     return () => clearTimeout(tid);
   }, [formData.category, aiMode, syncMarketplaceCat, dbCategories]);
 
-  // Populate form when editing an existing product
   useEffect(() => {
     if (!initialData) return;
     setFormData({
@@ -226,7 +248,8 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
       stock:              initialData.stock !== undefined ? String(initialData.stock) : '1',
       category:           initialData.categoryRef?._id   || initialData.categoryRef || '',
       storeCategory:      initialData.storeCategoryRef?._id || initialData.storeCategoryRef || '',
-      status:             initialData.status             || 'Active',
+      collectionId:       initialData.collectionId       || '',
+      status:             initialData.status             || 'active',
       isFlashItem:        initialData.isFlashItem        || false,
       discountPercentage: initialData.discountPercentage || '',
       attributes:         initialData.attributes         || [],
@@ -247,7 +270,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     if (initialData.videoDescription?.match(/youtube\.com|youtu\.be/)) setVideoMode('youtube');
   }, [initialData]);
 
-  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e) => {
       if (cascaderRef.current && !cascaderRef.current.contains(e.target)) setShowCategoryCascader(false);
@@ -257,19 +279,11 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Attribute helpers
-  // ════════════════════════════════════════════════════════════════════════════
-
   const addAttribute    = ()            => setFormData(p => ({ ...p, attributes: [...p.attributes, { name: '', value: '' }] }));
   const removeAttribute = (i)           => setFormData(p => ({ ...p, attributes: p.attributes.filter((_, j) => j !== i) }));
   const updateAttribute = (i, k, val)   => setFormData(p => {
     const attrs = [...p.attributes]; attrs[i][k] = val; return { ...p, attributes: attrs };
   });
-
-  // ════════════════════════════════════════════════════════════════════════════
-  // Image handlers
-  // ════════════════════════════════════════════════════════════════════════════
 
   const processImageFile = async (file) => {
     if (!file?.type.startsWith('image/')) return;
@@ -297,10 +311,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     if (url.includes('/temp/')) await deleteFileFromFirebase(url);
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Extra media handlers
-  // ════════════════════════════════════════════════════════════════════════════
-
   const handleExtraMediaUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -324,10 +334,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     setFormData(p => ({ ...p, [field]: '' }));
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Variant image handlers
-  // ════════════════════════════════════════════════════════════════════════════
-
   const handleVariantImageUpload = async (id, e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -342,10 +348,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
       setVariants(vs => vs.map(v => v.id === id ? { ...v, isUploading: false } : v));
     }
   };
-
-  // ════════════════════════════════════════════════════════════════════════════
-  // AI: Analyse first image
-  // ════════════════════════════════════════════════════════════════════════════
 
   const generateDetailsFromImage = async (file) => {
     if (!aiMode) return;
@@ -368,7 +370,7 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
 
       if (aiData.category_id && dbCategories.length) {
         const cat = dbCategories.find(c => c._id === aiData.category_id);
-        setActiveParentId(cat?.parentRef ?? cat?._id ?? null);
+        setActiveParentId(cat?.parentId ?? cat?._id ?? null);
       }
       setShowAiPrompts(true);
     } catch (err) {
@@ -378,10 +380,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
       setAiStatus('');
     }
   };
-
-  // ════════════════════════════════════════════════════════════════════════════
-  // AI: Generate angle images
-  // ════════════════════════════════════════════════════════════════════════════
 
   const generateAnglesAI = async (views) => {
     if (!images.length) return;
@@ -423,10 +421,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     setAiStatus('');
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // AI: Generate variant image
-  // ════════════════════════════════════════════════════════════════════════════
-
   const generateVariantImageAI = async (variantId) => {
     const variant = variants.find(v => v.id === variantId);
     if (!variant || !images.length || !variant.name) {
@@ -460,10 +454,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     }
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // AI: Suggest variants
-  // ════════════════════════════════════════════════════════════════════════════
-
   const suggestVariantsAI = async () => {
     setIsAiProcessing(true);
     setAiStatus(`Reasoning logical ${activeVariantTab} options...`);
@@ -487,10 +477,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     }
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // AI: TTS audio
-  // ════════════════════════════════════════════════════════════════════════════
-
   const generateAudioDescriptionAI = async () => {
     if (!formData.description) return setErrorMessage('Generate a description first.');
     setIsAiProcessing(true);
@@ -509,10 +495,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
       setAiStatus('');
     }
   };
-
-  // ════════════════════════════════════════════════════════════════════════════
-  // AI: Promo video
-  // ════════════════════════════════════════════════════════════════════════════
 
   const generatePromoVideoAI = async () => {
     if (!images.length || !formData.audioDescription)
@@ -577,10 +559,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     }
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Store category CRUD
-  // ════════════════════════════════════════════════════════════════════════════
-
   const handleCreateStoreCategory = async () => {
     if (!storeCategoryInput.trim()) return;
     setIsSavingCategory(true);
@@ -599,20 +577,16 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     setIsSavingCategory(false);
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Form submit
-  // ════════════════════════════════════════════════════════════════════════════
-
   const handleFormSubmit = async () => {
     setErrorMessage('');
 
-    if (!formData.title?.trim())         return setErrorMessage('Product Title is required.');
+    if (!formData.title?.trim())          return setErrorMessage('Product Title is required.');
     if (!formData.price)                  return setErrorMessage('Base Price is required. Please scroll to Pricing & Stock.');
     if (!formData.category)               return setErrorMessage('Global Marketplace Category is required.');
-    if (!formData.storeCategory && !storeCategoryInput.trim())
-      return setErrorMessage('A Store Category is required.');
+    
+    // Validate store category ONLY if user typed something but forgot to save
     if (!formData.storeCategory && storeCategoryInput.trim())
-      return setErrorMessage('Click "Save Category" to confirm your new Store Category before submitting.');
+      return setErrorMessage('Click "Save" to confirm your new Store Category before submitting, or clear the input.');
 
     setInternalIsSaving(true);
     setAiStatus('Finalizing assets...');
@@ -634,10 +608,21 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
         })))
       : [];
 
+    // Merge Dynamic Values into generic attributes array
+    const combinedAttributes = [...formData.attributes];
+    dynamicSchema.forEach(field => {
+       const val = dynamicValues[field.slug];
+       if (val && !['price', 'filter_discount', 'filter_id_verify'].includes(field.slug)) {
+          combinedAttributes.push({ name: field.label, value: String(val) });
+       }
+    });
+
     const payload = {
       ...formData,
-      categoryRef:  formData.category,
-      storeCategory: formData.storeCategory,
+      attributes:    combinedAttributes, // Overwritten with merged attributes
+      categoryRef:   formData.category,
+      storeCategory: formData.storeCategory || null, // Optional
+      collectionId:  formData.collectionId,
       images:        finalImages,
       image:         finalImages[0] || '',
       videoDescription: finalVideo,
@@ -653,19 +638,18 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     setInternalIsSaving(false);
   };
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // Derived / memoised values
-  // ════════════════════════════════════════════════════════════════════════════
-
   const categoryTree = useMemo(() => {
-    const parents = dbCategories.filter(c => !c.parentRef);
-    return parents.map(p => ({ ...p, subCategories: dbCategories.filter(c => c.parentRef === p._id) }));
+    const parents = dbCategories.filter(c => !c.parentId);
+    return parents.map(p => ({
+      ...p,
+      subCategories: dbCategories.filter(c => c.parentId === p._id),
+    }));
   }, [dbCategories]);
 
   const selectedCategoryName = useMemo(() => {
     const cat = dbCategories.find(c => c._id === formData.category);
     if (!cat) return 'Select a category';
-    const parent = dbCategories.find(p => p._id === cat.parentRef);
+    const parent = dbCategories.find(p => p._id === cat.parentId);
     return parent ? `${parent.name} > ${cat.name}` : cat.name;
   }, [formData.category, dbCategories]);
 
@@ -673,14 +657,13 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
     if (!storeCategoryInput) return storeCategories;
     return storeCategories.filter(c => c.name.toLowerCase().includes(storeCategoryInput.toLowerCase()));
   }, [storeCategories, storeCategoryInput]);
+  
+  const activeStoreCollections = useMemo(() => {
+    return storeCollections.filter(c => c.enabled);
+  }, [storeCollections]);
 
   const visibleVariants = variants.filter(v => v.type === activeVariantTab);
-
   const isBusy = isSaving || internalIsSaving;
-
-  // ════════════════════════════════════════════════════════════════════════════
-  // Render
-  // ════════════════════════════════════════════════════════════════════════════
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-12 relative">
@@ -689,7 +672,7 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
         <div className="flex items-start gap-3">
-          <Link href="/seller/products" className="mt-1 p-1.5 border border-[#E3E3E4] text-[#8A8B91] hover:text-[#161823] bg-transparent rounded-sm hover:bg-[#F8F8F8] transition-colors" title="Back">
+          <Link href="/products" className="mt-1 p-1.5 border border-[#E3E3E4] text-[#8A8B91] hover:text-[#161823] bg-transparent rounded-sm hover:bg-[#F8F8F8] transition-colors" title="Back">
             <ArrowLeft size={18} />
           </Link>
           <div>
@@ -875,7 +858,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
             )}
           </div>
 
-          {/* Basic Information */}
           <div className="bg-white border border-[#E3E3E4] rounded-sm p-5 md:p-6">
             <h2 className="text-[15px] font-bold mb-4 text-[#161823]">Basic Information</h2>
             <div className="space-y-4">
@@ -884,39 +866,30 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
                   Product Title <span className="text-[#FE2C55]">*</span>
                   {aiMode && formData.title && <Sparkles size={14} className="text-[#7C3AED]" />}
                 </label>
-                <input type="text" value={formData.title} onChange={e => setFormData(p => ({ ...p, title: e.target.value }))} className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] outline-none focus:border-[#161823] transition-colors text-[#161823]" />
+                <input 
+                  type="text" 
+                  value={formData.title} 
+                  onChange={e => setFormData(p => ({ ...p, title: e.target.value }))} 
+                  placeholder="e.g. Premium Wireless Headphones"
+                  className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] outline-none focus:border-[#161823] transition-colors text-[#161823]" 
+                />
               </div>
               <div>
                 <label className="block text-[13px] font-semibold mb-1.5 flex items-center gap-1.5 text-[#161823]">
                   Description
                   {aiMode && formData.description && <Sparkles size={14} className="text-[#7C3AED]" />}
                 </label>
-                <textarea rows={6} value={formData.description} onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] outline-none resize-none focus:border-[#161823] transition-colors text-[#161823]" />
+                <textarea 
+                  rows={6} 
+                  value={formData.description} 
+                  onChange={e => setFormData(p => ({ ...p, description: e.target.value }))} 
+                  placeholder="Describe your product's features, benefits, and specifics..."
+                  className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] outline-none resize-none focus:border-[#161823] transition-colors text-[#161823]" 
+                />
               </div>
             </div>
           </div>
 
-          {/* Specifications */}
-          <div className="bg-white border border-[#E3E3E4] rounded-sm p-5 md:p-6">
-            <h2 className="text-[15px] font-bold mb-4 flex items-center gap-1.5 text-[#161823]">
-              Specifications
-              {aiMode && formData.attributes.length > 0 && <Sparkles size={14} className="text-[#7C3AED]" />}
-            </h2>
-            <div className="space-y-3">
-              {formData.attributes.map((attr, i) => (
-                <div key={i} className="flex gap-2 items-center">
-                  <input type="text" value={attr.name} onChange={e => updateAttribute(i, 'name', e.target.value)} placeholder="Name" className="w-1/3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[12px] outline-none focus:border-[#161823] transition-colors text-[#161823]" />
-                  <input type="text" value={attr.value} onChange={e => updateAttribute(i, 'value', e.target.value)} placeholder="Value" className="flex-1 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[12px] outline-none focus:border-[#161823] transition-colors text-[#161823]" />
-                  <button onClick={() => removeAttribute(i)} className="p-2 text-[#8A8B91] hover:text-[#FE2C55] transition-colors"><Trash2 size={16} /></button>
-                </div>
-              ))}
-              <button onClick={addAttribute} className="flex items-center gap-1.5 text-[12px] font-bold text-[#8A8B91] hover:text-[#161823] pt-2 transition-colors">
-                <Plus size={14} /> Add Attribute
-              </button>
-            </div>
-          </div>
-
-          {/* Variants */}
           <div className="bg-white border border-[#E3E3E4] rounded-sm p-5 md:p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -995,12 +968,78 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
               </div>
             )}
           </div>
+
+          <div className="bg-white border border-[#E3E3E4] rounded-sm p-5 md:p-6">
+            <h2 className="text-[15px] font-bold mb-4 flex items-center gap-1.5 text-[#161823]">
+              Specifications
+              {aiMode && formData.attributes.length > 0 && (
+                <Sparkles size={14} className="text-[#7C3AED]" />
+              )}
+            </h2>
+            <p className="text-[12px] text-[#8A8B91] mb-5">
+              Get your products found easily by filling in these specific details.
+            </p>
+
+            {/* Dynamic Schema Inputs */}
+            {isLoadingSchema ? (
+              <div className="py-6 flex justify-center"><Loader2 className="animate-spin text-[#8A8B91]" size={20} /></div>
+            ) : dynamicSchema.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 pb-6 border-b border-[#E3E3E4]">
+                {dynamicSchema.map(field => {
+                  // Skip systemic search filters like price range or verification flags
+                  if (['price', 'filter_discount', 'filter_id_verify'].includes(field.slug)) return null;
+
+                  return (
+                    <div key={field.slug}>
+                      <label className="block text-[12px] font-semibold mb-1.5 text-[#161823] truncate" title={field.label}>
+                        {field.label} {field.unit && <span className="text-[#8A8B91] font-normal">({field.unit})</span>}
+                      </label>
+
+                      {['select', 'multiselect', 'radio'].includes(field.visual_type) ? (
+                        <select
+                          value={dynamicValues[field.slug] || ''}
+                          onChange={(e) => setDynamicValues(p => ({ ...p, [field.slug]: e.target.value }))}
+                          className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[12px] outline-none focus:border-[#161823] transition-colors text-[#161823] appearance-none"
+                        >
+                          <option value="">Select...</option>
+                          {field.possible_values?.map(v => (
+                            <option key={v.value} value={v.value}>{v.value}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type={field.attr_type === 'int' ? 'number' : 'text'}
+                          value={dynamicValues[field.slug] || ''}
+                          onChange={(e) => setDynamicValues(p => ({ ...p, [field.slug]: e.target.value }))}
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[12px] outline-none focus:border-[#161823] transition-colors text-[#161823]"
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+
+            {/* Custom Manual Attributes */}
+            <div className="space-y-3">
+              <label className="block text-[12px] font-bold text-[#8A8B91] uppercase tracking-wider mb-2">Custom Attributes</label>
+              {formData.attributes.map((attr, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <input type="text" value={attr.name} onChange={e => updateAttribute(i, 'name', e.target.value)} placeholder="Name (e.g. Warranty)" className="w-1/3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[12px] outline-none focus:border-[#161823] transition-colors text-[#161823]" />
+                  <input type="text" value={attr.value} onChange={e => updateAttribute(i, 'value', e.target.value)} placeholder="Value (e.g. 1 Year)" className="flex-1 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[12px] outline-none focus:border-[#161823] transition-colors text-[#161823]" />
+                  <button onClick={() => removeAttribute(i)} className="p-2 text-[#8A8B91] hover:text-[#FE2C55] transition-colors"><Trash2 size={16} /></button>
+                </div>
+              ))}
+              <button onClick={addAttribute} className="flex items-center gap-1.5 text-[12px] font-bold text-[#8A8B91] hover:text-[#161823] pt-2 transition-colors">
+                <Plus size={14} /> Add Custom Attribute
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* ── Right column ── */}
         <div className="lg:w-[35%] space-y-6">
 
-          {/* Organization */}
           <div className="bg-white border border-[#E3E3E4] rounded-sm p-5 md:p-6">
             <h2 className="text-[15px] font-bold mb-4 text-[#161823]">Organization</h2>
 
@@ -1028,16 +1067,21 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
                         {sub.name}
                       </div>
                     ))}
+                    {activeParentId && (
+                      <div onClick={() => { setFormData(f => ({ ...f, category: activeParentId })); setShowCategoryCascader(false); }} className="px-4 py-2.5 text-[12px] font-bold cursor-pointer border-t border-[#E3E3E4] text-[#8A8B91] hover:text-[#161823] transition-colors">
+                        Select Parent Category Instead
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Store subcategory */}
-            <div className="relative mb-4" ref={storeCatRef}>
+            {/* Store subcategory (Optional) */}
+            <div className="relative mb-6" ref={storeCatRef}>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-[13px] font-semibold flex items-center text-[#161823]">
-                  Store Subcategory <span className="text-[#FE2C55] ml-1">*</span>
+                  Store Category <span className="text-[10px] font-normal text-[#8A8B91] ml-1.5">(Optional)</span>
                 </label>
                 <label className="flex items-center gap-1.5 text-[11px] text-[#8A8B91] cursor-pointer hover:text-[#161823] transition-colors">
                   <input type="checkbox" checked={syncMarketplaceCat} onChange={e => setSyncMarketplaceCat(e.target.checked)} className="rounded-sm accent-[#7C3AED]" />
@@ -1088,6 +1132,31 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
                 </div>
               )}
             </div>
+            
+            {/* Store Collection (Optional) */}
+            <div className="mb-6">
+               <label className="block text-[13px] font-semibold mb-1.5 flex items-center gap-1.5 text-[#161823]">
+                  Store Collection <span className="text-[10px] font-normal text-[#8A8B91]">(Optional)</span>
+               </label>
+               <div className="relative">
+                  <select
+                     value={formData.collectionId}
+                     onChange={(e) => setFormData(p => ({ ...p, collectionId: e.target.value }))}
+                     className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] outline-none focus:border-[#161823] transition-colors text-[#161823] appearance-none"
+                  >
+                     <option value="">No Collection</option>
+                     {activeStoreCollections.map(collection => (
+                        <option key={collection._id} value={collection.collectionId}>
+                           {collection.name}
+                        </option>
+                     ))}
+                  </select>
+                  <Layers size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8B91] pointer-events-none" />
+               </div>
+               <p className="text-[11px] text-[#8A8B91] mt-1.5">
+                  Assign this product to a smart collection like "New Arrivals" or "Best Sellers" to showcase it on your storefront.
+               </p>
+            </div>
 
             <div>
               <label className="block text-[13px] font-semibold mb-1.5 text-[#161823]">Tags</label>
@@ -1095,7 +1164,6 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
             </div>
           </div>
 
-          {/* Pricing & Stock */}
           <div className="bg-white border border-[#E3E3E4] rounded-sm p-5 md:p-6">
             <h2 className="text-[15px] font-bold mb-4 text-[#161823]">Pricing & Stock</h2>
             <div className="space-y-4">

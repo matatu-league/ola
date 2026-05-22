@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import ProductDetails from '@/components/marketplace/ProductDetails'; // Adjust this import path to match your project
+import ProductDetails from '@/components/marketplace/ProductDetails';
 import TopNav from "@/components/shared/TopNav";
 
 export default async function ProductPage({ params }) {
@@ -15,11 +15,9 @@ export default async function ProductPage({ params }) {
     // Determine the base URL dynamically
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-    // 🔴 IMPORTANT: Notice this fetch URL! 
-    // We are calling the new clean API route: /api/products/12345
-    // We are NOT calling /api/products?id=12345 or ?limit=1
+    // Call the clean API route to get single product data
     const res = await fetch(`${baseUrl}/api/products/${id}`, {
-      cache: 'no-store', // Always get the freshest data (reviews, stock, etc.)
+      cache: 'no-store', // Always get the freshest data
     });
 
     const result = await res.json();
@@ -29,11 +27,11 @@ export default async function ProductPage({ params }) {
       notFound(); 
     }
 
-    // This is now the perfectly structured single-product JSON object!
+    // Perfectly structured single-product JSON object
     const safeProductData = result.data;
 
     return (
-      <main>
+      <main className="bg-[#F8F8F8] min-h-screen">
         <TopNav />
         <ProductDetails product={safeProductData} />
       </main>

@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
-import User from '@/models/User'; // <-- ADDED: Import User model
-import Store from '@/models/Store'; // <-- ADDED: Import Store model
+import User from '@/models/User'; 
+import Store from '@/models/Store'; 
 
-// Your App Credentials
 const TIKTOK_CLIENT_KEY = 'sbawx7ufskuzcslm8j';
-const TIKTOK_CLIENT_SECRET = '0AmPhoUVIk2mvXKm6buK0H9e1C3Ryy4W';
+const TIKTOK_CLIENT_SECRET = process.env.TIKTOK_CLIENT_SECRET || '0AmPhoUVIk2mvXKm6buK0H9e1C3Ryy4W';
 
-const APP_URL = 'https://ola.ug';
+const APP_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://ola.ug';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -54,7 +53,8 @@ export async function GET(request) {
     const tiktokUser = userData?.data?.user;
     
     let dbUserId = tiktokUser?.open_id; 
-    let userHasStore = false; // <-- ADDED: Track store status
+    let userHasStore = false; 
+    let activePhoneNumber = null;
 
     try {
       if (typeof connectToDatabase === 'function') await connectToDatabase();
@@ -68,15 +68,20 @@ export async function GET(request) {
           unionId: tiktokUser.union_id,
           displayName: tiktokUser.display_name,
           avatarUrl: tiktokUser.avatar_url,
+          phoneNumber: '', // 🔴 Empty string for new users
           profileWebLink: tiktokUser.profile_web_link,
           profileDeepLink: tiktokUser.profile_deep_link,
           bioDescription: tiktokUser.bio_description,
-          isVerified: tiktokUser.is_verified
+          isVerified: tiktokUser.is_verified,
+          authProviders: ['tiktok'],
+          role: 'seller', 
+          status: 'active'
         });
       } else {
         dbUser.displayName = tiktokUser.display_name;
         dbUser.avatarUrl = tiktokUser.avatar_url;
         await dbUser.save();
+        activePhoneNumber = dbUser.phoneNumber;
       }
       
       dbUserId = dbUser._id.toString();
@@ -91,20 +96,22 @@ export async function GET(request) {
       console.error('⚠️ Database Error:', dbError);
     }
     
-    // 3. DYNAMIC REDIRECT (Sends them to onboarding if no store exists)
+    // 3. DYNAMIC REDIRECT
     const destinationPath = userHasStore ? '/seller/dashboard' : '/stores/onboarding';
     const response = safeRedirect(destinationPath);
 
+    // Clean up temporary OAuth cookies
     response.cookies.delete('tiktok_code_verifier');
     response.cookies.delete('tiktok_auth_state');
 
-    // 4. ADD hasStore FLAG TO SESSION
+    // 4. BUILD SESSION
     const sessionData = {
       id: dbUserId, 
       tiktokId: tiktokUser?.open_id,
       name: tiktokUser?.display_name || 'TikTok Seller',
       avatar: tiktokUser?.avatar_url || '',
-      hasStore: userHasStore // <-- Saved to cookie for TopNav to read
+      phoneNumber: activePhoneNumber || null, // 🔴 Include from DB
+      hasStore: userHasStore
     };
 
     response.cookies.set('user_session', encodeURIComponent(JSON.stringify(sessionData)), {

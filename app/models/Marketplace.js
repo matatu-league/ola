@@ -105,7 +105,167 @@ const ProductSchema = new Schema(
   { timestamps: true },
 );
 
-export const Category      = models.Category      || model('Category',      CategorySchema);
-export const Collection    = models.Collection    || model('Collection',    CollectionSchema);
-export const Product       = models.Product       || model('Product',       ProductSchema);
-export const ProductReview = models.ProductReview || model('ProductReview', ReviewSchema);
+// Sub-schema for items in the cart
+const CartItemSchema = new Schema({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true,
+  },
+  // To handle products with variations (color, size, etc)
+  variants: {
+    type: Map,
+    of: String,
+    default: {}
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    min: [1, 'Quantity can not be less then 1.'],
+    default: 1
+  },
+  // Store price to prevent user manipulation during checkout
+  priceAtAddition: {
+    type: Number,
+    required: true
+  }
+}, { _id: true }); // Enable _id for easy array manipulation (removing specific items)
+
+const CartSchema = new Schema({
+  // Tied to user if authenticated
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
+    index: true
+  },
+  // Tied to session if anonymous/guest
+  sessionId: {
+    type: String,
+    default: null,
+    index: true
+  },
+  items: [CartItemSchema],
+  totalQuantity: {
+    type: Number,
+    default: 0
+  },
+  totalPrice: {
+    type: Number,
+    default: 0
+  }
+}, { timestamps: true });
+
+// Calculate totals dynamically before saving to DB
+CartSchema.pre('save', function(next) {
+  this.totalQuantity = this.items.reduce((acc, item) => acc + item.quantity, 0);
+  this.totalPrice = this.items.reduce((acc, item) => acc + (item.priceAtAddition * item.quantity), 0);
+  next();
+});
+
+
+// ----------------------------------------------------------------------------
+// LOGISTICS MODELS (NEW)
+// ----------------------------------------------------------------------------
+
+const ShippingMethodSchema = new Schema({
+  code: { type: String, required: true, unique: true }, // e.g., 'standard', 'express', 'pickup'
+  title: { type: String, required: true }, // e.g., 'Standard Delivery'
+  price: { type: Number, required: true, default: 0 },
+  description: { type: String }, // e.g., 'Delivery in 2-3 business days'
+  iconName: { type: String }, // string reference for frontend icon (e.g., 'Truck', 'Clock', 'Store')
+  active: { type: Boolean, default: true, index: true }
+}, { timestamps: true });
+
+const PickupStationSchema = new Schema({
+  code: { type: String, required: true, unique: true }, // e.g., 'kla-hub'
+  name: { type: String, required: true }, // e.g., 'Kampala Central Hub'
+  address: { type: String, required: true }, // e.g., 'Plot 12, Kampala Road'
+  city: { type: String }, // e.g., 'Kampala'
+  active: { type: Boolean, default: true, index: true }
+}, { timestamps: true });
+
+
+// ----------------------------------------------------------------------------
+// ORDER MODELS
+// ----------------------------------------------------------------------------
+
+const OrderItemSchema = new Schema({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  storeId:         { type: Schema.Types.ObjectId, ref: 'Store',         index: true },
+  name: { type: String, required: true },
+  image: { type: String },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true },
+  variants: { type: Map, of: String }
+});
+
+const ShippingAddressSchema = new Schema({
+  fullName: { type: String, required: true },
+  phone: { type: String, required: true },
+  addressLine1: { type: String, required: true },
+  city: { type: String, required: true },
+  country: { type: String, default: 'Uganda' },
+  additionalInstructions: { type: String }
+});
+
+const OrderSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
+  orderNumber: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  items: [OrderItemSchema],
+  shippingAddress: ShippingAddressSchema,
+  
+  // NEW: Direct Database References for Logistics
+  shippingMethod: { type: String, required: true }, // code: 'standard', 'express', 'pickup'
+  pickupStationId: { type: Schema.Types.ObjectId, ref: 'PickupStation' }, // Populated if shippingMethod === 'pickup'
+  
+  subTotal: { type: Number, required: true },
+  shippingFee: { type: Number, default: 0 },
+  totalAmount: { type: Number, required: true },
+  
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'paid', 'failed', 'refunded'],
+    default: 'pending',
+    index: true
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['mobile_money', 'card', 'cash_on_delivery'],
+    required: true
+  },
+  
+  orderStatus: {
+    type: String,
+    enum: ['processing', 'confirmed', 'shipped', 'delivered', 'cancelled'],
+    default: 'processing',
+    index: true
+  },
+  
+  // Tracking number for order shipment details
+  trackingNumber: { type: String }
+}, { timestamps: true });
+
+export const Category       = models.Category       || model('Category',       CategorySchema);
+export const Collection     = models.Collection     || model('Collection',     CollectionSchema);
+export const Product        = models.Product        || model('Product',        ProductSchema);
+export const ProductReview  = models.ProductReview  || model('ProductReview',  ReviewSchema);
+export const Cart           = models.Cart           || model('Cart',           CartSchema);
+export const Order          = models.Order          || model('Order',          OrderSchema);
+
+// NEW EXPORTS
+export const ShippingMethod = models.ShippingMethod || model('ShippingMethod', ShippingMethodSchema);
+export const PickupStation  = models.PickupStation  || model('PickupStation',  PickupStationSchema);
