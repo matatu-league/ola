@@ -5,8 +5,8 @@ const ShippingMethodSchema = new mongoose.Schema({
   title: { type: String, required: true },
   price: { type: Number, required: true, default: 0 },
   description: { type: String },
-  iconName: { type: String }, // 'Truck', 'Clock', 'Store'
-  image: { type: String }, // URL to a custom image/logo
+  iconName: { type: String },
+  image: { type: String },
   active: { type: Boolean, default: true }
 });
 
@@ -19,23 +19,16 @@ const PickupStationSchema = new mongoose.Schema({
 });
 
 const PaymentMethodSchema = new mongoose.Schema({
-  code: { type: String, required: true }, // 'mobile_money', 'card', 'cash_on_delivery'
+  code: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String },
-  iconName: { type: String }, // 'Smartphone', 'CreditCard', 'Banknote'
-  image: { type: String }, // URL to a custom image/logo
+  iconName: { type: String },
+  image: { type: String },
+  provider: { type: String }, // 'stripe' | 'paypal' | 'flutterwave' | 'razorpay' | 'mobile_money' | 'cash'
   active: { type: Boolean, default: true }
 });
 
 const CourierSchema = new mongoose.Schema({
-  id: { type: Number, required: true },
-  name: { type: String, required: true },
-  logo: { type: String },
-  image: { type: String }, // URL to a custom image
-  active: { type: Boolean, default: true }
-});
-
-const GatewaySchema = new mongoose.Schema({
   id: { type: Number, required: true },
   name: { type: String, required: true },
   logo: { type: String },
@@ -44,7 +37,6 @@ const GatewaySchema = new mongoose.Schema({
 
 const SettingsSchema = new mongoose.Schema(
   {
-    // Singleton Enforcer
     isGlobal: { type: Boolean, default: true, unique: true },
 
     // General
@@ -59,13 +51,13 @@ const SettingsSchema = new mongoose.Schema(
     globalCommissionRate: { type: Number, default: 12.5 },
     minimumPayoutThreshold: { type: Number, default: 50000 },
 
-    // Payments config
+    // Payments
     baseCurrency: { type: String, default: 'UGX' },
     enableMobileMoney: { type: Boolean, default: true },
     enableCreditCards: { type: Boolean, default: true },
     payoutSchedule: { type: String, default: 'weekly', enum: ['daily', 'weekly', 'biweekly', 'monthly'] },
 
-    // Shipping & Fulfillment config
+    // Shipping
     globalShippingEnabled: { type: Boolean, default: true },
     defaultDomesticRate: { type: Number, default: 15000 },
     enableInternationalShipping: { type: Boolean, default: false },
@@ -75,7 +67,7 @@ const SettingsSchema = new mongoose.Schema(
     require2FAForAdmins: { type: Boolean, default: true },
     sessionTimeout: { type: Number, default: 120 },
 
-    // Dynamic Checkout Arrays (SEED DATA INCLUDED)
+    // Shipping Methods
     shippingMethods: {
       type: [ShippingMethodSchema],
       default: [
@@ -84,6 +76,8 @@ const SettingsSchema = new mongoose.Schema(
         { code: 'pickup', title: 'Pickup Station', price: 2000, description: 'Collect from a nearby station', iconName: 'Store', active: true }
       ]
     },
+
+    // Pickup Stations
     pickupStations: {
       type: [PickupStationSchema],
       default: [
@@ -91,36 +85,72 @@ const SettingsSchema = new mongoose.Schema(
         { code: 'hoima-main', name: 'Hoima City Hub', address: 'Main Street, Opposite Central Market', city: 'Hoima', active: true }
       ]
     },
+
+    // Payment Methods — all major gateways + mobile money + cash
     paymentMethods: {
       type: [PaymentMethodSchema],
       default: [
-        { code: 'mobile_money', title: 'Mobile Money', description: 'Pay via MTN or Airtel', iconName: 'Smartphone', active: true },
-        { code: 'card', title: 'Card Payment', description: 'Visa / Mastercard securely', iconName: 'CreditCard', active: true },
-        { code: 'cash_on_delivery', title: 'Cash on Delivery', description: 'Pay upon successful delivery', iconName: 'Banknote', active: true }
+        {
+          code: 'mobile_money',
+          title: 'Mobile Money',
+          description: 'Pay via MTN or Airtel Money',
+          iconName: 'Smartphone',
+          provider: 'mobile_money',
+          active: true
+        },
+        {
+          code: 'flutterwave',
+          title: 'Flutterwave',
+          description: 'Card, Mobile Money & more via Flutterwave',
+          iconName: 'CreditCard',
+          provider: 'flutterwave',
+          active: true
+        },
+        {
+          code: 'stripe',
+          title: 'Stripe',
+          description: 'Pay securely with Visa / Mastercard via Stripe',
+          iconName: 'CreditCard',
+          provider: 'stripe',
+          active: true
+        },
+        {
+          code: 'paypal',
+          title: 'PayPal',
+          description: 'Pay with your PayPal account or card',
+          iconName: 'CreditCard',
+          provider: 'paypal',
+          active: true
+        },
+        {
+          code: 'razorpay',
+          title: 'Razorpay',
+          description: 'UPI, cards, wallets via Razorpay',
+          iconName: 'CreditCard',
+          provider: 'razorpay',
+          active: true
+        },
+        {
+          code: 'cash_on_delivery',
+          title: 'Cash on Delivery',
+          description: 'Pay cash when your order arrives',
+          iconName: 'Banknote',
+          provider: 'cash',
+          active: true
+        }
       ]
     },
 
-    // Legacy arrays from your snippet
     couriers: {
       type: [CourierSchema],
       default: [
         { id: 1, name: 'DHL Express', logo: '', active: true },
         { id: 2, name: 'SafeBoda', logo: '', active: true }
       ]
-    },
-    paymentGateways: {
-      type: [GatewaySchema],
-      default: [
-        { id: 1, name: 'MTN Mobile Money', logo: '', active: true },
-        { id: 2, name: 'Airtel Money', logo: '', active: true },
-        { id: 3, name: 'Stripe', logo: '', active: false }
-      ]
     }
   },
   { timestamps: true }
 );
 
-// Prevent hot-reload recompilation errors
 const Settings = mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);
-
 export default Settings;
