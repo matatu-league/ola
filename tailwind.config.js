@@ -1,6 +1,6 @@
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   // Use class-based dark mode so you can apply the dark overrides with `dark:` variants
   darkMode: 'class',
 
