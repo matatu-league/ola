@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
-import Storefront from '@/components/storefronts/Storefront'; 
+import Storefront from '@/components/storefronts/Storefront';
+import { storeDomain } from '@/lib/domain';
 
 // Helper function to fetch the store securely on the server
 async function getStore(domain) {
@@ -32,7 +33,7 @@ export default async function SubdomainPage({ params }) {
   
   // 1. Extract the subdomain from the proxied URL
   const { subdomain } = resolvedParams;
-  const domainToSearch = `${subdomain}.ola.ug`;
+  const domainToSearch = storeDomain(subdomain);
 
 
   // 2. Fetch the actual store data from your MongoDB

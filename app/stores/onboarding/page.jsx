@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { 
-  CheckCircle2, Store, Globe, Loader2, Package, 
-  CalendarCheck, AlertCircle, XCircle, ChevronDown, 
+import {
+  CheckCircle2, Store, Globe, Loader2, Package,
+  CalendarCheck, AlertCircle, XCircle, ChevronDown,
   Mail, Phone, Briefcase
 } from 'lucide-react';
+import { getCookieRootDomain } from '@/lib/domain';
 
 export default function StoreOnboarding() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -175,8 +176,7 @@ export default function StoreOnboarding() {
             
             // Re-save cookie using the wildcard approach (.ola.ug)
             const hostname = window.location.hostname;
-            const parts = hostname.split('.');
-            const rootDomain = parts.length >= 2 ? parts.slice(-2).join('.') : hostname;
+            const rootDomain = getCookieRootDomain(hostname);
             const domainString = hostname.includes('.') ? `domain=.${rootDomain};` : '';
             
             const encoded = encodeURIComponent(JSON.stringify(sessionData));

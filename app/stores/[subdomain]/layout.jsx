@@ -9,6 +9,14 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { io as socketIO } from 'socket.io-client';
+import {
+  getRootDomain,
+  getSessionUser,
+  isMainHost,
+  normalizeStoreDomain,
+  protocolFor,
+  getCookieRootDomain,
+} from '@/lib/domain';
 
 const navigation = [
   { name: 'Dashboard',    href: '/dashboard',   icon: LayoutDashboard },
@@ -23,23 +31,22 @@ const navigation = [
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function getRootDomain() {
-  if (typeof window === 'undefined') return '';
-  const { protocol, hostname, port } = window.location;
-  const parts      = hostname.split('.');
-  const rootDomain = parts.length > 2 ? parts.slice(-2).join('.') : hostname;
-  return `${protocol}//${rootDomain}${port ? `:${port}` : ''}`;
-}
+// Domain/session helpers live in '@/lib/domain' (shared across store screens).
 
-function getSessionUser() {
-  if (typeof document === 'undefined') return null;
-  try {
-    const match = document.cookie.split('; ').find(c => c.startsWith('user_session='));
-    if (!match) return null;
-    let raw = decodeURIComponent(match.split('=')[1]);
-    if (raw.startsWith('%7B')) raw = decodeURIComponent(raw);
-    return JSON.parse(raw);
-  } catch { return null; }
+// Redirect to a store's dashboard when the user lands on the main domain or the
+// onboarding route. Returns true if a redirect was issued, false otherwise.
+function redirectToStoreDashboard(rawDomain, { currentHost, rootDomain, isOnboardingRoute }) {
+  const storeDomain  = normalizeStoreDomain(rawDomain);
+  const isMainDomain = isMainHost(currentHost);
+
+  if (isOnboardingRoute || isMainDomain) {
+    const protocol = protocolFor(currentHost);
+    window.location.href = storeDomain
+      ? `${protocol}${storeDomain}/dashboard`
+      : `${rootDomain}/dashboard`;
+    return true;
+  }
+  return false;
 }
 
 // ── Layout ────────────────────────────────────────────────────────────────────
@@ -109,25 +116,11 @@ export default function SellerLayout({ children }) {
         }
 
         if (data.hasStore === true) {
-          let storeDomain = data.store?.domain || parsedUser.domain;
-
-          if (storeDomain && !storeDomain.includes('.ola.ug') && !storeDomain.includes('localhost')) {
-            storeDomain = `${storeDomain}.ola.ug`;
-          }
-
-          const isMainDomain =
-            currentHost === 'ola.ug' ||
-            currentHost === 'www.ola.ug' ||
-            currentHost === 'localhost' ||
-            !currentHost.includes('.');
-
-          if (isOnboardingRoute || isMainDomain) {
-            const protocol = currentHost.includes('localhost') ? 'http://' : 'https://';
-            window.location.href = storeDomain
-              ? `${protocol}${storeDomain}/dashboard`
-              : `${rootDomain}/dashboard`;
-            return;
-          }
+          const redirected = redirectToStoreDashboard(
+            data.store?.domain || parsedUser.domain,
+            { currentHost, rootDomain, isOnboardingRoute },
+          );
+          if (redirected) return;
         }
 
         setIsCheckingStore(false);
@@ -138,24 +131,11 @@ export default function SellerLayout({ children }) {
         const currentHost       = window.location.hostname;
 
         if (parsedUser.hasStore) {
-          let storeDomain = parsedUser.domain;
-          if (storeDomain && !storeDomain.includes('.ola.ug') && !storeDomain.includes('localhost')) {
-            storeDomain = `${storeDomain}.ola.ug`;
-          }
-
-          const isMainDomain =
-            currentHost === 'ola.ug' ||
-            currentHost === 'www.ola.ug' ||
-            currentHost === 'localhost' ||
-            !currentHost.includes('.');
-
-          if (isOnboardingRoute || isMainDomain) {
-            const protocol = currentHost.includes('localhost') ? 'http://' : 'https://';
-            window.location.href = storeDomain
-              ? `${protocol}${storeDomain}/dashboard`
-              : `${rootDomain}/dashboard`;
-            return;
-          }
+          const redirected = redirectToStoreDashboard(
+            parsedUser.domain,
+            { currentHost, rootDomain, isOnboardingRoute },
+          );
+          if (redirected) return;
         } else if (!isOnboardingRoute) {
           window.location.href = `${rootDomain}/stores/onboarding`;
           return;
@@ -166,9 +146,7 @@ export default function SellerLayout({ children }) {
   }, [pathname, isStorefrontRoot]);
 
   const handleSignOut = () => {
-    const { hostname } = window.location;
-    const parts      = hostname.split('.');
-    const rootDomain = parts.length >= 2 ? parts.slice(-2).join('.') : hostname;
+    const rootDomain = getCookieRootDomain(window.location.hostname);
     document.cookie = `user_session=; Max-Age=0; path=/; domain=.${rootDomain};`;
     document.cookie = `user_session=; Max-Age=0; path=/;`;
     window.location.href = getRootDomain() + '/';
