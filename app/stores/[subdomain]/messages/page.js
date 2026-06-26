@@ -9,17 +9,7 @@ import {
   ClipboardList,
 } from 'lucide-react';
 import { io as socketIO } from 'socket.io-client';
-
-function getSessionUser() {
-  if (typeof document === 'undefined') return null;
-  try {
-    const match = document.cookie.split('; ').find(r => r.startsWith('user_session='));
-    if (!match) return null;
-    let raw = decodeURIComponent(match.split('=')[1]).replace(/^"|"$/g, '');
-    if (raw.startsWith('%7B')) raw = decodeURIComponent(raw);
-    return JSON.parse(raw);
-  } catch { return null; }
-}
+import { getSessionUser } from '@/lib/domain';
 
 // ── Parser — decodes [Product:...|id|img] or [Order:...|id|total|status|imgs] ──
 function parseMessage(msg) {
