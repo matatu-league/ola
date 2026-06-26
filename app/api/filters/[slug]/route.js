@@ -1,30 +1,44 @@
 /**
  * ============================================================================
  * FILE: app/api/filters/[slug]/route.js
- * DESCRIPTION: Reads dynamic category schema JSON files from the local server directory.
+ * DESCRIPTION: Returns the dynamic, per-category filter schema for a given
+ *              category slug. The schema is stored in the database
+ *              (CategoryFilter collection) and looked up dynamically when a
+ *              category is selected — replacing the previous on-disk JSON reads
+ *              which are unreliable on serverless runtimes.
+ *              Run `npm run seed:filters` once to populate the collection from
+ *              the JSON files in app/data/filters.
  * ============================================================================
  */
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { connectToDatabase } from '@/lib/mongodb';
+import { CategoryFilter } from '@/models/Marketplace';
 
 export async function GET(request, { params }) {
   try {
-    const resolvedParams = await params;
-    const { slug } = resolvedParams;
+    const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json({ success: false, error: 'Slug is required' }, { status: 400 });
     }
 
-    const filePath = path.join(process.cwd(), 'app', 'data', 'filters', `${slug}.json`);
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    const parsedData = JSON.parse(fileContents);
+    await connectToDatabase();
 
-    return NextResponse.json({ success: true, schema: parsedData.schema || [] });
+    const doc = await CategoryFilter.findOne({ slug }).select('filterSchema').lean();
+
+    return NextResponse.json(
+      { success: true, schema: doc?.filterSchema ?? [] },
+      {
+        status: 200,
+        headers: {
+          // Filter schemas change rarely — cache at the edge for 5 minutes.
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        },
+      },
+    );
   } catch (error) {
-    console.error(`Error reading filter schema for slug:`, error);
-    // If file isn't found or is invalid, safely return an empty schema
-    return NextResponse.json({ success: false, schema: [] }, { status: 404 });
+    console.error('Error reading filter schema for slug:', error);
+    // On any failure, safely return an empty schema so the UI degrades gracefully.
+    return NextResponse.json({ success: false, schema: [] }, { status: 200 });
   }
 }

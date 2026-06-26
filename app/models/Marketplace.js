@@ -13,6 +13,23 @@ const CategorySchema = new Schema(
   { timestamps: true },
 );
 
+// ─── Category Filter Schemas ────────────────────────────────────────────────
+// Holds the dynamic, per-category filter/attribute schema that drives the
+// product-listing filters and the seller product form. Previously these lived
+// as ~112 static JSON files under app/data/filters and were read off disk at
+// request time (which is unreliable on serverless). They now live in the DB,
+// keyed by category slug, and are looked up dynamically when a category is
+// selected. `filterSchema` is named to avoid Mongoose's reserved `schema` path.
+const CategoryFilterSchema = new Schema(
+  {
+    slug:         { type: String, required: true, unique: true, trim: true, index: true },
+    total:        { type: Number, default: 0 },
+    filterSchema: { type: [Schema.Types.Mixed], default: [] },
+    topSelection: { type: Schema.Types.Mixed, default: null },
+  },
+  { timestamps: true, minimize: false },
+);
+
 const COLLECTION_TYPES = [
   'top_deals',
   'tailored_selection',
@@ -301,6 +318,7 @@ const OrderSchema = new Schema({
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
 export const Category       = models.Category       || model('Category',       CategorySchema);
+export const CategoryFilter = models.CategoryFilter || model('CategoryFilter', CategoryFilterSchema);
 export const Collection     = models.Collection     || model('Collection',     CollectionSchema);
 export const Product        = models.Product        || model('Product',        ProductSchema);
 export const ProductReview  = models.ProductReview  || model('ProductReview',  ReviewSchema);

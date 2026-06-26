@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { connectToDatabase } from '../../lib/mongodb';
-import { Category, Product } from '../../models/Marketplace';
+import { Category, CategoryFilter, Product } from '../../models/Marketplace';
 import '../../models/Store';
-import fs from 'fs/promises';
-import path from 'path';
 
 async function getUserId() {
   const cookieStore = await cookies();
@@ -167,9 +165,10 @@ export async function GET(request) {
     let filterSchema = [];
     if (categorySlug) {
       try {
-        const filePath = path.join(process.cwd(), 'app', 'data', 'filters', `${categorySlug}.json`);
-        const fileContents = await fs.readFile(filePath, 'utf8');
-        filterSchema = JSON.parse(fileContents).schema || [];
+        const filterDoc = await CategoryFilter.findOne({ slug: categorySlug })
+          .select('filterSchema')
+          .lean();
+        filterSchema = filterDoc?.filterSchema || [];
       } catch (err) {
         console.warn(`No filter schema for ${categorySlug}:`, err.message);
       }
