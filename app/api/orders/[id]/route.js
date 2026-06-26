@@ -1,30 +1,28 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
-import { Order } from '@/lib/models';
+import { Order } from '@/models/Marketplace';
 
 /**
- * GET /api/orders/[orderId]
+ * GET /api/orders/[id]
  * Fetch a single order by its database _id
  */
 export async function GET(request, props) {
   try {
     await connectToDatabase();
-    
-    // In Next.js 15, route params must be awaited
-    const params = await props.params;
-    const { orderId } = params;
 
-    if (!orderId) {
+    const params = await props.params;
+    const { id } = params;
+
+    if (!id) {
       return NextResponse.json(
         { success: false, message: 'Order ID is required' },
         { status: 400 }
       );
     }
 
-    const order = await Order.findById(orderId)
+    const order = await Order.findById(id)
       .populate('user', 'name email image')
-      .populate('items.product', 'sku isFlashItem verified'); 
-      // Populating extra product details if needed on frontend
+      .populate('items.product', 'sku isFlashItem verified');
 
     if (!order) {
       return NextResponse.json(
@@ -45,26 +43,51 @@ export async function GET(request, props) {
 }
 
 /**
- * PATCH /api/orders/[orderId]
- * Update an order (e.g., status, tracking info, payment success)
+ * PATCH /api/orders/[id]
+ * Update an order — used in two scenarios:
+ *
+ *   1. Admin updates (status, tracking):
+ *      { orderStatus, trackingNumber }
+ *
+ *   2. Checkout payment confirmation (after gateway success):
+ *      { paymentStatus, paymentReference, paymentProvider, paidAt }
+ *
+ * Only whitelisted fields are written to the DB.
  */
 export async function PATCH(request, props) {
   try {
     await connectToDatabase();
-    
-    // In Next.js 15, route params must be awaited
+
     const params = await props.params;
-    const { orderId } = params;
-    
+    const { id } = params;
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: 'Order ID is required' },
+        { status: 400 }
+      );
+    }
+
     const body = await request.json();
 
-    // Fields that are allowed to be updated directly
-    const { orderStatus, paymentStatus, trackingNumber } = body;
+    // ── Whitelist — only these fields can be patched ──────────────────────────
+    const {
+      orderStatus,
+      paymentStatus,
+      paymentReference,
+      paymentProvider,
+      paidAt,
+      trackingNumber,
+    } = body;
 
     const updateData = {};
-    if (orderStatus) updateData.orderStatus = orderStatus;
-    if (paymentStatus) updateData.paymentStatus = paymentStatus;
-    if (trackingNumber) updateData.trackingNumber = trackingNumber;
+
+    if (orderStatus)      updateData.orderStatus      = orderStatus;
+    if (paymentStatus)    updateData.paymentStatus    = paymentStatus;
+    if (paymentReference) updateData.paymentReference = paymentReference;
+    if (paymentProvider)  updateData.paymentProvider  = paymentProvider;
+    if (paidAt)           updateData.paidAt           = new Date(paidAt);
+    if (trackingNumber)   updateData.trackingNumber   = trackingNumber;
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
@@ -73,11 +96,10 @@ export async function PATCH(request, props) {
       );
     }
 
-    // Find and update the order
     const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
+      id,
       { $set: updateData },
-      { new: true, runValidators: true } // return updated document and validate schemas
+      { new: true, runValidators: true }
     );
 
     if (!updatedOrder) {

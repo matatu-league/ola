@@ -1,330 +1,525 @@
 "use client";
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { 
-  ChevronRight, Star, Heart, Share2, Search, 
-  MessageCircle, ShieldCheck, ChevronLeft, Check, 
-  Shield, Truck, MapPin, Store, Link as LinkIcon,
-  ShoppingBag, ShoppingCart, X, AlertCircle, Minus, Plus
+import {
+  ChevronRight, Star, Heart, Share2, Search,
+  MessageCircle, ShieldCheck, ChevronLeft, Check,
+  Truck, X, AlertCircle, Minus, Plus,
+  ShoppingBag, ShoppingCart, MapPin, ExternalLink,
+  Package, Clock, Play, Volume2
 } from 'lucide-react';
 
-// 🔴 IMPORT CART CONTEXT
-import { useCart } from '@/contexts/CartContext';
+import { useCart }              from '@/contexts/CartContext';
+import ProductChatPopover      from '@/components/marketplace/MessagePopover';
+import { useUser } from '@/contexts/UserContext';
 
 export default function ProductDetails({ product }) {
   const router = useRouter();
-  const { addToCart } = useCart();
+  const { addToCart, openDrawer } = useCart();
+  const { user } = useUser();
 
+  // ── Image gallery ─────────────────────────────────────────────────────────
   const [activeImage, setActiveImage] = useState(0);
-  const [activeTab, setActiveTab] = useState('Attributes');
   const thumbnailRefs = useRef([]);
-  const popoverRef = useRef(null);
-  
-  const [quantity, setQuantity] = useState(1);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [pendingAction, setPendingAction] = useState(null); // 'cart' or 'buy'
-  const [modalError, setModalError] = useState('');
-  
-  const providedData = {
-    "_id": "6a06a5b5a8cf95484506cf99",
-    "owner": {
-        "_id": "69fd8303ffe395be6ef8f5c8",
-        "title": "Matatu's Store",
-        "domain": "gogo.ola.ug",
-        "contact": { "email": "rumbiiha.swaibu@gmail.com", "phone": "+256766389284" },
-        "verified": true,
-        "rating": 5,
-        "banner": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&h=200&fit=crop",
-        "location": { "address": "Kampala uganda" },
-        "years": 10,
-        "logo": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=200&h=200&fit=crop"
-    },
-    "breadcrumbs": ["Home", "Fashion", "Custom Logo White T-Shirt"],
-    "status": "Active",
-    "title": "Custom Logo White T-Shirt & Shorts Tracksuit Set Casual Summer Outfit",
-    "description": "Elevate your casual wardrobe with our premium customizable white t-shirt and shorts tracksuit set.",
-    "price": "6000",
-    "sold": 142,
-    "rating": 4.8,
-    "reviewsCount": 12,
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&fit=crop",
-    "images": [
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&fit=crop",
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&fit=crop",
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&fit=crop"
-    ],
-    "stock": 100,
-    "variants": [
-        { "type": "Color", "name": "red", "stock": 10, "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&fit=crop" },
-        { "type": "Color", "name": "green", "stock": 10, "image": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&fit=crop" },
-        { "type": "Size", "name": "M", "stock": 50 },
-        { "type": "Size", "name": "L", "stock": 50 }
-    ],
-    "attributes": [
-        { "name": "Material", "value": "Polyester Blend" },
-        { "name": "Color", "value": "White" }
-    ],
-    "packaging": { "sellingUnits": "Single item" },
-    "shipping": { "fee": "To be negotiated", "note": "Chat with supplier for delivery details." },
-    "reviewStats": { "average": 4.8, "total": 12 }
-  };
 
-  const safeProduct = product || providedData;
-
-  const baseImages = [safeProduct.image, ...(safeProduct.images || [])].filter(Boolean);
-  const variantImages = (safeProduct.variants || []).map(v => v.image).filter(Boolean);
+  const baseImages = [product.image, ...(product.images || [])].filter(Boolean);
+  const variantImages = (product.variants || []).map(v => v.image).filter(Boolean);
   const allImages = Array.from(new Set([...baseImages, ...variantImages]));
   if (allImages.length === 0) {
     allImages.push('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&fit=crop');
   }
-
   const currentImage = allImages[activeImage] || allImages[0];
 
-  const groupedVariants = useMemo(() => {
-    return safeProduct.variants?.reduce((acc, variant) => {
-      const vType = variant.type || 'Selection';
-      if (!acc[vType]) acc[vType] = [];
-      acc[vType].push(variant);
-      return acc;
-    }, {}) || {};
-  }, [safeProduct.variants]);
+  useEffect(() => {
+    thumbnailRefs.current[activeImage]?.scrollIntoView({
+      behavior: 'smooth', block: 'nearest', inline: 'center',
+    });
+  }, [activeImage]);
 
-  // INITIAL STATE IS EMPTY SO THEY HAVE TO CHOOSE (TRIGGERS MODAL LOGIC WELL)
+  // ── Tabs (static – no Video/Audio tabs) ──────────────────────────────────
+  const TABS = ['Attributes', 'Description', 'Reviews', 'Shipping', 'Supplier'];
+  const [activeTab, setActiveTab] = useState('Attributes');
+
+  // ── Media modals ─────────────────────────────────────────────────────────
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [audioModalOpen, setAudioModalOpen] = useState(false);
+  const hasVideo = !!product.videoDescription;
+  const hasAudio = !!product.audioDescription;
+
+  // ── Variants ──────────────────────────────────────────────────────────────
+  const groupedVariants = useMemo(() => {
+    return (product.variants || []).reduce((acc, v) => {
+      const t = v.type || 'Selection';
+      if (!acc[t]) acc[t] = [];
+      acc[t].push(v);
+      return acc;
+    }, {});
+  }, [product.variants]);
+
   const [selectedVariants, setSelectedVariants] = useState({});
 
   const handleVariantSelect = (type, variant) => {
     setSelectedVariants(prev => ({ ...prev, [type]: variant.name }));
-    setModalError(''); // Clear error if they select something inside modal
+    setModalError('');
     if (variant.image) {
-      const imgIndex = allImages.indexOf(variant.image);
-      if (imgIndex !== -1) setActiveImage(imgIndex);
+      const idx = allImages.indexOf(variant.image);
+      if (idx !== -1) setActiveImage(idx);
     }
   };
 
-  useEffect(() => {
-    if (thumbnailRefs.current[activeImage]) {
-      thumbnailRefs.current[activeImage].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  }, [activeImage]);
+  // ── Quantity ──────────────────────────────────────────────────────────────
+  const [quantity, setQuantity] = useState(1);
+  const maxStock = product.stock || 999;
 
-  // Handle clicking outside the compact popover to close it
+  // ── Variant selection popover ─────────────────────────────────────────────
+  const popoverRef    = useRef(null);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
+  const [modalError, setModalError]       = useState('');
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (popoverRef.current && !popoverRef.current.contains(e.target)) {
         setIsPopoverOpen(false);
       }
     };
-    if (isPopoverOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    if (isPopoverOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isPopoverOpen]);
 
-  // --- CART LOGIC ---
-  const handleActionClick = (actionType) => {
-    const hasVariants = Object.keys(groupedVariants).length > 0;
-    
-    // Check if variants exist and if any are missing
-    if (hasVariants) {
-      const missingTypes = Object.keys(groupedVariants).filter(type => !selectedVariants[type]);
-      
-      if (missingTypes.length > 0) {
-        // Show compact popover if they haven't selected variants
-        setPendingAction(actionType);
-        setIsPopoverOpen(true);
-        return;
-      }
-    }
+  const getMissingVariants = () =>
+    Object.keys(groupedVariants).filter(t => !selectedVariants[t]);
 
-    // If no variants, or everything is selected, execute immediately
+  const handleActionClick = (actionType) => {
+    const missing = getMissingVariants();
+    if (missing.length > 0) {
+      setPendingAction(actionType);
+      setIsPopoverOpen(true);
+      return;
+    }
     executeAction(actionType);
   };
 
   const executeAction = (actionType) => {
+    addToCart(product, quantity, selectedVariants);
+    setIsPopoverOpen(false);
     if (actionType === 'cart') {
-      addToCart(safeProduct, quantity, selectedVariants);
-      setIsPopoverOpen(false); // Drawer opens automatically via context
-    } else if (actionType === 'buy') {
-      addToCart(safeProduct, quantity, selectedVariants);
-      setIsPopoverOpen(false);
+      openDrawer();
+    } else {
       router.push('/checkout');
     }
   };
 
   const handlePopoverConfirm = () => {
-    const missingTypes = Object.keys(groupedVariants).filter(type => !selectedVariants[type]);
-    if (missingTypes.length > 0) {
-      setModalError(`Please select: ${missingTypes.join(', ')}`);
+    const missing = getMissingVariants();
+    if (missing.length > 0) {
+      setModalError(`Please select: ${missing.join(', ')}`);
       return;
     }
     setModalError('');
     executeAction(pendingAction);
   };
 
-  const tabs = ['Service', 'Attributes', 'Reviews', 'Supplier', 'Description'];
+  // ── Store data ────────────────────────────────────────────────────────────
+  const store = product.store;
+  const storeUrl = store?.domain ? `https://${store.domain}` : null;
+
+  // ── Price formatting ──────────────────────────────────────────────────────
+  const price = Number(product.price) || 0;
 
   return (
     <div className="bg-white min-h-screen pb-20 font-sans text-[#161823]">
 
-      {/* BREADCRUMBS */}
-      <div className="max-w-[1400px] mx-auto pt-4 pb-4 px-4 text-[12px] text-[#8A8B91] flex items-center gap-2 flex-wrap font-medium">
-        {safeProduct.breadcrumbs?.map((crumb, i) => (
+      {/* Breadcrumbs */}
+      <div className="max-w-[1400px] mx-auto pt-4 pb-3 px-4 text-[12px] text-[#8A8B91] flex items-center gap-1.5 flex-wrap font-medium">
+        <Link href="/" className="hover:text-[#FE2C55] transition-colors">Home</Link>
+        {(product.breadcrumbs || []).slice(1).map((crumb, i, arr) => (
           <React.Fragment key={i}>
-            <span className={`hover:text-[#FE2C55] cursor-pointer transition-colors ${i === safeProduct.breadcrumbs.length - 1 ? 'text-[#161823] font-bold' : ''}`}>
-              {crumb}
-            </span>
-            {i < safeProduct.breadcrumbs.length - 1 && <ChevronRight size={12} className="text-[#8A8B91]" />}
+            <ChevronRight size={11} className="text-[#C5C5C8]" />
+            {i < arr.length - 1 ? (
+              <Link
+                href={`/?category=${crumb.toLowerCase().replace(/\s+/g, '-')}`}
+                className="hover:text-[#FE2C55] transition-colors capitalize"
+              >
+                {crumb}
+              </Link>
+            ) : (
+              <span className="text-[#161823] font-semibold line-clamp-1 max-w-[200px]">{crumb}</span>
+            )}
           </React.Fragment>
         ))}
       </div>
 
       <div className="max-w-[1400px] mx-auto px-4 flex flex-col lg:flex-row items-start gap-4">
 
-        {/* LEFT COLUMN */}
-        <div className="flex-1 w-full lg:w-0 bg-white border border-[#E3E3E4] rounded-md overflow-hidden">
-          {/* Header Info */}
+        {/* ══════════════ LEFT COLUMN ══════════════ */}
+        <div className="flex-1 w-full lg:w-0 bg-white border border-[#E3E3E4] rounded-sm overflow-hidden">
+
+          {/* Header */}
           <div className="p-6 border-b border-[#E3E3E4]">
-            <h1 className="text-[20px] md:text-[24px] font-bold leading-snug mb-3 text-[#161823] tracking-tight">{safeProduct.title}</h1>
-            <div className="flex items-center flex-wrap gap-y-2 text-[13px] font-medium">
-              <div className="flex items-center mr-4">
-                <span className="font-bold mr-1.5 text-[#161823]">{safeProduct.reviewStats?.average?.toFixed(1) || '5.0'}</span>
-                <div className="flex mr-1.5 text-[#F5C400]">
+            <h1 className="text-[20px] md:text-[22px] font-bold leading-snug mb-3 text-[#161823] tracking-tight">
+              {product.title}
+            </h1>
+            <div className="flex items-center flex-wrap gap-y-2 gap-x-4 text-[13px] font-medium">
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-[#161823]">
+                  {product.reviewStats?.average?.toFixed(1) || '5.0'}
+                </span>
+                <div className="flex text-[#F5C400]">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill={i < Math.round(safeProduct.reviewStats?.average || 5) ? "currentColor" : "none"} stroke="currentColor" />
+                    <Star
+                      key={i}
+                      size={13}
+                      fill={i < Math.round(product.reviewStats?.average || 5) ? 'currentColor' : 'none'}
+                      stroke="currentColor"
+                    />
                   ))}
                 </div>
-                <span className="text-[#8A8B91] hover:text-[#161823] hover:underline cursor-pointer transition-colors">
-                  ({safeProduct.reviewStats?.total || 0} reviews)
-                </span>
+                <button
+                  onClick={() => setActiveTab('Reviews')}
+                  className="text-[#8A8B91] hover:text-[#161823] hover:underline transition-colors"
+                >
+                  ({product.reviewStats?.total || 0} reviews)
+                </button>
               </div>
-              <div className="text-[#8A8B91] mr-4">{safeProduct.sold || 0}+ sold</div>
-              <div className="flex items-center text-[#8A8B91]">
-                <ShieldCheck size={16} className="text-[#05C168] mr-1" />
+              <span className="text-[#8A8B91]">{product.sold || 0}+ sold</span>
+              <div className="flex items-center gap-1 text-[#8A8B91]">
+                <ShieldCheck size={14} className="text-[#05C168]" />
                 Trusted product
               </div>
             </div>
           </div>
 
-          {/* Image Gallery */}
-          <div className="p-6 flex flex-col md:flex-row gap-6 relative border-b border-[#E3E3E4]">
-            <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto w-full md:w-[70px] shrink-0 hide-scrollbar md:max-h-[450px] scroll-smooth">
+          {/* Image gallery with embedded video/audio previews */}
+          <div className="p-6 flex flex-col md:flex-row gap-5 border-b border-[#E3E3E4]">
+            {/* Thumbnails */}
+            <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto w-full md:w-[68px] shrink-0 hide-scrollbar md:max-h-[440px]">
               {allImages.map((img, i) => (
-                <div
+                <button
                   key={i}
-                  ref={(el) => (thumbnailRefs.current[i] = el)}
+                  ref={el => (thumbnailRefs.current[i] = el)}
                   onClick={() => setActiveImage(i)}
-                  className={`w-[70px] h-[70px] border cursor-pointer overflow-hidden shrink-0 transition-all rounded-sm ${activeImage === i ? 'border-[#161823] ring-1 ring-[#161823]' : 'border-[#E3E3E4] hover:border-[#8A8B91]'}`}
+                  className={`w-[68px] h-[68px] border shrink-0 overflow-hidden rounded-sm transition-all
+                    ${activeImage === i
+                      ? 'border-[#161823] ring-1 ring-[#161823]'
+                      : 'border-[#E3E3E4] hover:border-[#8A8B91]'}`}
                 >
-                  <img src={img} className="w-full h-full object-cover" alt={`Thumb ${i}`} />
-                </div>
+                  <img src={img} className="w-full h-full object-cover" alt={`View ${i + 1}`} />
+                </button>
               ))}
             </div>
 
-            <div className="flex-1 bg-[#F8F8F8] rounded-sm relative overflow-hidden flex items-center justify-center group h-[350px] md:h-[450px] border border-[#E3E3E4]">
-              <img src={currentImage} className="max-w-full max-h-full object-contain mix-blend-multiply" alt="Main Product" />
-              <div className="absolute top-4 right-4 flex flex-col gap-2">
-                <button className="w-10 h-10 bg-white border border-[#E3E3E4] flex items-center justify-center text-[#161823] hover:text-[#FE2C55] hover:border-[#FE2C55] transition-all rounded-full"><Heart size={18} /></button>
-                <button className="w-10 h-10 bg-white border border-[#E3E3E4] flex items-center justify-center text-[#161823] hover:text-[#FE2C55] hover:border-[#FE2C55] transition-all rounded-full"><Share2 size={18} /></button>
-                <button className="w-10 h-10 bg-white border border-[#E3E3E4] flex items-center justify-center text-[#161823] hover:text-[#FE2C55] hover:border-[#FE2C55] transition-all rounded-full"><Search size={18} /></button>
+            {/* Main image area */}
+            <div className="flex-1 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm relative overflow-hidden flex items-center justify-center group h-[340px] md:h-[440px]">
+              <img
+                src={currentImage}
+                className="max-w-full max-h-full object-contain mix-blend-multiply"
+                alt={product.title}
+              />
+
+              {/* Top-right action buttons */}
+              <div className="absolute top-3 right-3 flex flex-col gap-2">
+                {[
+                  { Icon: Heart,  label: 'Wishlist' },
+                  { Icon: Share2, label: 'Share'    },
+                  { Icon: Search, label: 'Zoom'     },
+                ].map(({ Icon, label }) => (
+                  <button
+                    key={label}
+                    aria-label={label}
+                    className="w-9 h-9 bg-white border border-[#E3E3E4] flex items-center justify-center text-[#161823] hover:text-[#FE2C55] hover:border-[#FE2C55] transition-all rounded-full shadow-sm"
+                  >
+                    <Icon size={16} />
+                  </button>
+                ))}
               </div>
+
+              {/* Navigation arrows */}
               {allImages.length > 1 && (
                 <>
-                  <button onClick={() => setActiveImage(prev => prev > 0 ? prev - 1 : allImages.length - 1)} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 border border-[#E3E3E4] flex items-center justify-center text-[#161823] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white rounded-full"><ChevronLeft size={20} /></button>
-                  <button onClick={() => setActiveImage(prev => prev < allImages.length - 1 ? prev + 1 : 0)} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 border border-[#E3E3E4] flex items-center justify-center text-[#161823] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white rounded-full"><ChevronRight size={20} /></button>
+                  <button
+                    onClick={() => setActiveImage(p => p > 0 ? p - 1 : allImages.length - 1)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/90 border border-[#E3E3E4] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full shadow-sm"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    onClick={() => setActiveImage(p => p < allImages.length - 1 ? p + 1 : 0)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/90 border border-[#E3E3E4] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full shadow-sm"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
                 </>
+              )}
+
+              {/* Image counter */}
+              <div className="absolute bottom-3 right-3 bg-black/50 text-white text-[11px] font-semibold px-2 py-0.5 rounded-full">
+                {activeImage + 1} / {allImages.length}
+              </div>
+
+              {/* ── Video & Audio Preview Segments (bottom bar) ────────── */}
+              {(hasVideo || hasAudio) && (
+                <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                  {hasVideo && (
+                    <button
+                      onClick={() => setVideoModalOpen(true)}
+                      className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm border border-[#E3E3E4] text-[#161823] hover:text-[#FE2C55] hover:border-[#FE2C55] font-medium text-[12px] px-3 py-1.5 rounded-full shadow-sm transition-colors"
+                    >
+                      <Play size={14} className="fill-current" /> Video
+                    </button>
+                  )}
+                  {hasAudio && (
+                    <button
+                      onClick={() => setAudioModalOpen(true)}
+                      className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm border border-[#E3E3E4] text-[#161823] hover:text-[#FE2C55] hover:border-[#FE2C55] font-medium text-[12px] px-3 py-1.5 rounded-full shadow-sm transition-colors"
+                    >
+                      <Volume2 size={14} /> Audio
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           </div>
 
-          {/* TABS */}
-          <div className="bg-white sticky top-0 z-40">
-            <div className="flex border-b border-[#E3E3E4] overflow-x-auto hide-scrollbar bg-white px-2">
-              {tabs.map(tab => (
+          {/* ── Tabs ───────────────────────────────────────────────────────── */}
+          <div>
+            <div className="flex border-b border-[#E3E3E4] overflow-x-auto hide-scrollbar px-2 bg-white">
+              {TABS.map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-4 text-[14px] font-bold whitespace-nowrap border-b-2 transition-colors ${activeTab === tab ? 'border-[#161823] text-[#161823]' : 'border-transparent text-[#8A8B91] hover:text-[#161823]'}`}
+                  className={`px-5 py-3.5 text-[13px] font-bold whitespace-nowrap border-b-2 transition-colors
+                    ${activeTab === tab
+                      ? 'border-[#161823] text-[#161823]'
+                      : 'border-transparent text-[#8A8B91] hover:text-[#161823]'}`}
                 >
                   {tab}
                 </button>
               ))}
             </div>
 
-            <div className="p-8">
-              <div className={activeTab === 'Attributes' ? 'block' : 'hidden'}>
-                <h3 className="font-bold text-[16px] mb-4 text-[#161823] flex items-center gap-2">
-                  <span className="w-1 h-4 bg-[#FE2C55] rounded-sm"></span> Key attributes
-                </h3>
-                {safeProduct.attributes && safeProduct.attributes.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 border-t border-l border-[#E3E3E4] text-[13px] rounded-sm overflow-hidden">
-                    {safeProduct.attributes.map((attr, i) => (
-                      <div key={i} className="flex border-b border-r border-[#E3E3E4]">
-                        <div className="w-[40%] bg-[#F8F8F8] p-3 text-[#8A8B91] font-semibold flex items-center">{attr.name}</div>
-                        <div className="w-[60%] bg-white p-3 text-[#161823] font-medium flex items-center">{attr.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-[#8A8B91] text-sm">No specific attributes listed.</p>
-                )}
-              </div>
+            <div className="p-6">
 
-              <div className={activeTab === 'Reviews' ? 'block' : 'hidden'}>
-                <div className="flex flex-col md:flex-row gap-8 mb-8 pb-8 border-b border-[#E3E3E4]">
-                  <div className="flex flex-col items-center justify-center shrink-0">
-                    <div className="text-[48px] font-bold text-[#161823] leading-none mb-2 tracking-tighter">
-                      {safeProduct.reviewStats?.average?.toFixed(1) || '5.0'}
+              {/* Attributes */}
+              {activeTab === 'Attributes' && (
+                <div>
+                  <h3 className="font-bold text-[15px] mb-4 text-[#161823] flex items-center gap-2">
+                    <span className="w-1 h-4 bg-[#FE2C55] rounded-sm" />
+                    Key Attributes
+                  </h3>
+                  {product.attributes?.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 border-t border-l border-[#E3E3E4] rounded-sm overflow-hidden text-[13px]">
+                      {product.attributes.map((attr, i) => (
+                        <div key={i} className="flex border-b border-r border-[#E3E3E4]">
+                          <div className="w-[40%] bg-[#F8F8F8] p-3 text-[#8A8B91] font-semibold">{attr.name}</div>
+                          <div className="w-[60%] bg-white p-3 text-[#161823] font-medium">{attr.value}</div>
+                        </div>
+                      ))}
+                      {product.packaging?.sellingUnits && (
+                        <div className="flex border-b border-r border-[#E3E3E4]">
+                          <div className="w-[40%] bg-[#F8F8F8] p-3 text-[#8A8B91] font-semibold">Selling Unit</div>
+                          <div className="w-[60%] bg-white p-3 text-[#161823] font-medium">{product.packaging.sellingUnits}</div>
+                        </div>
+                      )}
+                      {product.packaging?.packageSize && (
+                        <div className="flex border-b border-r border-[#E3E3E4]">
+                          <div className="w-[40%] bg-[#F8F8F8] p-3 text-[#8A8B91] font-semibold">Package Size</div>
+                          <div className="w-[60%] bg-white p-3 text-[#161823] font-medium">{product.packaging.packageSize}</div>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex mb-1 text-[#F5C400]">
-                      {[...Array(5)].map((_, i) => <Star key={i} size={16} fill={i < 5 ? "currentColor" : "none"} stroke="currentColor" />)}
+                  ) : (
+                    <p className="text-[#8A8B91] text-[13px]">No attributes listed.</p>
+                  )}
+                </div>
+              )}
+
+              {/* Description */}
+              {activeTab === 'Description' && (
+                <div>
+                  <h3 className="font-bold text-[15px] mb-4 text-[#161823] flex items-center gap-2">
+                    <span className="w-1 h-4 bg-[#FE2C55] rounded-sm" />
+                    Product Description
+                  </h3>
+                  <p className="text-[13px] text-[#161823] leading-relaxed whitespace-pre-line">
+                    {product.description || 'No description provided.'}
+                  </p>
+                </div>
+              )}
+
+              {/* Reviews */}
+              {activeTab === 'Reviews' && (
+                <div>
+                  <h3 className="font-bold text-[15px] mb-5 text-[#161823] flex items-center gap-2">
+                    <span className="w-1 h-4 bg-[#FE2C55] rounded-sm" />
+                    Customer Reviews
+                  </h3>
+                  <div className="flex items-center gap-6 mb-6 pb-6 border-b border-[#E3E3E4]">
+                    <div className="text-center">
+                      <div className="text-[48px] font-extrabold text-[#161823] leading-none mb-1">
+                        {product.reviewStats?.average?.toFixed(1) || '5.0'}
+                      </div>
+                      <div className="flex justify-center mb-1 text-[#F5C400]">
+                        {[...Array(5)].map((_, i) => <Star key={i} size={15} fill="currentColor" stroke="currentColor" />)}
+                      </div>
+                      <div className="text-[11px] text-[#8A8B91]">{product.reviewStats?.total || 0} reviews</div>
                     </div>
-                    <div className="text-[12px] text-[#8A8B91] font-medium">Overall Rating</div>
+                  </div>
+                  {product.reviews?.length > 0 ? (
+                    <div className="space-y-4">
+                      {product.reviews.map((review, i) => (
+                        <div key={i} className="border border-[#E3E3E4] rounded-sm p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="flex text-[#F5C400]">
+                              {[...Array(5)].map((_, j) => (
+                                <Star key={j} size={12} fill={j < review.rating ? 'currentColor' : 'none'} stroke="currentColor" />
+                              ))}
+                            </div>
+                            <span className="text-[12px] font-bold text-[#161823]">{review.reviewerName}</span>
+                            {review.reviewerCountry && (
+                              <span className="text-[11px] text-[#8A8B91]">{review.reviewerFlag} {review.reviewerCountry}</span>
+                            )}
+                          </div>
+                          <p className="text-[13px] text-[#161823]">{review.comment}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[13px] text-[#8A8B91]">No reviews yet. Be the first!</p>
+                  )}
+                </div>
+              )}
+
+              {/* Shipping */}
+              {activeTab === 'Shipping' && (
+                <div>
+                  <h3 className="font-bold text-[15px] mb-4 text-[#161823] flex items-center gap-2">
+                    <span className="w-1 h-4 bg-[#FE2C55] rounded-sm" />
+                    Shipping Information
+                  </h3>
+                  <div className="space-y-3 text-[13px]">
+                    <div className="flex items-start gap-3 p-3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm">
+                      <Truck size={15} className="text-[#FE2C55] mt-0.5 shrink-0" />
+                      <div>
+                        <p className="font-semibold text-[#161823] mb-0.5">Shipping Fee</p>
+                        <p className="text-[#8A8B91]">{product.shipping?.fee || 'To be negotiated'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm">
+                      <Clock size={15} className="text-[#FE2C55] mt-0.5 shrink-0" />
+                      <div>
+                        <p className="font-semibold text-[#161823] mb-0.5">Delivery Note</p>
+                        <p className="text-[#8A8B91]">{product.shipping?.note || 'Chat with supplier for details.'}</p>
+                      </div>
+                    </div>
+                    {store?.location?.address && (
+                      <div className="flex items-start gap-3 p-3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm">
+                        <MapPin size={15} className="text-[#FE2C55] mt-0.5 shrink-0" />
+                        <div>
+                          <p className="font-semibold text-[#161823] mb-0.5">Ships From</p>
+                          <p className="text-[#8A8B91]">{store.location.address}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-              
-              {['Service', 'Supplier', 'Description'].includes(activeTab) && (
-                <div className="py-10 text-center text-[#8A8B91] font-medium text-[14px] bg-[#F8F8F8] rounded-sm border border-dashed border-[#E3E3E4] max-w-[800px] mx-auto">
-                  {activeTab === 'Description' ? safeProduct.description : `Detailed ${activeTab.toLowerCase()} information will appear here.`}
+              )}
+
+              {/* Supplier */}
+              {activeTab === 'Supplier' && store && (
+                <div>
+                  <h3 className="font-bold text-[15px] mb-4 text-[#161823] flex items-center gap-2">
+                    <span className="w-1 h-4 bg-[#FE2C55] rounded-sm" />
+                    Supplier Information
+                  </h3>
+                  <div className="flex items-start gap-4 p-4 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm mb-4">
+                    {store.logo && (
+                      <img src={store.logo} alt={store.title} className="w-14 h-14 rounded-sm object-cover border border-[#E3E3E4] shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-bold text-[14px] text-[#161823]">{store.title}</span>
+                        {store.verified && (
+                          <Check size={11} strokeWidth={3} className="text-white bg-[#05C168] p-0.5 rounded-full shrink-0" />
+                        )}
+                      </div>
+                      {store.location?.address && (
+                        <p className="text-[12px] text-[#8A8B91] flex items-center gap-1">
+                          <MapPin size={11} /> {store.location.address}
+                        </p>
+                      )}
+                      <div className="flex gap-3 mt-1 text-[12px] text-[#8A8B91]">
+                        {store.years && <span>{store.years} yrs in business</span>}
+                        {store.rating && (
+                          <span className="flex items-center gap-0.5">
+                            <Star size={11} fill="currentColor" className="text-[#F5C400]" /> {store.rating}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <ProductChatPopover
+                      product={product}
+                      sellerId={product.userId?._id || product.userId}
+                    />
+                    {storeUrl && (
+                      <Link
+                        href={storeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-4 border border-[#E3E3E4] hover:border-[#161823] text-[#161823] text-[13px] font-semibold rounded-sm transition-colors"
+                      >
+                        <ExternalLink size={13} /> Visit Store
+                      </Link>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Sticky Sidebar */}
-        <div className="w-full lg:w-[480px] shrink-0 bg-white border border-[#E3E3E4] rounded-md lg:sticky lg:top-[16px] z-[60]">
+        {/* ══════════════ RIGHT COLUMN ══════════════ */}
+        <div className="w-full lg:w-[440px] shrink-0 bg-white border border-[#E3E3E4] rounded-sm lg:sticky lg:top-4 z-[60]">
 
-          {/* PRICING & ACTIONS */}
-          <div className="p-6 border-b border-[#E3E3E4]">
-            <div className="text-[13px] text-[#FE2C55] mb-1 font-bold tracking-tight">Wholesale Price</div>
-            <div className="text-[32px] font-extrabold text-[#161823] mb-6 tracking-tight leading-none">
-              USh {Number(safeProduct.price).toLocaleString()}
+          {/* Price + variants + actions */}
+          <div className="p-5 border-b border-[#E3E3E4]">
+            <p className="text-[11px] text-[#FE2C55] font-bold uppercase tracking-wide mb-1">Wholesale Price</p>
+            <div className="text-[30px] font-extrabold text-[#161823] mb-1 tracking-tight leading-none">
+              UGX {price.toLocaleString()}
             </div>
+            {product.moq && product.moq !== '1' && (
+              <p className="text-[12px] text-[#8A8B91] mb-4">Min. order: {product.moq} pieces</p>
+            )}
 
-            {/* VARIANTS ON PAGE */}
+            {/* Variants */}
             {Object.keys(groupedVariants).length > 0 && (
-              <div className="mb-6 space-y-6">
+              <div className="mb-5 space-y-5">
                 {Object.entries(groupedVariants).map(([type, options]) => (
-                  <div key={type} className="flex flex-col gap-2.5">
-                    <div className="flex justify-between items-center text-[13px]">
-                      <span className="font-bold text-[#161823]">{type}</span>
-                      <span className="text-[#8A8B91] font-medium text-[12px]">{options.length} Options</span>
+                  <div key={type}>
+                    <div className="flex justify-between items-center mb-2.5">
+                      <span className="text-[13px] font-bold text-[#161823]">{type}</span>
+                      <span className="text-[11px] text-[#8A8B91]">{options.length} options</span>
                     </div>
-                    <div className="flex flex-wrap gap-2.5">
-                      {options.map((variant, i) => (
+                    <div className="flex flex-wrap gap-2">
+                      {options.map((v, i) => (
                         <button
                           key={i}
-                          onClick={() => handleVariantSelect(type, variant)}
-                          className={`flex items-center gap-3 p-1.5 pr-4 border transition-all rounded-sm outline-none ${selectedVariants[type] === variant.name ? 'border-[#161823] text-[#161823] font-bold ring-1 ring-[#161823] bg-white' : 'border-[#E3E3E4] text-[#161823] font-medium hover:border-[#161823] bg-[#F8F8F8]'}`}
+                          onClick={() => handleVariantSelect(type, v)}
+                          className={`flex items-center gap-2.5 p-1.5 pr-3.5 border rounded-sm transition-all text-[13px]
+                            ${selectedVariants[type] === v.name
+                              ? 'border-[#161823] ring-1 ring-[#161823] font-bold bg-white'
+                              : 'border-[#E3E3E4] font-medium hover:border-[#161823] bg-[#F8F8F8]'}`}
                         >
-                          {variant.image && (
-                            <div className="w-12 h-12 shrink-0 bg-white border border-[#E3E3E4] rounded-sm overflow-hidden">
-                              <img src={variant.image} alt={variant.name} className="w-full h-full object-cover" />
+                          {v.image && (
+                            <div className="w-11 h-11 shrink-0 bg-white border border-[#E3E3E4] rounded-sm overflow-hidden">
+                              <img src={v.image} alt={v.name} className="w-full h-full object-cover" />
                             </div>
                           )}
-                          <span className="text-[13px]">{variant.name}</span>
+                          {v.name}
                         </button>
                       ))}
                     </div>
@@ -333,92 +528,91 @@ export default function ProductDetails({ product }) {
               </div>
             )}
 
-            {/* QUANTITY SELECTOR */}
-            <div className="mb-6">
-              <span className="block font-bold text-[#161823] text-[13px] mb-2.5">Quantity</span>
+            {/* Quantity */}
+            <div className="mb-5">
+              <span className="block font-bold text-[#161823] text-[13px] mb-2">Quantity</span>
               <div className="flex items-center gap-3">
-                <div className="flex items-center border border-[#E3E3E4] rounded-md overflow-hidden h-10 w-[130px] bg-white focus-within:border-[#161823] transition-colors">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))} 
+                <div className="flex items-center border border-[#E3E3E4] rounded-sm overflow-hidden h-10 w-[120px] bg-white focus-within:border-[#161823] transition-colors">
+                  <button
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
                     disabled={quantity <= 1}
-                    className="w-10 h-full flex items-center justify-center text-[#161823] hover:bg-[#F8F8F8] transition-colors disabled:opacity-40 disabled:hover:bg-white"
+                    className="w-10 h-full flex items-center justify-center hover:bg-[#F8F8F8] transition-colors disabled:opacity-40"
                   >
-                    <Minus size={16} strokeWidth={2} />
+                    <Minus size={15} strokeWidth={2} />
                   </button>
-                  <input 
-                    type="text" 
-                    value={quantity} 
-                    readOnly 
-                    className="flex-1 w-full text-center text-[#161823] font-bold text-[14px] outline-none bg-white border-x border-[#E3E3E4] h-full" 
-                  />
-                  <button 
-                    onClick={() => setQuantity(quantity + 1)} 
-                    className="w-10 h-full flex items-center justify-center text-[#161823] hover:bg-[#F8F8F8] transition-colors"
+                  <span className="flex-1 text-center text-[#161823] font-bold text-[14px] border-x border-[#E3E3E4]">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(q => Math.min(maxStock, q + 1))}
+                    disabled={quantity >= maxStock}
+                    className="w-10 h-full flex items-center justify-center hover:bg-[#F8F8F8] transition-colors disabled:opacity-40"
                   >
-                    <Plus size={16} strokeWidth={2} />
+                    <Plus size={15} strokeWidth={2} />
                   </button>
                 </div>
-                <span className="text-[12px] text-[#8A8B91] font-medium">{safeProduct.stock || 100} pieces available</span>
+                <span className="text-[12px] text-[#8A8B91] flex items-center gap-1">
+                  <Package size={12} /> {maxStock} available
+                </span>
               </div>
             </div>
 
-            {/* DUAL BUTTONS & COMPACT POPOVER */}
+            {/* Action buttons + variant popover */}
             <div className="relative" ref={popoverRef}>
-              <div className="flex gap-3">
-                <button 
+              <div className="flex gap-2.5">
+                <button
                   onClick={() => handleActionClick('cart')}
-                  className="flex-1 bg-white border-2 border-[#FE2C55] text-[#FE2C55] hover:bg-[#FFF0F3] font-bold py-3 text-[14px] rounded-sm transition-colors flex justify-center items-center gap-2 tracking-tight"
+                  className="flex-1 bg-white border-2 border-[#FE2C55] text-[#FE2C55] hover:bg-[#FFF0F3] font-bold py-2.5 text-[13px] rounded-sm transition-colors flex justify-center items-center gap-1.5 tracking-tight"
                 >
-                  <ShoppingCart size={16} /> Add to Cart
+                  <ShoppingCart size={15} /> Add to Cart
                 </button>
-                <button 
+                <button
                   onClick={() => handleActionClick('buy')}
-                  className="flex-1 bg-[#FE2C55] hover:bg-[#EF2950] text-white font-bold py-3 text-[14px] rounded-sm transition-colors flex justify-center items-center gap-2 tracking-tight"
+                  className="flex-1 bg-[#FE2C55] hover:bg-[#e0264b] text-white font-bold py-2.5 text-[13px] rounded-sm transition-colors flex justify-center items-center gap-1.5 tracking-tight"
                 >
-                  <ShoppingBag size={16} /> Buy Now
+                  <ShoppingBag size={15} /> Buy Now
                 </button>
               </div>
 
-              {/* COMPACT ANT DESIGN POPOVER (Anchored right under buttons) */}
+              {/* Variant selection popover */}
               {isPopoverOpen && (
-                <div 
-                  className="absolute top-full left-0 mt-3 w-full bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#E3E3E4] z-[100]"
-                  style={{ animation: 'popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                <div
+                  className="absolute top-full left-0 mt-3 w-full bg-white rounded-sm shadow-xl border border-[#E3E3E4] z-[100]"
+                  style={{ animation: 'popoverFadeIn 0.18s cubic-bezier(0.16,1,0.3,1)' }}
                 >
-                  {/* Upward pointing triangle caret */}
-                  <div className="absolute -top-1.5 left-12 w-3 h-3 bg-white border-t border-l border-[#E3E3E4] transform rotate-45"></div>
-                  
-                  <div className="p-5 relative z-10">
-                    <div className="flex justify-between items-center mb-4 border-b border-[#f0f0f0] pb-3">
-                      <h4 className="text-[14px] font-bold text-[#161823] flex items-center gap-2">
-                        <AlertCircle size={16} className="text-[#FE2C55]" /> 
+                  <div className="absolute -top-[7px] left-10 w-3.5 h-3.5 bg-white border-t border-l border-[#E3E3E4] rotate-45" />
+                  <div className="p-4 relative z-10">
+                    <div className="flex justify-between items-center mb-3 pb-3 border-b border-[#E3E3E4]">
+                      <h4 className="text-[13px] font-bold text-[#161823] flex items-center gap-1.5">
+                        <AlertCircle size={14} className="text-[#FE2C55]" />
                         Select options to continue
                       </h4>
-                      <button onClick={() => setIsPopoverOpen(false)} className="text-[#8A8B91] hover:text-[#161823] transition-colors p-1">
-                        <X size={16} />
+                      <button
+                        onClick={() => setIsPopoverOpen(false)}
+                        className="text-[#8A8B91] hover:text-[#161823] transition-colors"
+                      >
+                        <X size={15} />
                       </button>
                     </div>
 
-                    <div className="max-h-[250px] overflow-y-auto custom-scrollbar pr-2 mb-4">
-                      {/* Variant Choices */}
+                    <div className="max-h-[220px] overflow-y-auto custom-scrollbar pr-1 mb-3 space-y-4">
                       {Object.entries(groupedVariants).map(([type, options]) => (
-                        <div key={type} className="mb-4 last:mb-0">
-                          <div className="flex items-center gap-1.5 mb-2">
+                        <div key={type}>
+                          <div className="flex items-center gap-1 mb-2">
                             <span className="text-[#FE2C55] font-bold text-[12px]">*</span>
-                            <h5 className="text-[12px] text-[#161823] font-bold">{type}</h5>
+                            <span className="text-[12px] text-[#161823] font-bold">{type}</span>
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            {options.map((variant, i) => (
+                          <div className="flex flex-wrap gap-1.5">
+                            {options.map((v, i) => (
                               <button
                                 key={i}
-                                onClick={() => handleVariantSelect(type, variant)}
-                                className={`px-3 py-1.5 text-[12px] rounded-sm border transition-all font-medium ${
-                                  selectedVariants[type] === variant.name
-                                    ? 'border-[#FE2C55] text-[#FE2C55] bg-[#FFF0F3] shadow-[0_0_0_1px_#FE2C55]' 
-                                    : 'border-[#E3E3E4] text-[#161823] bg-[#F8F8F8] hover:border-[#161823] hover:bg-white'
-                                }`}
+                                onClick={() => handleVariantSelect(type, v)}
+                                className={`px-3 py-1.5 text-[12px] rounded-sm border transition-all font-medium
+                                  ${selectedVariants[type] === v.name
+                                    ? 'border-[#FE2C55] text-[#FE2C55] bg-[#FFF0F3] ring-1 ring-[#FE2C55]'
+                                    : 'border-[#E3E3E4] text-[#161823] bg-[#F8F8F8] hover:border-[#161823]'}`}
                               >
-                                {variant.name}
+                                {v.name}
                               </button>
                             ))}
                           </div>
@@ -427,16 +621,16 @@ export default function ProductDetails({ product }) {
                     </div>
 
                     {modalError && (
-                      <div className="text-[12px] text-[#FE2C55] mb-3 font-medium bg-[#FFF0F3] p-2 rounded-sm border border-[#FE2C55]/20">
+                      <p className="text-[11px] text-[#FE2C55] mb-2.5 bg-[#FFF0F3] border border-[#FE2C55]/30 p-2 rounded-sm font-medium">
                         {modalError}
-                      </div>
+                      </p>
                     )}
 
-                    <button 
+                    <button
                       onClick={handlePopoverConfirm}
-                      className="w-full py-2.5 rounded-sm text-[13px] font-bold text-white bg-[#FE2C55] hover:bg-[#EF2950] transition-colors flex items-center justify-center gap-2 shadow-[#FE2C55]/20"
+                      className="w-full py-2.5 rounded-sm text-[13px] font-bold text-white bg-[#FE2C55] hover:bg-[#e0264b] transition-colors flex items-center justify-center gap-1.5"
                     >
-                      <Check size={14} /> Confirm Selection
+                      <Check size={13} /> Confirm & Continue
                     </button>
                   </div>
                 </div>
@@ -444,34 +638,79 @@ export default function ProductDetails({ product }) {
             </div>
           </div>
 
-          {/* SHIPPING & STORE (Rest of UI maintained) */}
-          <div className="p-6 border-b border-[#E3E3E4]">
-            <h4 className="text-[14px] font-bold mb-4 text-[#161823] flex items-center gap-2">
-              <Truck size={18} className="text-[#FE2C55]" /> Shipping & Delivery
-            </h4>
-            <div className="bg-[#F8F8F8] text-[#161823] p-3 rounded-sm text-[12px] font-medium flex items-start gap-2 border border-[#E3E3E4]">
-              <MessageCircle size={14} className="shrink-0 mt-0.5 text-[#FE2C55]" />
-              {safeProduct.shipping?.note || 'Shipping cost depends on volume and destination.'}
+          {/* Shipping note */}
+          <div className="px-5 py-4 border-b border-[#E3E3E4]">
+            <div className="flex items-start gap-2 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm p-3 text-[12px]">
+              <Truck size={13} className="text-[#FE2C55] shrink-0 mt-0.5" />
+              <span className="text-[#8A8B91]">
+                {product.shipping?.note || 'Chat with supplier for shipping details.'}
+              </span>
             </div>
           </div>
 
-          {safeProduct.owner && (
-            <div className="rounded-b-md overflow-hidden">
-              <div className="relative h-[90px] bg-[#F8F8F8]">
-                <img src={safeProduct.owner.banner} className="w-full h-full object-cover" alt="Store Banner" onError={e => { e.target.style.display = 'none'; }} />
-                <div className="absolute -bottom-5 left-5 w-[52px] h-[52px] bg-white border-2 border-white rounded-md shadow-md flex items-center justify-center overflow-hidden">
-                  <img src={safeProduct.owner.logo} className="w-full h-full object-cover" alt="Store Logo" />
+          {/* Store card */}
+          {store && (
+            <div className="rounded-b-sm overflow-hidden">
+              {/* Banner */}
+              <div className="relative h-[80px] bg-[#F8F8F8]">
+                {store.banner && (
+                  <img
+                    src={store.banner}
+                    className="w-full h-full object-cover"
+                    alt={`${store.title} banner`}
+                  />
+                )}
+                {/* Logo */}
+                <div className="absolute -bottom-5 left-4 w-[48px] h-[48px] bg-white border-2 border-white rounded-sm shadow-md overflow-hidden">
+                  {store.logo
+                    ? <img src={store.logo} className="w-full h-full object-cover" alt={store.title} />
+                    : <div className="w-full h-full bg-[#161823] flex items-center justify-center text-white text-[14px] font-bold">
+                        {store.title?.slice(0, 2).toUpperCase()}
+                      </div>
+                  }
                 </div>
               </div>
-              <div className="pt-8 px-5 pb-5">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-bold text-[15px] text-[#161823]">{safeProduct.owner.title}</span>
-                  {safeProduct.owner.verified && <Check size={12} strokeWidth={3} className="text-white bg-[#05C168] p-0.5 rounded-full shrink-0" />}
+
+              <div className="pt-8 px-4 pb-4">
+                {/* Store name + verified */}
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="font-bold text-[14px] text-[#161823]">{store.title || 'Independent Seller'}</span>
+                  {store.verified && (
+                    <Check size={11} strokeWidth={3} className="text-white bg-[#05C168] p-0.5 rounded-full shrink-0" />
+                  )}
                 </div>
-                <div className="flex flex-col gap-2.5 mt-4">
-                  <a href="#" className="w-full bg-[#161823] hover:bg-[#2a2b35] text-white font-bold py-2.5 text-[13px] rounded-sm transition-colors flex justify-center items-center gap-2 no-underline tracking-tight">
-                    <MessageCircle size={15} /> Chat Now
-                  </a>
+
+                {/* Store meta */}
+                <div className="flex flex-wrap gap-x-3 gap-y-0.5 mb-4 text-[11px] text-[#8A8B91]">
+                  {store.years && <span>{store.years} yrs</span>}
+                  {store.rating && (
+                    <span className="flex items-center gap-0.5">
+                      <Star size={10} fill="currentColor" className="text-[#F5C400]" /> {store.rating}
+                    </span>
+                  )}
+                  {store.location?.address && (
+                    <span className="flex items-center gap-0.5">
+                      <MapPin size={10} /> {store.location.address}
+                    </span>
+                  )}
+                </div>
+
+                {/* CTA buttons */}
+                <div className="flex gap-2">
+                  <ProductChatPopover
+                    product={product}
+                    sellerId={product.userId?._id || product.userId}
+                  />
+                  {storeUrl && (
+                    <Link
+                      href={storeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 border border-[#E3E3E4] hover:border-[#161823] text-[#161823] text-[12px] font-semibold rounded-sm transition-colors"
+                    >
+                      <ExternalLink size={12} /> Visit Store
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -479,14 +718,92 @@ export default function ProductDetails({ product }) {
         </div>
       </div>
 
+      {/* Recommendations */}
+      {product.recommendations?.length > 0 && (
+        <div className="max-w-[1400px] mx-auto px-4 mt-8">
+          <h2 className="text-[17px] font-bold text-[#161823] mb-4 flex items-center gap-2">
+            <span className="w-1 h-5 bg-[#FE2C55] rounded-sm" />
+            Similar Products
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {product.recommendations.map(rec => (
+              <Link
+                key={rec._id}
+                href={`/products/${rec._id}`}
+                className="bg-white border border-[#E3E3E4] rounded-sm overflow-hidden hover:border-[#161823] hover:shadow-sm transition-all group"
+              >
+                <div className="aspect-square bg-[#F8F8F8] overflow-hidden">
+                  <img
+                    src={rec.image || rec.images?.[0]}
+                    alt={rec.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-2.5">
+                  <p className="text-[11px] font-semibold text-[#161823] line-clamp-2 leading-tight mb-1">{rec.title}</p>
+                  <p className="text-[12px] font-bold text-[#FE2C55]">UGX {Number(rec.price).toLocaleString()}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Video Modal ────────────────────────────────────────────────────── */}
+      {videoModalOpen && hasVideo && (
+        <div className="fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative bg-white rounded-sm shadow-2xl max-w-4xl w-full p-4">
+            <button
+              onClick={() => setVideoModalOpen(false)}
+              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white border border-[#E3E3E4] rounded-full text-[#161823] hover:text-[#FE2C55] z-10"
+            >
+              <X size={18} />
+            </button>
+            <video
+              controls
+              autoPlay
+              className="w-full rounded-sm"
+              poster={product.image || allImages[0]}
+              style={{ maxHeight: '70vh' }}
+            >
+              <source src={product.videoDescription} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      )}
+
+      {/* ── Audio Modal ────────────────────────────────────────────────────── */}
+      {audioModalOpen && hasAudio && (
+        <div className="fixed inset-0 z-[200] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative bg-white rounded-sm shadow-2xl max-w-md w-full p-6 text-center">
+            <button
+              onClick={() => setAudioModalOpen(false)}
+              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-white border border-[#E3E3E4] rounded-full text-[#161823] hover:text-[#FE2C55] z-10"
+            >
+              <X size={18} />
+            </button>
+            <Volume2 size={40} className="text-[#FE2C55] mx-auto mb-4" />
+            <h4 className="font-bold text-[16px] mb-4">Audio Description</h4>
+            <audio controls autoPlay className="w-full mb-2">
+              <source src={product.audioDescription} type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+            <p className="text-[12px] text-[#8A8B91]">
+              You can listen to the product details.
+            </p>
+          </div>
+        </div>
+      )}
+
       <style>{`
         @keyframes popoverFadeIn {
-          from { transform: translateY(-8px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+          from { transform: translateY(-6px); opacity: 0; }
+          to   { transform: translateY(0);    opacity: 1; }
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #F8F8F8; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #E3E3E4; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #8A8B91; }

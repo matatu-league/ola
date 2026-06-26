@@ -53,24 +53,26 @@ const INITIAL_SETTINGS = {
   googleBusiness: { connected: false, status: 'none' },
 };
 
-const FlatToggle = ({ enabled, onChange, label, description, disabled = false }) => (
-  <div className={`flex items-start justify-between py-3 border-b border-[#E3E3E4] last:border-0 last:pb-0 ${disabled ? 'opacity-50' : ''}`}>
+const FlatToggle = ({ enabled, onChange, label, description, disabled = false, isDanger = false }) => (
+  <div className={`flex items-start justify-between py-3 border-b border-gray-200 last:border-0 last:pb-0 ${disabled ? 'opacity-50' : ''}`}>
     <div className="pr-4">
-      <h4 className="text-[13px] font-semibold text-[#161823]">{label}</h4>
-      {description && <p className="text-[11px] text-[#8A8B91] mt-0.5">{description}</p>}
+      <h4 className="text-sm font-semibold text-black">{label}</h4>
+      {description && <p className="text-xs text-gray-500 mt-0.5">{description}</p>}
     </div>
     <button
       type="button"
       disabled={disabled}
       onClick={() => onChange(!enabled)}
-      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center justify-center rounded-sm border transition-colors duration-200 ease-in-out outline-none ${
-        enabled ? 'bg-[#161823] border-[#161823]' : 'bg-[#F8F8F8] border-[#E3E3E4]'
-      } ${disabled ? 'cursor-not-allowed' : ''}`}
+      className={`relative inline-flex items-center cursor-pointer ${disabled ? 'cursor-not-allowed' : ''}`}
     >
       <span className="sr-only">Toggle setting</span>
-      <span className={`pointer-events-none inline-block h-3.5 w-3.5 transform rounded-sm bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-        enabled ? 'translate-x-2' : '-translate-x-2'
-      }`} />
+      <div className={`w-9 h-5 rounded-none transition-colors duration-200 ease-in-out ${
+        isDanger ? (enabled ? 'bg-red-500' : 'bg-gray-200') : (enabled ? 'bg-blue-600' : 'bg-gray-200')
+      }`}>
+        <div className={`absolute top-[2px] left-[2px] bg-white rounded-none h-4 w-4 transition-all duration-200 ease-in-out ${
+          enabled ? 'translate-x-4' : 'translate-x-0'
+        }`} />
+      </div>
     </button>
   </div>
 );
@@ -89,7 +91,6 @@ export default function StoreSettingsPage() {
     libraries: MAPS_LIBRARIES,
   });
 
-  // Fetch & map nested DB schema → flat UI state
   useEffect(() => {
     async function fetchSettings() {
       try {
@@ -136,7 +137,6 @@ export default function StoreSettingsPage() {
     fetchSettings();
   }, []);
 
-  // Map flat UI state → nested DB schema and save
   const handleSave = async () => {
     setIsSaving(true);
     setMessage({ type: '', text: '' });
@@ -262,24 +262,23 @@ export default function StoreSettingsPage() {
   if (isLoading) {
     return (
       <div className="w-full min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="animate-spin text-[#161823]" size={32} />
+        <Loader2 className="animate-spin text-black" size={32} />
       </div>
     );
   }
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full">
-
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen p-4 sm:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-xl font-bold text-[#161823] tracking-tight">Store Settings</h1>
-          <p className="text-[13px] text-[#8A8B91] mt-0.5">Manage payments, shipping, hours, and more.</p>
+          <h1 className="text-xl font-bold tracking-tight">Store Settings</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage payments, shipping, hours, and more.</p>
         </div>
         <button
           type="button"
           onClick={handleSave}
           disabled={isSaving}
-          className="flex items-center justify-center gap-1.5 px-6 py-2.5 bg-[#FE2C55] rounded-sm text-[13px] font-semibold text-white hover:bg-[#e0264b] transition-colors disabled:opacity-70 shrink-0"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-none font-semibold text-sm transition-colors flex items-center gap-2 disabled:opacity-50"
         >
           {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
           {isSaving ? 'Saving...' : 'Save Changes'}
@@ -287,10 +286,10 @@ export default function StoreSettingsPage() {
       </div>
 
       {message.text && (
-        <div className={`mb-6 px-4 py-3 rounded-sm text-[13px] font-semibold border flex items-center gap-2 ${
+        <div className={`mb-6 px-4 py-3 rounded-none border text-sm font-semibold flex items-center gap-2 ${
           message.type === 'success'
-            ? 'bg-[#E6F4EA] text-[#16A34A] border-[#16A34A]/20'
-            : 'bg-[#FEE2E2] text-[#FE2C55] border-[#FE2C55]/20'
+            ? 'bg-green-50 border-green-200 text-green-600'
+            : 'bg-red-50 border-red-200 text-red-500'
         }`}>
           {message.type === 'success' && <CheckCircle2 size={16} />}
           {message.text}
@@ -300,20 +299,20 @@ export default function StoreSettingsPage() {
       <div className="flex flex-col md:flex-row gap-6 w-full">
 
         {/* Sidebar Nav */}
-        <div className="w-full md:w-[240px] shrink-0">
-          <div className="bg-white border border-[#E3E3E4] rounded-sm overflow-hidden flex flex-row md:flex-col overflow-x-auto hide-scrollbar">
+        <div className="w-full md:w-64 shrink-0">
+          <div className="bg-white border border-gray-200 rounded-none overflow-hidden flex flex-row md:flex-col overflow-x-auto">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-3 px-4 py-3.5 text-[13px] font-semibold transition-colors border-b border-[#E3E3E4] last:border-0 whitespace-nowrap md:whitespace-normal text-left border-l-2 ${
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-semibold transition-colors border-b border-gray-200 last:border-0 whitespace-nowrap md:whitespace-normal text-left border-l-4 ${
                   activeTab === tab.id
-                    ? 'bg-[#F8F8F8] text-[#161823] border-l-[#161823]'
-                    : 'bg-white text-[#8A8B91] hover:bg-[#F8F8F8] hover:text-[#161823] border-l-transparent'
+                    ? 'bg-gray-50 text-black border-l-blue-600'
+                    : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-black border-l-transparent'
                 }`}
               >
-                <tab.icon size={16} className={activeTab === tab.id ? 'text-[#161823]' : 'text-[#8A8B91]'} />
+                <tab.icon size={16} className={activeTab === tab.id ? 'text-blue-600' : 'text-gray-400'} />
                 {tab.label}
               </button>
             ))}
@@ -325,12 +324,15 @@ export default function StoreSettingsPage() {
 
           {/* PAYMENTS */}
           {activeTab === 'payments' && (
-            <div className="animate-in fade-in duration-300 space-y-6">
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-1">Payout Method</h3>
-                <p className="text-[12px] text-[#8A8B91] mb-5">Choose how you want to receive your earnings.</p>
+            <div className="space-y-6">
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <CreditCard size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Payout Method</h2>
+                </div>
+                <p className="text-sm text-gray-500 mb-5">Choose how you want to receive your earnings.</p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   {[
                     { value: 'mobile_money', icon: Smartphone, label: 'Mobile Money', desc: 'MTN MoMo or Airtel Money' },
                     { value: 'bank',         icon: Building2,  label: 'Bank Transfer', desc: 'EFT direct deposit' },
@@ -338,36 +340,36 @@ export default function StoreSettingsPage() {
                     <div
                       key={value}
                       onClick={() => set('payoutMethod', value)}
-                      className={`border rounded-sm p-4 cursor-pointer transition-colors ${
+                      className={`border rounded-none p-4 cursor-pointer transition-colors ${
                         settings.payoutMethod === value
-                          ? 'border-[#161823] bg-[#F8F8F8]'
-                          : 'border-[#E3E3E4] hover:border-[#8A8B91]'
+                          ? 'border-blue-600 bg-blue-50'
+                          : 'border-gray-200 hover:border-gray-500'
                       }`}
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <Icon size={18} className={settings.payoutMethod === value ? 'text-[#161823]' : 'text-[#8A8B91]'} />
-                        {settings.payoutMethod === value && <CheckCircle2 size={16} className="text-[#161823]" />}
+                        <Icon size={18} className={settings.payoutMethod === value ? 'text-blue-600' : 'text-gray-500'} />
+                        {settings.payoutMethod === value && <CheckCircle2 size={16} className="text-blue-600" />}
                       </div>
-                      <h4 className="text-[13px] font-bold text-[#161823]">{label}</h4>
-                      <p className="text-[11px] text-[#8A8B91] mt-0.5">{desc}</p>
+                      <h4 className="text-sm font-bold text-black">{label}</h4>
+                      <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
                     </div>
                   ))}
                 </div>
 
                 {settings.payoutMethod === 'mobile_money' && (
-                  <div className="space-y-4 pt-4 border-t border-[#E3E3E4]">
+                  <div className="space-y-4 pt-4 border-t border-gray-200">
                     {[
                       { label: 'Mobile Money Phone Number', key: 'mobileMoneyNumber', placeholder: 'e.g. +256 770 000 000' },
                       { label: 'Registered Account Name',   key: 'mobileMoneyName',   placeholder: 'e.g. JOHN DOE' },
                     ].map(({ label, key, placeholder }) => (
                       <div key={key}>
-                        <label className="text-[12px] font-semibold text-[#161823] mb-1.5 block">{label}</label>
+                        <label className="text-sm font-semibold text-black mb-1.5 block">{label}</label>
                         <input
                           type="text"
                           value={settings[key]}
                           placeholder={placeholder}
                           onChange={(e) => set(key, e.target.value)}
-                          className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] text-[#161823] focus:border-[#161823] focus:bg-white transition-colors outline-none"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-none px-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors"
                         />
                       </div>
                     ))}
@@ -375,19 +377,19 @@ export default function StoreSettingsPage() {
                 )}
 
                 {settings.payoutMethod === 'bank' && (
-                  <div className="space-y-4 pt-4 border-t border-[#E3E3E4]">
+                  <div className="space-y-4 pt-4 border-t border-gray-200">
                     {[
                       { label: 'Bank Name',       key: 'bankName',    placeholder: 'e.g. Stanbic Bank' },
                       { label: 'Account Number',  key: 'bankAccount', placeholder: 'e.g. 9030001234567' },
                     ].map(({ label, key, placeholder }) => (
                       <div key={key}>
-                        <label className="text-[12px] font-semibold text-[#161823] mb-1.5 block">{label}</label>
+                        <label className="text-sm font-semibold text-black mb-1.5 block">{label}</label>
                         <input
                           type="text"
                           value={settings[key]}
                           placeholder={placeholder}
                           onChange={(e) => set(key, e.target.value)}
-                          className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] text-[#161823] focus:border-[#161823] focus:bg-white transition-colors outline-none"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-none px-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors"
                         />
                       </div>
                     ))}
@@ -395,12 +397,15 @@ export default function StoreSettingsPage() {
                 )}
               </div>
 
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">Payout Schedule</h3>
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Clock size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Payout Schedule</h2>
+                </div>
                 <select
                   value={settings.payoutSchedule}
                   onChange={(e) => set('payoutSchedule', e.target.value)}
-                  className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] text-[#161823] font-semibold focus:border-[#161823] outline-none"
+                  className="w-full bg-gray-50 border border-gray-300 rounded-none px-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors appearance-none"
                 >
                   <option value="daily">Daily</option>
                   <option value="weekly">Weekly (Every Monday)</option>
@@ -414,23 +419,26 @@ export default function StoreSettingsPage() {
           {/* SHIPPING */}
           {activeTab === 'shipping' && (
             <div className="animate-in fade-in duration-300">
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">Shipping Rules</h3>
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Truck size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Shipping Rules</h2>
+                </div>
                 <div className="space-y-5">
                   {[
                     { label: 'Flat Rate',               key: 'flatRate',              placeholder: '5000' },
                     { label: 'Free Shipping Threshold', key: 'freeShippingThreshold', placeholder: '150000' },
                   ].map(({ label, key, placeholder }) => (
                     <div key={key}>
-                      <label className="text-[12px] font-semibold text-[#161823] mb-1.5 block">{label}</label>
+                      <label className="text-sm font-semibold text-black mb-1.5 block">{label}</label>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8B91] text-[13px] font-semibold">UGX</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-semibold">UGX</span>
                         <input
                           type="number"
                           value={settings[key]}
                           placeholder={placeholder}
                           onChange={(e) => set(key, e.target.value)}
-                          className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm pl-14 pr-3 py-2 text-[13px] text-[#161823] focus:border-[#161823] focus:bg-white transition-colors outline-none"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-none pl-14 pr-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors"
                         />
                       </div>
                     </div>
@@ -450,9 +458,12 @@ export default function StoreSettingsPage() {
 
           {/* LOCATION */}
           {activeTab === 'location' && (
-            <div className="animate-in fade-in duration-300 space-y-6">
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">Store Location</h3>
+            <div className="space-y-6">
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <MapPin size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Store Location</h2>
+                </div>
 
                 <div className="mb-6">
                   <FlatToggle
@@ -464,33 +475,33 @@ export default function StoreSettingsPage() {
                 </div>
 
                 {!settings.location.isOnlineOnly && (
-                  <div className="space-y-6 animate-in fade-in duration-200">
+                  <div className="space-y-6">
                     <div>
                       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-3">
                         <div>
-                          <label className="text-[12px] font-semibold text-[#161823] block">Pin Location</label>
-                          <p className="text-[11px] text-[#8A8B91] mt-0.5">Drag the marker to your store entrance.</p>
+                          <label className="text-sm font-semibold text-black block">Pin Location</label>
+                          <p className="text-xs text-gray-500 mt-0.5">Drag the marker to your store entrance.</p>
                         </div>
                         <button
                           type="button"
                           onClick={requestBrowserLocation}
-                          className="flex items-center justify-center gap-1.5 px-3 py-1.5 border border-[#E3E3E4] bg-white rounded-sm text-[12px] font-semibold text-[#161823] hover:bg-[#F8F8F8] transition-colors whitespace-nowrap"
+                          className="bg-white border border-gray-200 hover:border-black text-black px-5 py-2.5 rounded-none font-semibold text-sm transition-colors flex items-center gap-1.5"
                         >
                           <Navigation size={13} /> Detect My Location
                         </button>
                       </div>
 
-                      <div className="w-full h-64 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm overflow-hidden relative flex items-center justify-center">
+                      <div className="w-full h-64 bg-gray-50 border border-gray-200 rounded-none overflow-hidden relative flex items-center justify-center">
                         {!isMapsLoaded ? (
                           mapsLoadError ? (
-                            <div className="text-center p-4 text-[#FE2C55] flex flex-col items-center gap-2">
+                            <div className="text-center p-4 text-red-500 flex flex-col items-center gap-2">
                               <AlertTriangle size={24} />
-                              <p className="text-[12px] font-semibold">Failed to load Google Maps.</p>
+                              <p className="text-sm font-semibold">Failed to load Google Maps.</p>
                             </div>
                           ) : (
-                            <div className="flex flex-col items-center gap-2 text-[#8A8B91]">
+                            <div className="flex flex-col items-center gap-2 text-gray-500">
                               <Loader2 size={24} className="animate-spin" />
-                              <p className="text-[12px]">Loading map...</p>
+                              <p className="text-sm">Loading map...</p>
                             </div>
                           )
                         ) : (
@@ -515,8 +526,8 @@ export default function StoreSettingsPage() {
                           { label: 'Longitude', key: 'lng' },
                         ].map(({ label, key }) => (
                           <div key={key}>
-                            <span className="text-[10px] uppercase font-bold tracking-wider text-[#8A8B91] block mb-1">{label}</span>
-                            <div className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-1.5 text-[12px] text-[#161823] font-mono select-all">
+                            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-1">{label}</span>
+                            <div className="w-full bg-gray-50 border border-gray-300 rounded-none px-3 py-1.5 text-xs text-black font-mono select-all">
                               {settings.location[key].toFixed(6)}
                             </div>
                           </div>
@@ -525,9 +536,9 @@ export default function StoreSettingsPage() {
                     </div>
 
                     <div>
-                      <label className="text-[12px] font-semibold text-[#161823] mb-1.5 block">Search Address</label>
+                      <label className="text-sm font-semibold text-black mb-1.5 block">Search Address</label>
                       <div className="relative">
-                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8B91]" />
+                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         {isMapsLoaded ? (
                           <Autocomplete onLoad={(ref) => (autocompleteRef.current = ref)} onPlaceChanged={onPlaceChanged}>
                             <input
@@ -535,7 +546,7 @@ export default function StoreSettingsPage() {
                               value={settings.location.address}
                               onChange={(e) => setLocation('address', e.target.value)}
                               placeholder="Search for your store address..."
-                              className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm pl-9 pr-3 py-2 text-[13px] text-[#161823] focus:border-[#161823] focus:bg-white transition-colors outline-none"
+                              className="w-full bg-gray-50 border border-gray-300 rounded-none pl-9 pr-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors"
                             />
                           </Autocomplete>
                         ) : (
@@ -544,7 +555,7 @@ export default function StoreSettingsPage() {
                             value={settings.location.address}
                             onChange={(e) => setLocation('address', e.target.value)}
                             placeholder="Search for your store address..."
-                            className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm pl-9 pr-3 py-2 text-[13px] text-[#161823] focus:border-[#161823] focus:bg-white transition-colors outline-none"
+                            className="w-full bg-gray-50 border border-gray-300 rounded-none pl-9 pr-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors"
                           />
                         )}
                       </div>
@@ -554,20 +565,20 @@ export default function StoreSettingsPage() {
               </div>
 
               {/* Google Business */}
-              <div className="bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm p-6 flex flex-col sm:flex-row items-start gap-4">
-                <div className="bg-white p-3 rounded-full border border-[#E3E3E4] shrink-0">
-                  <StoreIcon size={24} className="text-[#4285F4]" />
+              <div className="bg-white border border-gray-200 p-6 flex flex-col sm:flex-row items-start gap-4">
+                <div className="bg-white p-3 rounded-none border border-gray-200 shrink-0">
+                  <StoreIcon size={24} className="text-blue-600" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-base font-bold text-[#161823]">Google Business Profile</h3>
+                    <h3 className="text-base font-bold text-black">Google Business Profile</h3>
                     {settings.googleBusiness?.connected && (
-                      <span className="text-[10px] font-bold text-[#16A34A] bg-[#E6F4EA] px-2 py-0.5 rounded-sm border border-[#16A34A]/20 uppercase tracking-wider">
+                      <span className="bg-green-50 text-green-600 border border-green-200 text-xs font-bold uppercase tracking-wider px-1.5 py-0.5">
                         Connected
                       </span>
                     )}
                   </div>
-                  <p className="text-[12px] text-[#8A8B91] mb-4 leading-relaxed">
+                  <p className="text-sm text-gray-500 mb-4 leading-relaxed">
                     Connect your store to Google Maps and Search so local customers can find you, leave reviews, and view your catalog.
                   </p>
                   {!settings.googleBusiness?.connected ? (
@@ -575,17 +586,17 @@ export default function StoreSettingsPage() {
                       type="button"
                       onClick={handleConnectGoogleBusiness}
                       disabled={isConnectingGBP}
-                      className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-white border border-[#E3E3E4] hover:border-[#161823] text-[13px] font-semibold text-[#161823] rounded-sm transition-colors shadow-sm disabled:opacity-50"
+                      className="bg-white border border-gray-200 hover:border-black text-black px-5 py-2.5 rounded-none font-semibold text-sm transition-colors flex items-center gap-1.5 disabled:opacity-50"
                     >
                       {isConnectingGBP ? <Loader2 size={14} className="animate-spin" /> : <ExternalLink size={14} />}
                       {isConnectingGBP ? 'Connecting...' : 'Connect Google Business'}
                     </button>
                   ) : (
                     <div className="flex items-center gap-3">
-                      <button type="button" className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-[#E3E3E4] hover:border-[#161823] text-[12px] font-semibold text-[#161823] rounded-sm transition-colors">
+                      <button type="button" className="bg-white border border-gray-200 hover:border-black text-black px-5 py-2.5 rounded-none font-semibold text-sm transition-colors">
                         Manage Listing
                       </button>
-                      <button type="button" className="text-[12px] font-bold text-[#FE2C55] hover:underline">
+                      <button type="button" className="text-sm font-bold text-red-500 hover:text-red-600 transition-colors">
                         Disconnect
                       </button>
                     </div>
@@ -598,25 +609,31 @@ export default function StoreSettingsPage() {
           {/* HOURS */}
           {activeTab === 'hours' && (
             <div className="animate-in fade-in duration-300">
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-1">Business Hours</h3>
-                <p className="text-[12px] text-[#8A8B91] mb-5">Set when your store is open so customers know when to reach you.</p>
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Clock size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Business Hours</h2>
+                </div>
+                <p className="text-sm text-gray-500 mb-5">Set when your store is open so customers know when to reach you.</p>
                 <div className="space-y-0">
                   {Object.entries(settings.businessHours).map(([day, schedule]) => (
-                    <div key={day} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 border-b border-[#E3E3E4] last:border-0 gap-3 sm:gap-0 hover:bg-[#F8F8F8] -mx-4 px-4 transition-colors">
-                      <div className="flex items-center gap-4 w-[140px] shrink-0">
+                    <div key={day} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 border-b border-gray-200 last:border-0 gap-3 sm:gap-0 hover:bg-gray-50 -mx-4 px-4 transition-colors">
+                      <div className="flex items-center gap-4 w-36 shrink-0">
                         <button
                           type="button"
                           onClick={() => setHour(day, 'isOpen', !schedule.isOpen)}
-                          className={`relative inline-flex h-4 w-7 shrink-0 cursor-pointer items-center justify-center rounded-sm border transition-colors duration-200 outline-none ${
-                            schedule.isOpen ? 'bg-[#161823] border-[#161823]' : 'bg-[#E3E3E4] border-[#E3E3E4]'
-                          }`}
+                          className="relative inline-flex items-center cursor-pointer"
                         >
-                          <span className={`pointer-events-none inline-block h-2.5 w-2.5 transform rounded-sm bg-white shadow-sm ring-0 transition duration-200 ${
-                            schedule.isOpen ? 'translate-x-1.5' : '-translate-x-1.5'
-                          }`} />
+                          <span className="sr-only">Toggle {day}</span>
+                          <div className={`w-9 h-5 rounded-none transition-colors duration-200 ${
+                            schedule.isOpen ? 'bg-blue-600' : 'bg-gray-200'
+                          }`}>
+                            <div className={`absolute top-[2px] left-[2px] bg-white rounded-none h-4 w-4 transition-all duration-200 ${
+                              schedule.isOpen ? 'translate-x-4' : 'translate-x-0'
+                            }`} />
+                          </div>
                         </button>
-                        <span className={`text-[13px] font-semibold capitalize ${schedule.isOpen ? 'text-[#161823]' : 'text-[#8A8B91]'}`}>
+                        <span className={`text-sm font-semibold capitalize ${schedule.isOpen ? 'text-black' : 'text-gray-500'}`}>
                           {day}
                         </span>
                       </div>
@@ -627,18 +644,18 @@ export default function StoreSettingsPage() {
                             type="time"
                             value={schedule.open}
                             onChange={(e) => setHour(day, 'open', e.target.value)}
-                            className="bg-white border border-[#E3E3E4] rounded-sm px-2 py-1.5 text-[12px] font-medium text-[#161823] focus:border-[#161823] outline-none w-[110px]"
+                            className="bg-gray-50 border border-gray-300 rounded-none px-2 py-1.5 text-sm font-medium text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none w-[110px]"
                           />
-                          <span className="text-[#8A8B91] text-[11px] font-semibold uppercase tracking-wider">to</span>
+                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wider">to</span>
                           <input
                             type="time"
                             value={schedule.close}
                             onChange={(e) => setHour(day, 'close', e.target.value)}
-                            className="bg-white border border-[#E3E3E4] rounded-sm px-2 py-1.5 text-[12px] font-medium text-[#161823] focus:border-[#161823] outline-none w-[110px]"
+                            className="bg-gray-50 border border-gray-300 rounded-none px-2 py-1.5 text-sm font-medium text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none w-[110px]"
                           />
                         </div>
                       ) : (
-                        <div className="text-[12px] font-semibold text-[#8A8B91] bg-[#F8F8F8] border border-[#E3E3E4] px-3 py-1.5 rounded-sm w-[238px] text-center">
+                        <div className="text-sm font-semibold text-gray-500 bg-gray-50 border border-gray-300 px-3 py-1.5 rounded-none w-[238px] text-center">
                           Closed
                         </div>
                       )}
@@ -651,15 +668,21 @@ export default function StoreSettingsPage() {
 
           {/* NOTIFICATIONS */}
           {activeTab === 'notifications' && (
-            <div className="animate-in fade-in duration-300 space-y-6">
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">Email Notifications</h3>
+            <div className="space-y-6">
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Bell size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Email Notifications</h2>
+                </div>
                 <FlatToggle label="New Orders"      description="Get notified when a customer places an order."          enabled={settings.emailOrders}    onChange={(val) => set('emailOrders',    val)} />
                 <FlatToggle label="Payout Updates"  description="Get notified when a payout is processed."               enabled={settings.emailPayouts}   onChange={(val) => set('emailPayouts',   val)} />
                 <FlatToggle label="Marketing & Tips" description="Weekly tips on how to improve your store performance." enabled={settings.emailMarketing} onChange={(val) => set('emailMarketing', val)} />
               </div>
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">SMS Alerts</h3>
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Smartphone size={18} className="text-black" />
+                  <h2 className="text-base font-bold">SMS Alerts</h2>
+                </div>
                 <FlatToggle label="Critical SMS Alerts" description="Get texts for urgent matters like failed payouts or security issues." enabled={settings.smsAlerts} onChange={(val) => set('smsAlerts', val)} />
               </div>
             </div>
@@ -667,11 +690,14 @@ export default function StoreSettingsPage() {
 
           {/* SECURITY */}
           {activeTab === 'security' && (
-            <div className="animate-in fade-in duration-300 space-y-6">
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">Two-Factor Authentication</h3>
-                <div className="bg-[#FFFBEB] border border-[#FCD34D] p-4 rounded-sm mb-5">
-                  <p className="text-[12px] text-[#92400E] font-medium">2FA protects your earnings and customer data from unauthorized access.</p>
+            <div className="space-y-6">
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Shield size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Two-Factor Authentication</h2>
+                </div>
+                <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-none mb-5">
+                  <p className="text-sm text-yellow-600 font-medium">2FA protects your earnings and customer data from unauthorized access.</p>
                 </div>
                 <FlatToggle
                   label="Enable Authenticator App"
@@ -680,14 +706,17 @@ export default function StoreSettingsPage() {
                   onChange={(val) => set('twoFactorAuth', val)}
                 />
               </div>
-              <div className="bg-white border border-[#E3E3E4] rounded-sm p-6">
-                <h3 className="text-base font-bold text-[#161823] mb-4">Account Access</h3>
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Shield size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Account Access</h2>
+                </div>
                 <div className="flex items-center justify-between py-3">
                   <div>
-                    <h4 className="text-[13px] font-semibold text-[#161823]">TikTok Connection</h4>
-                    <p className="text-[11px] text-[#8A8B91] mt-0.5">Your store is linked to your TikTok identity.</p>
+                    <h4 className="text-sm font-semibold text-black">TikTok Connection</h4>
+                    <p className="text-xs text-gray-500 mt-0.5">Your store is linked to your TikTok identity.</p>
                   </div>
-                  <span className="text-[11px] font-bold text-[#16A34A] bg-[#E6F4EA] px-2 py-1 rounded-sm border border-[#16A34A]/20">Connected</span>
+                  <span className="bg-green-50 text-green-600 border border-green-200 text-xs font-bold uppercase tracking-wider px-1.5 py-0.5">Connected</span>
                 </div>
               </div>
             </div>

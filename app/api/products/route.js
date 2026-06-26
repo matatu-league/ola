@@ -31,29 +31,53 @@ export async function GET(request) {
     const limit   = parseInt(searchParams.get('limit')) || 12;
     const skip    = (page - 1) * limit;
 
+    const search            = searchParams.get('search');
     const categorySlug      = searchParams.get('category');
     const storeCategoryId   = searchParams.get('storeCategoryId');
     const isOwnerQuery      = searchParams.get('owner') === 'true';
     const storeId           = searchParams.get('storeId');
+    const status            = searchParams.get('status') || 'active';
+    const sortBy            = searchParams.get('sortBy') || 'createdAt';
+    const sortOrder         = searchParams.get('sortOrder') || 'desc';
 
     const query = {};
 
+    // ── Status filter ──────────────────────────────────────────────────
+    if (!isOwnerQuery) {
+      // For public queries, only show active products
+      query.status = status;
+    }
+
+    // ── Owner filter ───────────────────────────────────────────────────
     if (isOwnerQuery) {
       const userId = await getUserId();
       if (!userId) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
       query.userId = userId;
     }
 
-    if (storeId)           query.storeId         = storeId;
-    if (storeCategoryId)   query.storeCategoryId = storeCategoryId;
+    // ── Store filter ───────────────────────────────────────────────────
+    if (storeId) {
+      query.storeId = storeId;
+    }
 
+    // ── Store category filter ──────────────────────────────────────────
+    if (storeCategoryId) {
+      query.storeCategoryId = storeCategoryId;
+    }
+
+    // ── Category filter ────────────────────────────────────────────────
     if (categorySlug) {
       const targetCategory = await Category.findOne({ slug: categorySlug }).lean();
 
       if (!targetCategory) {
         return NextResponse.json({
           success: true,
-          data: { products: [], categories: [], filterSchema: [], pagination: { total: 0, totalPages: 0, page } },
+          data: { 
+            products: [], 
+            categories: [], 
+            filterSchema: [], 
+            pagination: { total: 0, totalPages: 0, page } 
+          },
         });
       }
 
@@ -61,6 +85,85 @@ export async function GET(request) {
       query.categoryId = { $in: [targetCategory._id, ...subCategories.map((c) => c._id)] };
     }
 
+    // ── SEARCH FUNCTIONALITY ───────────────────────────────────────────
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      
+      // Split search into individual words for better matching
+      const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+      
+      // Escape special regex characters
+      const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      
+      // Create search conditions
+      const searchConditions = [];
+      
+      // 1. Exact phrase match (highest relevance)
+      searchConditions.push({
+        title: { $regex: new RegExp(escapeRegex(searchTerm), 'i') }
+      });
+      
+      // 2. Each word individually in title
+      if (searchWords.length > 1) {
+        searchWords.forEach(word => {
+          if (word.length > 1) { // Skip single characters
+            searchConditions.push({
+              title: { $regex: new RegExp(escapeRegex(word), 'i') }
+            });
+          }
+        });
+      }
+      
+      // 3. Search in description
+      searchConditions.push({
+        description: { $regex: new RegExp(escapeRegex(searchTerm), 'i') }
+      });
+      
+      // 4. Search by SKU (exact match)
+      searchConditions.push({
+        sku: { $regex: new RegExp(`^${escapeRegex(searchTerm)}`, 'i') }
+      });
+      
+      // 5. Search in breadcrumbs
+      searchConditions.push({
+        breadcrumbs: { $regex: new RegExp(escapeRegex(searchTerm), 'i') }
+      });
+      
+      // 6. Search in attributes (product specifications)
+      searchConditions.push({
+        'attributes.name': { $regex: new RegExp(escapeRegex(searchTerm), 'i') }
+      });
+      
+      searchConditions.push({
+        'attributes.value': { $regex: new RegExp(escapeRegex(searchTerm), 'i') }
+      });
+      
+      // Add search conditions to query
+      if (query.$and) {
+        query.$and.push({ $or: searchConditions });
+      } else {
+        query.$or = searchConditions;
+      }
+    }
+
+    // ── Attribute filters ──────────────────────────────────────────────
+    for (const [key, value] of searchParams.entries()) {
+      if (key.startsWith('filter_')) {
+        const filterKey = key.replace('filter_', '');
+        const filterValues = value.split(',').map(v => v.trim()).filter(v => v.length > 0);
+        
+        if (filterValues.length > 0) {
+          // Handle both single and multiple filter values
+          if (filterValues.length === 1) {
+            query[`attributes.${filterKey}`] = filterValues[0];
+          } else {
+            query[`attributes.${filterKey}`] = { $in: filterValues };
+          }
+        }
+      }
+    }
+
+    // ── Load filter schema ─────────────────────────────────────────────
     let filterSchema = [];
     if (categorySlug) {
       try {
@@ -72,17 +175,42 @@ export async function GET(request) {
       }
     }
 
-    for (const [key, value] of searchParams.entries()) {
-      if (key.startsWith('filter_')) {
-        query[`attributes.${key}`] = { $in: value.split(',') };
-      }
+    // ── Build sort object ──────────────────────────────────────────────
+    const sortObj = {};
+    switch (sortBy) {
+      case 'price':
+        sortObj.price = sortOrder === 'asc' ? 1 : -1;
+        break;
+      case 'title':
+        sortObj.title = sortOrder === 'asc' ? 1 : -1;
+        break;
+      case 'rating':
+        sortObj.rating = sortOrder === 'asc' ? 1 : -1;
+        break;
+      case 'views':
+        sortObj.views = sortOrder === 'asc' ? 1 : -1;
+        break;
+      case 'sold':
+        sortObj.sold = sortOrder === 'asc' ? 1 : -1;
+        break;
+      case 'createdAt':
+      default:
+        sortObj.createdAt = sortOrder === 'asc' ? 1 : -1;
+        break;
     }
 
+    // If search is present, add relevance-based sorting
+    if (search && search.trim()) {
+      // Primary sort by title relevance, then by createdAt
+      sortObj.title = 1; // Alphabetical as secondary sort after text match
+    }
+
+    // ── Execute queries ────────────────────────────────────────────────
     const [products, total, categories] = await Promise.all([
       Product.find(query)
         .populate('categoryId', 'name')
         .populate('storeCategoryId', 'name slug')
-        .sort({ createdAt: -1 })
+        .sort(sortObj)
         .skip(skip)
         .limit(limit)
         .lean(),
@@ -90,9 +218,37 @@ export async function GET(request) {
       Category.find({}).lean(),
     ]);
 
+    // ── Highlight search terms in results ──────────────────────────────
+    let highlightedProducts = products;
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      const highlightRegex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      
+      highlightedProducts = products.map(product => ({
+        ...product,
+        titleHighlighted: product.title ? product.title.replace(highlightRegex, '<mark>$1</mark>') : product.title,
+        _searchMatch: true
+      }));
+    }
+
     return NextResponse.json({
       success: true,
-      data: { products, categories, filterSchema, pagination: { total, totalPages: Math.ceil(total / limit), page } },
+      data: { 
+        products: highlightedProducts, 
+        categories, 
+        filterSchema, 
+        pagination: { 
+          total, 
+          totalPages: Math.ceil(total / limit), 
+          page,
+          limit,
+          hasMore: page < Math.ceil(total / limit)
+        },
+        search: search ? {
+          term: search,
+          resultsFound: total
+        } : null
+      },
     });
   } catch (error) {
     console.error('Products GET error:', error);

@@ -23,7 +23,7 @@ export default function AddProductPage() {
       const result = await response.json();
       
       if (result.success) {
-        router.push('/seller/products');
+        router.push('/products');
       } else {
         setErrorMessage(result.message || 'Failed to create product.');
       }
@@ -47,7 +47,7 @@ export default function AddProductPage() {
         initialData={null} 
         onSubmit={handleCreateProduct} 
         isSaving={isSaving} 
-        backUrl="/seller/products"
+        backUrl="/products"
       />
     </div>
   );

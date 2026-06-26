@@ -257,26 +257,55 @@ export const suggestVariantsAIList = async (productTitle, variantType) => {
  */
 export const runImageGeneration = async (originalBase64, prompt, params, imageGenModel) => {
   if (imageGenModel === 'custom') {
+    const payload = {
+      prompt,
+      imageParams: params,
+      generateImage: true // Explicitly tell the backend an image is requested
+    };
+
+    // 1 & 2: Only attach if an image is provided, and prevent double data-URL prefixes
+    if (originalBase64 && originalBase64.trim() !== '') {
+      payload.imageBase64 = originalBase64.startsWith('data:') 
+        ? originalBase64 
+        : `data:image/jpeg;base64,${originalBase64}`;
+    }
+
     const result = await fetchWithRetry(CUSTOM_IMAGE_API, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ prompt, imageBase64: `data:image/jpeg;base64,${originalBase64}`, imageParams: params }),
+      body:    JSON.stringify(payload),
     });
-    if (result?.success && result.image) return result.image;
+
+    // 3: Handle both custom backend mapped formats (result.image) and native gemini-browser array (result.images)
+    if (result?.success) {
+      if (result.image) return result.image;
+      if (result.images && result.images.length > 0) return result.images[0];
+    }
     throw new Error('Custom Image API returned no image.');
   }
 
   // Grok
-  const result = await fetchWithRetry('https://api.x.ai/v1/images/edits', {
+  const grokPayload = {
+    model:           IMAGE_MODEL_ID,
+    prompt,
+    n:               1,
+    response_format: 'b64_json',
+  };
+
+  if (originalBase64 && originalBase64.trim() !== '') {
+     const cleanBase64 = originalBase64.startsWith('data:') ? originalBase64.split(',')[1] : originalBase64;
+     grokPayload.image = { url: `data:image/jpeg;base64,${cleanBase64}` };
+  }
+
+  // Fallback to generations endpoint if no source image is provided for Grok edits
+  const grokEndpoint = (originalBase64 && originalBase64.trim() !== '') 
+    ? 'https://api.x.ai/v1/images/edits' 
+    : 'https://api.x.ai/v1/images/generations';
+
+  const result = await fetchWithRetry(grokEndpoint, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${grokApiKey}` },
-    body:    JSON.stringify({
-      model:           IMAGE_MODEL_ID,
-      prompt,
-      n:               1,
-      response_format: 'b64_json',
-      image:           { url: `data:image/jpeg;base64,${originalBase64}` },
-    }),
+    body:    JSON.stringify(grokPayload),
   });
 
   if (result?.data?.[0]?.b64_json) return `data:image/png;base64,${result.data[0].b64_json}`;

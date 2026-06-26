@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
-import { ShippingMethod, PickupStation } from '@/lib/models';
+import { ShippingMethod, PickupStation } from '@/lib/models/Marketplace';
 
 /**
  * GET /api/shipping

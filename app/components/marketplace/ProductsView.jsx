@@ -1,5 +1,10 @@
+"use client";
+
 import React, { useState, useEffect, useMemo } from 'react';
-import { ShieldCheck, Award, PenTool, Star, Flame, ChevronRight, Menu } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ShieldCheck, Award, PenTool, Star, Flame, ChevronRight, Menu, ShoppingCart, Check, Loader2 } from 'lucide-react';
+
+const HERO_SLOTS = 3; // history cards in the hero row; shortfall is backfilled with recent products
 
 const SectionHeader = ({ title, subtitle, rightText }) => (
   <div className="flex items-end justify-between mb-4">
@@ -15,10 +20,25 @@ const SectionHeader = ({ title, subtitle, rightText }) => (
   </div>
 );
 
+// Display-only currency formatting. Relabels to UGX — it does NOT convert
+// values. If your stored price already has a currency token we strip it first
+// so we never render e.g. "UGX US$8".
+const formatPrice = (price) => {
+  if (price === null || price === undefined || price === '') return '';
+  const s = String(price).trim().replace(/^\s*(UGX|USD|US\$|\$|€|£)\s*/i, '');
+  return `UGX ${s}`;
+};
+
 const ProductsView = ({ onCategorySelect }) => {
+  const router = useRouter();
+
   const [data, setData] = useState({ categories: [], topDeals: [], tailoredSelections: [], productGrid: [], newArrivals: [] });
+  const [history, setHistory] = useState([]);   // real browsing history (most-recent first)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Per-product add-to-cart state: { [productId]: 'loading' | 'added' }
+  const [cartState, setCartState] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +64,88 @@ const ProductsView = ({ onCategorySelect }) => {
 
     fetchData();
   }, []);
+
+  // Fetch real browsing history (fills the hero cards). Non-blocking — the
+  // page still renders if this fails or returns nothing.
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const res = await fetch(`/api/products/history?limit=${HERO_SLOTS}`, {
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+        });
+        const json = await res.json();
+        if (active && json.success) setHistory(json.data || []);
+      } catch (err) {
+        console.error('Failed to load browsing history:', err);
+      }
+    })();
+    return () => { active = false; };
+  }, []);
+
+  // Open a product detail page. Adjust path if your route differs.
+  const openProduct = (id) => router.push(`/products/${id}`);
+
+  // Add a product to the cart. stopPropagation keeps the card's openProduct
+  // from firing. NOTE: assumes POST /api/cart { productId, quantity } — adjust
+  // to match whatever ProductDetails uses.
+  const handleAddToCart = async (e, product) => {
+    e.stopPropagation();
+    const id = product._id || product.id;
+    if (!id || cartState[id] === 'loading') return;
+
+    setCartState((s) => ({ ...s, [id]: 'loading' }));
+    try {
+      const res = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
+        body: JSON.stringify({ productId: id, quantity: 1 }),
+      });
+      const json = await res.json();
+      if (!res.ok || json.success === false) throw new Error(json.message || 'Add to cart failed');
+
+      // Brief "added" confirmation, then revert to the cart icon.
+      setCartState((s) => ({ ...s, [id]: 'added' }));
+      setTimeout(() => {
+        setCartState((s) => {
+          const next = { ...s };
+          delete next[id];
+          return next;
+        });
+      }, 1500);
+    } catch (err) {
+      console.error('Add to cart failed:', err);
+      setCartState((s) => {
+        const next = { ...s };
+        delete next[id];
+        return next;
+      });
+    }
+  };
+
+  // Subtitle for "Keep looking for" cards: prefer the product's category,
+  // then its title, then a generic label.
+  const labelFor = (p) => p?.categoryId?.name || p?.title || 'Recommended for you';
+
+  // Build exactly HERO_SLOTS hero slots: history first, then backfill with
+  // recent products (from the bottom feed) that aren't already in history.
+  const heroSlots = useMemo(() => {
+    const slots = [...history];
+    if (slots.length < HERO_SLOTS) {
+      const usedIds = new Set(history.map((h) => String(h._id)));
+      for (const p of (data.productGrid || [])) {
+        if (slots.length >= HERO_SLOTS) break;
+        const pid = String(p._id || p.id || '');
+        if (!pid || usedIds.has(pid)) continue;
+        usedIds.add(pid);
+        slots.push({ ...p, _id: p._id || p.id, _filler: true });
+      }
+    }
+    return slots.slice(0, HERO_SLOTS);
+  }, [history, data.productGrid]);
 
   // Process flat database categories into a nested tree structure
   const categoryTree = useMemo(() => {
@@ -99,7 +201,7 @@ const ProductsView = ({ onCategorySelect }) => {
       
       <main className="max-w-[1400px] mx-auto px-3 md:px-4 pb-10 mt-6 md:mt-8">
         
-        {/* 6-COLUMN HERO GRID */}
+        {/* 6-COLUMN HERO GRID (sidebar 1 + 3 cards + banner 2) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3 md:gap-4 mb-6 md:mb-8 h-auto lg:h-[320px]">
           
           {/* 1. DYNAMIC INNER SIDEBAR (Restored background & rounded edges) */}
@@ -161,40 +263,70 @@ const ProductsView = ({ onCategorySelect }) => {
             ))}
           </div>
 
-          {/* 2. BROWSING HISTORY */}
-          <div className="hidden lg:flex bg-[#f9f9fa] rounded-xl p-3 md:p-4 flex-col col-span-1 cursor-pointer group">
-            <h3 className="font-bold text-gray-900 text-[16px] mb-3 tracking-tight">Browsing history</h3>
-            <div className="relative flex-1 bg-white rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition-shadow border border-gray-100">
-              <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f0a?w=300&h=300&fit=crop" alt="Browsing History" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-[13px] font-extrabold text-gray-900 shadow-sm whitespace-nowrap">
-                USh 6,205
-              </div>
-            </div>
-          </div>
+          {/* 2–4. HISTORY CARDS (3 slots, backfilled with recent products) */}
+          {heroSlots.map((item, i) => {
+            const img    = item.image || item.images?.[0] || '';
+            const isHist = !item._filler;
 
-          {/* 3. KEEP LOOKING FOR 1 */}
-          <div className="hidden lg:flex bg-[#f9f9fa] rounded-xl p-3 md:p-4 flex-col col-span-1 cursor-pointer group">
-            <h3 className="font-bold text-gray-900 text-[16px] leading-tight tracking-tight">Keep looking for</h3>
-            <p className="text-[13px] text-gray-500 mb-2 truncate">Electric City Bike</p>
-            <div className="relative flex-1 bg-white rounded-xl overflow-hidden p-3 shadow-sm group-hover:shadow-md transition-shadow border border-gray-100 flex items-center justify-center">
-              <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=300&h=300&fit=crop" alt="Electric Bike" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-[13px] font-extrabold text-gray-900 shadow-sm whitespace-nowrap">
-                USh 326,789
-              </div>
-            </div>
-          </div>
+            // First slot = large "Browsing history" cover card (with View all)
+            if (i === 0) {
+              return (
+                <div
+                  key={item._id}
+                  onClick={() => openProduct(item._id)}
+                  className="hidden lg:flex bg-[#f9f9fa] rounded-xl p-3 md:p-4 flex-col col-span-1 cursor-pointer group"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-bold text-gray-900 text-[16px] tracking-tight">
+                      {isHist ? 'Browsing history' : 'Recommended'}
+                    </h3>
+                    {history.length > 0 && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); router.push('/products/history'); }}
+                        className="text-[12px] font-semibold text-[#FE2C55] hover:underline shrink-0"
+                      >
+                        View all
+                      </button>
+                    )}
+                  </div>
+                  <div className="relative flex-1 bg-white rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition-shadow border border-gray-100">
+                    <img
+                      src={img}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-[13px] font-extrabold text-gray-900 shadow-sm whitespace-nowrap">
+                      {formatPrice(item.price)}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
 
-          {/* 4. KEEP LOOKING FOR 2 */}
-          <div className="hidden lg:flex bg-[#f9f9fa] rounded-xl p-3 md:p-4 flex-col col-span-1 cursor-pointer group">
-            <h3 className="font-bold text-gray-900 text-[16px] leading-tight tracking-tight">Keep looking for</h3>
-            <p className="text-[13px] text-gray-500 mb-2 truncate">Electric Hybrid Bike</p>
-            <div className="relative flex-1 bg-white rounded-xl overflow-hidden p-3 shadow-sm group-hover:shadow-md transition-shadow border border-gray-100 flex items-center justify-center">
-              <img src="https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=300&h=300&fit=crop" alt="Hybrid Bike" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-[13px] font-extrabold text-gray-900 shadow-sm whitespace-nowrap">
-                USh 670,124
+            // Slots 2–3 = "Keep looking for" (history) / "Recommended for you" (filler)
+            return (
+              <div
+                key={item._id}
+                onClick={() => openProduct(item._id)}
+                className="hidden lg:flex bg-[#f9f9fa] rounded-xl p-3 md:p-4 flex-col col-span-1 cursor-pointer group"
+              >
+                <h3 className="font-bold text-gray-900 text-[16px] leading-tight tracking-tight">
+                  {isHist ? 'Keep looking for' : 'Recommended for you'}
+                </h3>
+                <p className="text-[13px] text-gray-500 mb-2 truncate">{labelFor(item)}</p>
+                <div className="relative flex-1 bg-white rounded-xl overflow-hidden p-3 shadow-sm group-hover:shadow-md transition-shadow border border-gray-100 flex items-center justify-center">
+                  <img
+                    src={img}
+                    alt={item.title}
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-[13px] font-extrabold text-gray-900 shadow-sm whitespace-nowrap">
+                    {formatPrice(item.price)}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
 
           {/* 5. DISCOVER TRENDS BANNER (White with Original Rounding & Shadows) */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm col-span-1 md:col-span-2 lg:col-span-2 relative overflow-hidden flex flex-col cursor-pointer group">
@@ -237,12 +369,12 @@ const ProductsView = ({ onCategorySelect }) => {
             <SectionHeader title="Top Deals" subtitle="Score the lowest prices on Ola" rightText="View more" />
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-6">
               {data.topDeals.map(deal => (
-                <div key={deal._id || deal.id} className="group cursor-pointer flex flex-col bg-white rounded-xl p-2 md:p-3 border border-transparent hover:border-gray-200 transition-colors">
+                <div key={deal._id || deal.id} onClick={() => openProduct(deal._id || deal.id)} className="group cursor-pointer flex flex-col bg-white rounded-xl p-2 md:p-3 border border-transparent hover:border-gray-200 transition-colors">
                   <div className="h-[120px] md:h-[170px] flex items-center justify-center mb-2 md:mb-3 relative overflow-hidden bg-white">
                     <img src={deal.image} alt={deal.title} className="object-contain h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="flex items-center gap-1 font-extrabold text-[#FE2C55] text-[14px] md:text-[17px] mb-0.5 md:mb-1 truncate">
-                    <Flame size={14} className="fill-current shrink-0" strokeWidth={2}/> <span className="truncate">{deal.price}</span>
+                    <Flame size={14} className="fill-current shrink-0" strokeWidth={2}/> <span className="truncate">{formatPrice(deal.price)}</span>
                   </div>
                   <div className="text-[11px] md:text-[12px] text-gray-500 font-medium">MOQ: {deal.moq}</div>
                 </div>
@@ -267,7 +399,7 @@ const ProductsView = ({ onCategorySelect }) => {
                       </div>
                     ))}
                   </div>
-                  <div className="font-extrabold text-gray-900 text-[16px] md:text-[18px]">{selection.price}</div>
+                  <div className="font-extrabold text-gray-900 text-[16px] md:text-[18px]">{formatPrice(selection.price)}</div>
                 </div>
               ))}
             </div>
@@ -280,8 +412,11 @@ const ProductsView = ({ onCategorySelect }) => {
         <div className="bg-[#f2f2f6] w-full py-8 md:py-12">
           <div className="max-w-[1400px] mx-auto px-3 md:px-4">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-              {data.productGrid.map((product) => (
-                <div key={product._id || product.id} className="bg-white rounded-xl p-2 md:p-3 cursor-pointer flex flex-col group border border-transparent hover:border-gray-200 transition-colors">
+              {data.productGrid.map((product) => {
+                const pid = product._id || product.id;
+                const status = cartState[pid];
+                return (
+                <div key={pid} onClick={() => openProduct(pid)} className="bg-white rounded-xl p-2 md:p-3 cursor-pointer flex flex-col group border border-transparent hover:border-gray-200 transition-colors">
                   <div className="bg-[#f7f8fa] rounded-lg aspect-square mb-2 md:mb-3 relative overflow-hidden flex items-center justify-center p-2">
                     <img src={product.image} alt={product.title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition duration-500" />
                   </div>
@@ -289,21 +424,33 @@ const ProductsView = ({ onCategorySelect }) => {
                     {product.title}
                   </h3>
                   <div className="mt-auto">
-                    <div className="font-extrabold text-gray-900 text-[14px] md:text-[16px] mb-1 md:mb-1.5">{product.price}</div>
+                    <div className="font-extrabold text-gray-900 text-[14px] md:text-[16px] mb-1 md:mb-1.5">{formatPrice(product.price)}</div>
                     <div className="text-[10px] md:text-[11px] text-gray-500 flex justify-between items-center mb-1.5 md:mb-2 font-medium">
                       <span>MOQ: {product.moq}</span>
-                      <span>{product.sold}</span>
+                      {/* Add to cart */}
+                      <button
+                        onClick={() => openProduct(pid)}
+                        disabled={status === 'loading'}
+                        aria-label="Add to cart"
+                        className={`flex items-center justify-center w-7 h-7 rounded-full bg-transparent transition-colors shrink-0 hover:text-[#FE2C55] disabled:opacity-60 ${
+                          status === 'added' ? 'text-green-500' : 'text-gray-500'
+                        }`}
+                      >
+                        {status === 'loading' ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : status === 'added' ? (
+                          <Check size={14} strokeWidth={3} />
+                        ) : (
+                          <ShoppingCart size={14} strokeWidth={2.5} />
+                        )}
+                      </button>
                     </div>
                     <div className="flex items-center flex-wrap gap-x-1.5 gap-y-0.5 text-[10px] md:text-[11px] text-gray-500 font-medium">
                        {product.verified && <span className="text-[#25F4EE] font-bold flex items-center gap-0.5"><ShieldCheck size={12}/> Verified</span>}
-                       {product.verified && <span>·</span>}
-                       <span>{product.years} yr</span> 
-                       <span>·</span> 
-                       <span>CN</span>
                     </div>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
           </div>
         </div>

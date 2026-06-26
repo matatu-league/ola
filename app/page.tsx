@@ -7,7 +7,7 @@ import SearchHeader from './components/shared/SearchHeader';
 import ProductsView from './components/marketplace/ProductsView';
 import StoresView from './components/marketplace/StoresView';
 import Storefront from './components/storefronts/Storefront';
-import CategoryListingView from './components/marketplace/CategoryListingView'; 
+import CategoryListingView from './components/marketplace/CategoryListingView';
 
 function MarketplaceContent() {
   const router = useRouter();
@@ -20,14 +20,14 @@ function MarketplaceContent() {
 
   const [view, setView] = useState("marketplace"); // "marketplace" | "storefront"
   const [activeTab, setActiveTab] = useState(urlTab);
-  const [activeCategory, setActiveCategory] = useState(urlCategory); 
+  const [activeCategory, setActiveCategory] = useState(urlCategory);
   const [selectedStore, setSelectedStore] = useState(null);
 
   // Sync state if the user navigates using Browser Back/Forward buttons
   useEffect(() => {
     const currentUrlTab = searchParams.get('tab') || "Products";
     const currentUrlCategory = searchParams.get('category') || null;
-    
+
     if (activeTab !== currentUrlTab) setActiveTab(currentUrlTab);
     if (activeCategory !== currentUrlCategory) setActiveCategory(currentUrlCategory);
   }, [searchParams]);
@@ -41,15 +41,15 @@ function MarketplaceContent() {
   // Handler for switching between Products and Stores tabs
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    
+
     const params = new URLSearchParams(searchParams.toString());
     params.set('tab', tab);
-    
+
     if (tab === "Stores") {
       setActiveCategory(null);
       params.delete('category'); // Clear category param if switching to stores
     }
-    
+
     // Update the browser URL
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
@@ -57,9 +57,9 @@ function MarketplaceContent() {
   // Handler for when a category is clicked anywhere (TopNav or ProductsView)
   const handleCategorySelect = (slug) => {
     setActiveCategory(slug);
-    setActiveTab("Products"); 
+    setActiveTab("Products");
     setView("marketplace");
-    
+
     const params = new URLSearchParams(searchParams.toString());
     params.set('tab', 'Products');
     if (slug) {
@@ -83,12 +83,12 @@ function MarketplaceContent() {
     <div className="font-sans text-gray-800 flex flex-col min-h-screen">
       <div className={`transition-colors duration-500 relative ${activeTab === 'Products' ? 'bg-gradient-to-tr from-white via-white to-[#fff0f4] animate-bg-gradient' : 'bg-gradient-to-br from-white via-white to-red-50'}`}>
         <TopNav />
-        
+
         {/* Hide SearchHeader when browsing a specific category */}
         {!activeCategory && (
-          <SearchHeader 
-            activeTab={activeTab} 
-            setActiveTab={handleTabChange} 
+          <SearchHeader
+            activeTab={activeTab}
+            setActiveTab={handleTabChange}
           />
         )}
       </div>
@@ -101,7 +101,7 @@ function MarketplaceContent() {
       ) : (
         <StoresView onVisitStore={handleVisitStore} />
       )}
-      
+
       <footer className="bg-white border-t border-gray-200 pt-10 pb-6 mt-auto">
         <div className="max-w-[1400px] mx-auto px-4 flex flex-col md:flex-row items-center justify-between pt-6">
            <div className="flex items-center gap-4 text-[13px] text-gray-500 font-medium mb-4 md:mb-0">

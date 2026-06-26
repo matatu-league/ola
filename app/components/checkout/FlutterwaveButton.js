@@ -1,111 +1,125 @@
 // components/checkout/FlutterwaveButton.jsx
-// Flutterwave v4 — public key is a UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-// NOT the old FLWPUBK_TEST- format (that was v2/v3)
+//
+// Flutterwave v4 with UUID key (e.g. 644c0ee0-5c78-4f38-8676-908fe2403436)
+//
+// WHY we don't use flutterwave-react-v3 hook here:
+//   The package loads checkout.flutterwave.com/v3.js which rejects UUID keys
+//   with "Invalid parameter (PBFPubKey)". That hosted script only accepts the
+//   old FLWPUBK_TEST- prefixed keys.
+//
+// CORRECT v4 flow:
+//   1. POST /api/payments/flutterwave/initiate-payment  (server calls FLW API)
+//   2. Server returns a hosted payment link
+//   3. We open it in a new tab OR redirect
+//   4. Flutterwave redirects back to our redirect_url with ?status=&tx_ref=&transaction_id=
+//   5. We verify server-side on the redirect page
 
 "use client";
 
 import { useState } from 'react';
-import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, ExternalLink } from 'lucide-react';
 
-// ─── Inner component — holds useFlutterwave hook ──────────────────────────────
-function FlutterwaveInner({
+export default function FlutterwaveButton({
   amount,
-  currency,
+  currency = 'UGX',
   user,
   orderId,
-  txRef,
-  publicKey,
+  onCreatePendingOrder,
   onSuccess,
   onError,
   isSubmitting,
   setIsSubmitting,
 }) {
   const [localError, setLocalError] = useState('');
+  const [awaitingReturn, setAwaitingReturn] = useState(false);
 
-  const config = {
-    public_key:      publicKey,                    // UUID format for v4
-    tx_ref:          txRef,
-    amount:          Number(amount),
-    currency,
-    payment_options: 'mobilemoneyuganda,card,ussd',
-    customer: {
-      email:       user?.email       || '',
-      phonenumber: user?.phoneNumber || '',
-      name:        user?.name        || 'Customer',
-    },
-    customizations: {
-      title:       'AlxLite',
-      description: 'Order Payment',
-      logo:        `${process.env.NEXT_PUBLIC_APP_URL || ''}/logo.png`,
-    },
-    meta: {
-      orderId: orderId || '',
-    },
-  };
-
-  const handleFlutterPayment = useFlutterwave(config);
-
-  const handlePay = () => {
+  const handlePay = async () => {
     setLocalError('');
     setIsSubmitting(true);
 
-    handleFlutterPayment({
-      callback: async (response) => {
-        closePaymentModal();
+    try {
+      // ── Step 1: create hosted payment link via our backend ────────────────
+      const res = await fetch('/api/payments/flutterwave/initiate-payment', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          amount,
+          currency,
+          email:      user?.email       || '',
+          name:       user?.name        || 'Customer',
+          phone:      user?.phoneNumber || '',
+          orderId:    orderId           || '',
+          // After payment FLW redirects here with ?status=&tx_ref=&transaction_id=
+          redirectUrl: `${window.location.origin}/checkout/flutterwave-callback`,
+        }),
+      });
 
-        if (response.status !== 'successful') {
-          const msg = response.status === 'cancelled'
-            ? 'Payment was cancelled.'
-            : `Payment failed with status: ${response.status}`;
-          setLocalError(msg);
-          onError(msg);
-          setIsSubmitting(false);
-          return;
-        }
+      const data = await res.json();
 
-        // ── Server-side verification ────────────────────────────────────
-        try {
-          const verifyRes = await fetch('/api/payments/flutterwave/verify-payment', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({
-              transactionId:    response.transaction_id,
-              orderId:          orderId || '',
-              expectedAmount:   amount,
-              expectedCurrency: currency,
-            }),
-          });
+      if (!data.success || !data.paymentLink) {
+        throw new Error(data.message || 'Could not create payment link');
+      }
 
-          const verifyData = await verifyRes.json();
+      // ── Step 2: store txRef + orderId in sessionStorage so callback page
+      //           can verify and complete the order ─────────────────────────
+      sessionStorage.setItem('flw_pending', JSON.stringify({
+        txRef:    data.txRef,
+        orderId:  orderId || '',
+        amount,
+        currency,
+      }));
 
-          if (!verifyData.success) {
-            const msg = verifyData.message || 'Payment verification failed.';
-            setLocalError(msg);
-            onError(msg);
-            setIsSubmitting(false);
-            return;
-          }
+      // ── Step 3: open payment in new tab ──────────────────────────────────
+      // Using a new tab keeps our checkout state intact.
+      // The callback page closes the tab and calls window.opener.postMessage.
+      const payWindow = window.open(data.paymentLink, '_blank', 'noopener');
 
+      if (!payWindow) {
+        // Popup blocked — fall back to same-tab redirect
+        window.location.href = data.paymentLink;
+        return;
+      }
+
+      setAwaitingReturn(true);
+
+      // ── Step 4: listen for postMessage from callback page ─────────────────
+      const handleMessage = (event) => {
+        if (event.origin !== window.location.origin) return;
+        if (event.data?.type !== 'FLW_PAYMENT_COMPLETE') return;
+
+        window.removeEventListener('message', handleMessage);
+        setAwaitingReturn(false);
+
+        const { status, transactionId, txRef: returnedTxRef } = event.data;
+
+        if (status === 'successful' || status === 'completed') {
           onSuccess({
-            reference: String(response.transaction_id),
+            reference: String(transactionId || returnedTxRef),
             provider:  'flutterwave',
           });
-        } catch (err) {
-          const msg = err.message || 'Verification error. Please contact support.';
+        } else {
+          const msg = status === 'cancelled'
+            ? 'Payment was cancelled.'
+            : `Payment failed with status: ${status}`;
           setLocalError(msg);
           onError(msg);
           setIsSubmitting(false);
         }
-      },
-      onClose: () => {
-        setIsSubmitting(false);
-      },
-    });
+      };
+
+      window.addEventListener('message', handleMessage);
+
+    } catch (err) {
+      setLocalError(err.message || 'Failed to initiate payment.');
+      onError(err.message);
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="space-y-4">
+
+      {/* Supported methods */}
       <div className="bg-[#F0FDF4] border border-[#10B981] rounded-sm p-3">
         <p className="text-[11px] text-[#065F46] font-medium leading-relaxed">
           Supports <strong>MTN Mobile Money</strong>, <strong>Airtel Money</strong>,
@@ -113,13 +127,32 @@ function FlutterwaveInner({
         </p>
       </div>
 
+      {/* Awaiting return state */}
+      {awaitingReturn && (
+        <div className="flex items-center gap-2 bg-[#FFF8EC] border border-[#F5A623] rounded-sm p-3">
+          <Loader2 size={14} className="animate-spin text-[#F5A623] shrink-0" />
+          <p className="text-[12px] text-[#92560A] font-medium">
+            Waiting for payment confirmation in the Flutterwave window...
+          </p>
+        </div>
+      )}
+
+      {/* Pay button */}
       <button
         onClick={handlePay}
-        disabled={isSubmitting}
-        className="w-full bg-[#F5A623] hover:bg-[#e09420] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
+        disabled={isSubmitting || awaitingReturn}
+        className="w-full bg-[#F5A623] hover:bg-[#e09420] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-60 transition-colors tracking-tight"
       >
-        {isSubmitting && <Loader2 size={15} className="animate-spin" />}
-        {isSubmitting ? 'Processing...' : `Pay UGX ${Number(amount).toLocaleString()} via Flutterwave`}
+        {isSubmitting && !awaitingReturn
+          ? <Loader2 size={15} className="animate-spin" />
+          : <ExternalLink size={14} />
+        }
+        {isSubmitting && !awaitingReturn
+          ? 'Opening payment...'
+          : awaitingReturn
+            ? 'Complete payment in the new tab'
+            : `Pay UGX ${Number(amount).toLocaleString()} via Flutterwave`
+        }
       </button>
 
       {localError && (
@@ -133,59 +166,5 @@ function FlutterwaveInner({
         Powered by Flutterwave · Payments are secured and encrypted
       </p>
     </div>
-  );
-}
-
-// ─── Exported wrapper ─────────────────────────────────────────────────────────
-export default function FlutterwaveButton({
-  amount,
-  currency = 'UGX',
-  user,
-  orderId,
-  onSuccess,
-  onError,
-  isSubmitting,
-  setIsSubmitting,
-}) {
-  const publicKey = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY;
-
-  // Flutterwave v4 key is a UUID: 8 chars - 4 - 4 - 4 - 12
-  // e.g. 644c0ee0-5c78-4f38-8676-908fe2403436
-  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  const isValidKey = publicKey && UUID_REGEX.test(publicKey.trim());
-
-  if (!isValidKey) {
-    return (
-      <div className="flex items-start gap-2 text-[12px] text-[#FE2C55] font-semibold bg-[#FFF0F3] border border-[#FE2C55] p-3 rounded-sm">
-        <AlertCircle size={13} className="shrink-0 mt-0.5" />
-        <span>
-          Flutterwave public key missing or invalid.{' '}
-          <span className="font-normal text-[#8A8B91]">
-            Set <code className="font-mono bg-[#F8F8F8] px-1 rounded">NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY</code> in{' '}
-            <code className="font-mono bg-[#F8F8F8] px-1 rounded">.env.local</code>.
-            The v4 key is a UUID like{' '}
-            <code className="font-mono bg-[#F8F8F8] px-1 rounded">644c0ee0-5c78-4f38-...</code>
-          </span>
-        </span>
-      </div>
-    );
-  }
-
-  // Generate txRef once per mount — stable across re-renders
-  const txRef = `FLW-${orderId || 'order'}-${Date.now()}`;
-
-  return (
-    <FlutterwaveInner
-      amount={amount}
-      currency={currency}
-      user={user}
-      orderId={orderId}
-      txRef={txRef}
-      publicKey={publicKey.trim()}
-      onSuccess={onSuccess}
-      onError={onError}
-      isSubmitting={isSubmitting}
-      setIsSubmitting={setIsSubmitting}
-    />
   );
 }

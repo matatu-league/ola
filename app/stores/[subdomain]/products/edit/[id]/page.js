@@ -81,16 +81,6 @@ export default function EditProductPage() {
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
       {/* Header Navigation Wrapper */}
-      <div className="mb-4 flex items-center gap-3">
-        <Link 
-          href="/seller/products" 
-          className="p-1.5 border border-[#E3E3E4] bg-white rounded-sm hover:bg-gray-50 transition-colors"
-        >
-          <ArrowLeft size={18} />
-        </Link>
-        <span className="text-[14px] text-gray-500 font-medium">Back to Products</span>
-      </div>
-
       {errorMessage && (
         <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded-sm text-[13px] font-semibold">
           ⚠️ {errorMessage}

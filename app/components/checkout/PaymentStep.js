@@ -133,21 +133,34 @@ function PaymentCard({ method, isSelected, onClick }) {
 }
 
 // ─── Stripe form ──────────────────────────────────────────────────────────────
-function StripeForm({ amount, onSuccess, onError, isSubmitting, setIsSubmitting }) {
+function StripeForm({ amount, onCreatePendingOrder, onSuccess, onError, isSubmitting, setIsSubmitting }) {
   const stripe   = useStripe();
   const elements = useElements();
 
   const handlePay = async () => {
     if (!stripe || !elements) return;
     setIsSubmitting(true);
+    const orderId = await onCreatePendingOrder();
+    if (!orderId) { setIsSubmitting(false); return; }
     try {
-      const res = await fetch('/api/payments/stripe/create-intent', {
+      // ── Step 1: create PaymentIntent on our backend ─────────────────────
+      const res  = await fetch('/api/payments/stripe/create-intent', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ amount }),
       });
-      const { clientSecret } = await res.json();
 
+      const data = await res.json();
+
+      // Surface the actual backend error instead of letting Stripe complain
+      // about a missing/undefined clientSecret
+      if (!res.ok || !data.success || !data.clientSecret) {
+        throw new Error(data.message || `Server error ${res.status} — clientSecret missing`);
+      }
+
+      const { clientSecret } = data;
+
+      // ── Step 2: confirm card payment on Stripe ──────────────────────────
       const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: { card: elements.getElement(CardElement) },
       });
@@ -157,6 +170,11 @@ function StripeForm({ amount, onSuccess, onError, isSubmitting, setIsSubmitting 
         setIsSubmitting(false);
       } else if (paymentIntent.status === 'succeeded') {
         onSuccess({ reference: paymentIntent.id, provider: 'stripe' });
+      } else {
+        // e.g. 'requires_action' — Stripe handles 3DS automatically
+        // but if it falls through, surface a clear message
+        onError(`Payment status: ${paymentIntent.status}. Please try again.`);
+        setIsSubmitting(false);
       }
     } catch (e) {
       onError(e.message);
@@ -176,22 +194,32 @@ function StripeForm({ amount, onSuccess, onError, isSubmitting, setIsSubmitting 
           }}
         />
       </div>
+      {/* Show USD equivalent — Stripe charges in USD */}
+      <div className="flex items-center gap-1.5 text-[11px] text-[#8A8B91] bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2">
+        <span>Stripe charges in USD:</span>
+        <span className="font-bold text-[#161823]">
+          ≈ ${((amount / 3900)).toFixed(2)} USD
+        </span>
+        <span className="text-[10px]">(1 USD ≈ UGX 3,900)</span>
+      </div>
       <button
         onClick={handlePay}
         disabled={isSubmitting || !stripe}
         className="w-full bg-[#635BFF] hover:bg-[#5145e5] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
       >
         {isSubmitting && <Loader2 size={15} className="animate-spin" />}
-        {isSubmitting ? 'Processing...' : 'Pay with Stripe'}
+        {isSubmitting ? 'Processing...' : `Pay $${(amount / 3900).toFixed(2)} USD via Stripe`}
       </button>
     </div>
   );
 }
 
 // ─── Razorpay form ────────────────────────────────────────────────────────────
-function RazorpayForm({ amount, user, onSuccess, onError, isSubmitting, setIsSubmitting }) {
+function RazorpayForm({ amount, user, onCreatePendingOrder, onSuccess, onError, isSubmitting, setIsSubmitting }) {
   const handlePay = async () => {
     setIsSubmitting(true);
+    const orderId = await onCreatePendingOrder();
+    if (!orderId) { setIsSubmitting(false); return; }
     try {
       const res = await fetch('/api/payments/razorpay/create-order', {
         method:  'POST',
@@ -285,6 +313,8 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
   const handlePay = async () => {
     if (!phone) { onError('Please enter your mobile money number.'); return; }
     setIsSubmitting(true);
+    const orderId = await onCreatePendingOrder();
+    if (!orderId) { setIsSubmitting(false); return; }
     try {
       const res  = await fetch('/api/payments/mobile-money/initiate', {
         method:  'POST',
@@ -410,6 +440,7 @@ export default function PaymentStep({
   amount,
   user,
   pendingOrderId,
+  createPendingOrder,   // creates order with paymentStatus:'pending' before gateway opens
   onPlaceOrder,
   isSubmitting,
   setIsSubmitting,
@@ -431,6 +462,13 @@ export default function PaymentStep({
 
   const handleSuccess = ({ reference, provider: prov }) => {
     onPlaceOrder({ paymentReference: reference, paymentProvider: prov });
+  };
+
+  // Called by gateway components (Flutterwave, Stripe, PayPal, Razorpay) BEFORE
+  // opening their UI — ensures a real orderId exists for the gateway session.
+  const handleCreatePendingOrder = async () => {
+    const orderId = await createPendingOrder();
+    return orderId; // null means validation failed — gateway should not open
   };
 
   const handleError = (msg) => {
@@ -492,6 +530,7 @@ export default function PaymentStep({
                   <Elements stripe={stripePromise}>
                     <StripeForm
                       amount={amount}
+                      onCreatePendingOrder={handleCreatePendingOrder}
                       onSuccess={handleSuccess}
                       onError={handleError}
                       isSubmitting={isSubmitting}
@@ -514,6 +553,7 @@ export default function PaymentStep({
                     currency="UGX"
                     user={user}
                     orderId={pendingOrderId}
+                    onCreatePendingOrder={handleCreatePendingOrder}
                     onSuccess={handleSuccess}
                     onError={handleError}
                     isSubmitting={isSubmitting}
@@ -525,6 +565,7 @@ export default function PaymentStep({
                   <RazorpayForm
                     amount={amount}
                     user={user}
+                    onCreatePendingOrder={handleCreatePendingOrder}
                     onSuccess={handleSuccess}
                     onError={handleError}
                     isSubmitting={isSubmitting}
@@ -536,6 +577,7 @@ export default function PaymentStep({
                   <MobileMoneyForm
                     phone={momoPhone}
                     setPhone={setMomoPhone}
+                    onCreatePendingOrder={handleCreatePendingOrder}
                     onSuccess={handleSuccess}
                     onError={handleError}
                     isSubmitting={isSubmitting}

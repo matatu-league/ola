@@ -1,84 +1,198 @@
+// contexts/CartContext.jsx
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useUser } from './UserContext';
 
-const CartContext = createContext();
+const CartContext = createContext(null);
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function getSessionId() {
+  if (typeof window === 'undefined') return null;
+  let id = localStorage.getItem('cart_session_id');
+  if (!id) {
+    id = uuidv4();
+    localStorage.setItem('cart_session_id', id);
+  }
+  return id;
+}
+
+function getUserFromCookie() {
+  if (typeof document === 'undefined') return null;
+  try {
+    const match = document.cookie.split('; ').find(r => r.startsWith('user_session='));
+    if (!match) return null;
+    const raw = decodeURIComponent(match.split('=')[1]);
+    return JSON.parse(raw.startsWith('%7B') ? decodeURIComponent(raw) : raw);
+  } catch { return null; }
+}
+
+function mergeItems(localItems, backendItems) {
+  const map = new Map();
+  for (const item of localItems)  map.set(item.id, item);
+  for (const item of backendItems) map.set(item.id, item); // backend wins on conflict
+  return Array.from(map.values());
+}
+
+// ── Provider ──────────────────────────────────────────────────────────────────
 export function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  // Get user from central context instead of parsing cookie directly
+  const { user } = useUser();
 
-  // Load from local storage on mount
+  const [cartItems,    setCartItemsState] = useState([]);
+  const [isDrawerOpen, setIsDrawerOpen]  = useState(false);
+  const [isSyncing,    setIsSyncing]     = useState(false);
+
+  const syncTimerRef = useRef(null);
+  const hasMergedRef = useRef(false);
+
+  // ── Load cart on mount ────────────────────────────────────────────────────
   useEffect(() => {
-    const stored = localStorage.getItem('ola_cart');
-    if (stored) {
-      try { setCartItems(JSON.parse(stored)); } catch (e) {}
-    }
+    const loadCart = async () => {
+      // Instant load from localStorage
+      try {
+        const local = localStorage.getItem('cart_items');
+        if (local) setCartItemsState(JSON.parse(local));
+      } catch (_) {}
+
+      // Then sync from backend
+      // user comes from useUser() context above
+      const sessionId = getSessionId();
+      const query     = user ? `userId=${user.id}` : `sessionId=${sessionId}`;
+
+      try {
+        const res  = await fetch(`/api/cart?${query}`);
+        const data = await res.json();
+        if (data.success && data.data?.items?.length) {
+          const backendItems = data.data.items.map(item => ({
+            id:              `${item.product._id}-${JSON.stringify(item.variants || {})}`,
+            product:         item.product,
+            quantity:        item.quantity,
+            priceAtAddition: item.priceAtAddition,
+            variants:        item.variants || {},
+          }));
+          setCartItemsState(prev => mergeItems(prev, backendItems));
+        }
+      } catch (_) {
+        // Offline — localStorage only
+      }
+    };
+
+    loadCart();
   }, []);
 
-  // Save to local storage whenever cart changes
+  // ── Merge guest cart into user cart on login ──────────────────────────────
   useEffect(() => {
-    localStorage.setItem('ola_cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    if (!user || hasMergedRef.current) return;
+    hasMergedRef.current = true;
+    const sessionId = getSessionId();
+    fetch('/api/cart/merge', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ userId: user.id, sessionId }),
+    }).catch(() => {});
+  }, []);
 
-  const toggleDrawer = () => setIsDrawerOpen(prev => !prev);
-  const closeDrawer = () => setIsDrawerOpen(false);
-  const openDrawer = () => setIsDrawerOpen(true);
+  // ── Debounced backend sync ────────────────────────────────────────────────
+  const syncToBackend = useCallback((items) => {
+    clearTimeout(syncTimerRef.current);
+    syncTimerRef.current = setTimeout(async () => {
+      // user comes from useUser() context above
+      const sessionId = getSessionId();
+      setIsSyncing(true);
+      try {
+        await fetch('/api/cart', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            userId:    user?.id   || null,
+            sessionId: user       ? null : sessionId,
+            items,
+          }),
+        });
+      } catch (_) {}
+      finally { setIsSyncing(false); }
+    }, 800);
+  }, []);
 
-  const addToCart = (product, quantity, variants = {}) => {
-    setCartItems(prev => {
-      // Check if exact same product + variants exists
-      const existingIdx = prev.findIndex(item => 
-        item.product._id === product._id && 
-        JSON.stringify(item.variants) === JSON.stringify(variants)
-      );
-
-      if (existingIdx >= 0) {
-        const newCart = [...prev];
-        newCart[existingIdx].quantity += quantity;
-        return newCart;
-      }
-      
-      return [...prev, { 
-        id: `${product._id}-${Date.now()}`, 
-        product, 
-        quantity, 
-        variants,
-        priceAtAddition: product.price 
-      }];
+  // ── Internal setter — updates state + localStorage + backend ─────────────
+  const setCartItems = useCallback((updater) => {
+    setCartItemsState(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      localStorage.setItem('cart_items', JSON.stringify(next));
+      syncToBackend(next);
+      return next;
     });
-    openDrawer();
-  };
+  }, [syncToBackend]);
 
-  const removeFromCart = (cartItemId) => {
-    setCartItems(prev => prev.filter(item => item.id !== cartItemId));
-  };
+  // ── Cart operations ───────────────────────────────────────────────────────
+  const addToCart = useCallback((product, quantity = 1, variants = {}) => {
+    const itemId = `${product._id}-${JSON.stringify(variants)}`;
+    setCartItems(prev => {
+      const existing = prev.find(i => i.id === itemId);
+      if (existing) {
+        return prev.map(i => i.id === itemId ? { ...i, quantity: i.quantity + quantity } : i);
+      }
+      const price = product.isFlashItem && product.flashSalePrice
+        ? product.flashSalePrice
+        : product.price;
+      return [...prev, { id: itemId, product, quantity, priceAtAddition: price, variants }];
+    });
+  }, [setCartItems]);
 
-  const updateQuantity = (cartItemId, newQty) => {
-    if (newQty < 1) return;
-    setCartItems(prev => prev.map(item => 
-      item.id === cartItemId ? { ...item, quantity: newQty } : item
-    ));
-  };
+  const removeFromCart = useCallback((itemId) => {
+    setCartItems(prev => prev.filter(i => i.id !== itemId));
+  }, [setCartItems]);
 
-  // NEW: Clear cart after successful checkout
-  const clearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem('ola_cart');
-  };
+  const updateQuantity = useCallback((itemId, newQty) => {
+    if (newQty < 1) { removeFromCart(itemId); return; }
+    setCartItems(prev => prev.map(i => i.id === itemId ? { ...i, quantity: newQty } : i));
+  }, [setCartItems, removeFromCart]);
 
-  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const cartTotal = cartItems.reduce((acc, item) => acc + (parseFloat(item.priceAtAddition || 0) * item.quantity), 0);
+  const clearCart = useCallback(async () => {
+    setCartItemsState([]);
+    localStorage.removeItem('cart_items');
+    // user comes from useUser() context above
+    const sessionId = getSessionId();
+    const query     = user ? `userId=${user.id}` : `sessionId=${sessionId}`;
+    try {
+      await fetch(`/api/cart?${query}`, { method: 'DELETE' });
+    } catch (_) {}
+  }, []);
+
+  // ── Drawer controls ───────────────────────────────────────────────────────
+  const openDrawer   = useCallback(() => setIsDrawerOpen(true),         []);
+  const closeDrawer  = useCallback(() => setIsDrawerOpen(false),        []);
+  const toggleDrawer = useCallback(() => setIsDrawerOpen(prev => !prev), []);
+
+  // ── Derived values ────────────────────────────────────────────────────────
+  const cartTotal = cartItems.reduce((sum, i) => sum + i.priceAtAddition * i.quantity, 0);
+  const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
     <CartContext.Provider value={{
-      cartItems, cartCount, cartTotal,
-      isDrawerOpen, toggleDrawer, closeDrawer, openDrawer,
-      addToCart, removeFromCart, updateQuantity, clearCart
+      cartItems,
+      setCartItems,     // exposed for cart recovery page
+      cartTotal,
+      cartCount,
+      isDrawerOpen,
+      isSyncing,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      openDrawer,
+      closeDrawer,
+      toggleDrawer,     // used by TopNav cart icon
     }}>
       {children}
     </CartContext.Provider>
   );
 }
 
-export const useCart = () => useContext(CartContext);
+export const useCart = () => {
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error('useCart must be used within CartProvider');
+  return ctx;
+};
