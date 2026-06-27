@@ -59,11 +59,15 @@ const CustomAIStore = ({ store }) => {
     const dynamicStoreData = {
       storeName: store.title || "My Store",
       storeLogo: store.logo || "",
-      storeBanner: store.banner || "",
+      storeBanner: store.banner || (store.bannerImages && store.bannerImages[0]) || "",
       contactEmail: store.contact?.email || "",
       contactPhone: store.contact?.phone || "",
       themeColor: store.themeColor || "#111",
+      // Business shape so service/both stores render the right experience.
+      businessType: store.businessType || "products",
+      serviceType: store.serviceType || null,
       products: formattedProducts,
+      services: Array.isArray(store.services) ? store.services : [],
       categories: formattedCategories // Injected safely into the template
     };
 
