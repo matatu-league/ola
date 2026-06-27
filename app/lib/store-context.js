@@ -1,79 +1,87 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { connectToDatabase } from '@/lib/mongodb';
-import { Store } from '@/models/Store'; // Adjust to match your export
-
-// Simple in-memory cache to prevent DB lookups on every API request.
-// Note: In serverless environments (like Vercel), this resets on cold starts.
-const storeCache = new Map();
+import { Store } from '@/models/Store';
+import { ROOT_DOMAIN, isMainHost } from '@/lib/domain';
 
 /**
- * Helper to securely extract the domain from the user_session cookie.
+ * Multi-store resolution.
+ *
+ * A user may own up to 3 stores, each on its own subdomain (`<sub>.ola.ug`).
+ * The *active* store is therefore identified by the request Host: dashboard
+ * calls from `b.ola.ug` hit `b.ola.ug/api/...`, so the Host tells us which
+ * store the owner is managing. We resolve by Host first, then fall back to the
+ * session cookie's `domain`, then the user's first store — and always verify
+ * the resolved store belongs to the signed-in user.
  */
-async function getDomainFromCookie() {
+
+// ── Session helpers (read straight from the user_session cookie) ─────────────
+async function getSession() {
   try {
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get('user_session')?.value;
-    
-    if (!sessionCookie) return null;
-
-    // Decode the cookie string safely
-    let decoded = decodeURIComponent(sessionCookie).replace(/^"|"$/g, '');
-    if (decoded.startsWith('%7B')) {
-      decoded = decodeURIComponent(decoded);
-    }
-    
-    // Parse the JSON and return the domain instead of the user ID
-    const parsedData = JSON.parse(decoded);
-    return parsedData.domain || null;
+    const raw = cookieStore.get('user_session')?.value;
+    if (!raw) return null;
+    let decoded = decodeURIComponent(raw).replace(/^"|"$/g, '');
+    if (decoded.startsWith('%7B')) decoded = decodeURIComponent(decoded);
+    return JSON.parse(decoded);
   } catch (error) {
-    console.error('[Cookie Context] Failed to parse session cookie:', error);
+    console.error('[Store Context] Failed to parse session cookie:', error);
+    return null;
+  }
+}
+
+// The current request's store subdomain (`b.ola.ug`), or null on the main
+// marketplace / localhost.
+async function getHostDomain() {
+  try {
+    const h = await headers();
+    const host = (h.get('host') || '').split(':')[0].toLowerCase();
+    if (!host || isMainHost(host)) return null;
+    return host.endsWith(`.${ROOT_DOMAIN}`) ? host : null;
+  } catch {
     return null;
   }
 }
 
 /**
- * Self-contained helper that gets the domain from the cookie,
- * checks the cache, and retrieves the Store ID from MongoDB if needed.
+ * The full active Store document for the signed-in user, scoped to the current
+ * subdomain when present. Always ownership-verified. Returns null if the user
+ * has no stores.
  */
-export async function getStoreId() {
-  // 1. Get domain completely from the server-side cookie context
-  const domain = await getDomainFromCookie();
-  
-  if (!domain) {
-    console.warn('[Cache] No domain found in current session cookie');
-    return null;
-  }
+export async function getActiveStore() {
+  const session = await getSession();
+  const userId = session?.id;
+  if (!userId) return null;
 
-  // 2. Check the fast in-memory cache first using the extracted domain
-  if (storeCache.has(domain)) {
-    return storeCache.get(domain);
-  }
+  await connectToDatabase();
+  const ownerFilter = { $or: [{ userId }, { owner: userId }] };
 
-  // 3. Cache Miss -> Connect to DB and query
-  try {
-    await connectToDatabase();
-    
-    // We only need the _id, so we use .select() and .lean() for maximum performance
-    const store = await Store.findOne({ domain }).select('_id').lean();
-
-    if (store) {
-      const id = store._id.toString();
-      // Store the result in cache for subsequent requests
-      storeCache.set(domain, id);
-      return id;
-    }
-    
-    return null;
-  } catch (error) {
-    console.error(`[Cache] Error fetching store ID for domain ${domain}:`, error);
-    return null;
-  }
-}
-
-export function invalidateStoreCache(domain) {
+  // Prefer the subdomain we're on; then the cookie's last-used domain.
+  const domain = (await getHostDomain()) || session.domain || null;
   if (domain) {
-    storeCache.delete(domain);
-  } else {
-    storeCache.clear();
+    const scoped = await Store.findOne({ domain, ...ownerFilter }).lean();
+    if (scoped) return scoped;
   }
+
+  // Fallback: the user's first store.
+  return Store.findOne(ownerFilter).sort({ createdAt: 1 }).lean();
 }
+
+/** Active store's id (string), or null. */
+export async function getStoreId() {
+  const store = await getActiveStore();
+  return store ? store._id.toString() : null;
+}
+
+/** All stores owned by a user — for the dashboard store switcher. */
+export async function getUserStores(userId) {
+  if (!userId) return [];
+  await connectToDatabase();
+  return Store.find({ $or: [{ userId }, { owner: userId }] })
+    .select('_id title domain logo businessType serviceType')
+    .sort({ createdAt: 1 })
+    .lean();
+}
+
+// Retained for backwards-compatibility (resolution is no longer cached, so this
+// is a no-op). Kept so any existing imports don't break.
+export function invalidateStoreCache() {}

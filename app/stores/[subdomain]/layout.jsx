@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Package, ClipboardList, Settings, LogOut,
   Menu, Bell, Search, Store, Palette, X, Layers, CalendarCheck,
-  MessageSquare,
+  MessageSquare, ChevronDown, Plus, Check,
 } from 'lucide-react';
 import { io as socketIO } from 'socket.io-client';
 import {
@@ -58,6 +58,8 @@ export default function SellerLayout({ children }) {
   const [user,             setUser]             = useState(null);
   const [isCheckingStore,  setIsCheckingStore]  = useState(true);
   const [unreadCount,      setUnreadCount]      = useState(0);
+  const [stores,           setStores]           = useState([]); // all of the user's stores
+  const [switcherOpen,     setSwitcherOpen]     = useState(false);
 
   // Buyer-facing "shop" routes render the themed storefront experience (no
   // seller sidebar, no owner redirect) with the system banner on top. Seller
@@ -153,6 +155,15 @@ export default function SellerLayout({ children }) {
       });
   }, [pathname, isShopRoute]);
 
+  // Load all the user's stores for the switcher (multi-store accounts).
+  useEffect(() => {
+    if (isShopRoute) return;
+    fetch('/api/stores?all=1')
+      .then(r => r.json())
+      .then(d => { if (d.success) setStores(d.stores || []); })
+      .catch(() => {});
+  }, [isShopRoute]);
+
   const handleSignOut = () => {
     const rootDomain = getCookieRootDomain(window.location.hostname);
     document.cookie = `user_session=; Max-Age=0; path=/; domain=.${rootDomain};`;
@@ -221,6 +232,63 @@ export default function SellerLayout({ children }) {
             <X size={20} />
           </button>
         </div>
+
+        {/* Store switcher (multi-store accounts) */}
+        {stores.length > 0 && (() => {
+          const currentHost = typeof window !== 'undefined' ? window.location.hostname : '';
+          const current = stores.find(s => s.domain === currentHost) || stores[0];
+          const protocol = currentHost.includes('localhost') ? 'http://' : 'https://';
+          return (
+            <div className="px-3 py-3 border-b border-white/10 relative">
+              <button
+                type="button"
+                onClick={() => setSwitcherOpen(o => !o)}
+                className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-none bg-white/5 hover:bg-white/10 transition-colors text-left"
+              >
+                <span className="w-7 h-7 rounded-none bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden">
+                  {current?.logo
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={current.logo} alt="" className="w-full h-full object-cover" />
+                    : (current?.title?.charAt(0)?.toUpperCase() || 'S')}
+                </span>
+                <span className="flex-1 min-w-0">
+                  <span className="block text-[13px] font-bold text-white truncate">{current?.title || 'My Store'}</span>
+                  <span className="block text-[10px] text-white/40 truncate">{current?.domain}</span>
+                </span>
+                <ChevronDown size={14} className="text-white/40 shrink-0" />
+              </button>
+
+              {switcherOpen && (
+                <div className="absolute left-3 right-3 mt-1 z-50 bg-[#0b1b2b] border border-white/10 rounded-none shadow-2xl overflow-hidden">
+                  {stores.map(s => {
+                    const isCurrent = s.domain === currentHost;
+                    return (
+                      <a
+                        key={s._id}
+                        href={`${protocol}${s.domain}/dashboard`}
+                        className={`flex items-center gap-2.5 px-3 py-2 text-[13px] transition-colors ${isCurrent ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/5 hover:text-white'}`}
+                      >
+                        <span className="w-5 h-5 rounded-none bg-white/10 flex items-center justify-center text-[10px] font-bold shrink-0">
+                          {s.title?.charAt(0)?.toUpperCase() || 'S'}
+                        </span>
+                        <span className="flex-1 truncate">{s.title}</span>
+                        {isCurrent && <Check size={13} className="text-blue-400 shrink-0" />}
+                      </a>
+                    );
+                  })}
+                  {stores.length < 3 && (
+                    <a
+                      href={`${getRootDomain()}/stores/onboarding`}
+                      className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-semibold text-blue-400 hover:bg-white/5 border-t border-white/10"
+                    >
+                      <Plus size={14} /> New store
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Nav links */}
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-0.5 custom-scrollbar">

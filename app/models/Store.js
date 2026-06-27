@@ -38,7 +38,10 @@ const StoreCollectionSchema = new Schema(
 // ─────────────────────────────────────────────
 const StoreSchema = new Schema(
   {
-    userId:      { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
+    // A user may own up to 3 stores (enforced in POST /api/stores), so userId is
+    // indexed but NOT unique. NB: drop the legacy `userId_1` unique index in
+    // Mongo once — a schema change alone won't remove it.
+    userId:      { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     title:       { type: String, required: true },
     domain:      { type: String, unique: true, sparse: true },
 

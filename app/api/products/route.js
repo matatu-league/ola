@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { connectToDatabase } from '../../lib/mongodb';
 import { Category, CategoryFilter, Product } from '../../models/Marketplace';
 import '../../models/Store';
+import { getStoreId } from '../../lib/store-context';
 
 async function getUserId() {
   const cookieStore = await cookies();
@@ -51,9 +52,13 @@ export async function GET(request) {
       const userId = await getUserId();
       if (!userId) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
       query.userId = userId;
+      // Multi-store: scope an owner's listing to the store they're currently in
+      // (resolved from the subdomain), so each store shows only its own products.
+      const activeStoreId = await getStoreId();
+      if (activeStoreId) query.storeId = activeStoreId;
     }
 
-    // ── Store filter ───────────────────────────────────────────────────
+    // ── Store filter (explicit, e.g. public storefront) ─────────────────
     if (storeId) {
       query.storeId = storeId;
     }
@@ -263,9 +268,14 @@ export async function POST(request) {
     await connectToDatabase();
     const body = await request.json();
 
+    // Attach the active store (resolved from the subdomain) so the product
+    // belongs to the right store in a multi-store account.
+    const activeStoreId = await getStoreId();
+
     const payload = {
       ...body,
       userId,
+      ...(activeStoreId     && { storeId:         activeStoreId }),
       ...(body.category      && { categoryId:      body.category }),
       ...(body.storeCategory && { storeCategoryId: body.storeCategory }),
     };
