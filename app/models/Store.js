@@ -44,6 +44,9 @@ const StoreSchema = new Schema(
 
     businessType: { type: String, enum: ['products', 'services', 'both'], default: 'products' },
     industry:     { type: String, required: true },
+    // For service/both stores — selects the booking field set (see
+    // ServiceCategoryFields). Derived from the chosen category at onboarding.
+    serviceType:  { type: String, default: null },
 
     description:   { type: String },
     themeColor:    { type: String, default: '#161823' },

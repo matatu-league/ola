@@ -9,6 +9,24 @@ const CategorySchema = new Schema(
     image:       { type: String },
     description: { type: String },
     parentId:    { type: Schema.Types.ObjectId, ref: 'Category', default: null, index: true },
+
+    // ── Service vs. product classification ──────────────────────────────────
+    // Drives onboarding (store vs. service vs. both), the seller dashboard mode,
+    // and the storefront/booking experience. Defaults to 'product' so the
+    // existing marketplace taxonomy is unaffected until categories are tagged.
+    kind: {
+      type: String,
+      enum: ['product', 'service', 'both'],
+      default: 'product',
+      index: true,
+    },
+    // For service/both categories, selects which booking field set applies
+    // (see the ServiceCategoryFields collection). null for pure-product categories.
+    serviceType: {
+      type: String,
+      enum: ['hotel', 'salon', 'medical', 'tickets', 'venue', 'school', 'generic', null],
+      default: null,
+    },
   },
   { timestamps: true },
 );
@@ -26,6 +44,23 @@ const CategoryFilterSchema = new Schema(
     total:        { type: Number, default: 0 },
     filterSchema: { type: [Schema.Types.Mixed], default: [] },
     topSelection: { type: Schema.Types.Mixed, default: null },
+  },
+  { timestamps: true, minimize: false },
+);
+
+// ─── Service Category Booking Fields ────────────────────────────────────────
+// Defines the dynamic booking/intake inputs a service store fills in per
+// industry — e.g. a hotel's check-in/out times + amenities, a salon's service
+// menu + slots, a clinic's appointment slots. Keyed by serviceType so a single
+// document drives every category that shares that type. DB-backed (seeded via
+// scripts/seed-service-fields.mjs) so the field sets can evolve without a
+// deploy, mirroring the CategoryFilter pattern. `fields` is intentionally
+// flexible (Mixed) — each entry is { key, label, type, options?, required?, group? }.
+const ServiceFieldSchema = new Schema(
+  {
+    serviceType: { type: String, required: true, unique: true, trim: true, index: true },
+    label:       { type: String },
+    fields:      { type: [Schema.Types.Mixed], default: [] },
   },
   { timestamps: true, minimize: false },
 );
@@ -319,6 +354,7 @@ const OrderSchema = new Schema({
 // ─── Exports ──────────────────────────────────────────────────────────────────
 export const Category       = models.Category       || model('Category',       CategorySchema);
 export const CategoryFilter = models.CategoryFilter || model('CategoryFilter', CategoryFilterSchema);
+export const ServiceCategoryFields = models.ServiceCategoryFields || model('ServiceCategoryFields', ServiceFieldSchema);
 export const Collection     = models.Collection     || model('Collection',     CollectionSchema);
 export const Product        = models.Product        || model('Product',        ProductSchema);
 export const ProductReview  = models.ProductReview  || model('ProductReview',  ReviewSchema);
