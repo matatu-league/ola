@@ -69,6 +69,22 @@ export default function StoreOnboarding() {
             children: cats.filter(c => String(c.parentId) === String(p._id)),
           }))
           .sort((a, b) => a.name.localeCompare(b.name));
+
+        // Never silently drop categories: any whose parent isn't a returned
+        // top-level category (e.g. service subcategories whose "Services"
+        // parent is missing/renamed in the DB) would otherwise vanish from the
+        // picker. Gather all such leftovers under a fallback group so every
+        // category — including services — is always selectable.
+        const placed = new Set();
+        groups.forEach(g => {
+          placed.add(String(g._id));
+          g.children.forEach(c => placed.add(String(c._id)));
+        });
+        const orphans = cats.filter(c => !placed.has(String(c._id)));
+        if (orphans.length) {
+          groups.push({ _id: '__other__', name: 'More Categories', synthetic: true, children: orphans });
+        }
+
         setCategoryGroups(groups);
       } catch (err) {
         console.error('Failed to load categories', err);
@@ -322,8 +338,9 @@ export default function StoreOnboarding() {
                       <p className="px-4 pt-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-[#8A8B91] bg-[#F8F8F8]">
                         {group.name}
                       </p>
-                      {/* The parent category is itself selectable */}
-                      {[group, ...group.children].map(cat => {
+                      {/* Real parent categories are themselves selectable; the
+                          synthetic "More Categories" group lists only children. */}
+                      {(group.synthetic ? group.children : [group, ...group.children]).map(cat => {
                         const isService = cat.kind === 'service' || cat.kind === 'both';
                         return (
                           <button
