@@ -368,7 +368,7 @@ const App = ({ storeName = "My Store", storeLogo, storeBanner, contactEmail = "h
 };
 export default App;`;
 
-const LiveCodePreview = ({ code, viewMode = 'desktop' }) => {
+const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor }) => {
   const containerRef = useRef(null);
   const [scale, setScale] = useState(1);
 
@@ -381,7 +381,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop' }) => {
     contactPhone: storeProfile.contactPhone || "+1 (555) 123-4567",
     businessType: storeProfile.businessType || "products",
     serviceType:  storeProfile.serviceType || null,
-    themeColor:   dialogThemeColor || "#2563EB",
+    themeColor:   themeColor || "#2563EB",
     categories: ["Featured", "New Arrivals", "Trending", "Clearance"],
     products: [
       { id: "1", name: "Minimalist Linen Shirt", price: 85, image: "https://images.unsplash.com/photo-1596755094514-f87e32f85e98?w=500&auto=format&fit=crop" },
@@ -875,7 +875,7 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
             </div>
           ) : (
             <div className="w-full h-full animate-in zoom-in-95 duration-500 relative flex items-center justify-center">
-              <LiveCodePreview code={code} viewMode={viewport} />
+              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} />
             </div>
           )}
         </div>
