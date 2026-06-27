@@ -57,7 +57,7 @@ const generateCodeAI = async (
 
   // Industry-specific blueprint so a hotel gets a hotel site, not a product grid.
   const SITE_BRIEFS = {
-    hotel:   `Build a HOTEL / ACCOMMODATION website. Hero showing the property, ROOM TYPES as cards (image, nightly price, capacity, a clear "Book Now" button), an AMENITIES section (Wi-Fi, pool, parking, breakfast, AC…), check-in / check-out info, a photo GALLERY, and a location block. Do NOT build a generic product grid.`,
+    hotel:   `Build a HOTEL / ACCOMMODATION website. Hero with a Date / Guests check-in–check-out availability picker, ROOM TYPES as cards (image, nightly price, capacity, a clear "Book Now" button), an AMENITIES section (Wi-Fi, pool, parking, breakfast, AC…), check-in / check-out info, a photo GALLERY, and a location block. Do NOT build a generic product grid.`,
     salon:   `Build a SALON / SPA website. A SERVICE MENU (treatment name, duration, price) with "Book Appointment" CTAs, a stylists/team section, before/after or gallery, and opening hours.`,
     medical: `Build a CLINIC / DOCTOR website. Specialties & services, practitioner profiles, a prominent "Book Appointment" flow, consultation info, opening hours, and trust/credentials.`,
     tickets: `Build an EVENTS / TICKETS website. Featured EVENTS with date, time and venue, TICKET TIERS (price + "Buy Tickets"), and a schedule/lineup section.`,
@@ -99,6 +99,7 @@ CRITICAL ARCHITECTURE RULES (STRICT COMPLIANCE):
 5. SEARCH/FILTER: where a list of items is shown, implement working local search/filter with React state.
 6. DARK FOOTER: include a dark footer (#050505 or similar) with the contact details, location, and legal links.
 7. LOGO & BANNER: use the storeLogo and storeBanner props when present; otherwise render the placeholders described in the brief. Make them feel bespoke to ${business.storeName || 'the store'}.
+8. NO RAW JS COMMENTS IN JSX: NEVER use single-line // comments inside the JSX return block — they render as visible text. Use {/* ... */} only.
 
 DESIGN SYSTEM:
 - PRIMARY ACCENT COLOR: ${themeColor} — use THIS color (not any hardcoded blue) for buttons, highlights and accents throughout.
