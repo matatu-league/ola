@@ -40,6 +40,7 @@ export default function StoreOnboarding() {
     categoryKind: '',
     serviceType: null,
     alsoSellsItems: false,
+    sellsEverything: false, // general store — lists across all categories
     businessType: 'products', // derived; 'products' | 'services' | 'both'
     layoutStyle: 'Classic',
     themeColor: '#161823'
@@ -99,12 +100,29 @@ export default function StoreOnboarding() {
   const selectCategory = (cat) => {
     setFormData(prev => ({
       ...prev,
+      sellsEverything: false,
       categoryId:     cat._id,
       categoryName:   cat.name,
       categoryKind:   cat.kind || 'product',
       serviceType:    cat.serviceType || null,
       alsoSellsItems: false,
       businessType:   deriveBusinessType(cat.kind || 'product', false),
+    }));
+    setPickerOpen(false);
+    setCatSearch('');
+  };
+
+  // General store — sells across every category (no single specialization).
+  const selectEverything = () => {
+    setFormData(prev => ({
+      ...prev,
+      sellsEverything: true,
+      categoryId:     '',
+      categoryName:   'Everything (general store)',
+      categoryKind:   'product',
+      serviceType:    null,
+      alsoSellsItems: false,
+      businessType:   'products',
     }));
     setPickerOpen(false);
     setCatSearch('');
@@ -209,7 +227,7 @@ export default function StoreOnboarding() {
   // Computed property for strict frontend validation
   const isFormValid = Boolean(
     formData.title.trim().length > 0 &&
-    formData.categoryId !== '' &&
+    (formData.categoryId !== '' || formData.sellsEverything) &&
     formData.domain.length >= 3 &&
     domainStatus === 'available'
   );
@@ -329,42 +347,90 @@ export default function StoreOnboarding() {
                     className="w-full pl-9 pr-3 py-2.5 text-[13px] font-medium text-[#161823] focus:outline-none"
                   />
                 </div>
-                <div className="max-h-64 overflow-y-auto">
+                <div className="max-h-72 overflow-y-auto">
+                  {/* General store — sells across every category */}
+                  {!catSearch.trim() && (
+                    <button
+                      type="button"
+                      onClick={selectEverything}
+                      className={`w-full flex items-center gap-3 px-4 py-3 border-b border-[#E3E3E4] text-left transition-colors ${
+                        formData.sellsEverything ? 'bg-[#FFF0F3]' : 'hover:bg-[#F8F8F8]'
+                      }`}
+                    >
+                      <Globe size={18} className="text-[#161823] shrink-0" />
+                      <span className="flex-1">
+                        <span className="block text-[13px] font-bold text-[#161823]">I sell everything</span>
+                        <span className="block text-[11px] text-[#8A8B91]">General store — list products across all categories</span>
+                      </span>
+                      {formData.sellsEverything && <Check size={16} className="text-[#16A34A]" />}
+                    </button>
+                  )}
+
                   {filteredGroups.length === 0 && (
                     <p className="px-4 py-3 text-[12px] text-[#8A8B91]">No categories found.</p>
                   )}
-                  {filteredGroups.map(group => (
-                    <div key={group._id}>
-                      <p className="px-4 pt-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-[#8A8B91] bg-[#F8F8F8]">
-                        {group.name}
-                      </p>
-                      {/* Real parent categories are themselves selectable; the
-                          synthetic "More Categories" group lists only children. */}
-                      {(group.synthetic ? group.children : [group, ...group.children]).map(cat => {
-                        const isService = cat.kind === 'service' || cat.kind === 'both';
-                        return (
+
+                  {filteredGroups.map(group => {
+                    const selectableParent = !group.synthetic;
+                    const parentSelected   = formData.categoryId === group._id;
+                    const parentIsService  = group.kind === 'service' || group.kind === 'both';
+                    return (
+                      <div key={group._id} className="border-b border-[#F0F0F0] last:border-0">
+                        {/* Group header — a clear, checkbox-style row that selects
+                            the whole parent category. The synthetic "More
+                            Categories" group is just a label. */}
+                        {selectableParent ? (
                           <button
-                            key={cat._id}
                             type="button"
-                            onClick={() => selectCategory(cat)}
-                            className="w-full flex items-center justify-between px-4 py-2 text-left hover:bg-[#F8F8F8] transition-colors"
+                            onClick={() => selectCategory(group)}
+                            className={`w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-colors ${
+                              parentSelected ? 'bg-[#FFF0F3]' : 'bg-[#F8F8F8] hover:bg-[#F0F0F0]'
+                            }`}
                           >
-                            <span className="text-[13px] font-medium text-[#161823]">
-                              {cat === group ? `All ${group.name}` : cat.name}
+                            <span className={`w-4 h-4 rounded-sm border flex items-center justify-center shrink-0 ${
+                              parentSelected ? 'bg-[#161823] border-[#161823]' : 'border-[#8A8B91] bg-white'
+                            }`}>
+                              {parentSelected && <Check size={11} className="text-white" />}
                             </span>
-                            <span className="flex items-center gap-2">
-                              {isService && (
-                                <span className="text-[9px] font-bold uppercase tracking-wide text-[#161823] bg-[#FFE8EC] px-1.5 py-0.5 rounded-sm">
-                                  {cat.kind === 'both' ? 'Service + Store' : 'Service'}
-                                </span>
-                              )}
-                              {formData.categoryId === cat._id && <Check size={14} className="text-[#16A34A]" />}
-                            </span>
+                            <span className="flex-1 text-[12px] font-bold uppercase tracking-wide text-[#161823]">{group.name}</span>
+                            {parentIsService && (
+                              <span className="text-[9px] font-bold uppercase tracking-wide text-[#161823] bg-[#FFE8EC] px-1.5 py-0.5 rounded-sm">
+                                {group.kind === 'both' ? 'Service + Store' : 'Service'}
+                              </span>
+                            )}
+                            <span className="text-[10px] font-semibold text-[#8A8B91]">Select all</span>
                           </button>
-                        );
-                      })}
-                    </div>
-                  ))}
+                        ) : (
+                          <p className="px-4 pt-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-[#8A8B91] bg-[#F8F8F8]">
+                            {group.name}
+                          </p>
+                        )}
+
+                        {/* Subcategories */}
+                        {group.children.map(cat => {
+                          const isService = cat.kind === 'service' || cat.kind === 'both';
+                          return (
+                            <button
+                              key={cat._id}
+                              type="button"
+                              onClick={() => selectCategory(cat)}
+                              className="w-full flex items-center justify-between pl-9 pr-4 py-2 text-left hover:bg-[#F8F8F8] transition-colors"
+                            >
+                              <span className="text-[13px] font-medium text-[#161823]">{cat.name}</span>
+                              <span className="flex items-center gap-2">
+                                {isService && (
+                                  <span className="text-[9px] font-bold uppercase tracking-wide text-[#161823] bg-[#FFE8EC] px-1.5 py-0.5 rounded-sm">
+                                    {cat.kind === 'both' ? 'Service + Store' : 'Service'}
+                                  </span>
+                                )}
+                                {formData.categoryId === cat._id && <Check size={14} className="text-[#16A34A]" />}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

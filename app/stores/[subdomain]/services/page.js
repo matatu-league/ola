@@ -177,6 +177,10 @@ export default function ServicesPage() {
 
   // ── Categories ──────────────────────────────────────────────────────────────
   const [dbCategories, setDbCategories] = useState([]);
+  // The store's own category (set at onboarding). When present, every service
+  // belongs to it — there's no reason to re-show the whole category tree, so we
+  // lock the picker to this category (e.g. a hotel's services are all "Hotels").
+  const [storeCategoryId, setStoreCategoryId] = useState('');
 
   // ── Session for temp uploads ─────────────────────────────────────────────────
   const sessionId = useRef('');
@@ -227,6 +231,15 @@ export default function ServicesPage() {
 
     fetchServices();
     load('/api/categories', setDbCategories);
+
+    // Learn this store's category so we can lock the service picker to it.
+    fetch('/api/stores', { headers: { 'ngrok-skip-browser-warning': 'true' } })
+      .then(r => r.json())
+      .then(d => {
+        const primary = d?.store?.categories?.[0];
+        if (primary) setStoreCategoryId(String(primary));
+      })
+      .catch(() => {});
   }, []);
 
   // ── Category label ───────────────────────────────────────────────────────────
@@ -380,7 +393,8 @@ export default function ServicesPage() {
         },
       });
     } else {
-      setFormData({ ...INITIAL_FORM, images: [] });
+      // New service: default to the store's own category (locked picker).
+      setFormData({ ...INITIAL_FORM, images: [], category: storeCategoryId || '' });
     }
     setIsModalOpen(true);
   };
@@ -761,12 +775,29 @@ export default function ServicesPage() {
                 )}
               </div>
 
-              {/* ── Category Cascader ── */}
-              <CategoryCascader
-                dbCategories={dbCategories}
-                value={formData.category}
-                onChange={id => setFormData(p => ({ ...p, category: id }))}
-              />
+              {/* ── Category ── */}
+              {/* The store already has a category (chosen at onboarding), so every
+                  service belongs to it — show it locked rather than re-exposing the
+                  full category tree. Falls back to the picker for legacy stores. */}
+              {storeCategoryId ? (
+                <div>
+                  <label className="block text-[13px] font-semibold mb-1.5 text-[#161823]">
+                    Service Category
+                  </label>
+                  <div className="flex items-center justify-between px-3 py-2.5 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm">
+                    <span className="text-[13px] font-medium text-[#161823]">
+                      {getCategoryLabel(storeCategoryId)}
+                    </span>
+                    <span className="text-[10px] font-bold uppercase tracking-wide text-[#8A8B91]">Your store category</span>
+                  </div>
+                </div>
+              ) : (
+                <CategoryCascader
+                  dbCategories={dbCategories}
+                  value={formData.category}
+                  onChange={id => setFormData(p => ({ ...p, category: id }))}
+                />
+              )}
 
               {/* ── Title ── */}
               <div>

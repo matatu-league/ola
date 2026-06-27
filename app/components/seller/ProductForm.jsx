@@ -335,7 +335,32 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
         if (result.success && result.data) setter(result.data);
       } catch (e) { console.error(`Failed to fetch ${endpoint}`, e); }
     };
-    load('/api/categories',         setDbCategories);
+    // Marketplace categories, scoped to the store's specialization: a store
+    // that sells e.g. pets shouldn't see the entire category tree when listing
+    // a product. We keep the chosen category's parent group + its children
+    // (general "sell everything" stores have no primary category → keep all).
+    const scopeToStore = (all, primaryId) => {
+      if (!primaryId) return all;
+      const primary = all.find(c => String(c._id) === primaryId);
+      if (!primary) return all;
+      const scopeParentId = primary.parentId ? String(primary.parentId) : String(primary._id);
+      return all.filter(c =>
+        String(c._id) === scopeParentId || String(c.parentId) === scopeParentId
+      );
+    };
+    (async () => {
+      try {
+        const [catJson, storeJson] = await Promise.all([
+          fetch('/api/categories', { headers: { 'ngrok-skip-browser-warning': 'true' } }).then(r => r.json()),
+          fetch('/api/stores',     { headers: { 'ngrok-skip-browser-warning': 'true' } }).then(r => r.json()).catch(() => null),
+        ]);
+        if (!catJson?.success || !catJson.data) return;
+        const primaryId = storeJson?.store?.categories?.[0] ? String(storeJson.store.categories[0]) : '';
+        setDbCategories(scopeToStore(catJson.data, primaryId));
+      } catch (e) {
+        console.error('Failed to fetch categories', e);
+      }
+    })();
     load('/api/stores/categories',  setStoreCategories);
     load('/api/stores/collections', setStoreCollections);
   }, []);
