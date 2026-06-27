@@ -156,13 +156,13 @@ export default function FlutterwaveButton({
       </button>
 
       {localError && (
-        <div className="flex items-start gap-2 text-[12px] text-[#FE2C55] font-semibold bg-[#FFF0F3] border border-[#FE2C55] p-3 rounded-sm">
+        <div className="flex items-start gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm">
           <AlertCircle size={13} className="shrink-0 mt-0.5" />
           {localError}
         </div>
       )}
 
-      <p className="text-[10px] text-[#8A8B91] text-center">
+      <p className="text-[10px] text-[var(--s-muted,#8A8B91)] text-center">
         Powered by Flutterwave · Payments are secured and encrypted
       </p>
     </div>

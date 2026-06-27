@@ -120,7 +120,7 @@ export default function RazorpayForm({
         {['UPI', 'Debit Card', 'Credit Card', 'Net Banking', 'Wallet'].map(label => (
           <span
             key={label}
-            className="text-[10px] font-semibold text-[#8A8B91] bg-[#F8F8F8] border border-[#E3E3E4] px-2 py-0.5 rounded-sm"
+            className="text-[10px] font-semibold text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] px-2 py-0.5 rounded-sm"
           >
             {label}
           </span>
@@ -136,7 +136,7 @@ export default function RazorpayForm({
         Pay with Razorpay
       </button>
 
-      <p className="text-[10px] text-[#8A8B91] text-center">
+      <p className="text-[10px] text-[var(--s-muted,#8A8B91)] text-center">
         Powered by Razorpay · Best for UPI & Indian payment methods
       </p>
     </div>
