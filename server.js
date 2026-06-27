@@ -85,12 +85,15 @@ app.prepare().then(async () => {
   const io = new Server(httpServer, {
     cors: {
       origin: (origin, callback) => {
+        // Allow localhost/127.0.0.1 and ola.ug + any subdomain, WITH an
+        // optional port — dev runs subdomains like store.ola.ug:3000, whose
+        // origin ("http://store.ola.ug:3000") must still be accepted (the old
+        // `\.ola\.ug$` pattern rejected anything with a :port, breaking chat).
         const allowed =
           !origin ||
           /^https?:\/\/localhost(:\d+)?$/.test(origin) ||
-          /^https?:\/\/.*\.ola\.ug$/.test(origin) ||
-          origin === 'https://ola.ug' ||
-          origin === 'http://ola.ug';
+          /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(origin) ||
+          /^https?:\/\/([a-z0-9-]+\.)*ola\.ug(:\d+)?$/i.test(origin);
         callback(allowed ? null : new Error('Not allowed'), allowed);
       },
       methods:     ['GET', 'POST'],

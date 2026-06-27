@@ -91,17 +91,17 @@ function CategoryCascader({ dbCategories, value, onChange }) {
   const ref = useRef(null);
 
   const categoryTree = useMemo(() => {
-    const parents = dbCategories.filter(c => !c.parentRef);
+    const parents = dbCategories.filter(c => !c.parentId);
     return parents.map(p => ({
       ...p,
-      subCategories: dbCategories.filter(c => c.parentRef === p._id),
+      subCategories: dbCategories.filter(c => c.parentId === p._id),
     }));
   }, [dbCategories]);
 
   const selectedLabel = useMemo(() => {
     const cat = dbCategories.find(c => c._id === value);
     if (!cat) return 'Select a category';
-    const parent = dbCategories.find(p => p._id === cat.parentRef);
+    const parent = dbCategories.find(p => p._id === cat.parentId);
     return parent ? `${parent.name} > ${cat.name}` : cat.name;
   }, [value, dbCategories]);
 
@@ -233,7 +233,7 @@ export default function ServicesPage() {
   const getCategoryLabel = (id) => {
     const cat = dbCategories.find(c => c._id === id);
     if (!cat) return id || '—';
-    const parent = dbCategories.find(p => p._id === cat.parentRef);
+    const parent = dbCategories.find(p => p._id === cat.parentId);
     return parent ? `${parent.name} > ${cat.name}` : cat.name;
   };
 
@@ -468,7 +468,7 @@ export default function ServicesPage() {
     if (!formData.category || !dbCategories.length) return false;
     const cat = dbCategories.find(c => c._id === formData.category);
     if (!cat) return false;
-    const parent = dbCategories.find(p => p._id === cat.parentRef);
+    const parent = dbCategories.find(p => p._id === cat.parentId);
     const label  = `${parent?.name || ''} ${cat.name}`.toLowerCase();
     return label.includes('hotel') || label.includes('accommodation') ||
            label.includes('lodge') || label.includes('hostel') ||
