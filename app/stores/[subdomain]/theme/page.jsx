@@ -1015,6 +1015,14 @@ export default function ThemePage() {
   const [message, setMessage]               = useState({ type: '', text: '' });
   const [isAiDialogOpen, setIsAiDialogOpen] = useState(false);
 
+  // Arriving from the onboarding wizard's "Design my site" step → open the
+  // builder straight away for a continuous flow.
+  useEffect(() => {
+    if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('onboarding') === '1') {
+      setIsAiDialogOpen(true);
+    }
+  }, []);
+
   const [storeId, setStoreId]           = useState(null);
   const [storeData, setStoreData]       = useState({ title: 'My Store', logo: '' });
   const [layoutStyle, setLayoutStyle]   = useState('Classic');
