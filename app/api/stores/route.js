@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Store from '@/models/Store';
+import { Category } from '@/models/Marketplace';
 import { cookies } from 'next/headers';
 
 const getUserId = async () => {
@@ -53,13 +54,29 @@ export async function POST(request) {
       return NextResponse.json({ success: false, message: 'This domain is already taken.' }, { status: 400 });
     }
 
+    // Resolve the chosen category so the store's mode (products/services/both)
+    // and serviceType are authoritative server-side, not just trusted from the
+    // client. The selected DB category is the single source of truth.
+    let category = null;
+    if (body.categoryId) {
+      category = await Category.findById(body.categoryId).select('name kind serviceType').lean();
+    }
+
+    // Derive businessType from the category's kind; a category marked 'service'
+    // that also sells items ("I also sell items" checkbox) is promoted to 'both'.
+    let businessType = category?.kind ?? body.businessType ?? 'products';
+    if (businessType === 'service') businessType = 'services';
+    if (category?.kind === 'service' && body.alsoSellsItems) businessType = 'both';
+
     const newStore = await Store.create({
       userId,
       owner:        userId,
       title:        body.title,
       domain:       body.domain,
-      industry:     body.industry,
-      businessType: body.businessType,
+      industry:     category?.name || body.industry || 'General',
+      businessType,
+      serviceType:  category?.serviceType ?? null,
+      categories:   body.categoryId ? [body.categoryId] : [],
       themeColor:   body.themeColor  || '#161823',
       layoutStyle:  body.layoutStyle || 'Classic',
       contact: {

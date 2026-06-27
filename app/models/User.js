@@ -46,13 +46,16 @@ const UserSchema = new mongoose.Schema(
     },
 
     // --- PLATFORM CONTACT DATA ---
-    email: { 
-      type: String, 
-      unique: true, 
-      sparse: true 
+    email: {
+      type: String,
+      unique: true,
+      sparse: true
     },
-    phone: { 
-      type: String 
+    // Standardized as `phoneNumber` across the app (auth, session cookie,
+    // onboarding prefill). `phone` kept as a read alias for any legacy docs.
+    phoneNumber: {
+      type: String,
+      alias: 'phone',
     },
 
     // --- PLATFORM MANAGEMENT ---

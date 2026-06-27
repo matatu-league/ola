@@ -12,7 +12,7 @@ export async function GET() {
 
     const categories = await Category.find({})
       .sort({ name: 1 })
-      .select('_id name slug image description parentId')
+      .select('_id name slug image description parentId kind serviceType')
       .lean();
 
     return NextResponse.json(

@@ -43,15 +43,19 @@ export async function POST(req) {
         image:       parentCat.image,
         description: parentCat.description,
         parentId:    null,
+        kind:        parentCat.kind ?? 'product',
+        serviceType: parentCat.serviceType ?? null,
       });
 
       categoryMap[createdParent.name] = createdParent._id;
 
       if (parentCat.subCategories?.length) {
         const subCategoryDocs = parentCat.subCategories.map((sub) => ({
-          name:     sub.name,
-          slug:     sub.slug,
-          parentId: createdParent._id, // ← correct field name per Category model
+          name:        sub.name,
+          slug:        sub.slug,
+          parentId:    createdParent._id, // ← correct field name per Category model
+          kind:        sub.kind ?? 'product',
+          serviceType: sub.serviceType ?? null,
         }));
 
         const createdChildren = await Category.insertMany(subCategoryDocs);

@@ -4,9 +4,24 @@ import React, { useState, useEffect } from 'react';
 import {
   CheckCircle2, Store, Globe, Loader2, Package,
   CalendarCheck, AlertCircle, XCircle, ChevronDown,
-  Mail, Phone, Briefcase
+  Mail, Phone, Briefcase, Search, Check, ShoppingBag,
 } from 'lucide-react';
-import { getCookieRootDomain } from '@/lib/domain';
+import { getCookieRootDomain, getSessionUser } from '@/lib/domain';
+
+// Maps a category's `kind` to the store's businessType. A `service` category
+// where the owner also sells physical items ("I also sell items") is promoted
+// to 'both'; `school` categories are 'both' by definition.
+function deriveBusinessType(kind, alsoSellsItems) {
+  if (kind === 'both') return 'both';
+  if (kind === 'service') return alsoSellsItems ? 'both' : 'services';
+  return 'products';
+}
+
+const MODE_LABELS = {
+  products: { label: 'Product Store',  icon: Package,        hint: 'Sell physical products' },
+  services: { label: 'Service Booking', icon: CalendarCheck, hint: 'Take bookings & appointments' },
+  both:     { label: 'Services + Store', icon: Store,        hint: 'Bookings and physical items' },
+};
 
 export default function StoreOnboarding() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,54 +34,100 @@ export default function StoreOnboarding() {
     email: '',
     phone: '',
     domain: '',
-    businessType: 'products', // products, services, both
-    industry: '',
-    layoutStyle: 'Classic',   
-    themeColor: '#161823'     
+    // Mode is decided by the chosen DB category — see deriveBusinessType().
+    categoryId: '',
+    categoryName: '',
+    categoryKind: '',
+    serviceType: null,
+    alsoSellsItems: false,
+    businessType: 'products', // derived; 'products' | 'services' | 'both'
+    layoutStyle: 'Classic',
+    themeColor: '#161823'
   });
 
-  const industries = [
-    { value: 'electronics', label: 'Electronics & Gadgets' },
-    { value: 'fashion', label: 'Fashion & Apparel' },
-    { value: 'beauty', label: 'Beauty & Personal Care' },
-    { value: 'home', label: 'Home & Furniture' },
-    { value: 'food', label: 'Food & Groceries' },
-    { value: 'hotels', label: 'Hotels & Accommodation' },
-    { value: 'medical', label: 'Medical & Healthcare' },
-    { value: 'automotive', label: 'Automotive & Parts' },
-    { value: 'professional', label: 'Professional Services' },
-    { value: 'education', label: 'Education & Learning' }
-  ];
+  // Full DB category tree, grouped by top-level parent for the picker.
+  const [categoryGroups, setCategoryGroups] = useState([]);
+  const [catLoading,     setCatLoading]     = useState(true);
+  const [catSearch,      setCatSearch]      = useState('');
+  const [pickerOpen,     setPickerOpen]     = useState(false);
 
-  // Pre-fill data from session cookie
+  // Load categories from the database — the single source of truth for
+  // whether the new tenant is a store, a service, or both.
   useEffect(() => {
-    if (typeof document !== 'undefined') {
-      const cookies = document.cookie.split(';');
-      const sessionCookie = cookies.find(c => c.trim().startsWith('user_session='));
-      
-      if (sessionCookie) {
-        try {
-          const rawValue = sessionCookie.substring(sessionCookie.indexOf('=') + 1);
-          let decodedValue = decodeURIComponent(rawValue);
-          if (decodedValue.startsWith('%7B')) {
-            decodedValue = decodeURIComponent(decodedValue);
-          }
-          const parsed = JSON.parse(decodedValue);
-          
-          if (parsed.name) {
-            const cleanName = parsed.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-            setFormData(prev => ({ 
-              ...prev, 
-              title: `${parsed.name}'s Store`,
-              domain: cleanName,
-              email: parsed.email || ''
-            }));
-          }
-        } catch (e) {
-          console.error("Failed to parse user session for onboarding", e);
-        }
+    let active = true;
+    (async () => {
+      try {
+        const res  = await fetch('/api/categories', { headers: { 'ngrok-skip-browser-warning': 'true' } });
+        const json = await res.json();
+        if (!active || !json.success) return;
+
+        const cats    = json.data || [];
+        const parents = cats.filter(c => !c.parentId);
+        const groups  = parents
+          .map(p => ({
+            ...p,
+            children: cats.filter(c => String(c.parentId) === String(p._id)),
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+        setCategoryGroups(groups);
+      } catch (err) {
+        console.error('Failed to load categories', err);
+      } finally {
+        if (active) setCatLoading(false);
       }
-    }
+    })();
+    return () => { active = false; };
+  }, []);
+
+  // Choose a category → derive the store mode from its `kind`.
+  const selectCategory = (cat) => {
+    setFormData(prev => ({
+      ...prev,
+      categoryId:     cat._id,
+      categoryName:   cat.name,
+      categoryKind:   cat.kind || 'product',
+      serviceType:    cat.serviceType || null,
+      alsoSellsItems: false,
+      businessType:   deriveBusinessType(cat.kind || 'product', false),
+    }));
+    setPickerOpen(false);
+    setCatSearch('');
+  };
+
+  const toggleAlsoSells = () => {
+    setFormData(prev => ({
+      ...prev,
+      alsoSellsItems: !prev.alsoSellsItems,
+      businessType:   deriveBusinessType(prev.categoryKind, !prev.alsoSellsItems),
+    }));
+  };
+
+  // Flattened, search-filtered list for the dropdown.
+  const filteredGroups = categoryGroups
+    .map(g => {
+      const q = catSearch.trim().toLowerCase();
+      if (!q) return g;
+      const groupHit = g.name.toLowerCase().includes(q);
+      const children = groupHit ? g.children : g.children.filter(c => c.name.toLowerCase().includes(q));
+      return (groupHit || children.length) ? { ...g, children } : null;
+    })
+    .filter(Boolean);
+
+  // Pre-fill data from the session cookie — including the phone number the
+  // user provided at registration, so service providers don't re-enter it.
+  useEffect(() => {
+    const parsed = getSessionUser();
+    if (!parsed) return;
+
+    setFormData(prev => ({
+      ...prev,
+      ...(parsed.name ? {
+        title:  prev.title  || `${parsed.name}'s Store`,
+        domain: prev.domain || parsed.name.toLowerCase().replace(/[^a-z0-9]/g, ''),
+      } : {}),
+      email: prev.email || parsed.email       || '',
+      phone: prev.phone || parsed.phoneNumber || '',
+    }));
   }, []);
 
   // Helper function to generate URL-friendly subdomains
@@ -131,9 +192,9 @@ export default function StoreOnboarding() {
 
   // Computed property for strict frontend validation
   const isFormValid = Boolean(
-    formData.title.trim().length > 0 && 
-    formData.industry !== '' && 
-    formData.domain.length >= 3 && 
+    formData.title.trim().length > 0 &&
+    formData.categoryId !== '' &&
+    formData.domain.length >= 3 &&
     domainStatus === 'available'
   );
 
@@ -220,53 +281,111 @@ export default function StoreOnboarding() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           
-          {/* Business Model Selection */}
-          <div>
-            <label className="block text-[11px] font-bold text-[#8A8B91] mb-3 uppercase tracking-widest flex items-center gap-2">
-              <Briefcase size={12} /> Business Model
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { id: 'products', label: 'Products', icon: Package },
-                { id: 'services', label: 'Services', icon: CalendarCheck },
-                { id: 'both', label: 'Both', icon: Store }
-              ].map((type) => (
-                <button
-                  key={type.id}
-                  type="button"
-                  onClick={() => setFormData({ ...formData, businessType: type.id })}
-                  className={`border rounded-sm p-3.5 flex flex-col items-center justify-center transition-all ${
-                    formData.businessType === type.id 
-                    ? 'border-[#161823] bg-[#F8F8F8] ring-1 ring-[#161823]' 
-                    : 'border-[#E3E3E4] hover:border-[#8A8B91]'
-                  }`}
-                >
-                  <type.icon size={18} className={formData.businessType === type.id ? 'text-[#161823]' : 'text-[#8A8B91]'} />
-                  <span className={`mt-2 text-[11px] font-bold ${formData.businessType === type.id ? 'text-[#161823]' : 'text-[#8A8B91]'}`}>{type.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Industry Selection */}
+          {/* Category Selection — decides store vs. service vs. both */}
           <div>
             <label className="block text-[11px] font-bold text-[#8A8B91] mb-2 uppercase tracking-widest flex items-center gap-2">
-              <Store size={12} /> Store Industry <span className="text-[#FE2C55]">*</span>
+              <Briefcase size={12} /> What do you offer? <span className="text-[#FE2C55]">*</span>
             </label>
-            <div className="relative">
-              <select 
-                required
-                value={formData.industry}
-                onChange={(e) => setFormData({...formData, industry: e.target.value})}
-                className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm pl-4 pr-10 py-3 text-[14px] font-semibold text-[#161823] appearance-none focus:outline-none focus:border-[#161823] transition-colors cursor-pointer"
-              >
-                <option value="" disabled>Choose your industry...</option>
-                {industries.map((ind) => (
-                  <option key={ind.value} value={ind.value}>{ind.label}</option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8B91] pointer-events-none" size={16} />
-            </div>
+
+            {/* Trigger */}
+            <button
+              type="button"
+              onClick={() => setPickerOpen(o => !o)}
+              className="w-full flex items-center justify-between bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-4 py-3 text-[14px] font-semibold text-left transition-colors hover:border-[#8A8B91] focus:outline-none focus:border-[#161823]"
+            >
+              <span className={formData.categoryName ? 'text-[#161823]' : 'text-[#8A8B91]'}>
+                {formData.categoryName || (catLoading ? 'Loading categories…' : 'Choose your category…')}
+              </span>
+              <ChevronDown size={16} className="text-[#8A8B91] shrink-0" />
+            </button>
+
+            {/* Picker dropdown */}
+            {pickerOpen && (
+              <div className="mt-2 border border-[#E3E3E4] rounded-sm bg-white shadow-sm overflow-hidden">
+                <div className="relative border-b border-[#E3E3E4]">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8B91]" />
+                  <input
+                    type="text"
+                    autoFocus
+                    value={catSearch}
+                    onChange={(e) => setCatSearch(e.target.value)}
+                    placeholder="Search categories…"
+                    className="w-full pl-9 pr-3 py-2.5 text-[13px] font-medium text-[#161823] focus:outline-none"
+                  />
+                </div>
+                <div className="max-h-64 overflow-y-auto">
+                  {filteredGroups.length === 0 && (
+                    <p className="px-4 py-3 text-[12px] text-[#8A8B91]">No categories found.</p>
+                  )}
+                  {filteredGroups.map(group => (
+                    <div key={group._id}>
+                      <p className="px-4 pt-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-[#8A8B91] bg-[#F8F8F8]">
+                        {group.name}
+                      </p>
+                      {/* The parent category is itself selectable */}
+                      {[group, ...group.children].map(cat => {
+                        const isService = cat.kind === 'service' || cat.kind === 'both';
+                        return (
+                          <button
+                            key={cat._id}
+                            type="button"
+                            onClick={() => selectCategory(cat)}
+                            className="w-full flex items-center justify-between px-4 py-2 text-left hover:bg-[#F8F8F8] transition-colors"
+                          >
+                            <span className="text-[13px] font-medium text-[#161823]">
+                              {cat === group ? `All ${group.name}` : cat.name}
+                            </span>
+                            <span className="flex items-center gap-2">
+                              {isService && (
+                                <span className="text-[9px] font-bold uppercase tracking-wide text-[#161823] bg-[#FFE8EC] px-1.5 py-0.5 rounded-sm">
+                                  {cat.kind === 'both' ? 'Service + Store' : 'Service'}
+                                </span>
+                              )}
+                              {formData.categoryId === cat._id && <Check size={14} className="text-[#16A34A]" />}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Derived mode + "also sell items" promotion */}
+            {formData.categoryId && (() => {
+              const mode = MODE_LABELS[formData.businessType] || MODE_LABELS.products;
+              const ModeIcon = mode.icon;
+              return (
+                <div className="mt-3 space-y-3">
+                  <div className="flex items-center gap-3 p-3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm">
+                    <ModeIcon size={18} className="text-[#161823] shrink-0" />
+                    <div>
+                      <p className="text-[12px] font-bold text-[#161823]">{mode.label}</p>
+                      <p className="text-[11px] text-[#8A8B91]">{mode.hint}</p>
+                    </div>
+                  </div>
+
+                  {/* Service categories can also sell physical items → 'both' */}
+                  {formData.categoryKind === 'service' && (
+                    <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                      <span
+                        className={`mt-0.5 w-4 h-4 rounded-sm border flex items-center justify-center shrink-0 transition-colors ${
+                          formData.alsoSellsItems ? 'bg-[#161823] border-[#161823]' : 'border-[#8A8B91] bg-white'
+                        }`}
+                        onClick={toggleAlsoSells}
+                      >
+                        {formData.alsoSellsItems && <Check size={11} className="text-white" />}
+                      </span>
+                      <span className="text-[12px] font-medium text-[#161823] flex items-center gap-1.5" onClick={toggleAlsoSells}>
+                        <ShoppingBag size={13} className="text-[#8A8B91]" />
+                        I also sell physical items (e.g. uniforms, products)
+                      </span>
+                    </label>
+                  )}
+                </div>
+              );
+            })()}
           </div>
 
           {/* Store Name */}

@@ -27,7 +27,7 @@ export const marketplaceCategories = [
       { name: "Short Let", slug: "temporary-and-vacation-rentals" },
       { name: "Land & Plots for Rent", slug: "land-and-plots-for-rent" },
       { name: "Land & Plots For Sale", slug: "land-and-plots-for-sale" },
-      { name: "Event Centres, Venues & Workstations", slug: "event-centers-and-venues" },
+      { name: "Event Centres, Venues & Workstations", slug: "event-centers-and-venues", kind: "service", serviceType: "venue" },
       { name: "Commercial Property For Rent", slug: "commercial-property-for-rent" },
       { name: "Commercial Property For Sale", slug: "commercial-properties" }
     ]
@@ -111,35 +111,26 @@ export const marketplaceCategories = [
     ]
   },
   {
-    name: "Services",
-    slug: "services",
-    image: "https://assets.jijistatic.com/art/attributes/categories/services-new-x3.png",
+    name: "Services", slug: "services", image: "https://assets.jijistatic.com/art/attributes/categories/services-new-x3.png",
+    kind: "service", serviceType: "generic",
     subCategories: [
-      { name: "Building & Trades Services", slug: "building-and-trades-services" },
-      { name: "Car Services", slug: "automotive-services" },
-      { name: "Computer & IT Services", slug: "computer-and-it-services" },
-      { name: "Repair Services", slug: "repair-services" },
-      { name: "Cleaning Services", slug: "cleaning-services" },
-      { name: "Printing Services", slug: "printing-services" },
-      { name: "Manufacturing Services", slug: "manufacturing-services" },
-      { name: "Logistics Services", slug: "removals-and-storage-services" },
-      { name: "Legal Services", slug: "legal-services" },
-      { name: "Tax & Financial Services", slug: "tax-and-financial-services" },
-      { name: "Recruitment Services", slug: "recruitment-services" },
-      { name: "Rental Services", slug: "rental-services" },
-      { name: "Chauffeur & Airport Transfer Services", slug: "chauffeur-and-airport-transfer-services" },
-      { name: "Travel Agents & Tours", slug: "travel-agents-and-tours" },
-      { name: "Classes & Courses", slug: "classes-and-courses" },
-      { name: "Child Care & Education Services", slug: "child-care-and-education-services" },
-      { name: "Health & Beauty Services", slug: "health-and-beauty-services" },
-      { name: "Fitness & Personal Training Services", slug: "fitness-and-personal-training-services" },
-      { name: "Party, Catering & Event Services", slug: "party-catering-and-event-services" },
-      { name: "DJ & Entertainment Services", slug: "dj-and-entertainment-services" },
-      { name: "Wedding Venues & Services", slug: "wedding-venues-and-services" },
-      { name: "Photography & Video Services", slug: "photography-and-video-services" },
-      { name: "Landscaping & Gardening Services", slug: "landscaping-and-gardening-services" },
-      { name: "Pet Services", slug: "pet-services" },
-      { name: "Other Services", slug: "other-services" }
+      // ── Booking-first services (dynamic per-industry fields) ──────────────
+      { name: "Hotels & Accommodation",            slug: "hotels",               kind: "service", serviceType: "hotel" },
+      { name: "Salon & Spa Booking",               slug: "salon-booking",        kind: "service", serviceType: "salon" },
+      { name: "Clinics & Doctor Appointments",     slug: "doctor-appointments",  kind: "service", serviceType: "medical" },
+      { name: "Event Tickets",                     slug: "event-tickets",        kind: "service", serviceType: "tickets" },
+      { name: "Venue & Event Rentals",             slug: "venue-rentals",        kind: "service", serviceType: "venue" },
+      // Schools sell physical items (uniforms, books) yet are a service → both
+      { name: "Schools & Education",               slug: "schools",              kind: "both",    serviceType: "school" },
+      // ── Professional / trade services (generic booking) ───────────────────
+      { name: "Building & Trades Services", slug: "building-and-trades-services", kind: "service", serviceType: "generic" },
+      { name: "Car Services",               slug: "automotive-services",         kind: "service", serviceType: "generic" },
+      { name: "Computer & IT Services",     slug: "computer-and-it-services",     kind: "service", serviceType: "generic" },
+      { name: "Repair Services",            slug: "repair-services",              kind: "service", serviceType: "generic" },
+      { name: "Cleaning Services",          slug: "cleaning-services",            kind: "service", serviceType: "generic" },
+      { name: "Logistics Services",         slug: "removals-and-storage-services", kind: "service", serviceType: "generic" },
+      { name: "Legal Services",             slug: "legal-services",               kind: "service", serviceType: "generic" },
+      { name: "Tax & Financial Services",   slug: "tax-and-financial-services",   kind: "service", serviceType: "generic" }
     ]
   },
   {
