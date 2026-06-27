@@ -44,39 +44,67 @@ const fileToBase64 = (file) =>
 
 // --- CORE AI CODE GENERATION ENGINE ---
 const generateCodeAI = async (
-  promptText, imageBase64, imageMimeType, currentCode, 
+  promptText, imageBase64, imageMimeType, currentCode,
   categoryContext, blueprintPrompt, themeColor, themeMode, artDirection,
-  advancedConfig, isEditingExplicit
+  advancedConfig, isEditingExplicit, business = {}
 ) => {
   const { bgStyle, fontFamily, borderRadius, animationFeel } = advancedConfig;
+
+  // ── Business brief — makes generation specific to THIS vendor/industry ──────
+  const bt = business.businessType || 'products';
+  const st = business.serviceType || null;
+  const isBoth = bt === 'both';
+
+  // Industry-specific blueprint so a hotel gets a hotel site, not a product grid.
+  const SITE_BRIEFS = {
+    hotel:   `Build a HOTEL / ACCOMMODATION website. Hero showing the property, ROOM TYPES as cards (image, nightly price, capacity, a clear "Book Now" button), an AMENITIES section (Wi-Fi, pool, parking, breakfast, AC…), check-in / check-out info, a photo GALLERY, and a location block. Do NOT build a generic product grid.`,
+    salon:   `Build a SALON / SPA website. A SERVICE MENU (treatment name, duration, price) with "Book Appointment" CTAs, a stylists/team section, before/after or gallery, and opening hours.`,
+    medical: `Build a CLINIC / DOCTOR website. Specialties & services, practitioner profiles, a prominent "Book Appointment" flow, consultation info, opening hours, and trust/credentials.`,
+    tickets: `Build an EVENTS / TICKETS website. Featured EVENTS with date, time and venue, TICKET TIERS (price + "Buy Tickets"), and a schedule/lineup section.`,
+    venue:   `Build a VENUE / EVENT-SPACE RENTAL website. Spaces as cards (capacity, hourly/day rate, amenities), a "Request Booking" CTA, gallery, and location.`,
+    generic: `Build a SERVICES website. Services as cards (what's included + pricing) with "Book" / "Request a Quote" CTAs, an about section, and trust signals.`,
+  };
+  const productBrief = `Build an online SHOP. A product grid (cards with image, name, price, add-to-cart), working local search and pagination, and category navigation.`;
+
+  let siteBrief;
+  if (bt === 'products')      siteBrief = productBrief;
+  else if (isBoth)           siteBrief = `${SITE_BRIEFS[st] || SITE_BRIEFS.generic}\n   PLUS, because this business ALSO sells physical items, include a clearly-labelled "Shop" tab/section in the top navigation with a product grid (image, name, price, add-to-cart). Buyers must be able to switch between the ${st || 'service'} experience and the Shop.`;
+  else                        siteBrief = SITE_BRIEFS[st] || SITE_BRIEFS.generic;
   
   const isEditing = isEditingExplicit || (promptText && currentCode && promptText.toLowerCase().includes("change"));
 
   const prompt = `
-You are an avant-garde, world-class creative frontend engineer known for building wildly unique, award-winning (Awwwards level) custom e-commerce experiences.
-Your mission: generate a COMPLETE, mind-blowing, and UNPREDICTABLE React component (JSX) for an entire e-commerce store.
+You are an avant-garde, world-class creative frontend engineer known for building wildly unique, award-winning (Awwwards level) custom websites.
+Your mission: generate a COMPLETE, mind-blowing, UNIQUE React component (JSX) for the SPECIFIC business described below — every vendor must get a site tailored to THEIR business, never a generic template.
 
 ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their current design. I am providing the CURRENT SOURCE CODE below. Apply their requested changes specifically to this code without breaking existing logic.\n\n--- CURRENT CODE ---\n${currentCode}\n--- END CURRENT CODE ---\n` : ''}
 
+=== BUSINESS BRIEF (build the site for THIS business) ===
+- Store name: ${business.storeName || 'this store'}
+- Industry / category: ${categoryContext || business.industry || 'General'}
+- Business type: ${bt}${st ? ` (service type: ${st})` : ''}
+- About / description: ${business.description || '(none provided — infer from the industry)'}
+- Contact: ${business.contactEmail || ''} ${business.contactPhone || ''}
+- Logo URL: ${business.logo || '(none — render a tasteful placeholder using the store name initial + brand color)'}
+- Banner URL: ${business.banner || '(none — render a tasteful hero placeholder using the brand color and an industry-appropriate gradient)'}
+
+=== WHAT TO BUILD ===
+${siteBrief}
+
 CRITICAL ARCHITECTURE RULES (STRICT COMPLIANCE):
-1. BREAK THE GRID: Do NOT output a standard, boring Bootstrap-style grid unless requested. Use overlapping elements, asymmetrical masonry, massive typography, and advanced Tailwind classes.
-2. PRODUCT CARDS MUST BE UNIQUE: Invent new ways to present products! Do NOT just use an image on top of text. Use horizontal cards, floating text over images, 3D tilt effects, sliding panels, etc.
-3. IMAGES (1:1 RATIO): ALL product images MUST adhere to a strict 1:1 aspect ratio using \`aspect-square object-cover\`.
-4. IMAGE FALLBACKS: You MUST include inline SVG fallbacks for missing images (e.g. \`<svg>...</svg>\` when \`!p.image\`).
-5. SEARCH & PAGINATION: You MUST implement fully functional local search filtering and pagination using React state.
-6. DARK FOOTER: The bottom of the page MUST include a dark-themed footer (#050505 or similar) containing contact details, location, and legal links.
-7. COMPONENT RESTRICTIONS: If using a layout with a left sidebar or categories panel, STRICTLY constrain its height to match the Hero section. Product grids below must span 100% width.
-8. DESIGN SYSTEM: Use sharp corners (rounded-none) on all elements. Use blue-600 as the primary accent color. No rounded borders anywhere.
+1. BREAK THE GRID: avoid a boring Bootstrap-style grid. Use overlapping elements, asymmetry, bold typography, advanced Tailwind.
+2. UNIQUE CARDS: invent fresh ways to present the items relevant to THIS business (rooms, services, events, or products — per the brief above).
+3. IMAGES: use \`object-cover\`; product/room/service images should be a clean aspect ratio. ALWAYS include inline SVG fallbacks for missing images (when \`!item.image\`).
+4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.
+5. SEARCH/FILTER: where a list of items is shown, implement working local search/filter with React state.
+6. DARK FOOTER: include a dark footer (#050505 or similar) with the contact details, location, and legal links.
+7. LOGO & BANNER: use the storeLogo and storeBanner props when present; otherwise render the placeholders described in the brief. Make them feel bespoke to ${business.storeName || 'the store'}.
 
-${categoryContext ? `CATEGORY CONTEXT: Primary product category is "${categoryContext}". Infer the aesthetic mood.` : ''}
-
-THEME SETTINGS:
-- Brand Color: ${themeColor}
+DESIGN SYSTEM:
+- PRIMARY ACCENT COLOR: ${themeColor} — use THIS color (not any hardcoded blue) for buttons, highlights and accents throughout.
 - Color Mode: ${themeMode === 'dark' ? 'DARK MODE (rich dark backgrounds, light text)' : 'LIGHT MODE (clean light backgrounds, dark text)'}
-- Macro Layout Blueprint: ${blueprintPrompt ? blueprintPrompt : 'None specified. AI has complete freedom to invent the layout.'}
+- Macro Layout Blueprint: ${blueprintPrompt ? blueprintPrompt : 'None specified — invent a layout that fits the business.'}
 - Art Direction & Vibe: ${artDirection}
-
-ADVANCED STYLING DIRECTIVES:
 - Background: ${bgStyle}
 - Typography: ${fontFamily}
 - Border Radius: ${borderRadius}
@@ -85,18 +113,19 @@ ADVANCED STYLING DIRECTIVES:
 OUTPUT RULES:
 1. Output ONLY raw React JSX code. No markdown fences. No explanations.
 2. Main component MUST be named \`App\` and MUST be a standard React arrow function.
-   EXACT SYNTAX REQUIRED: \`const App = ({ storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, themeColor }) => { ... }\`
+   EXACT SYNTAX REQUIRED: \`const App = ({ storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor }) => { ... }\`
    DO NOT use shorthand object methods like \`App() { ... }\` or class syntax.
-3. DO NOT import or use external icon libraries like lucide-react. You MUST create your own minimal inline SVG icon components (inspired by Lucide). 
+3. DO NOT import or use external icon libraries like lucide-react. Create your own minimal inline SVG icon components (Lucide-inspired).
    Example: \`const SearchIcon = ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;\`
-4. DO NOT import React. Use \`useState\` and \`useMemo\` globally if needed, or import them standardly.
+4. DO NOT import React or any module. \`useState\`, \`useEffect\`, \`useMemo\`, \`useRef\` are available globally.
 5. Use Tailwind CSS utility classes exclusively.
+6. If a relevant data array (products/services) is empty, invent 4–8 realistic sample items appropriate to a ${categoryContext || business.industry || 'business'} so the page never looks empty.
 
-DATA CONTRACT (Props passed to App):
-  storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, themeColor
+DATA CONTRACT (props passed to App):
+  storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor
 
 CRITICAL INTERACTION RULE:
-Redirect to: \`window.top.location.href = "https://ola.ug/products/" + id;\` on product click.
+On clicking a product, redirect with: \`window.top.location.href = "/p/" + id;\` (the themed, store-scoped product page).
 
 ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 `;
@@ -343,12 +372,15 @@ const LiveCodePreview = ({ code, viewMode = 'desktop' }) => {
   const [scale, setScale] = useState(1);
 
   const dynamicStoreData = {
-    storeName: "AURA STUDIO",
-    storeLogo: "",
-    storeBanner: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000",
-    contactEmail: "hello@aurastudio.com",
-    contactPhone: "+1 (555) 123-4567",
-    themeColor: "#2563EB",
+    // Identity reflects THIS store so the preview looks like the real business.
+    storeName:    storeProfile.title || "AURA STUDIO",
+    storeLogo:    storeProfile.logo || "",
+    storeBanner:  storeProfile.banner || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000",
+    contactEmail: storeProfile.contactEmail || "hello@aurastudio.com",
+    contactPhone: storeProfile.contactPhone || "+1 (555) 123-4567",
+    businessType: storeProfile.businessType || "products",
+    serviceType:  storeProfile.serviceType || null,
+    themeColor:   dialogThemeColor || "#2563EB",
     categories: ["Featured", "New Arrivals", "Trending", "Clearance"],
     products: [
       { id: "1", name: "Minimalist Linen Shirt", price: 85, image: "https://images.unsplash.com/photo-1596755094514-f87e32f85e98?w=500&auto=format&fit=crop" },
@@ -448,7 +480,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop' }) => {
 };
 
 // --- AI BUILDER DIALOG (Dark Theme with Blue-600 Primary) ---
-const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globalThemeMode }) => {
+const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globalThemeMode, storeProfile = {} }) => {
   const [code, setCode]                   = useState(initialCode);
   const [activeTab, setActiveTab]         = useState('basic');
 
@@ -462,8 +494,6 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   const [showColorPicker, setShowColorPicker]   = useState(false);
   const colorPickerRef = useRef(null);
   
-  const [dbCategories, setDbCategories]         = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
 
   // Advanced Form State
   const [fontFamily, setFontFamily]       = useState('auto');
@@ -483,20 +513,6 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   const fileRef = useRef(null);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res    = await fetch('/api/categories', { headers: { 'ngrok-skip-browser-warning': 'true' } });
-        const result = await res.json();
-        if (result.success && result.data) {
-          const parents = result.data.filter(c => !c.parentRef);
-          setDbCategories(parents);
-        }
-      } catch (e) { console.error('Failed to fetch categories', e); }
-    };
-    load();
-  }, []);
-
-  useEffect(() => {
     const handler = (e) => { if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) setShowColorPicker(false); };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -510,10 +526,41 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
     if (w) { w.document.open(); w.document.write(htmlContent); w.document.close(); }
   };
 
+  // Require a complete store profile before a NEW site can be generated, so the
+  // AI has the full picture (name, story, branding, contacts) to build from.
+  const missingProfile = [
+    [!storeProfile.title, 'store name'],
+    [!storeProfile.description, 'description'],
+    [!storeProfile.logo, 'logo'],
+    [!storeProfile.banner, 'banner'],
+    [!dialogThemeColor, 'brand color'],
+    [!storeProfile.contactEmail && !storeProfile.contactPhone, 'contact info'],
+  ].filter(([missing]) => missing).map(([, label]) => label);
+  const profileComplete = missingProfile.length === 0;
+
   const handleGenerate = async () => {
+    if (!isEditingMode && !profileComplete) {
+      setToastMsg(`⚠️ Complete your store profile first (${missingProfile.join(', ')}).`);
+      setTimeout(() => setToastMsg(''), 6000);
+      return;
+    }
+
     const blueprint  = layoutBlueprints.find(b => b.id === selectedBlueprint);
     const artDir     = ART_DIRECTIONS.find(a => a.id === selectedArtDirection);
-    const categoryContext = dbCategories.find(c => c._id === selectedCategory)?.name || '';
+    // The store's own category (set at onboarding) is the source of truth.
+    const categoryContext = storeProfile.industry || '';
+
+    const business = {
+      storeName:    storeProfile.title || '',
+      description:  storeProfile.description || '',
+      industry:     storeProfile.industry || '',
+      businessType: storeProfile.businessType || 'products',
+      serviceType:  storeProfile.serviceType || null,
+      logo:         storeProfile.logo || '',
+      banner:       storeProfile.banner || '',
+      contactEmail: storeProfile.contactEmail || '',
+      contactPhone: storeProfile.contactPhone || '',
+    };
 
     setLoading(true);
     try {
@@ -527,7 +574,7 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
       const newCode = await generateCodeAI(
         formNotes, rawBase64, imageMimeType, code,
         categoryContext, blueprint?.prompt || '', dialogThemeColor, dialogThemeMode, artDir?.prompt || '',
-        advancedConfig, isEditingMode
+        advancedConfig, isEditingMode, business
       );
       setCode(newCode);
       setToastMsg('✨ Design successfully generated!');
@@ -613,14 +660,26 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
             {activeTab === 'basic' && (
               <div className="space-y-6 animate-in fade-in slide-in-from-left-2 duration-300">
                 
-                {/* Store Category */}
+                {/* Designing for — the store's own category (from onboarding).
+                    Locked: it's what the AI builds around; no need to re-pick it. */}
                 <div className="space-y-2">
-                  <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider">Store Category</h3>
-                  <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full bg-[#1a1a1a] border border-white/10 rounded-none px-3 py-2 text-sm text-white outline-none focus:border-blue-500/50">
-                    <option value="">Select Primary Category...</option>
-                    {dbCategories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
-                  </select>
+                  <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider">Designing for</h3>
+                  <div className="w-full flex items-center justify-between bg-[#1a1a1a] border border-white/10 rounded-none px-3 py-2 text-sm text-white">
+                    <span>{storeProfile.industry || 'Your store'}</span>
+                    {storeProfile.serviceType && (
+                      <span className="text-[10px] font-bold uppercase tracking-wide text-blue-300 bg-blue-500/10 px-1.5 py-0.5">
+                        {storeProfile.businessType === 'both' ? 'Service + Store' : `Service · ${storeProfile.serviceType}`}
+                      </span>
+                    )}
+                  </div>
                 </div>
+
+                {/* Profile-completeness gate */}
+                {!profileComplete && (
+                  <div className="text-[11px] text-amber-300/90 bg-amber-500/10 border border-amber-500/20 px-3 py-2">
+                    Complete your store profile before generating a site — missing: {missingProfile.join(', ')}.
+                  </div>
+                )}
 
                 {/* Aesthetics Row */}
                 <div className="space-y-3">
@@ -771,8 +830,9 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
           <div className="p-5 bg-[#111] border-t border-white/10 shrink-0">
             <button
               onClick={handleGenerate}
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-none text-sm font-bold transition-all shadow-[0_0_20px_rgba(37,99,235,0.15)] hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:-translate-y-0.5"
+              disabled={loading || (!isEditingMode && !profileComplete)}
+              title={!isEditingMode && !profileComplete ? `Complete your store profile first: ${missingProfile.join(', ')}` : ''}
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-none text-sm font-bold transition-all shadow-[0_0_20px_rgba(37,99,235,0.15)] hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:-translate-y-0.5"
             >
               {loading ? <Loader2 size={16} className="animate-spin" /> : <Wand2 size={16} />}
               {loading ? 'Compiling AI...' : (isEditingMode ? 'Apply Changes to Design' : 'Generate New Design')}
@@ -982,7 +1042,18 @@ export default function ThemePage() {
         if (sessionData.hasStore && sessionData.store) {
           const id = sessionData.store._id || sessionData.store.id;
           setStoreId(id);
-          setStoreData({ title: sessionData.store.title || 'My Store', logo: sessionData.store.logo || '' });
+          const s = sessionData.store;
+          setStoreData({
+            title:        s.title || 'My Store',
+            logo:         s.logo || '',
+            banner:       s.banner || (s.bannerImages && s.bannerImages[0]) || '',
+            description:  s.description || '',
+            industry:     s.industry || '',
+            businessType: s.businessType || 'products',
+            serviceType:  s.serviceType || null,
+            contactEmail: s.contact?.email || '',
+            contactPhone: s.contact?.phone || '',
+          });
           const themeRes = await fetch(`/api/stores/${id}`);
           if (themeRes.ok) {
             const data = await themeRes.json();
@@ -1190,6 +1261,7 @@ export default function ThemePage() {
           onClose={() => setIsAiDialogOpen(false)}
           globalThemeColor={themeColor}
           globalThemeMode={themeMode}
+          storeProfile={storeData}
         />
       )}
     </div>
