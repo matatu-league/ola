@@ -81,7 +81,10 @@ export default function SellerLayout({ children }) {
       .then(data => { if (data.success) setUnreadCount(data.totalUnread); })
       .catch(() => {});
 
-    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
+    // Socket.io is served on the same origin as Next.js (see server.js), so
+    // default to window.location.origin — the old localhost:5000 default timed
+    // out in dev/prod where there is no separate :5000 socket server.
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || window.location.origin;
     const socket    = socketIO(socketUrl, {
       auth:         { userId: parsedUser.id },
       transports:   ['websocket', 'polling'],
