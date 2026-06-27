@@ -1,19 +1,25 @@
 // 1. EXTRACTED CATEGORIES JSON DATA (1-Level Hierarchy)
 export const marketplaceCategories = [
-  { 
-    name: "Vehicles", slug: "vehicles", image: "https://assets.jijistatic.com/art/attributes/categories/vehicles-x3.png", 
+  {
+    name: "Vehicles",
+    slug: "vehicles",
+    image: "https://assets.jijistatic.com/art/attributes/categories/vehicles-x3.png",
     subCategories: [
       { name: "Vehicle Parts & Accessories", slug: "car-parts-and-accessories" },
       { name: "Cars", slug: "cars" },
       { name: "Motorcycles & Scooters", slug: "motorcycles-and-scooters" },
       { name: "Buses & Microbuses", slug: "buses" },
       { name: "Trucks & Trailers", slug: "trucks-commercial-agricultiral" },
-      { name: "Construction & Heavy Machinery", slug: "heavy-equipments-machinery" },
-      { name: "Watercraft & Boats", slug: "watercrafts-vehicle" }
+      { name: "Construction & Heavy Machinery", "slug": "heavy-equipments-machinery" },
+      { name: "Watercraft & Boats", "slug": "watercrafts-vehicle" },
+      { name: "Personal Mobility", "slug": "personal-mobility" },
+      { name: "Car Services", "slug": "automotive-services" }
     ]
   },
-  { 
-    name: "Property", slug: "real-estate", image: "https://assets.jijistatic.com/art/attributes/categories/property-x3.png",
+  {
+    name: "Property",
+    slug: "real-estate",
+    image: "https://assets.jijistatic.com/art/attributes/categories/property-x3.png",
     subCategories: [
       { name: "New Builds", slug: "new-builds" },
       { name: "Houses & Apartments For Rent", slug: "houses-apartments-for-rent" },
@@ -26,17 +32,22 @@ export const marketplaceCategories = [
       { name: "Commercial Property For Sale", slug: "commercial-properties" }
     ]
   },
-  { 
-    name: "Phones & Tablets", slug: "mobile-phones-tablets", image: "https://assets.jijistatic.com/art/attributes/categories/phones-x3.png",
+  {
+    name: "Phones & Tablets",
+    slug: "mobile-phones-tablets",
+    image: "https://assets.jijistatic.com/art/attributes/categories/phones-x3.png",
     subCategories: [
       { name: "Mobile Phones", slug: "mobile-phones" },
       { name: "Accessories for Phones & Tablets", slug: "cell-phones-tablets-accessories" },
       { name: "Smart Watches", slug: "smart-watches" },
-      { name: "Tablets", slug: "tablets" }
+      { name: "Tablets", slug: "tablets" },
+      { name: "Headphones", slug: "headphones" }
     ]
   },
-  { 
-    name: "Electronics", slug: "electronics", image: "https://assets.jijistatic.com/art/attributes/categories/electronics-x3.png",
+  {
+    name: "Electronics",
+    slug: "electronics",
+    image: "https://assets.jijistatic.com/art/attributes/categories/electronics-x3.png",
     subCategories: [
       { name: "Laptops & Computers", slug: "computers-and-laptops" },
       { name: "TV & Video Equipment", slug: "tv-dvd-equipment" },
@@ -50,11 +61,15 @@ export const marketplaceCategories = [
       { name: "Computer Monitors", slug: "computer-monitors" },
       { name: "Computer Hardware", slug: "computer-hardware" },
       { name: "Computer Accessories", slug: "computer-accessories" },
+      { name: "Accessories & Supplies for Electronics", slug: "accessories-and-supplies-for-electronics" },
+      { name: "Video Games", slug: "videogames" },
       { name: "Software", slug: "computer-software" }
     ]
   },
-  { 
-    name: "Home, Furniture & Appliances", slug: "home-garden", image: "https://assets.jijistatic.com/art/attributes/categories/home-x3.png",
+  {
+    name: "Home, Furniture & Appliances",
+    slug: "home-garden",
+    image: "https://assets.jijistatic.com/art/attributes/categories/home-x3.png",
     subCategories: [
       { name: "Furniture", slug: "furniture" },
       { name: "Lighting", slug: "lighting" },
@@ -67,22 +82,20 @@ export const marketplaceCategories = [
       { name: "Garden Supplies", slug: "garden" }
     ]
   },
-  { 
-    name: "Fashion", slug: "fashion-and-beauty", image: "https://assets.jijistatic.com/art/attributes/categories/fashion-x3.png",
+  {
+    name: "Fashion",
+    slug: "fashion-and-beauty",
+    image: "https://assets.jijistatic.com/art/attributes/categories/fashion-x3.png",
     subCategories: [
-      { name: "Women's Clothing", slug: "clothing" },
-      { name: "Women's Shoes", slug: "shoes" },
-      { name: "Women's Bags", slug: "bags" },
-      { name: "Women's Jewelry", slug: "jewellery-and-watches" },
-      { name: "Men's Clothing", slug: "mens-clothing" },
-      { name: "Men's Shoes", slug: "mens-shoes" },
-      { name: "Men's Watches", slug: "mens-watches" },
-      { name: "Children's Clothing", slug: "childrens-clothing" },
-      { name: "Children's Shoes", slug: "childrens-shoes" }
+      { name: "Women's Fashion", slug: "womens-fashion" },
+      { name: "Men's Fashion", slug: "mens-fashion" },
+      { name: "Baby&Kids’ Fashion", slug: "baby-kids-fashion" }
     ]
   },
-  { 
-    name: "Beauty & Personal Care", slug: "health-and-beauty", image: "https://assets.jijistatic.com/art/attributes/categories/health-x3.png",
+  {
+    name: "Beauty & Personal Care",
+    slug: "health-and-beauty",
+    image: "https://assets.jijistatic.com/art/attributes/categories/health-x3.png",
     subCategories: [
       { name: "Hair Beauty", slug: "hair-beauty" },
       { name: "Face Care", slug: "skin-care" },
@@ -91,71 +104,120 @@ export const marketplaceCategories = [
       { name: "Fragrance", slug: "fragrance" },
       { name: "Makeup", slug: "makeup" },
       { name: "Sexual Wellness", slug: "sexual-wellness" },
-      { name: "Vitamins & Supplements", slug: "supplements" }
+      { name: "Tools & Accessories", slug: "tools-accessories" },
+      { name: "Vitamins & Supplements", slug: "supplements" },
+      { name: "Massagers", slug: "massagers" },
+      { name: "Health & Beauty Services", slug: "health-and-beauty-services" }
     ]
   },
-  { 
-    name: "Services", slug: "services", image: "https://assets.jijistatic.com/art/attributes/categories/services-new-x3.png",
+  {
+    name: "Services",
+    slug: "services",
+    image: "https://assets.jijistatic.com/art/attributes/categories/services-new-x3.png",
     subCategories: [
       { name: "Building & Trades Services", slug: "building-and-trades-services" },
       { name: "Car Services", slug: "automotive-services" },
       { name: "Computer & IT Services", slug: "computer-and-it-services" },
       { name: "Repair Services", slug: "repair-services" },
       { name: "Cleaning Services", slug: "cleaning-services" },
+      { name: "Printing Services", slug: "printing-services" },
+      { name: "Manufacturing Services", slug: "manufacturing-services" },
       { name: "Logistics Services", slug: "removals-and-storage-services" },
       { name: "Legal Services", slug: "legal-services" },
-      { name: "Tax & Financial Services", slug: "tax-and-financial-services" }
+      { name: "Tax & Financial Services", slug: "tax-and-financial-services" },
+      { name: "Recruitment Services", slug: "recruitment-services" },
+      { name: "Rental Services", slug: "rental-services" },
+      { name: "Chauffeur & Airport Transfer Services", slug: "chauffeur-and-airport-transfer-services" },
+      { name: "Travel Agents & Tours", slug: "travel-agents-and-tours" },
+      { name: "Classes & Courses", slug: "classes-and-courses" },
+      { name: "Child Care & Education Services", slug: "child-care-and-education-services" },
+      { name: "Health & Beauty Services", slug: "health-and-beauty-services" },
+      { name: "Fitness & Personal Training Services", slug: "fitness-and-personal-training-services" },
+      { name: "Party, Catering & Event Services", slug: "party-catering-and-event-services" },
+      { name: "DJ & Entertainment Services", slug: "dj-and-entertainment-services" },
+      { name: "Wedding Venues & Services", slug: "wedding-venues-and-services" },
+      { name: "Photography & Video Services", slug: "photography-and-video-services" },
+      { name: "Landscaping & Gardening Services", slug: "landscaping-and-gardening-services" },
+      { name: "Pet Services", slug: "pet-services" },
+      { name: "Other Services", slug: "other-services" }
     ]
   },
-  { 
-    name: "Repair & Construction", slug: "repair-and-construction", image: "https://assets.jijistatic.com/art/attributes/categories/repair-x3.png",
+  {
+    name: "Repair & Construction",
+    slug: "repair-and-construction",
+    image: "https://assets.jijistatic.com/art/attributes/categories/repair-x3.png",
     subCategories: [
       { name: "Electrical Equipment", slug: "power-equipments" },
       { name: "Building Materials & Supplies", slug: "building-materials" },
       { name: "Plumbing & Water Systems", slug: "plumbing-and-water-supply" },
       { name: "Electrical Hand Tools", slug: "power-tools" },
       { name: "Hand Tools", slug: "hand-and-power-tools" },
+      { name: "Measuring & Testing Tools", slug: "measuring-and-layout-tools" },
       { name: "Hardware & Fasteners", slug: "hardware-and-fasteners" },
       { name: "Doors & Security", slug: "doors" },
-      { name: "Windows & Glass", slug: "windows" }
+      { name: "Windows & Glass", slug: "windows" },
+      { name: "Other Repair & Construction Items", slug: "other-repair-and-construction-items" },
+      { name: "Building & Trades Services", slug: "building-and-trades-services" },
+      { name: "Repair Services", slug: "repair-services" }
     ]
   },
-  { 
-    name: "Commercial Equipment & Tools", slug: "office-and-commercial-equipment-tools", image: "https://assets.jijistatic.com/art/attributes/categories/equipment-x3.png",
+  {
+    name: "Commercial Equipment & Tools",
+    slug: "office-and-commercial-equipment-tools",
+    image: "https://assets.jijistatic.com/art/attributes/categories/equipment-x3.png",
     subCategories: [
       { name: "Medical Equipment & Supplies", slug: "medical-equipment" },
       { name: "Safety Equipment & Protective Gear", slug: "safety-equipment" },
       { name: "Manufacturing Equipment", slug: "manufacturing-equipments" },
+      { name: "Manufacturing Materials & Supplies", slug: "manufacturing-materials-and-tools" },
       { name: "Retail & Store Equipment", slug: "store-equipments" },
       { name: "Restaurant & Catering Equipment", slug: "restaurant-and-catering-equipment" },
       { name: "Stationery & Office Equipment", slug: "stationery" },
-      { name: "Salon & Beauty Equipment", slug: "salon-equipment" }
+      { name: "Salon & Beauty Equipment", slug: "salon-equipment" },
+      { name: "Printing & Graphics Equipment", slug: "printing-equipment" },
+      { name: "Stage & Event Equipment", slug: "stage-lighting-and-effects" },
+      { name: "Manufacturing Services", slug: "manufacturing-services" }
     ]
   },
-  { 
-    name: "Leisure & Activities", slug: "hobbies-art-sport", image: "https://assets.jijistatic.com/art/attributes/categories/hobbies-x3.png",
+  {
+    name: "Leisure & Activities",
+    slug: "hobbies-art-sport",
+    image: "https://assets.jijistatic.com/art/attributes/categories/hobbies-x3.png",
     subCategories: [
+      { name: "Personal Mobility", slug: "personal-mobility" },
       { name: "Sports Equipment", slug: "sports-bicycles-and-fitness" },
       { name: "Massagers", slug: "massagers" },
       { name: "Musical Instruments & Gear", slug: "musical-instruments" },
       { name: "Books & Table Games", slug: "books-and-games" },
       { name: "Arts, Crafts & Awards", slug: "art-collectibles" },
-      { name: "Outdoor Gear", slug: "camping-gear" }
+      { name: "Outdoor Gear", slug: "camping-gear" },
+      { name: "Smoking Accessories", slug: "hookah-and-vaporizers" },
+      { name: "Music & Video", slug: "cds-and-dvds" },
+      { name: "Fitness & Personal Training Services", slug: "fitness-and-personal-training-services" }
     ]
   },
-  { 
-    name: "Babies & Kids", slug: "babies-and-kids", image: "https://assets.jijistatic.com/art/attributes/categories/babies-x3.png",
+  {
+    name: "Babies & Kids",
+    slug: "babies-and-kids",
+    image: "https://assets.jijistatic.com/art/attributes/categories/babies-x3.png",
     subCategories: [
       { name: "Toys & Games", slug: "toys" },
       { name: "Children's Furniture", slug: "childrens-furniture" },
+      { name: "Children's Clothing", slug: "childrens-clothing" },
+      { name: "Children's Shoes", slug: "childrens-shoes" },
+      { name: "Babies & Kids Accessories", slug: "babies-and-kids-accessories" },
       { name: "Baby Gear & Equipment", slug: "childrens-gear-and-safety" },
       { name: "Care & Feeding", slug: "baby-care" },
       { name: "Maternity & Pregnancy", slug: "maternity-and-pregnancy" },
-      { name: "Transport & Safety", slug: "prams-and-strollers" }
+      { name: "Transport & Safety", slug: "prams-and-strollers" },
+      { name: "Playground Equipment", slug: "playground-equipment" },
+      { name: "Child Care & Education Services", slug: "child-care-and-education-services" }
     ]
   },
-  { 
-    name: "Food, Agriculture & Farming", slug: "agriculture-and-foodstuff", image: "https://assets.jijistatic.com/art/attributes/categories/agriculture-x3.png",
+  {
+    name: "Food, Agriculture & Farming",
+    slug: "agriculture-and-foodstuff",
+    image: "https://assets.jijistatic.com/art/attributes/categories/agriculture-x3.png",
     subCategories: [
       { name: "Food & Beverages", slug: "meals-and-drinks" },
       { name: "Farm Animals", slug: "livestock-and-poultry" },
@@ -164,27 +226,108 @@ export const marketplaceCategories = [
       { name: "Farm Animal Feed & Supplements", slug: "farm-animal-feed-supplements" }
     ]
   },
-  { 
-    name: "Animals & Pets", slug: "animals-and-pets", image: "https://assets.jijistatic.com/art/attributes/categories/animals-x3.png",
+  {
+    name: "Animals & Pets",
+    slug: "animals-and-pets",
+    image: "https://assets.jijistatic.com/art/attributes/categories/animals-x3.png",
     subCategories: [
       { name: "Pet's Accessories", slug: "pets-accessories" },
       { name: "Cats & Kittens", slug: "cats-and-kittens" },
       { name: "Dogs & Puppies", slug: "dogs-and-puppies" },
       { name: "Fish", slug: "fish" },
       { name: "Birds", slug: "birds" },
-      { name: "Other Animals", slug: "other-animals" }
+      { name: "Other Animals", slug: "other-animals" },
+      { name: "Pet Services", slug: "pet-services" }
     ]
   },
-  { 
-    name: "Jobs", slug: "jobs", image: "https://assets.jijistatic.com/art/attributes/categories/jobs-x3.png",
+  {
+    name: "Jobs",
+    slug: "jobs",
+    image: "https://assets.jijistatic.com/art/attributes/categories/jobs-x3.png",
     subCategories: [
       { name: "Advertising & Marketing Jobs", slug: "advertising-and-marketing-jobs" },
       { name: "Accounting & Finance Jobs", slug: "accounting-and-finance-jobs" },
+      { name: "Arts & Entertainment Jobs", slug: "arts-and-entertainment-jobs" },
+      { name: "Childcare & Babysitting Jobs", slug: "childcare-and-babysitting-jobs" },
+      { name: "Clerical & Administrative Jobs", slug: "clerical-and-administrative-jobs" },
       { name: "Computing & IT Jobs", slug: "computing-and-it-jobs" },
       { name: "Construction & Skilled Trade Jobs", slug: "construction-and-skilled-trade-jobs" },
+      { name: "Consulting & Strategy Jobs", slug: "consulting-and-strategy-jobs" },
+      { name: "Customer Services Jobs", slug: "customer-service-jobs" },
       { name: "Driver Jobs", slug: "driver-jobs" },
+      { name: "Engineering & Architecture Jobs", slug: "engineering-and-architecture-jobs" },
+      { name: "Farming & Veterinary Jobs", slug: "farming-and-veterinary-jobs" },
+      { name: "Gardening & Landscaping Jobs", slug: "gardening-and-landscaping-jobs" },
+      { name: "Health & Beauty Jobs", slug: "health-and-beauty-jobs" },
       { name: "Healthcare & Nursing Jobs", slug: "healthcare-and-nursing-jobs" },
-      { name: "Teaching Jobs", slug: "teaching-jobs" }
+      { name: "Hotel Jobs", slug: "hotel-jobs" },
+      { name: "Housekeeping & Cleaning Jobs", slug: "housekeeping-and-cleaning-jobs" },
+      { name: "Human Resources Jobs", slug: "human-resources-jobs" },
+      { name: "Internship Jobs", slug: "internship-jobs" },
+      { name: "Legal Jobs", slug: "legal-jobs" },
+      { name: "Logistics & Transportation Jobs", slug: "logistics-and-transportation-jobs" },
+      { name: "Management Jobs", slug: "management-jobs" },
+      { name: "Manual Labour Jobs", slug: "manual-labour-jobs" },
+      { name: "Manufacturing Jobs", slug: "manufacturing-jobs" },
+      { name: "Mining Industry Jobs", slug: "mining-industry-jobs" },
+      { name: "Office Jobs", slug: "office-jobs" },
+      { name: "Part-time & Weekend Jobs", slug: "part-time-and-weekend-jobs" },
+      { name: "Quality Control & Assurance Jobs", slug: "quality-control-and-assurance-jobs" },
+      { name: "Research & Survey Jobs", slug: "research-and-survey-jobs" },
+      { name: "Restaurant & Bar Jobs", slug: "restaurant-and-bar-jobs" },
+      { name: "Retail Jobs", slug: "retail-jobs" },
+      { name: "Sales & Telemarketing Jobs", slug: "sales-and-telemarketing-jobs" },
+      { name: "Security Jobs", slug: "security-jobs" },
+      { name: "Sports Club Jobs", slug: "sports-club-jobs" },
+      { name: "Teaching Jobs", slug: "teaching-jobs" },
+      { name: "Technology Jobs", slug: "technology-jobs" },
+      { name: "Travel & Tourism Jobs", slug: "travel-and-tourism-jobs" },
+      { name: "Other Jobs", slug: "other-jobs" }
+    ]
+  },
+  {
+    name: "Seeking Work - CVs",
+    slug: "seeking-work-cvs",
+    image: "https://assets.jijistatic.com/art/attributes/categories/jobseekers-new-x3.png",
+    subCategories: [
+      { name: "Accounting & Finance CVs", slug: "accounting-and-finance-cvs" },
+      { name: "Advertising & Marketing CVs", slug: "advertising-and-marketing-cvs" },
+      { name: "Arts & Entertainment CVs", slug: "arts-and-entertainment-cvs" },
+      { name: "Childcare & Babysitting CVs", slug: "childcare-and-babysitting-cvs" },
+      { name: "Clerical & Administrative CVs", slug: "clerical-and-administrative-cvs" },
+      { name: "Computing & IT CVs", slug: "computing-and-it-cvs" },
+      { name: "Construction & Skilled Trade CVs", slug: "construction-and-skilled-trade-cvs" },
+      { name: "Consulting & Strategy CVs", slug: "consulting-and-strategy-cvs" },
+      { name: "Customer Service CVs", slug: "customer-service-cvs" },
+      { name: "Driver CVs", slug: "driver-cvs" },
+      { name: "Engineering & Architecture CVs", slug: "engineering-and-architecture-cvs" },
+      { name: "Farming & Veterinary CVs", slug: "farming-and-veterinary-cvs" },
+      { name: "Gardening & Landscaping CVs", slug: "gardening-and-landscaping-cvs" },
+      { name: "Health & Beauty CVs", slug: "health-and-beauty-cvs" },
+      { name: "Healthcare & Nursing CVs", slug: "healthcare-and-nursing-cvs" },
+      { name: "Hotel CVs", slug: "hotel-cvs" },
+      { name: "Housekeeping & Cleaning CVs", slug: "housekeeping-and-cleaning-cvs" },
+      { name: "Human Resources CVs", slug: "human-resources-cvs" },
+      { name: "Internship CVs", slug: "internship-cvs" },
+      { name: "Legal CVs", slug: "legal-cvs" },
+      { name: "Logistics & Transportation CVs", slug: "logistics-and-transportation-cvs" },
+      { name: "Management CVs", slug: "management-cvs" },
+      { name: "Manual Labour CVs", slug: "manual-labour-cvs" },
+      { name: "Manufacturing CVs", slug: "manufacturing-cvs" },
+      { name: "Mining Industry CVs", slug: "mining-industry-cvs" },
+      { name: "Office CVs", slug: "office-cvs" },
+      { name: "Part-Time & Weekend CVs", slug: "part-time-and-weekend-cvs" },
+      { name: "Quality Control & Assurance CVs", slug: "quality-control-and-assurance-cvs" },
+      { name: "Research & Survey CVs", slug: "research-and-survey-cvs" },
+      { name: "Restaurant & Bar CVs", slug: "restaurant-and-bar-cvs" },
+      { name: "Retail CVs", slug: "retail-cvs" },
+      { name: "Sales & Telemarketing CVs", slug: "sales-and-telemarketing-cvs" },
+      { name: "Security CVs", slug: "security-cvs" },
+      { name: "Sports Club CVs", slug: "sports-club-cvs" },
+      { name: "Teaching CVs", slug: "teaching-cvs" },
+      { name: "Technology CVs", slug: "technology-cvs" },
+      { name: "Travel & Tourism CVs", slug: "travel-and-tourism-cvs" },
+      { name: "Other CVs", slug: "other-cvs" }
     ]
   }
 ];
