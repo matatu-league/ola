@@ -3,6 +3,9 @@ import { connectToDatabase } from '@/lib/mongodb';
 import Store from '@/models/Store';
 import { Category } from '@/models/Marketplace';
 import { cookies } from 'next/headers';
+import { getActiveStore } from '@/lib/store-context';
+
+const MAX_STORES_PER_USER = 3;
 
 const getUserId = async () => {
   const cookieStore = await cookies();
@@ -20,16 +23,36 @@ const getUserId = async () => {
   }
 };
 
-export async function GET() {
+export async function GET(request) {
   try {
     const userId = await getUserId();
     if (!userId) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
     await connectToDatabase();
+    const ownerFilter = { $or: [{ userId }, { owner: userId }] };
 
-    const store = await Store.findOne({ $or: [{ userId }, { owner: userId }] });
+    // ?all=1 → list every store the user owns (for the dashboard store switcher).
+    const { searchParams } = new URL(request.url);
+    if (searchParams.get('all') === '1') {
+      const stores = await Store.find(ownerFilter)
+        .select('_id title domain logo businessType serviceType')
+        .sort({ createdAt: 1 })
+        .lean();
+      return NextResponse.json({ success: true, stores, storeCount: stores.length });
+    }
 
-    return NextResponse.json({ success: true, hasStore: !!store, store });
+    // Default → the active store for the current subdomain (Host-resolved),
+    // plus how many stores the user has (drives "add store" affordances).
+    const store = await getActiveStore();
+    const storeCount = await Store.countDocuments(ownerFilter);
+
+    return NextResponse.json({
+      success: true,
+      hasStore: storeCount > 0,
+      store,
+      storeCount,
+      maxStores: MAX_STORES_PER_USER,
+    });
   } catch (error) {
     console.error('Store GET error:', error);
     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
@@ -44,9 +67,12 @@ export async function POST(request) {
     await connectToDatabase();
     const body = await request.json();
 
-    const existingStore = await Store.findOne({ $or: [{ userId }, { owner: userId }] });
-    if (existingStore) {
-      return NextResponse.json({ success: false, message: 'You already have a store.' }, { status: 400 });
+    const storeCount = await Store.countDocuments({ $or: [{ userId }, { owner: userId }] });
+    if (storeCount >= MAX_STORES_PER_USER) {
+      return NextResponse.json(
+        { success: false, message: `You can create up to ${MAX_STORES_PER_USER} stores.` },
+        { status: 400 },
+      );
     }
 
     const existingDomain = await Store.findOne({ domain: body.domain });

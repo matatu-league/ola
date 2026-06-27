@@ -6,7 +6,8 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { connectToDatabase } from '@/lib/mongodb';
 import Service from '@/models/Service';
-import Store from '@/models/Store';
+import '@/models/Store';
+import { getActiveStore } from '@/lib/store-context';
 
 async function getUserId() {
   const cookieStore = await cookies();
@@ -29,14 +30,17 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const storeId = searchParams.get('storeId');
 
-    // Public listing for a storefront (by storeId) — otherwise the owner's own.
+    // Public listing for a storefront (by storeId) — otherwise the active
+    // store the owner is currently managing (resolved from the subdomain), so a
+    // multi-store owner sees only this store's services.
     let query;
     if (storeId) {
       query = { storeId, status: 'active' };
     } else {
       const userId = await getUserId();
       if (!userId) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-      query = { userId };
+      const active = await getActiveStore();
+      query = active ? { storeId: active._id } : { userId };
     }
 
     const services = await Service.find(query).sort({ createdAt: -1 }).lean();
@@ -59,11 +63,9 @@ export async function POST(request) {
       return NextResponse.json({ success: false, message: 'Title is required' }, { status: 400 });
     }
 
-    // Attach the owner's store + serviceType so the storefront can render the
-    // right booking experience without an extra lookup.
-    const store = await Store.findOne({ $or: [{ userId }, { owner: userId }] })
-      .select('_id serviceType')
-      .lean();
+    // Attach the active store (subdomain-resolved) + its serviceType so the
+    // storefront can render the right booking experience without a re-lookup.
+    const store = await getActiveStore();
 
     const { _id, ...fields } = body; // never trust a client-supplied _id on create
 
