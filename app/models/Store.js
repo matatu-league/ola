@@ -54,7 +54,26 @@ const StoreSchema = new Schema(
     logo:          { type: String },
     banner:        { type: String },
     bannerImages:  [{ type: String }],
-    themeTemplate: { type: String, default: null }, // Raw AI-generated React JSX
+    themeTemplate: { type: String, default: null }, // Raw AI-generated React JSX (legacy eval'd builder)
+
+    // Structured, config-driven theme. Design tokens drive CSS variables across
+    // every store-scoped buyer surface (storefront, product, cart, checkout);
+    // `sections` is the ordered storefront layout (config-driven renderer).
+    // See app/lib/storeTheme.js (buildStoreTheme). All fields optional — derived
+    // from legacy themeColor/themeMode/layoutStyle when absent.
+    theme: {
+      mode:      { type: String, enum: ['light', 'dark'], default: 'light' },
+      primary:   { type: String },
+      onPrimary: { type: String },
+      bg:        { type: String },
+      surface:   { type: String },
+      text:      { type: String },
+      muted:     { type: String },
+      border:    { type: String },
+      radius:    { type: String },
+      font:      { type: String },
+      sections:  { type: [Schema.Types.Mixed], default: [] },
+    },
 
     // Global marketplace categories this store operates in
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],

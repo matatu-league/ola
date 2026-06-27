@@ -17,6 +17,7 @@ import {
   protocolFor,
   getCookieRootDomain,
 } from '@/lib/domain';
+import BackToSystemBanner from '@/components/shared/BackToSystemBanner';
 
 const navigation = [
   { name: 'Dashboard',    href: '/dashboard',   icon: LayoutDashboard },
@@ -58,10 +59,14 @@ export default function SellerLayout({ children }) {
   const [isCheckingStore,  setIsCheckingStore]  = useState(true);
   const [unreadCount,      setUnreadCount]      = useState(0);
 
-  const isStorefrontRoot = pathname === '/';
+  // Buyer-facing "shop" routes render the themed storefront experience (no
+  // seller sidebar, no owner redirect) with the system banner on top. Seller
+  // dashboard routes (/dashboard, /products, …) keep the management chrome.
+  const SHOP_PREFIXES = ['/p/', '/cart', '/checkout'];
+  const isShopRoute = pathname === '/' || SHOP_PREFIXES.some(p => pathname === p || pathname.startsWith(p));
 
   useEffect(() => {
-    if (isStorefrontRoot) {
+    if (isShopRoute) {
       setIsCheckingStore(false);
       return;
     }
@@ -146,7 +151,7 @@ export default function SellerLayout({ children }) {
 
         setIsCheckingStore(false);
       });
-  }, [pathname, isStorefrontRoot]);
+  }, [pathname, isShopRoute]);
 
   const handleSignOut = () => {
     const rootDomain = getCookieRootDomain(window.location.hostname);
@@ -160,8 +165,15 @@ export default function SellerLayout({ children }) {
     return match ? match.name : 'Dashboard';
   };
 
-  if (isStorefrontRoot) {
-    return <>{children}</>;
+  if (isShopRoute) {
+    // Buyer experience: system banner on top, then the themed page. The
+    // per-page StoreThemeProvider supplies the vendor tokens around children.
+    return (
+      <>
+        <BackToSystemBanner />
+        {children}
+      </>
+    );
   }
 
   if (isCheckingStore) {

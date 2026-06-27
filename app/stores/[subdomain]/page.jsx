@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Storefront from '@/components/storefronts/Storefront';
+import StoreThemeProvider from '@/components/storefronts/StoreThemeProvider';
 import { storeDomain } from '@/lib/domain';
 
 // Helper function to fetch the store securely on the server
@@ -50,6 +51,11 @@ export default async function SubdomainPage({ params }) {
 
   console.log(`[Server Component] ✅ Store loaded: ${store.title}`);
 
-  // 4. Render the Storefront using the live database data
-  return <Storefront store={store} onBack={null} />;
+  // 4. Render the Storefront inside the vendor theme (CSS tokens) so the
+  //    storefront — and the store-scoped product/cart/checkout pages — all match.
+  return (
+    <StoreThemeProvider store={store}>
+      <Storefront store={store} onBack={null} />
+    </StoreThemeProvider>
+  );
 }
