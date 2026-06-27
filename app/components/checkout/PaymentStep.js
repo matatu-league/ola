@@ -25,7 +25,7 @@ const FlutterwaveButtonDynamic = dynamic(
 function GatewayLoader() {
   return (
     <div className="flex items-center justify-center py-8">
-      <Loader2 size={22} className="animate-spin text-[#8A8B91]" />
+      <Loader2 size={22} className="animate-spin text-[var(--s-muted,#8A8B91)]" />
     </div>
   );
 }
@@ -125,8 +125,8 @@ function PaymentCard({ method, isSelected, onClick }) {
 
       {/* Text block — left aligned */}
       <div className="flex flex-col gap-0.5">
-        <span className="text-[12px] font-bold text-[#161823] leading-tight">{method.title}</span>
-        <span className="text-[10px] text-[#8A8B91] leading-snug line-clamp-2">{method.description}</span>
+        <span className="text-[12px] font-bold text-[var(--s-text,#161823)] leading-tight">{method.title}</span>
+        <span className="text-[10px] text-[var(--s-muted,#8A8B91)] leading-snug line-clamp-2">{method.description}</span>
       </div>
     </div>
   );
@@ -184,7 +184,7 @@ function StripeForm({ amount, onCreatePendingOrder, onSuccess, onError, isSubmit
 
   return (
     <div className="space-y-4">
-      <div className="p-4 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm">
+      <div className="p-4 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm">
         <CardElement
           options={{
             style: {
@@ -195,9 +195,9 @@ function StripeForm({ amount, onCreatePendingOrder, onSuccess, onError, isSubmit
         />
       </div>
       {/* Show USD equivalent — Stripe charges in USD */}
-      <div className="flex items-center gap-1.5 text-[11px] text-[#8A8B91] bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2">
+      <div className="flex items-center gap-1.5 text-[11px] text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm px-3 py-2">
         <span>Stripe charges in USD:</span>
-        <span className="font-bold text-[#161823]">
+        <span className="font-bold text-[var(--s-text,#161823)]">
           ≈ ${((amount / 3900)).toFixed(2)} USD
         </span>
         <span className="text-[10px]">(1 USD ≈ UGX 3,900)</span>
@@ -266,7 +266,7 @@ function RazorpayForm({ amount, user, onCreatePendingOrder, onSuccess, onError, 
     <div className="space-y-3">
       <div className="flex flex-wrap gap-1.5">
         {['UPI', 'Debit Card', 'Credit Card', 'Net Banking', 'Wallet'].map(l => (
-          <span key={l} className="text-[10px] font-semibold border border-[#E3E3E4] rounded-sm px-2 py-0.5 text-[#8A8B91] bg-[#F8F8F8]">{l}</span>
+          <span key={l} className="text-[10px] font-semibold border border-[var(--s-border,#E3E3E4)] rounded-sm px-2 py-0.5 text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)]">{l}</span>
         ))}
       </div>
       <button
@@ -338,7 +338,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
     <div className="space-y-4">
 
       {/* ── Segmented network selector ─────────────────────────────────── */}
-      <div className="flex border border-[#E3E3E4] rounded-sm overflow-hidden bg-[#F8F8F8]">
+      <div className="flex border border-[var(--s-border,#E3E3E4)] rounded-sm overflow-hidden bg-[var(--s-surface,#F8F8F8)]">
         {NETWORKS.map((n, idx) => {
           const isActive = network === n.code;
           return (
@@ -347,7 +347,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
               type="button"
               onClick={() => setNetwork(n.code)}
               className={`relative flex-1 flex items-center justify-center gap-2.5 py-3 px-3 text-[12px] font-bold transition-all duration-150
-                ${idx !== 0 ? 'border-l border-[#E3E3E4]' : ''}
+                ${idx !== 0 ? 'border-l border-[var(--s-border,#E3E3E4)]' : ''}
                 ${isActive ? 'shadow-sm' : 'hover:bg-white'}`}
               style={isActive
                 ? { background: n.activeBg, color: n.activeText, borderColor: n.activeBorder }
@@ -403,17 +403,17 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
 
       {/* Phone input */}
       <div className="space-y-1.5">
-        <label className="text-[12px] font-semibold text-[#161823]">
-          {activeNet?.shortLabel} Number <span className="text-[#FE2C55]">*</span>
+        <label className="text-[12px] font-semibold text-[var(--s-text,#161823)]">
+          {activeNet?.shortLabel} Number <span className="text-[var(--s-primary,#FE2C55)]">*</span>
         </label>
         <input
           type="tel"
           value={phone}
           onChange={e => setPhone(e.target.value)}
           placeholder={activeNet?.placeholder}
-          className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-3 py-2 text-[13px] outline-none focus:border-[#161823] transition-colors text-[#161823] placeholder:text-[#8A8B91]"
+          className="w-full bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm px-3 py-2 text-[13px] outline-none focus:border-[var(--s-text,#161823)] transition-colors text-[var(--s-text,#161823)] placeholder:text-[var(--s-muted,#8A8B91)]"
         />
-        <p className="text-[11px] text-[#8A8B91]">
+        <p className="text-[11px] text-[var(--s-muted,#8A8B91)]">
           You will receive a USSD prompt on your phone to confirm payment.
         </p>
       </div>
@@ -421,7 +421,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
       <button
         onClick={handlePay}
         disabled={isSubmitting}
-        className="w-full bg-[#161823] hover:bg-black text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
+        className="w-full bg-[var(--s-primary,#161823)] hover:bg-black text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
       >
         {isSubmitting && <Loader2 size={15} className="animate-spin" />}
         {isSubmitting ? 'Sending Prompt...' : `Send ${activeNet?.shortLabel} Prompt`}
@@ -478,14 +478,14 @@ export default function PaymentStep({
 
   return (
     <div className={`bg-white border rounded-sm overflow-hidden transition-all duration-300
-      ${isActive ? 'border-[#161823] ring-1 ring-[#161823]' : 'border-[#E3E3E4]'}
+      ${isActive ? 'border-[var(--s-text,#161823)] ring-1 ring-[var(--s-primary,#161823)]' : 'border-[var(--s-border,#E3E3E4)]'}
       ${isLocked ? 'opacity-50 pointer-events-none' : ''}`}>
 
       {/* Header */}
-      <div className={`p-4 md:p-5 flex items-center justify-between ${isActive ? 'border-b border-[#E3E3E4]' : ''}`}>
-        <h3 className="font-bold text-[15px] flex items-center gap-3 tracking-tight uppercase text-[#161823]">
+      <div className={`p-4 md:p-5 flex items-center justify-between ${isActive ? 'border-b border-[var(--s-border,#E3E3E4)]' : ''}`}>
+        <h3 className="font-bold text-[15px] flex items-center gap-3 tracking-tight uppercase text-[var(--s-text,#161823)]">
           <span className={`flex items-center justify-center w-6 h-6 rounded-full text-[12px] font-extrabold
-            ${isActive ? 'bg-[#161823] text-white' : 'bg-[#E3E3E4] text-[#8A8B91]'}`}>
+            ${isActive ? 'bg-[var(--s-primary,#161823)] text-white' : 'bg-[var(--s-border,#E3E3E4)] text-[var(--s-muted,#8A8B91)]'}`}>
             4
           </span>
           Payment Method
@@ -497,7 +497,7 @@ export default function PaymentStep({
           {isFetchingConfig ? (
             <GatewayLoader />
           ) : paymentOptions.length === 0 ? (
-            <p className="text-[13px] text-[#8A8B91]">No payment methods available.</p>
+            <p className="text-[13px] text-[var(--s-muted,#8A8B91)]">No payment methods available.</p>
           ) : (
             <>
               {/* ── Method selector grid ───────────────────────────────────── */}
@@ -515,11 +515,11 @@ export default function PaymentStep({
               {/* ── Divider ────────────────────────────────────────────────── */}
               {provider && (
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="flex-1 h-px bg-[#E3E3E4]" />
-                  <span className="text-[10px] font-bold text-[#8A8B91] uppercase tracking-wider">
+                  <div className="flex-1 h-px bg-[var(--s-border,#E3E3E4)]" />
+                  <span className="text-[10px] font-bold text-[var(--s-muted,#8A8B91)] uppercase tracking-wider">
                     {selectedOption?.title}
                   </span>
-                  <div className="flex-1 h-px bg-[#E3E3E4]" />
+                  <div className="flex-1 h-px bg-[var(--s-border,#E3E3E4)]" />
                 </div>
               )}
 
@@ -589,14 +589,14 @@ export default function PaymentStep({
                   <div className="space-y-4">
                     <div className="flex items-start gap-2 bg-[#F0FDF4] p-3 rounded-sm border border-[#10B981]">
                       <CheckCircle2 size={15} className="text-[#10B981] shrink-0 mt-0.5" />
-                      <p className="text-[12px] text-[#161823] leading-relaxed">
+                      <p className="text-[12px] text-[var(--s-text,#161823)] leading-relaxed">
                         You will pay <strong>UGX {Number(amount).toLocaleString()}</strong> in cash directly to our delivery agent upon successful delivery.
                       </p>
                     </div>
                     <button
                       onClick={() => onPlaceOrder({ paymentReference: null, paymentProvider: 'cash' })}
                       disabled={isSubmitting}
-                      className="w-full bg-[#FE2C55] hover:bg-[#e0264b] text-white px-6 py-2.5 rounded-sm font-semibold text-[13px] transition-colors flex justify-center items-center gap-2 disabled:opacity-50 tracking-tight"
+                      className="w-full bg-[var(--s-primary,#FE2C55)] hover:bg-[#e0264b] text-white px-6 py-2.5 rounded-sm font-semibold text-[13px] transition-colors flex justify-center items-center gap-2 disabled:opacity-50 tracking-tight"
                     >
                       {isSubmitting && <Loader2 size={16} className="animate-spin" />}
                       Confirm & Place Order
@@ -607,15 +607,15 @@ export default function PaymentStep({
 
               {/* Errors */}
               {(payError || generalError) && (
-                <div className="flex items-center gap-2 text-[12px] text-[#FE2C55] font-semibold bg-[#FFF0F3] border border-[#FE2C55] p-3 rounded-sm mb-4">
+                <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm mb-4">
                   <AlertCircle size={14} className="shrink-0" /> {payError || generalError}
                 </div>
               )}
 
               {/* Security note */}
-              <div className="flex items-start gap-2 bg-[#F8F8F8] p-3 rounded-sm border border-[#E3E3E4]">
-                <ShieldCheck size={15} className="text-[#161823] shrink-0 mt-0.5" />
-                <p className="text-[11px] text-[#8A8B91] font-medium leading-relaxed">
+              <div className="flex items-start gap-2 bg-[var(--s-surface,#F8F8F8)] p-3 rounded-sm border border-[var(--s-border,#E3E3E4)]">
+                <ShieldCheck size={15} className="text-[var(--s-text,#161823)] shrink-0 mt-0.5" />
+                <p className="text-[11px] text-[var(--s-muted,#8A8B91)] font-medium leading-relaxed">
                   All transactions are encrypted and secured. We never store your full card details or PIN.
                 </p>
               </div>

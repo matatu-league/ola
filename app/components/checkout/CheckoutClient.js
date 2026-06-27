@@ -286,12 +286,12 @@ export default function CheckoutClient() {
   if (cartItems.length === 0 && !isSubmitting) {
     return (
       <div className="max-w-[1200px] mx-auto px-4 py-20 flex flex-col items-center text-center bg-white">
-        <div className="w-24 h-24 bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm flex items-center justify-center mb-6">
-          <ShoppingCart size={32} className="text-[#8A8B91]" />
+        <div className="w-24 h-24 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm flex items-center justify-center mb-6">
+          <ShoppingCart size={32} className="text-[var(--s-muted,#8A8B91)]" />
         </div>
-        <h2 className="text-[18px] font-bold text-[#161823] mb-2 tracking-tight">Your cart is empty</h2>
-        <p className="text-[#8A8B91] mb-8 text-[13px]">Add some items before checking out.</p>
-        <button onClick={() => router.push('/')} className="bg-[#161823] hover:bg-black text-white px-6 py-2 rounded-sm font-semibold text-[13px] transition-colors tracking-tight">
+        <h2 className="text-[18px] font-bold text-[var(--s-text,#161823)] mb-2 tracking-tight">Your cart is empty</h2>
+        <p className="text-[var(--s-muted,#8A8B91)] mb-8 text-[13px]">Add some items before checking out.</p>
+        <button onClick={() => router.push('/')} className="bg-[var(--s-primary,#161823)] hover:bg-black text-white px-6 py-2 rounded-sm font-semibold text-[13px] transition-colors tracking-tight">
           Continue Shopping
         </button>
       </div>
@@ -311,7 +311,7 @@ export default function CheckoutClient() {
 
           {/* Global error banner */}
           {generalError && (
-            <div className="flex items-center gap-2 text-[13px] text-[#FE2C55] font-semibold bg-[#FFF0F3] border border-[#FE2C55] p-4 rounded-sm">
+            <div className="flex items-center gap-2 text-[13px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-4 rounded-sm">
               <AlertCircle size={16} /> {generalError}
             </div>
           )}

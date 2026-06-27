@@ -22,7 +22,7 @@ function PayPalButtonsInner({ amount, onSuccess, onError }) {
   if (isPending) {
     return (
       <div className="flex items-center justify-center py-6">
-        <Loader2 size={22} className="animate-spin text-[#8A8B91]" />
+        <Loader2 size={22} className="animate-spin text-[var(--s-muted,#8A8B91)]" />
       </div>
     );
   }
@@ -123,12 +123,12 @@ export default function PayPalForm({ amount, onSuccess, onError }) {
       </PayPalScriptProvider>
 
       {localError && (
-        <div className="flex items-center gap-2 text-[12px] text-[#FE2C55] font-semibold bg-[#FFF0F3] border border-[#FE2C55] p-3 rounded-sm">
+        <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm">
           <AlertCircle size={13} /> {localError}
         </div>
       )}
 
-      <p className="text-[10px] text-[#8A8B91] text-center">
+      <p className="text-[10px] text-[var(--s-muted,#8A8B91)] text-center">
         Powered by PayPal · Pay with your PayPal account or any major card
       </p>
     </div>
