@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 
 // --- Mock Components for Missing Variants ---
 const ClassicStore = ({ store }) => <div className="p-8 text-center"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Classic Store'}</h1><p>Classic Layout Preview</p></div>;
@@ -107,10 +108,7 @@ const CustomAIStore = ({ store }) => {
 
     const templateCode = store.themeTemplate || fallbackTemplate;
 
-    const processedCode = templateCode
-      .replace(/import\s+(?:React,\s+)?(?:\{[^}]+\}\s+from\s+)?['"]react['"];?/gi, '')
-      .replace(/import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"];?/gi, 'const { $1 } = window.lucide || window.lucideFallback || {};')
-      .replace(/export\s+default\s+[a-zA-Z0-9_]+;?/gi, '');
+    const processedCode = sanitizeTemplateCode(templateCode, 'window.lucide || window.lucideFallback || {}');
 
     return `
       <!DOCTYPE html>

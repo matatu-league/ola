@@ -7,6 +7,7 @@ import {
   Monitor, Smartphone, Tablet, ChevronDown, Sun, Moon, 
   Wand2, Settings2, FileUp, Link as LinkIcon
 } from 'lucide-react';
+import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 
 // --- CONFIG & UTILITIES ---
 const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
@@ -380,11 +381,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop' }) => {
     return () => observer.disconnect();
   }, [targetWidth, viewMode]);
 
-  const processedCode = useMemo(() => {
-    return code
-      .replace(/import\s+(?:React,\s+)?(?:\{[^}]+\}\s+from\s+)?['"]react['"];?/gi, '')
-      .replace(/import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"];?/gi, 'const { $1 } = window.lucideFallback || {};');
-  }, [code]);
+  const processedCode = useMemo(() => sanitizeTemplateCode(code), [code]);
 
   const srcDoc = useMemo(() => `
     <!DOCTYPE html><html lang="en"><head>
@@ -506,10 +503,8 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   }, []);
 
   const openInNewTab = () => {
-    const processedCode = code
-      .replace(/import\s+(?:React,\s+)?(?:\{[^}]+\}\s+from\s+)?['"]react['"];?/gi, '')
-      .replace(/import\s*\{([^}]+)\}\s*from\s*['"]lucide-react['"];?/gi, 'const { $1 } = window.lucideFallback || {};');
-      
+    const processedCode = sanitizeTemplateCode(code);
+
     const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script type="text/babel">const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});const dynamicStoreData={storeName:"AURA STUDIO",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}</script></body></html>`;
     const w = window.open('', '_blank');
     if (w) { w.document.open(); w.document.write(htmlContent); w.document.close(); }
