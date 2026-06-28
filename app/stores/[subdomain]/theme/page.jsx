@@ -8,10 +8,91 @@ import {
   Wand2, Settings2, FileUp, Link as LinkIcon
 } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
+import { uploadFileToFirebase } from '@/lib/firebaseLib';
 
 // --- CONFIG & UTILITIES ---
 const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
 const TEXT_MODEL_ID = 'gemini-3.5-flash';
+const AI_IMAGE_MODEL = process.env.NEXT_PUBLIC_AI_IMAGE_MODEL || 'gemini-3.1-flash-image-preview';
+
+// Replace only the FIRST exact occurrence of `a` with `b` in `src`. Used by the
+// visual editor to map a click-to-edit change back to the template source. If
+// `a` isn't found (e.g. it was dynamic, data-driven content), this is a safe
+// no-op — which is exactly why the editor only affects static content.
+const replaceFirst = (src, a, b) => {
+  if (!a) return src;
+  const i = src.indexOf(a);
+  return i === -1 ? src : src.slice(0, i) + b + src.slice(i + a.length);
+};
+
+// Text-to-image via Gemini; returns a data URL (or null).
+const generateImageDataUrl = async (prompt, aspectRatio = '16:9') => {
+  const base = process.env.NEXT_PUBLIC_AI_IMAGE_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/models';
+  const res = await fetch(`${base}/${AI_IMAGE_MODEL}:generateContent?key=${geminiApiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio } },
+    }),
+  });
+  const data = await res.json();
+  const part = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+  return part?.inlineData ? `data:${part.inlineData.mimeType};base64,${part.inlineData.data}` : null;
+};
+
+// Browser-side: data URL → File (for Firebase upload).
+const dataUrlToFile = async (dataUrl, filename) => {
+  const blob = await (await fetch(dataUrl)).blob();
+  return new File([blob], filename, { type: blob.type || 'image/png' });
+};
+
+// Injected into the preview iframe in Visual Edit mode. Plain JS (no JSX). Makes
+// static text leaves click-to-edit and images click-to-replace, posting changes
+// to the parent. Dynamic content edits are harmless (see replaceFirst).
+const EDITOR_BRIDGE = `
+(function(){
+  var TAGS = 'H1,H2,H3,H4,H5,H6,P,SPAN,A,BUTTON,LI,BLOCKQUOTE,LABEL,SMALL,STRONG,EM,FIGCAPTION,DIV'.split(',');
+  function isTextLeaf(el){
+    if(!el || TAGS.indexOf(el.tagName)===-1) return false;
+    if(el.children.length>0) return false;
+    return el.textContent.trim().length>0;
+  }
+  var hovered=null;
+  document.addEventListener('mouseover', function(e){
+    if(hovered){ hovered.style.outline=''; hovered.style.cursor=''; }
+    var el=e.target;
+    if(isTextLeaf(el) || el.tagName==='IMG'){ el.style.outline='2px solid #2563EB'; el.style.outlineOffset='1px'; el.style.cursor='text'; hovered=el; }
+  });
+  document.addEventListener('click', function(e){
+    var a=e.target.closest && e.target.closest('a'); if(a) e.preventDefault();
+    var el=e.target;
+    if(el.tagName==='IMG'){
+      e.preventDefault(); e.stopPropagation();
+      parent.postMessage({ __olaEdit:true, type:'image-edit', src: el.getAttribute('src') }, '*');
+      return;
+    }
+    if(isTextLeaf(el) && !el.getAttribute('data-ola-editing')){
+      e.preventDefault(); e.stopPropagation();
+      el.setAttribute('data-ola-editing','1');
+      el.setAttribute('contenteditable','true');
+      var original = el.textContent.trim();
+      el.focus();
+      parent.postMessage({ __olaEdit:true, type:'text-focus', original: original }, '*');
+      var done=function(){
+        el.removeAttribute('contenteditable'); el.removeAttribute('data-ola-editing');
+        el.style.outline='';
+        var updated=el.textContent.trim();
+        if(updated && updated!==original){
+          parent.postMessage({ __olaEdit:true, type:'text-edit', original: original, updated: updated }, '*');
+        }
+        el.removeEventListener('blur', done);
+      };
+      el.addEventListener('blur', done);
+    }
+  }, true);
+})();
+`;
 
 const fetchWithRetry = async (url, options, retries = 5) => {
   for (let i = 0; i <= retries; i++) {
@@ -398,9 +479,20 @@ const App = ({ storeName = "My Store", storeLogo, storeBanner, contactEmail = "h
 };
 export default App;`;
 
-const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor }) => {
+const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor, editMode = false, onVisualEdit }) => {
   const containerRef = useRef(null);
+  const iframeRef = useRef(null);
   const [scale, setScale] = useState(1);
+
+  // Receive click-to-edit events from the in-iframe editor bridge.
+  useEffect(() => {
+    const handler = (e) => {
+      if (iframeRef.current && e.source !== iframeRef.current.contentWindow) return;
+      if (e.data && e.data.__olaEdit) onVisualEdit?.(e.data);
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, [onVisualEdit]);
 
   const dynamicStoreData = {
     // Identity reflects THIS store so the preview looks like the real business.
@@ -480,12 +572,13 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
         
         try {
           ReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData} />);
+          ${editMode ? `setTimeout(function(){ ${EDITOR_BRIDGE} }, 350);` : ''}
         } catch(err) {
           document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Render Error</h2><pre>' + err.toString() + '</pre></div>';
         }
       </script>
     </body></html>
-  `, [processedCode]);
+  `, [processedCode, editMode]);
 
   return (
     <div ref={containerRef} className="w-full h-full flex justify-center overflow-hidden bg-transparent">
@@ -504,7 +597,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       >
         {viewMode !== 'desktop' && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[24px] bg-[#111] rounded-b-[16px] z-50"></div>}
         {viewMode !== 'desktop' && <div className="absolute inset-0 pointer-events-none rounded-[36px] border-[12px] border-[#111] z-40"></div>}
-        <iframe srcDoc={srcDoc} className="w-full h-full border-0 absolute inset-0 bg-white" sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups" title="Live AI Preview" />
+        <iframe ref={iframeRef} srcDoc={srcDoc} className="w-full h-full border-0 absolute inset-0 bg-white" sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups" title="Live AI Preview" />
       </div>
     </div>
   );
@@ -541,7 +634,75 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   const [viewport, setViewport]         = useState('desktop');
   const [toastMsg, setToastMsg]         = useState('');
 
+  // Visual edit state
+  const [editMode, setEditMode]         = useState(false);
+  const [activeText, setActiveText]     = useState(null);   // text literal being edited
+  const [imageEdit, setImageEdit]       = useState(null);   // { src } of clicked image
+  const [imgOverview, setImgOverview]   = useState('');
+  const [editBusy, setEditBusy]         = useState(false);
+
   const fileRef = useRef(null);
+  const imgReplaceRef = useRef(null);
+
+  // ── Visual editor: handle click-to-edit events from the preview ────────────
+  const handleVisualEdit = (msg) => {
+    if (msg.type === 'text-focus') { setActiveText(msg.original); return; }
+    if (msg.type === 'text-edit') {
+      setCode(c => replaceFirst(c, msg.original, msg.updated));
+      setActiveText(msg.updated);
+      return;
+    }
+    if (msg.type === 'image-edit') { setImgOverview(''); setImageEdit({ src: msg.src }); }
+  };
+
+  // AI rewrite of the currently-selected text literal.
+  const rewriteActiveText = async (instruction) => {
+    if (!activeText) return;
+    setEditBusy(true);
+    try {
+      const prompt = `${instruction} this website copy. Keep it the same language and intent. Return ONLY the rewritten text, no quotes, no preamble:\n\n${activeText}`;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      });
+      const data = await res.json();
+      const out = (data?.candidates?.[0]?.content?.parts?.[0]?.text || '').trim().replace(/^["']|["']$/g, '');
+      if (out) { setCode(c => replaceFirst(c, activeText, out)); setActiveText(out); }
+    } catch (e) {
+      setToastMsg(`⚠️ AI rewrite failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setEditBusy(false); }
+  };
+
+  // Swap the clicked image's src in the source for a new URL.
+  const applyImageSrc = (newUrl) => {
+    if (imageEdit?.src && newUrl) setCode(c => replaceFirst(c, imageEdit.src, newUrl));
+    setImageEdit(null);
+  };
+
+  const handleImageUploadReplace = async (file) => {
+    if (!file) return;
+    setEditBusy(true);
+    try {
+      const url = await uploadFileToFirebase(file, 'stores/template-images');
+      applyImageSrc(url);
+    } catch (e) {
+      setToastMsg(`⚠️ Upload failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setEditBusy(false); }
+  };
+
+  const handleImageGenerateReplace = async () => {
+    setEditBusy(true);
+    try {
+      const prompt = `A high-quality, professional website image for "${storeProfile.title || 'this business'}" (${storeProfile.industry || 'general'} business). ${imgOverview.trim() || 'Tasteful, on-brand, no text.'} No text or words in the image. High resolution.`;
+      const dataUrl = await generateImageDataUrl(prompt, '16:9');
+      if (!dataUrl) throw new Error('No image returned');
+      const file = await dataUrlToFile(dataUrl, `tpl-${Date.now()}.png`);
+      const url = await uploadFileToFirebase(file, 'stores/template-images');
+      applyImageSrc(url);
+    } catch (e) {
+      setToastMsg(`⚠️ Generation failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setEditBusy(false); }
+  };
 
   useEffect(() => {
     const handler = (e) => { if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) setShowColorPicker(false); };
@@ -900,6 +1061,16 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
                 ))}
               </div>
             )}
+
+            {!showCode && (
+              <button
+                onClick={() => { setEditMode(e => !e); setActiveText(null); setImageEdit(null); }}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-bold border backdrop-blur-md shadow-lg transition-colors ${editMode ? 'bg-blue-600 text-white border-blue-500' : 'bg-black/80 text-white/70 border-white/10 hover:text-white'}`}
+                title="Click text or images in the preview to edit them"
+              >
+                <Wand2 size={12} /> {editMode ? 'Editing — click text / images' : 'Visual Edit'}
+              </button>
+            )}
           </div>
 
           {showCode ? (
@@ -912,7 +1083,72 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
             </div>
           ) : (
             <div className="w-full h-full animate-in zoom-in-95 duration-500 relative flex items-center justify-center">
-              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} />
+              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} editMode={editMode} onVisualEdit={handleVisualEdit} />
+
+              {/* Hidden input for replacing an image by upload */}
+              <input
+                ref={imgReplaceRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageUploadReplace(f); e.target.value=''; }}
+              />
+
+              {/* Text AI toolbar — shown while a text element is selected */}
+              {editMode && activeText && !imageEdit && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-[#111] border border-white/10 rounded-none px-2 py-1.5 shadow-2xl backdrop-blur-md">
+                  <span className="text-[11px] text-white/40 max-w-[160px] truncate pr-1">“{activeText}”</span>
+                  {[['Rephrase', 'Rephrase'], ['Shorten', 'Shorten'], ['Expand', 'Expand']].map(([label, instr]) => (
+                    <button
+                      key={label}
+                      type="button"
+                      disabled={editBusy}
+                      onClick={() => rewriteActiveText(instr)}
+                      className="flex items-center gap-1 px-2 py-1 rounded-none text-[11px] font-bold text-white/80 hover:bg-blue-600 hover:text-white disabled:opacity-50 transition-colors"
+                    >
+                      {editBusy ? <Loader2 size={11} className="animate-spin" /> : <Sparkles size={11} />} {label}
+                    </button>
+                  ))}
+                  <button type="button" onClick={() => setActiveText(null)} className="p-1 text-white/40 hover:text-white"><X size={12} /></button>
+                </div>
+              )}
+
+              {/* Image edit popover */}
+              {editMode && imageEdit && (
+                <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40" onClick={() => setImageEdit(null)}>
+                  <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-bold text-white">Replace image</h4>
+                      <button onClick={() => setImageEdit(null)} className="text-white/40 hover:text-white"><X size={16} /></button>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={imageEdit.src} alt="" className="w-full h-28 object-cover border border-white/10 mb-3" />
+                    <button
+                      type="button"
+                      disabled={editBusy}
+                      onClick={() => imgReplaceRef.current?.click()}
+                      className="w-full flex items-center justify-center gap-2 py-2 mb-2 rounded-none text-xs font-bold bg-white/5 text-white hover:bg-white/10 disabled:opacity-50 transition-colors"
+                    >
+                      <FileUp size={13} /> Upload an image
+                    </button>
+                    <textarea
+                      rows={2}
+                      value={imgOverview}
+                      onChange={(e) => setImgOverview(e.target.value)}
+                      placeholder="Describe a new image to generate (optional)…"
+                      className="w-full bg-[#1a1a1a] border border-white/10 rounded-none px-2.5 py-1.5 text-[12px] text-white focus:outline-none focus:border-blue-500/50 resize-none mb-2"
+                    />
+                    <button
+                      type="button"
+                      disabled={editBusy}
+                      onClick={handleImageGenerateReplace}
+                      className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                    >
+                      {editBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Generate with AI
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
