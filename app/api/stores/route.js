@@ -91,7 +91,9 @@ export async function POST(request) {
     // Derive businessType from the category's kind; a category marked 'service'
     // that also sells items ("I also sell items" checkbox) is promoted to 'both'.
     let businessType = category?.kind ?? body.businessType ?? 'products';
-    if (businessType === 'service') businessType = 'services';
+    
+    if (businessType === 'product' || businessType === 'products') businessType = 'products';
+    if (businessType === 'service' || businessType === 'services') businessType = 'services';
     if (category?.kind === 'service' && body.alsoSellsItems) businessType = 'both';
 
     const newStore = await Store.create({

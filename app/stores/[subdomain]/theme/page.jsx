@@ -374,10 +374,10 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
 
   const dynamicStoreData = {
     // Identity reflects THIS store so the preview looks like the real business.
-    storeName:    storeProfile.title || "AURA STUDIO",
+    storeName:    storeProfile.title || "",
     storeLogo:    storeProfile.logo || "",
     storeBanner:  storeProfile.banner || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000",
-    contactEmail: storeProfile.contactEmail || "hello@aurastudio.com",
+    contactEmail: storeProfile.contactEmail || "",
     contactPhone: storeProfile.contactPhone || "+1 (555) 123-4567",
     businessType: storeProfile.businessType || "products",
     serviceType:  storeProfile.serviceType || null,
@@ -522,7 +522,7 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   const openInNewTab = () => {
     const processedCode = sanitizeTemplateCode(code);
 
-    const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script type="text/babel">const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});const dynamicStoreData={storeName:"AURA STUDIO",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}</script></body></html>`;
+    const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script type="text/babel">const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});const dynamicStoreData={storeName:"",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}</script></body></html>`;
     const w = window.open('', '_blank');
     if (w) { w.document.open(); w.document.write(htmlContent); w.document.close(); }
   };

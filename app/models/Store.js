@@ -38,17 +38,17 @@ const StoreCollectionSchema = new Schema(
 // ─────────────────────────────────────────────
 const StoreSchema = new Schema(
   {
-    // A user may own up to 3 stores (enforced in POST /api/stores), so userId is
-    // indexed but NOT unique. NB: drop the legacy `userId_1` unique index in
-    // Mongo once — a schema change alone won't remove it.
+    // A user may own up to 3 stores, so userId is indexed but NOT unique.
+    // If you get an E11000 error, you must drop the 'userId_1' index in MongoDB manually.
     userId:      { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     title:       { type: String, required: true },
     domain:      { type: String, unique: true, sparse: true },
 
+    // This perfectly matches the frontend fix we applied
     businessType: { type: String, enum: ['products', 'services', 'both'], default: 'products' },
     industry:     { type: String, required: true },
-    // For service/both stores — selects the booking field set (see
-    // ServiceCategoryFields). Derived from the chosen category at onboarding.
+    
+    // For service/both stores — selects the booking field set.
     serviceType:  { type: String, default: null },
 
     description:   { type: String },
@@ -57,13 +57,9 @@ const StoreSchema = new Schema(
     logo:          { type: String },
     banner:        { type: String },
     bannerImages:  [{ type: String }],
-    themeTemplate: { type: String, default: null }, // Raw AI-generated React JSX (legacy eval'd builder)
+    themeTemplate: { type: String, default: null }, 
 
-    // Structured, config-driven theme. Design tokens drive CSS variables across
-    // every store-scoped buyer surface (storefront, product, cart, checkout);
-    // `sections` is the ordered storefront layout (config-driven renderer).
-    // See app/lib/storeTheme.js (buildStoreTheme). All fields optional — derived
-    // from legacy themeColor/themeMode/layoutStyle when absent.
+    // Structured, config-driven theme.
     theme: {
       mode:      { type: String, enum: ['light', 'dark'], default: 'light' },
       primary:   { type: String },

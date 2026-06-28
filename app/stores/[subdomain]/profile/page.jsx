@@ -1,17 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Store, Globe, MapPin, Save, Loader2, Image as ImageIcon, 
   Briefcase, Phone, UploadCloud, Trash2, X, ZoomIn, Check, Sparkles, Wand2
 } from 'lucide-react';
-
-// Using a mock to prevent the previous path resolution error during compilation
-const uploadFileToFirebase = async (file, field) => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(URL.createObjectURL(file)), 1000);
-  });
-};
+import { storage } from '@/lib/firebaseLib';
+import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
 
 // ============================================================================
 // CONFIG
@@ -25,6 +20,8 @@ const AI_IMAGE_CONFIG = {
   baseUrl: process.env.NEXT_PUBLIC_AI_IMAGE_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/models',
   apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
 };
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 // ============================================================================
 // CUSTOM IMAGE CROPPER MODAL
@@ -360,6 +357,19 @@ function formDataToPayload(f) {
   };
 }
 
+// Helper to convert base64 data URL to a File object
+const dataURLtoFile = (dataUrl, filename) => {
+  const arr = dataUrl.split(',');
+  const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/png';
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+};
+
 // ============================================================================
 // MAIN STORE PROFILE COMPONENT
 // ============================================================================
@@ -373,17 +383,31 @@ export default function StoreProfile() {
   const [cropConfig,  setCropConfig]  = useState(null);
   const [aiModalConfig, setAiModalConfig] = useState(null);
 
+  // Track pending uploads (files waiting to be uploaded to Firebase)
+  const [pendingUploads, setPendingUploads] = useState({ logo: null, banner: null });
+  // Track preview URLs for display before save
+  const [previewUrls, setPreviewUrls] = useState({ logo: '', banner: '' });
+  // Track original Firebase URLs (so we can delete old files on replace)
+  const originalUrlsRef = useRef({ logo: '', banner: '' });
+
   const [formData, setFormData] = useState({
     title: '', description: '', email: '', phone: '', address: '',
     domain: 'my-store.ola.ug', customDomain: '', logo: '', banner: '',
     years: '', staff: '', revenue: '',
   });
 
+  // Load store data
   useEffect(() => {
     fetchStoreData()
       .then(result => {
         if (result.success && result.store) {
-          setFormData(storeToFormData(result.store));
+          const storeData = storeToFormData(result.store);
+          setFormData(storeData);
+          // Store original URLs for cleanup
+          originalUrlsRef.current = {
+            logo: storeData.logo || '',
+            banner: storeData.banner || '',
+          };
         }
       })
       .catch(err => {
@@ -393,47 +417,198 @@ export default function StoreProfile() {
       .finally(() => setIsLoading(false));
   }, []);
 
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrls.logo) URL.revokeObjectURL(previewUrls.logo);
+      if (previewUrls.banner) URL.revokeObjectURL(previewUrls.banner);
+    };
+  }, [previewUrls]);
+
+  /**
+   * Handle file upload after cropping.
+   * For user-uploaded files: uploads immediately to Firebase.
+   * For AI-generated images: stores the file for later upload on save.
+   */
   const uploadToFirebaseAfterCrop = async (file, field) => {
     setCropConfig(null);
     setIsUploading(prev => ({ ...prev, [field]: true }));
+    setImageErrors(prev => ({ ...prev, [field]: '' }));
+
     try {
-      const downloadURL = await uploadFileToFirebase(file, field);
-      setFormData(prev => ({ ...prev, [field]: downloadURL }));
-      setImageErrors(prev => ({ ...prev, [field]: '' }));
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      
+      // Update preview for display
+      setPreviewUrls(prev => {
+        // Revoke old preview URL if exists
+        if (prev[field]) URL.revokeObjectURL(prev[field]);
+        return { ...prev, [field]: previewUrl };
+      });
+
+      // Store the file for upload on save
+      setPendingUploads(prev => ({ ...prev, [field]: file }));
+      
+      // Clear the stored URL in formData (will be set after save)
+      setFormData(prev => ({ ...prev, [field]: '' }));
+      
     } catch (error) {
-      console.error('Upload error:', error);
-      setImageErrors(prev => ({ ...prev, [field]: 'Failed to upload image. Please try again.' }));
+      console.error('Upload preparation error:', error);
+      setImageErrors(prev => ({ ...prev, [field]: 'Failed to process image. Please try again.' }));
     } finally {
       setIsUploading(prev => ({ ...prev, [field]: false }));
     }
   };
 
+  /**
+   * Upload pending files to Firebase Storage.
+   * Returns the permanent URLs.
+   */
+  const uploadPendingFiles = async () => {
+    const urls = { logo: formData.logo, banner: formData.banner };
+
+    // Upload logo if pending
+    if (pendingUploads.logo) {
+      setIsUploading(prev => ({ ...prev, logo: true }));
+      try {
+        const downloadURL = await uploadFileToFirebase(pendingUploads.logo, 'stores/logos');
+        urls.logo = downloadURL;
+      } catch (error) {
+        console.error('Logo upload failed:', error);
+        throw new Error('Failed to upload logo to storage. Please try again.');
+      } finally {
+        setIsUploading(prev => ({ ...prev, logo: false }));
+      }
+    }
+
+    // Upload banner if pending
+    if (pendingUploads.banner) {
+      setIsUploading(prev => ({ ...prev, banner: true }));
+      try {
+        const downloadURL = await uploadFileToFirebase(pendingUploads.banner, 'stores/banners');
+        urls.banner = downloadURL;
+      } catch (error) {
+        console.error('Banner upload failed:', error);
+        throw new Error('Failed to upload banner to storage. Please try again.');
+      } finally {
+        setIsUploading(prev => ({ ...prev, banner: false }));
+      }
+    }
+
+    return urls;
+  };
+
+  /**
+   * Delete old Firebase files when they've been replaced.
+   */
+  const cleanupOldFiles = async (newLogoUrl, newBannerUrl) => {
+    const cleanupPromises = [];
+
+    if (originalUrlsRef.current.logo && newLogoUrl !== originalUrlsRef.current.logo) {
+      cleanupPromises.push(
+        deleteFileFromFirebase(originalUrlsRef.current.logo).catch(err => 
+          console.warn('Failed to delete old logo:', err)
+        )
+      );
+    }
+
+    if (originalUrlsRef.current.banner && newBannerUrl !== originalUrlsRef.current.banner) {
+      cleanupPromises.push(
+        deleteFileFromFirebase(originalUrlsRef.current.banner).catch(err => 
+          console.warn('Failed to delete old banner:', err)
+        )
+      );
+    }
+
+    await Promise.allSettled(cleanupPromises);
+  };
+
+  /**
+   * Main save handler.
+   * 1. Upload pending files to Firebase
+   * 2. Save URLs to database
+   * 3. Clean up old files
+   */
   const handleSave = async () => {
     setIsSaving(true);
     setMessage({ type: '', text: '' });
+
     try {
-      const result = await saveStoreData(formDataToPayload(formData));
-      setMessage(
-        result.success
-          ? { type: 'success', text: 'Store profile updated successfully!' }
-          : { type: 'error',   text: result.message || 'Failed to update store.' }
-      );
+      // Step 1: Upload any pending files to Firebase
+      const uploadedUrls = await uploadPendingFiles();
+
+      // Step 2: Update form data with the new URLs
+      const updatedFormData = {
+        ...formData,
+        logo: uploadedUrls.logo || formData.logo,
+        banner: uploadedUrls.banner || formData.banner,
+      };
+
+      // Step 3: Save to database
+      const result = await saveStoreData(formDataToPayload(updatedFormData));
+
+      if (result.success) {
+        // Step 4: Clean up old files from Firebase
+        await cleanupOldFiles(uploadedUrls.logo, uploadedUrls.banner);
+
+        // Update local state with new URLs
+        setFormData(updatedFormData);
+        
+        // Update original URLs reference
+        originalUrlsRef.current = {
+          logo: uploadedUrls.logo || formData.logo,
+          banner: uploadedUrls.banner || formData.banner,
+        };
+
+        // Clear pending uploads and preview URLs
+        if (previewUrls.logo) URL.revokeObjectURL(previewUrls.logo);
+        if (previewUrls.banner) URL.revokeObjectURL(previewUrls.banner);
+        setPendingUploads({ logo: null, banner: null });
+        setPreviewUrls({ logo: '', banner: '' });
+
+        setMessage({ type: 'success', text: 'Store profile updated successfully!' });
+      } else {
+        setMessage({ type: 'error', text: result.message || 'Failed to update store.' });
+      }
     } catch (err) {
-      console.error(err);
-      setMessage({ type: 'error', text: 'A network error occurred.' });
+      console.error('Save failed:', err);
+      setMessage({ type: 'error', text: err.message || 'A network error occurred.' });
     } finally {
       setIsSaving(false);
       setTimeout(() => setMessage({ type: '', text: '' }), 5000);
     }
   };
 
+  /**
+   * Remove an image (clear from preview, pending, and form data).
+   */
+  const handleRemoveImage = (field) => {
+    // Revoke preview URL
+    if (previewUrls[field]) {
+      URL.revokeObjectURL(previewUrls[field]);
+    }
+    
+    setPreviewUrls(prev => ({ ...prev, [field]: '' }));
+    setPendingUploads(prev => ({ ...prev, [field]: null }));
+    setFormData(prev => ({ ...prev, [field]: '' }));
+    setImageErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
   const readAndOpenCropper = (file, field, requiredW, requiredH) => {
     setImageErrors(prev => ({ ...prev, [field]: '' }));
+    
     if (!file) return;
+    
     if (!file.type.startsWith('image/')) {
       setImageErrors(prev => ({ ...prev, [field]: 'Please upload a valid image file.' }));
       return;
     }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setImageErrors(prev => ({ ...prev, [field]: 'File too large. Maximum 5MB allowed.' }));
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => setCropConfig({ src: e.target.result, field, reqW: requiredW, reqH: requiredH });
     reader.readAsDataURL(file);
@@ -452,6 +627,8 @@ export default function StoreProfile() {
 
   const handleAIGenerated = (imageUrl, field, reqW, reqH) => {
     setAiModalConfig(null);
+    // Convert data URL to File object
+    const file = dataURLtoFile(imageUrl, `${field}_ai_generated.png`);
     setCropConfig({ src: imageUrl, field, reqW, reqH });
   };
 
@@ -462,6 +639,15 @@ export default function StoreProfile() {
       </div>
     );
   }
+
+  // Determine what to display for each image field
+  const getDisplayUrl = (field) => {
+    // Show preview URL first (recent upload)
+    if (previewUrls[field]) return previewUrls[field];
+    // Then show the saved Firebase URL
+    if (formData[field]) return formData[field];
+    return '';
+  };
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen p-4 sm:p-8">
@@ -594,6 +780,7 @@ export default function StoreProfile() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
 
+            {/* Logo Section */}
             <div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
@@ -623,12 +810,20 @@ export default function StoreProfile() {
                 >
                   {isUploading.logo ? (
                     <Loader2 size={20} className="animate-spin" />
-                  ) : formData.logo ? (
+                  ) : getDisplayUrl('logo') ? (
                     <div className="relative w-full h-full">
-                      <img src={formData.logo} alt="Logo" className="w-full h-full object-cover" />
+                      <img src={getDisplayUrl('logo')} alt="Logo" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                         <UploadCloud size={16} className="text-white" />
-                        <button type="button" onClick={(e) => { e.preventDefault(); setFormData(p => ({ ...p, logo: '' })); }} className="text-white hover:text-red-500 transition-colors">
+                        <button 
+                          type="button" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            e.stopPropagation();
+                            handleRemoveImage('logo'); 
+                          }} 
+                          className="text-white hover:text-red-500 transition-colors"
+                        >
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -639,7 +834,13 @@ export default function StoreProfile() {
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Upload</p>
                     </div>
                   )}
-                  <input type="file" className="hidden" accept="image/*" onChange={(e) => readAndOpenCropper(e.target.files[0], 'logo', 512, 512)} disabled={isUploading.logo} />
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*" 
+                    onChange={(e) => readAndOpenCropper(e.target.files[0], 'logo', 512, 512)} 
+                    disabled={isUploading.logo} 
+                  />
                 </label>
 
                 <div className="flex-1 text-center sm:text-left">
@@ -651,6 +852,7 @@ export default function StoreProfile() {
               </div>
             </div>
 
+            {/* Banner Section */}
             <div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <div>
@@ -682,16 +884,20 @@ export default function StoreProfile() {
                     <Loader2 size={24} className="mb-3 animate-spin" />
                     <p className="text-xs font-semibold uppercase tracking-wider">Uploading...</p>
                   </div>
-                ) : formData.banner ? (
+                ) : getDisplayUrl('banner') ? (
                   <div className="relative w-full h-full">
-                    <img src={formData.banner} alt="Banner" className="w-full h-full object-cover" />
+                    <img src={getDisplayUrl('banner')} alt="Banner" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                       <div className="text-white text-xs font-semibold flex items-center gap-2 bg-black/40 border border-white/20 px-4 py-2 rounded-none">
                         <UploadCloud size={14} /> Replace
                       </div>
                       <button
                         type="button"
-                        onClick={(e) => { e.preventDefault(); setFormData(p => ({ ...p, banner: '' })); }}
+                        onClick={(e) => { 
+                          e.preventDefault(); 
+                          e.stopPropagation();
+                          handleRemoveImage('banner'); 
+                        }}
                         className="text-white bg-red-500 hover:bg-red-600 border border-red-500 px-4 py-2 rounded-none text-xs font-semibold flex items-center gap-2 transition-colors"
                       >
                         <Trash2 size={14} /> Remove
@@ -705,7 +911,13 @@ export default function StoreProfile() {
                     <p className="text-xs text-gray-500">Upload a cover photo or use the AI generator.</p>
                   </div>
                 )}
-                <input type="file" className="hidden" accept="image/*" onChange={(e) => readAndOpenCropper(e.target.files[0], 'banner', 1200, 400)} disabled={isUploading.banner} />
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*" 
+                  onChange={(e) => readAndOpenCropper(e.target.files[0], 'banner', 1200, 400)} 
+                  disabled={isUploading.banner} 
+                />
               </label>
               {imageErrors.banner && <p className="text-xs text-red-500 mt-2 font-semibold">{imageErrors.banner}</p>}
             </div>

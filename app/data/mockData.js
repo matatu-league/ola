@@ -1,4 +1,4 @@
-// 1. EXTRACTED CATEGORIES JSON DATA (1-Level Hierarchy)
+// 1. EXTRACTED CATEGORIES JSON DATA (1-Level Hierarchy - De-duplicated)
 export const marketplaceCategories = [
   {
     name: 'Vehicles',
@@ -19,8 +19,6 @@ export const marketplaceCategories = [
         slug: 'heavy-equipments-machinery',
       },
       { name: 'Watercraft & Boats', slug: 'watercrafts-vehicle' },
-      { name: 'Personal Mobility', slug: 'personal-mobility' },
-      { name: 'Car Services', slug: 'automotive-services' },
     ],
   },
   {
@@ -67,7 +65,6 @@ export const marketplaceCategories = [
       },
       { name: 'Smart Watches', slug: 'smart-watches' },
       { name: 'Tablets', slug: 'tablets' },
-      { name: 'Headphones', slug: 'headphones' },
     ],
   },
   {
@@ -142,10 +139,9 @@ export const marketplaceCategories = [
       { name: 'Sexual Wellness', slug: 'sexual-wellness' },
       { name: 'Tools & Accessories', slug: 'tools-accessories' },
       { name: 'Vitamins & Supplements', slug: 'supplements' },
-      { name: 'Massagers', slug: 'massagers' },
-      { name: 'Health & Beauty Services', slug: 'health-and-beauty-services' },
     ],
   },
+
   {
     name: 'Services',
     slug: 'services',
@@ -344,6 +340,7 @@ export const marketplaceCategories = [
       },
     ],
   },
+  
   {
     name: 'Repair & Construction',
     slug: 'repair-and-construction',
@@ -363,11 +360,6 @@ export const marketplaceCategories = [
         name: 'Other Repair & Construction Items',
         slug: 'other-repair-and-construction-items',
       },
-      {
-        name: 'Building & Trades Services',
-        slug: 'building-and-trades-services',
-      },
-      { name: 'Repair Services', slug: 'repair-services' },
     ],
   },
   {
@@ -392,7 +384,6 @@ export const marketplaceCategories = [
       { name: 'Salon & Beauty Equipment', slug: 'salon-equipment' },
       { name: 'Printing & Graphics Equipment', slug: 'printing-equipment' },
       { name: 'Stage & Event Equipment', slug: 'stage-lighting-and-effects' },
-      { name: 'Manufacturing Services', slug: 'manufacturing-services' },
     ],
   },
   {
@@ -410,12 +401,9 @@ export const marketplaceCategories = [
       { name: 'Outdoor Gear', slug: 'camping-gear' },
       { name: 'Smoking Accessories', slug: 'hookah-and-vaporizers' },
       { name: 'Music & Video', slug: 'cds-and-dvds' },
-      {
-        name: 'Fitness & Personal Training Services',
-        slug: 'fitness-and-personal-training-services',
-      },
     ],
   },
+  
   {
     name: 'Babies & Kids',
     slug: 'babies-and-kids',
@@ -435,10 +423,6 @@ export const marketplaceCategories = [
       { name: 'Maternity & Pregnancy', slug: 'maternity-and-pregnancy' },
       { name: 'Transport & Safety', slug: 'prams-and-strollers' },
       { name: 'Playground Equipment', slug: 'playground-equipment' },
-      {
-        name: 'Child Care & Education Services',
-        slug: 'child-care-and-education-services',
-      },
     ],
   },
   {
@@ -469,9 +453,9 @@ export const marketplaceCategories = [
       { name: 'Fish', slug: 'fish' },
       { name: 'Birds', slug: 'birds' },
       { name: 'Other Animals', slug: 'other-animals' },
-      { name: 'Pet Services', slug: 'pet-services' },
     ],
   },
+
   {
     name: 'Jobs',
     slug: 'jobs',
@@ -643,7 +627,6 @@ export const marketplaceCategories = [
     ],
   },
 ];
-
 
 export const tailoredSelections = [
   {
@@ -845,6 +828,8 @@ export const stores = [
   {
     title: 'Shenzhen Me Led Technology Co.',
     domain: 'meled.ola.com',
+    industry: 'Electronics', // Added required industry field
+    userId: 'user_dummy_001', // Added required userId field
     description:
       'Global manufacturer of high-resolution indoor and outdoor LED display solutions tailored for events, advertising, and commercial installations.',
     themeColor: '#10b981',
@@ -883,6 +868,8 @@ export const stores = [
   {
     title: 'Ironclad Heavy Machinery',
     domain: 'ironclad.ola.com',
+    industry: 'Commercial Equipment & Tools', // Added required industry field
+    userId: 'user_dummy_002', // Added required userId field
     description:
       'Robust industrial extractors, loaders, and welding equipment engineered for extreme durability and heavy-duty performance.',
     themeColor: '#dc2626',
@@ -921,6 +908,8 @@ export const stores = [
   {
     title: 'Hangzhou Luxe Furnishings',
     domain: 'luxefurnishings.ola.com',
+    industry: 'Home, Furniture & Appliances', // Added required industry field
+    userId: 'user_dummy_003', // Added required userId field
     description:
       'Curated modern and classic furniture pieces made from premium sustainable materials to elevate interior and exterior spaces.',
     themeColor: '#92400e',
@@ -959,6 +948,8 @@ export const stores = [
   {
     title: 'Vogue Threads Apparel',
     domain: 'voguethreads.ola.com',
+    industry: 'Fashion', // Added required industry field
+    userId: 'user_dummy_004', // Added required userId field
     description:
       'Wholesale distributor of fast fashion, activewear, and high-quality seasonal clothing lines offering complete custom labeling.',
     themeColor: '#000000',

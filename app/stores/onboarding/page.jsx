@@ -5,17 +5,17 @@ import {
   CheckCircle2, Store, Globe, Loader2, Package,
   CalendarCheck, AlertCircle, XCircle, ChevronDown,
   Mail, Phone, Briefcase, Search, Check, ShoppingBag,
-  Image as ImageIcon, Palette, Sparkles, UploadCloud, ArrowRight, ArrowLeft, Trash2,
+  Image as ImageIcon, Palette, Sparkles, UploadCloud, 
+  ArrowRight, ArrowLeft, Trash2, Wand2
 } from 'lucide-react';
-import { getCookieRootDomain, getSessionUser, storeDomain } from '@/lib/domain';
-import { uploadFileToFirebase } from '@/lib/firebaseLib';
+import { storage } from '@/lib/firebaseLib';
+import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
 
-// Maps a category's `kind` to the store's businessType. A `service` category
-// where the owner also sells physical items ("I also sell items") is promoted
-// to 'both'; `school` categories are 'both' by definition.
+// Maps a category's `kind` to the store's businessType. 
+// Strictly returns "products", "services", or "both" to fix enum validation errors.
 function deriveBusinessType(kind, alsoSellsItems) {
   if (kind === 'both') return 'both';
-  if (kind === 'service') return alsoSellsItems ? 'both' : 'services';
+  if (kind === 'service' || kind === 'services') return alsoSellsItems ? 'both' : 'services';
   return 'products';
 }
 
@@ -33,45 +33,81 @@ const STEPS = [
   { n: 3, label: 'Design' },
 ];
 
+// Utility functions
+const getCookieRootDomain = (hostname) => {
+  const parts = hostname.split('.');
+  if (parts.length <= 1) return hostname;
+  return parts.slice(-2).join('.');
+};
+
+const storeDomain = (sub) => `${sub}.ola.ug`;
+
 export default function StoreOnboarding() {
   const [step, setStep] = useState(1);
   const [createdStore, setCreatedStore] = useState(null); // { id, domain }
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const [error, setError] = useState('');
   const [domainStatus, setDomainStatus] = useState('idle'); // idle, checking, available, unavailable, invalid_length
   const [isDomainDirty, setIsDomainDirty] = useState(false);
   const [uploading, setUploading] = useState({ logo: false, banner: false });
+
+  // Store temporary file objects until we're ready to upload
+  const [pendingUploads, setPendingUploads] = useState({ logo: null, banner: null });
+  // Store local preview URLs for display
+  const [previewUrls, setPreviewUrls] = useState({ logo: '', banner: '' });
 
   const [formData, setFormData] = useState({
     title: '',
     email: '',
     phone: '',
     domain: '',
-    // Mode is decided by the chosen DB category — see deriveBusinessType().
     categoryId: '',
     categoryName: '',
     categoryKind: '',
     serviceType: null,
     alsoSellsItems: false,
-    sellsEverything: false, // general store — lists across all categories
+    sellsEverything: false,
     businessType: 'products', // derived; 'products' | 'services' | 'both'
     layoutStyle: 'Classic',
-    // ── Step 2 (profile) ──
     description: '',
     logo: '',
     banner: '',
     themeColor: '#161823',
   });
 
-  // Full DB category tree, grouped by top-level parent for the picker.
   const [categoryGroups, setCategoryGroups] = useState([]);
   const [catLoading,     setCatLoading]     = useState(true);
   const [catSearch,      setCatSearch]      = useState('');
   const [pickerOpen,     setPickerOpen]     = useState(false);
 
-  // Load categories from the database — the single source of truth for
-  // whether the new tenant is a store, a service, or both.
+  // Load session user data
+  useEffect(() => {
+    const loadSession = async () => {
+      try {
+        const res = await fetch('/api/auth/session');
+        const data = await res.json();
+        if (data?.user) {
+          const user = data.user;
+          setFormData(prev => ({
+            ...prev,
+            ...(user.name ? {
+              title:  prev.title  || `${user.name}'s Store`,
+              domain: prev.domain || user.name.toLowerCase().replace(/[^a-z0-9]/g, ''),
+            } : {}),
+            email: prev.email || user.email       || '',
+            phone: prev.phone || user.phoneNumber || '',
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to load session', err);
+      }
+    };
+    loadSession();
+  }, []);
+
+  // Load categories
   useEffect(() => {
     let active = true;
     (async () => {
@@ -89,8 +125,6 @@ export default function StoreOnboarding() {
           }))
           .sort((a, b) => a.name.localeCompare(b.name));
 
-        // Never silently drop categories whose parent isn't a returned top-level
-        // category — gather them under a fallback group so services always show.
         const placed = new Set();
         groups.forEach(g => {
           placed.add(String(g._id));
@@ -117,10 +151,10 @@ export default function StoreOnboarding() {
       sellsEverything: false,
       categoryId:     cat._id,
       categoryName:   cat.name,
-      categoryKind:   cat.kind || 'product',
+      categoryKind:   cat.kind || 'products',
       serviceType:    cat.serviceType || null,
       alsoSellsItems: false,
-      businessType:   deriveBusinessType(cat.kind || 'product', false),
+      businessType:   deriveBusinessType(cat.kind || 'products', false),
     }));
     setPickerOpen(false);
     setCatSearch('');
@@ -132,7 +166,7 @@ export default function StoreOnboarding() {
       sellsEverything: true,
       categoryId:     '',
       categoryName:   'Everything (general store)',
-      categoryKind:   'product',
+      categoryKind:   'products',
       serviceType:    null,
       alsoSellsItems: false,
       businessType:   'products',
@@ -159,28 +193,13 @@ export default function StoreOnboarding() {
     })
     .filter(Boolean);
 
-  // Pre-fill from the session cookie — including the registration phone.
-  useEffect(() => {
-    const parsed = getSessionUser();
-    if (!parsed) return;
-    setFormData(prev => ({
-      ...prev,
-      ...(parsed.name ? {
-        title:  prev.title  || `${parsed.name}'s Store`,
-        domain: prev.domain || parsed.name.toLowerCase().replace(/[^a-z0-9]/g, ''),
-      } : {}),
-      email: prev.email || parsed.email       || '',
-      phone: prev.phone || parsed.phoneNumber || '',
-    }));
-  }, []);
-
   const generateSubdomain = (text) =>
     text.toLowerCase().trim()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/[\s-]+/g, '-')
       .replace(/^-+|-+$/g, '');
 
-  // Real-time domain availability check
+  // Domain availability check
   useEffect(() => {
     const checkDomain = async () => {
       const subdomain = formData.domain;
@@ -213,24 +232,30 @@ export default function StoreOnboarding() {
     domainStatus === 'available'
   );
 
-  // ── Step 1: create the store, then advance to the profile step ──────────────
+  // STEP 1: Create the store
   const handleCreateStore = async (e) => {
     e.preventDefault();
     if (!isBasicsValid) return;
 
     setIsSubmitting(true);
     setError('');
+
+    const safeBusinessType = 
+      formData.businessType === 'product' ? 'products' : 
+      formData.businessType === 'service' ? 'services' : 
+      formData.businessType;
+
     try {
       const fullDomain = storeDomain(formData.domain);
       const response = await fetch('/api/stores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, domain: fullDomain }),
+        body: JSON.stringify({ ...formData, businessType: safeBusinessType, domain: fullDomain }),
       });
       const result = await response.json();
 
       if (response.ok && result.success) {
-        // Mark the session as having a store so the layout doesn't bounce us.
+        // Update session cookie
         try {
           const match = document.cookie.split('; ').find(c => c.startsWith('user_session='));
           if (match) {
@@ -259,62 +284,183 @@ export default function StoreOnboarding() {
     }
   };
 
-  // ── Image uploads (logo / banner) ───────────────────────────────────────────
-  const handleUpload = async (field, file) => {
-    if (!file || !file.type.startsWith('image/')) return;
-    setUploading(u => ({ ...u, [field]: true }));
+  // Handle file selection (store temporarily, show preview)
+  const handleFileSelect = (field, file) => {
+    if (!file || !file.type.startsWith('image/')) {
+      setError('Please select a valid image file.');
+      return;
+    }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image must be less than 5MB.');
+      return;
+    }
+
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    
+    // Store the file for later upload
+    setPendingUploads(prev => ({ ...prev, [field]: file }));
+    setPreviewUrls(prev => ({ ...prev, [field]: previewUrl }));
+    
+    // Clear any previous error
+    setError('');
+  };
+
+  // Remove a pending upload
+  const handleRemoveFile = (field) => {
+    // Revoke the object URL to prevent memory leaks
+    if (previewUrls[field]) {
+      URL.revokeObjectURL(previewUrls[field]);
+    }
+    
+    setPendingUploads(prev => ({ ...prev, [field]: null }));
+    setPreviewUrls(prev => ({ ...prev, [field]: '' }));
+    setFormData(prev => ({ ...prev, [field]: '' }));
+  };
+
+  // Upload all pending files to Firebase and get permanent URLs
+  const uploadProfileImages = async () => {
+    const uploads = {};
+    const urls = { logo: '', banner: '' };
+
+    // Upload logo if pending
+    if (pendingUploads.logo) {
+      setUploading(prev => ({ ...prev, logo: true }));
+      try {
+        const url = await uploadFileToFirebase(pendingUploads.logo, 'stores/logos');
+        urls.logo = url;
+        uploads.logo = url;
+      } catch (err) {
+        console.error('Logo upload failed:', err);
+        throw new Error('Failed to upload logo. Please try again.');
+      } finally {
+        setUploading(prev => ({ ...prev, logo: false }));
+      }
+    } else if (formData.logo) {
+      // Already uploaded from a previous attempt
+      urls.logo = formData.logo;
+    }
+
+    // Upload banner if pending
+    if (pendingUploads.banner) {
+      setUploading(prev => ({ ...prev, banner: true }));
+      try {
+        const url = await uploadFileToFirebase(pendingUploads.banner, 'stores/banners');
+        urls.banner = url;
+        uploads.banner = url;
+      } catch (err) {
+        console.error('Banner upload failed:', err);
+        throw new Error('Failed to upload banner. Please try again.');
+      } finally {
+        setUploading(prev => ({ ...prev, banner: false }));
+      }
+    } else if (formData.banner) {
+      // Already uploaded from a previous attempt
+      urls.banner = formData.banner;
+    }
+
+    return urls;
+  };
+
+  const handleGenerateDescription = async () => {
+    setIsGeneratingAI(true);
     setError('');
     try {
-      const folder = field === 'logo' ? 'stores/logos' : 'stores/banners';
-      const url = await uploadFileToFirebase(file, folder);
-      setFormData(prev => ({ ...prev, [field]: url }));
+      const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+      const prompt = `Write a professional, persuasive, and welcoming 2-paragraph store description for a business named "${formData.title}". They operate in the "${formData.categoryName}" industry. Highlight quality, excellent customer service, and value. Keep it perfectly tailored for an e-commerce "About Us" profile. Return ONLY the description text without any markdown wrappers.`;
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+      
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (text) {
+        setFormData(prev => ({ ...prev, description: text.trim() }));
+      } else {
+        throw new Error("Failed to generate text from AI.");
+      }
     } catch (err) {
-      console.error('Upload failed', err);
-      setError(`Failed to upload ${field}. Please try again.`);
+      console.error(err);
+      setError("AI Generation failed. Please check your network or try writing manually.");
     } finally {
-      setUploading(u => ({ ...u, [field]: false }));
+      setIsGeneratingAI(false);
     }
   };
 
   const isProfileValid = Boolean(
     formData.description.trim().length > 0 &&
-    formData.logo &&
-    formData.banner &&
+    (previewUrls.logo || formData.logo) &&
+    (previewUrls.banner || formData.banner) &&
     formData.themeColor
   );
 
-  // ── Step 2: save the profile, then move to the design step ──────────────────
+  // STEP 2: Save profile (upload images first, then save URLs to DB)
   const handleSaveProfile = async () => {
     if (!isProfileValid) return;
     setIsSubmitting(true);
     setError('');
+
     try {
+      // 1. Upload images to Firebase first
+      let logoUrl = formData.logo;
+      let bannerUrl = formData.banner;
+
+      if (pendingUploads.logo || pendingUploads.banner) {
+        const uploadedUrls = await uploadProfileImages();
+        logoUrl = uploadedUrls.logo || logoUrl;
+        bannerUrl = uploadedUrls.banner || bannerUrl;
+      }
+
+      // 2. Update form data with the permanent URLs
+      const updatedFormData = {
+        ...formData,
+        logo: logoUrl,
+        banner: bannerUrl,
+      };
+
+      // 3. Save to database (now with Firebase URLs)
       const res = await fetch('/api/stores', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          description: formData.description,
-          logo:        formData.logo,
-          banner:      formData.banner,
-          themeColor:  formData.themeColor,
+          description: updatedFormData.description,
+          logo:        updatedFormData.logo,
+          banner:      updatedFormData.banner,
+          themeColor:  updatedFormData.themeColor,
         }),
       });
+
       const result = await res.json();
+      
       if (res.ok && result.success) {
+        // Clean up preview URLs
+        if (previewUrls.logo) URL.revokeObjectURL(previewUrls.logo);
+        if (previewUrls.banner) URL.revokeObjectURL(previewUrls.banner);
+        
+        setFormData(updatedFormData);
+        setPendingUploads({ logo: null, banner: null });
+        setPreviewUrls({ logo: '', banner: '' });
+        
         setStep(3);
       } else {
         setError(result.message || 'Failed to save your profile. Please try again.');
       }
-    } catch {
-      setError('A network error occurred. Please check your connection.');
+    } catch (err) {
+      console.error('Profile save failed:', err);
+      setError(err.message || 'A network error occurred. Please check your connection.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // ── Step 3 actions ──────────────────────────────────────────────────────────
-  const designWithAI   = () => { window.location.href = `//${createdStore.domain}/theme?onboarding=1`; };
-  const skipToDashboard = () => { window.location.href = `//${createdStore.domain}/dashboard`; };
+  const designWithAI   = () => { window.location.href = `//${createdStore?.domain}/theme?onboarding=1`; };
+  const skipToDashboard = () => { window.location.href = `//${createdStore?.domain}/dashboard`; };
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] flex flex-col items-center justify-center py-12 px-4">
@@ -614,9 +760,20 @@ export default function StoreOnboarding() {
 
             {/* Description */}
             <div>
-              <label className="block text-[11px] font-bold text-[#8A8B91] mb-2 uppercase tracking-widest">About your business <span className="text-[#FE2C55]">*</span></label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-[11px] font-bold text-[#8A8B91] uppercase tracking-widest">About your business <span className="text-[#FE2C55]">*</span></label>
+                <button
+                  type="button"
+                  onClick={handleGenerateDescription}
+                  disabled={isGeneratingAI}
+                  className="flex items-center gap-1.5 text-[11px] font-bold text-[#1677ff] bg-[#f0f7ff] hover:bg-[#e6f4ff] px-2.5 py-1 rounded-sm border border-[#91caff] transition-colors disabled:opacity-50"
+                >
+                  {isGeneratingAI ? <Loader2 size={12} className="animate-spin" /> : <Wand2 size={12} />}
+                  {isGeneratingAI ? 'Writing...' : '✨ Write with AI'}
+                </button>
+              </div>
               <textarea
-                rows={4}
+                rows={5}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="w-full bg-[#F8F8F8] border border-[#E3E3E4] rounded-sm px-4 py-3 text-[14px] text-[#161823] focus:outline-none focus:border-[#161823] focus:bg-white transition-colors resize-none"
@@ -648,18 +805,20 @@ export default function StoreOnboarding() {
             </div>
 
             {/* Logo + Banner uploads */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-4 pt-2">
               <ImageUpload
-                label="Logo" required field="logo" value={formData.logo}
-                uploading={uploading.logo} aspect="aspect-square"
-                onSelect={(file) => handleUpload('logo', file)}
-                onClear={() => setFormData(p => ({ ...p, logo: '' }))}
+                label="Store Banner (Ultra Wide)" required field="banner" 
+                previewUrl={previewUrls.banner || formData.banner}
+                uploading={uploading.banner} containerClass="w-full aspect-[4/1]"
+                onSelect={(file) => handleFileSelect('banner', file)}
+                onClear={() => handleRemoveFile('banner')}
               />
               <ImageUpload
-                label="Banner" required field="banner" value={formData.banner}
-                uploading={uploading.banner} aspect="aspect-video"
-                onSelect={(file) => handleUpload('banner', file)}
-                onClear={() => setFormData(p => ({ ...p, banner: '' }))}
+                label="Store Logo" required field="logo" 
+                previewUrl={previewUrls.logo || formData.logo}
+                uploading={uploading.logo} containerClass="w-32 h-32 aspect-square"
+                onSelect={(file) => handleFileSelect('logo', file)}
+                onClear={() => handleRemoveFile('logo')}
               />
             </div>
 
@@ -727,17 +886,17 @@ export default function StoreOnboarding() {
   );
 }
 
-// ── Reusable image-upload tile ────────────────────────────────────────────────
-function ImageUpload({ label, value, uploading, aspect, required, onSelect, onClear }) {
+// ── Reusable image-upload tile (updated to use preview URLs) ──────────────────
+function ImageUpload({ label, previewUrl, uploading, containerClass, required, onSelect, onClear }) {
   return (
     <div>
       <label className="block text-[11px] font-bold text-[#8A8B91] mb-2 uppercase tracking-widest flex items-center gap-2">
         <ImageIcon size={12} /> {label} {required && <span className="text-[#FE2C55]">*</span>}
       </label>
-      {value ? (
-        <div className={`relative ${aspect} w-full border border-[#E3E3E4] rounded-sm overflow-hidden bg-[#F8F8F8]`}>
+      {previewUrl ? (
+        <div className={`relative ${containerClass} border border-[#E3E3E4] rounded-sm overflow-hidden bg-[#F8F8F8]`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt={label} className="w-full h-full object-cover" />
+          <img src={previewUrl} alt={label} className="w-full h-full object-cover" />
           <button
             type="button"
             onClick={onClear}
@@ -748,7 +907,7 @@ function ImageUpload({ label, value, uploading, aspect, required, onSelect, onCl
           </button>
         </div>
       ) : (
-        <label className={`relative ${aspect} w-full border-2 border-dashed border-[#E3E3E4] rounded-sm flex flex-col items-center justify-center cursor-pointer hover:border-[#161823] transition-colors bg-[#F8F8F8]`}>
+        <label className={`relative ${containerClass} border-2 border-dashed border-[#E3E3E4] rounded-sm flex flex-col items-center justify-center cursor-pointer hover:border-[#161823] transition-colors bg-[#F8F8F8]`}>
           <input
             type="file"
             accept="image/*"
