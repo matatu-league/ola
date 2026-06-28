@@ -43,8 +43,7 @@ const fileToBase64 = (file) =>
   });
 
 // Fetch an image URL and return it as inline image data ({ mimeType, data })
-// so it can be attached to the AI request — letting the model actually SEE the
-// real logo/banner instead of just receiving a URL string it can't read.
+// so it can be attached to the AI request.
 const urlToInlineImage = async (url) => {
   if (!url) return null;
   try {
@@ -102,7 +101,7 @@ ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their curr
 - About / description: ${business.description || '(none provided — infer from the industry)'}
 - Contact: ${business.contactEmail || ''} ${business.contactPhone || ''}
 - Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src) and match the site palette to it` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
-- Banner: ${business.bannerBase64 ? `attached below as an image at URL "${business.banner}" — use it as the hero background (src = that URL)` : (business.banner ? `available at "${business.banner}" — use as the hero background src` : '(none — render a tasteful hero placeholder using the brand color and an industry-appropriate gradient)')}
+- Hero Banner Image: YOU act as the Art Director. You MUST recommend and use a stunning, high-quality image URL from a trusted source like Unsplash (e.g., https://images.unsplash.com/photo-...) that PERFECTLY matches the business industry (${categoryContext || business.industry || 'General'}) and chosen art direction. Do NOT use generic placeholders; supply a realistic, gorgeous photo URL for the hero background.
 
 === WHAT TO BUILD ===
 ${siteBrief}
@@ -114,7 +113,7 @@ CRITICAL ARCHITECTURE RULES (STRICT COMPLIANCE):
 4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.
 5. SEARCH/FILTER: where a list of items is shown, implement working local search/filter with React state.
 6. DARK FOOTER: include a dark footer (#050505 or similar) with the contact details, location, and legal links.
-7. LOGO & BANNER: use the storeLogo and storeBanner props when present; otherwise render the placeholders described in the brief. Make them feel bespoke to ${business.storeName || 'the store'}.
+7. LOGO & BANNER: use the storeLogo prop when present. For the banner, always use your recommended Unsplash image URL. Make them feel bespoke to ${business.storeName || 'the store'}.
 8. NO RAW JS COMMENTS IN JSX: NEVER use single-line // comments inside the JSX return block — they render as visible text. Use {/* ... */} only.
 
 DESIGN SYSTEM:
@@ -149,16 +148,11 @@ ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 
   const contents = [{ parts: [{ text: prompt }] }];
 
-  // Attach the store's REAL logo so the model can render it and pull its
-  // palette, then the banner for art direction. These are actual image bytes,
-  // not URLs — the model can decode and "see" them.
+  // Attach the store's REAL logo so the model can render it and pull its palette.
+  // We no longer attach the banner image since we want the AI to select a fresh Unsplash image instead.
   if (business.logoBase64) {
     contents[0].parts.push({ text: "ATTACHED IMAGE — the store's ACTUAL LOGO. Render this exact logo in the header (and footer), and draw the site's accent palette from it." });
     contents[0].parts.push({ inlineData: { mimeType: business.logoMime || 'image/png', data: business.logoBase64 } });
-  }
-  if (business.bannerBase64) {
-    contents[0].parts.push({ text: "ATTACHED IMAGE — the store's hero BANNER. Use it as the hero background / art direction reference." });
-    contents[0].parts.push({ inlineData: { mimeType: business.bannerMime || 'image/png', data: business.bannerBase64 } });
   }
 
   if (imageBase64 && imageMimeType) {
@@ -563,7 +557,7 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
     [!storeProfile.title, 'store name'],
     [!storeProfile.description, 'description'],
     [!storeProfile.logo, 'logo'],
-    [!storeProfile.banner, 'banner'],
+    // We removed banner requirements since AI sources the banner now!
     [!dialogThemeColor, 'brand color'],
     [!storeProfile.contactEmail && !storeProfile.contactPhone, 'contact info'],
   ].filter(([missing]) => missing).map(([, label]) => label);
@@ -595,12 +589,11 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
 
     setLoading(true);
     try {
-      // Attach the actual brand assets as inline image data so the model can
-      // SEE the real logo/banner and design around them (palette, placement).
+      // Attach ONLY the actual brand logo as inline image data so the model can
+      // SEE the real logo and design around its color palette. 
+      // We skip fetching the banner base64 since AI will recommend an Unsplash image instead.
       const logoImg = await urlToInlineImage(business.logo);
       if (logoImg) { business.logoBase64 = logoImg.data; business.logoMime = logoImg.mimeType; }
-      const bannerImg = await urlToInlineImage(business.banner);
-      if (bannerImg) { business.bannerBase64 = bannerImg.data; business.bannerMime = bannerImg.mimeType; }
 
       const advancedConfig = {
         bgStyle: bgStyle === 'auto' ? '✨ Let AI Decide based on vibe' : bgStyle,
