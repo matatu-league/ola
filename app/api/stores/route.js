@@ -90,10 +90,11 @@ export async function POST(request) {
 
     // Derive businessType from the category's kind; a category marked 'service'
     // that also sells items ("I also sell items" checkbox) is promoted to 'both'.
-    let businessType = category?.kind ?? body.businessType ?? 'products';
-    
-    if (businessType === 'product' || businessType === 'products') businessType = 'products';
-    if (businessType === 'service' || businessType === 'services') businessType = 'services';
+    // Category.kind is singular ('product'|'service'|'both'); Store.businessType
+    // is plural ('products'|'services'|'both'). Map between them explicitly so a
+    // product category doesn't produce the invalid value 'product'.
+    const KIND_TO_BUSINESS_TYPE = { product: 'products', service: 'services', both: 'both' };
+    let businessType = KIND_TO_BUSINESS_TYPE[category?.kind] ?? body.businessType ?? 'products';
     if (category?.kind === 'service' && body.alsoSellsItems) businessType = 'both';
 
     const newStore = await Store.create({

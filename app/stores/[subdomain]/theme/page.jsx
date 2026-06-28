@@ -42,6 +42,22 @@ const fileToBase64 = (file) =>
     reader.onerror = reject;
   });
 
+// Fetch an image URL and return it as inline image data ({ mimeType, data })
+// so it can be attached to the AI request — letting the model actually SEE the
+// real logo/banner instead of just receiving a URL string it can't read.
+const urlToInlineImage = async (url) => {
+  if (!url) return null;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    if (!blob.type.startsWith('image/')) return null;
+    return { mimeType: blob.type, data: await fileToBase64(blob) };
+  } catch {
+    return null;
+  }
+};
+
 // --- CORE AI CODE GENERATION ENGINE ---
 const generateCodeAI = async (
   promptText, imageBase64, imageMimeType, currentCode,
@@ -85,8 +101,8 @@ ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their curr
 - Business type: ${bt}${st ? ` (service type: ${st})` : ''}
 - About / description: ${business.description || '(none provided — infer from the industry)'}
 - Contact: ${business.contactEmail || ''} ${business.contactPhone || ''}
-- Logo URL: ${business.logo || '(none — render a tasteful placeholder using the store name initial + brand color)'}
-- Banner URL: ${business.banner || '(none — render a tasteful hero placeholder using the brand color and an industry-appropriate gradient)'}
+- Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src) and match the site palette to it` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
+- Banner: ${business.bannerBase64 ? `attached below as an image at URL "${business.banner}" — use it as the hero background (src = that URL)` : (business.banner ? `available at "${business.banner}" — use as the hero background src` : '(none — render a tasteful hero placeholder using the brand color and an industry-appropriate gradient)')}
 
 === WHAT TO BUILD ===
 ${siteBrief}
@@ -132,7 +148,21 @@ ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 `;
 
   const contents = [{ parts: [{ text: prompt }] }];
+
+  // Attach the store's REAL logo so the model can render it and pull its
+  // palette, then the banner for art direction. These are actual image bytes,
+  // not URLs — the model can decode and "see" them.
+  if (business.logoBase64) {
+    contents[0].parts.push({ text: "ATTACHED IMAGE — the store's ACTUAL LOGO. Render this exact logo in the header (and footer), and draw the site's accent palette from it." });
+    contents[0].parts.push({ inlineData: { mimeType: business.logoMime || 'image/png', data: business.logoBase64 } });
+  }
+  if (business.bannerBase64) {
+    contents[0].parts.push({ text: "ATTACHED IMAGE — the store's hero BANNER. Use it as the hero background / art direction reference." });
+    contents[0].parts.push({ inlineData: { mimeType: business.bannerMime || 'image/png', data: business.bannerBase64 } });
+  }
+
   if (imageBase64 && imageMimeType) {
+    contents[0].parts.push({ text: 'ATTACHED IMAGE — an optional style/design reference from the user.' });
     contents[0].parts.push({ inlineData: { mimeType: imageMimeType, data: imageBase64 } });
   }
 
@@ -565,6 +595,13 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
 
     setLoading(true);
     try {
+      // Attach the actual brand assets as inline image data so the model can
+      // SEE the real logo/banner and design around them (palette, placement).
+      const logoImg = await urlToInlineImage(business.logo);
+      if (logoImg) { business.logoBase64 = logoImg.data; business.logoMime = logoImg.mimeType; }
+      const bannerImg = await urlToInlineImage(business.banner);
+      if (bannerImg) { business.bannerBase64 = bannerImg.data; business.bannerMime = bannerImg.mimeType; }
+
       const advancedConfig = {
         bgStyle: bgStyle === 'auto' ? '✨ Let AI Decide based on vibe' : bgStyle,
         fontFamily: fontFamily === 'auto' ? '✨ Let AI Decide based on vibe' : fontFamily,

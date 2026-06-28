@@ -10,6 +10,13 @@ import {
 } from 'lucide-react';
 import { storage } from '@/lib/firebaseLib';
 import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
+import { convertDataUrlToFile } from '@/lib/ai';
+
+// AI image generation (Gemini). The frontend composes a concrete, dimensioned
+// prompt from the user's short overview so the backend gets enough to work with.
+const AI_IMAGE_MODEL  = process.env.NEXT_PUBLIC_AI_IMAGE_MODEL || 'gemini-3.1-flash-image-preview';
+const AI_IMAGE_BASEURL = process.env.NEXT_PUBLIC_AI_IMAGE_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/models';
+const GEMINI_KEY      = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
 
 // Maps a category's `kind` to the store's businessType. 
 // Strictly returns "products", "services", or "both" to fix enum validation errors.
@@ -57,6 +64,8 @@ export default function StoreOnboarding() {
   const [pendingUploads, setPendingUploads] = useState({ logo: null, banner: null });
   // Store local preview URLs for display
   const [previewUrls, setPreviewUrls] = useState({ logo: '', banner: '' });
+  // AI image generation state (per field) + the user's optional overview text
+  const [generatingImg, setGeneratingImg] = useState({ logo: false, banner: false });
 
   const [formData, setFormData] = useState({
     title: '',
@@ -308,6 +317,51 @@ export default function StoreOnboarding() {
     setError('');
   };
 
+  // Generate a logo/banner with AI. The user gives a short overview; we compose
+  // a concrete, dimensioned prompt and send THAT to the model for a usable image.
+  const handleGenerateImage = async (field, overview = '') => {
+    if (!GEMINI_KEY) {
+      setError('AI image generation is not configured (missing API key).');
+      return;
+    }
+    setGeneratingImg(prev => ({ ...prev, [field]: true }));
+    setError('');
+    try {
+      const name = formData.title || 'this business';
+      const industry = formData.categoryName || 'general';
+      const extra = overview.trim() ? ` Specific request: ${overview.trim()}.` : '';
+
+      const prompt = field === 'logo'
+        ? `Design a professional, modern, minimalist brand LOGO for "${name}", a ${industry} business.${extra} A single vibrant central icon/symbol on a clean solid or transparent background, premium crisp vector-style branding, perfectly centered, NO text or letters. Square 1:1 aspect ratio, high resolution (1024x1024).`
+        : `Design an ultra-wide, high-quality hero BANNER image for "${name}", a ${industry} business.${extra} Professional, inviting, well-lit and cinematic, suitable as a website storefront header background, with calm empty space for overlaying text, NO text or words in the image. Ultra-wide panoramic 16:9 aspect ratio, high resolution (1920x1080).`;
+
+      const res = await fetch(`${AI_IMAGE_BASEURL}/${AI_IMAGE_MODEL}:generateContent?key=${GEMINI_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseModalities: ['IMAGE'],
+            imageConfig: { aspectRatio: field === 'logo' ? '1:1' : '16:9' },
+          },
+        }),
+      });
+      const data = await res.json();
+      const part = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+      if (!part?.inlineData) throw new Error('No image returned');
+
+      const dataUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+      const file = await convertDataUrlToFile(dataUrl, `${field}-${Date.now()}.png`);
+      // Route through the normal selection pipeline (preview + queued upload).
+      handleFileSelect(field, file);
+    } catch (err) {
+      console.error('AI image generation failed', err);
+      setError(`Could not generate the ${field}. Try a different description or upload one.`);
+    } finally {
+      setGeneratingImg(prev => ({ ...prev, [field]: false }));
+    }
+  };
+
   // Remove a pending upload
   const handleRemoveFile = (field) => {
     // Revoke the object URL to prevent memory leaks
@@ -463,8 +517,8 @@ export default function StoreOnboarding() {
   const skipToDashboard = () => { window.location.href = `//${createdStore?.domain}/dashboard`; };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] flex flex-col items-center justify-center py-12 px-4">
-      <div className="bg-white w-full max-w-xl border border-[#E3E3E4] rounded-sm p-8 shadow-sm">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center py-12 px-4">
+      <div className={`bg-white w-full ${step === 2 ? 'max-w-3xl' : 'max-w-xl'} border border-[#E3E3E4] rounded-sm p-8 shadow-sm transition-all`}>
 
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-6">
@@ -807,18 +861,22 @@ export default function StoreOnboarding() {
             {/* Logo + Banner uploads */}
             <div className="space-y-4 pt-2">
               <ImageUpload
-                label="Store Banner (Ultra Wide)" required field="banner" 
+                label="Store Banner (Ultra Wide)" required field="banner"
                 previewUrl={previewUrls.banner || formData.banner}
                 uploading={uploading.banner} containerClass="w-full aspect-[4/1]"
                 onSelect={(file) => handleFileSelect('banner', file)}
                 onClear={() => handleRemoveFile('banner')}
+                generating={generatingImg.banner}
+                onGenerate={(overview) => handleGenerateImage('banner', overview)}
               />
               <ImageUpload
-                label="Store Logo" required field="logo" 
+                label="Store Logo" required field="logo"
                 previewUrl={previewUrls.logo || formData.logo}
                 uploading={uploading.logo} containerClass="w-32 h-32 aspect-square"
                 onSelect={(file) => handleFileSelect('logo', file)}
                 onClear={() => handleRemoveFile('logo')}
+                generating={generatingImg.logo}
+                onGenerate={(overview) => handleGenerateImage('logo', overview)}
               />
             </div>
 
@@ -887,12 +945,48 @@ export default function StoreOnboarding() {
 }
 
 // ── Reusable image-upload tile (updated to use preview URLs) ──────────────────
-function ImageUpload({ label, previewUrl, uploading, containerClass, required, onSelect, onClear }) {
+function ImageUpload({ label, previewUrl, uploading, containerClass, required, onSelect, onClear, onGenerate, generating }) {
+  const [aiOpen, setAiOpen] = React.useState(false);
+  const [overview, setOverview] = React.useState('');
   return (
     <div>
-      <label className="block text-[11px] font-bold text-[#8A8B91] mb-2 uppercase tracking-widest flex items-center gap-2">
-        <ImageIcon size={12} /> {label} {required && <span className="text-[#FE2C55]">*</span>}
-      </label>
+      <div className="flex items-center justify-between mb-2">
+        <label className="block text-[11px] font-bold text-[#8A8B91] uppercase tracking-widest flex items-center gap-2">
+          <ImageIcon size={12} /> {label} {required && <span className="text-[#FE2C55]">*</span>}
+        </label>
+        {onGenerate && (
+          <button
+            type="button"
+            onClick={() => setAiOpen(o => !o)}
+            className="flex items-center gap-1 text-[11px] font-bold text-[#7C3AED] hover:underline"
+          >
+            <Wand2 size={11} /> Generate with AI
+          </button>
+        )}
+      </div>
+
+      {/* AI overview prompt — the user types a short brief; the page composes a
+          concrete, dimensioned prompt before sending it to the model. */}
+      {onGenerate && aiOpen && (
+        <div className="mb-2 p-2.5 bg-[#F8F5FF] border border-[#7C3AED]/20 rounded-sm space-y-2">
+          <textarea
+            rows={2}
+            value={overview}
+            onChange={(e) => setOverview(e.target.value)}
+            placeholder={`Describe the ${label.toLowerCase()} you want (optional) — e.g. colours, style, mood`}
+            className="w-full bg-white border border-[#E3E3E4] rounded-sm px-2.5 py-1.5 text-[12px] text-[#161823] focus:outline-none focus:border-[#7C3AED] resize-none"
+          />
+          <button
+            type="button"
+            onClick={() => onGenerate(overview)}
+            disabled={generating}
+            className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-sm text-[12px] font-bold bg-[#7C3AED] text-white hover:bg-[#6D28D9] disabled:opacity-50 transition-colors"
+          >
+            {generating ? <><Loader2 size={12} className="animate-spin" /> Generating…</> : <><Sparkles size={12} /> Generate {label.toLowerCase()}</>}
+          </button>
+        </div>
+      )}
+
       {previewUrl ? (
         <div className={`relative ${containerClass} border border-[#E3E3E4] rounded-sm overflow-hidden bg-[#F8F8F8]`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
