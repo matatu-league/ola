@@ -181,7 +181,7 @@ DESIGN SYSTEM:
 OUTPUT RULES:
 1. Output ONLY raw React JSX code. No markdown fences. No explanations.
 2. Main component MUST be named \`App\` and MUST be a standard React arrow function.
-   EXACT SYNTAX REQUIRED: \`const App = ({ storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor }) => { ... }\`
+   EXACT SYNTAX REQUIRED: \`const App = ({ storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor, apiBase }) => { ... }\`
    DO NOT use shorthand object methods like \`App() { ... }\` or class syntax.
 3. DO NOT import or use external icon libraries like lucide-react. Create your own minimal inline SVG icon components (Lucide-inspired).
    Example: \`const SearchIcon = ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;\`
@@ -190,8 +190,9 @@ OUTPUT RULES:
 6. NO DUMMY DATA IN THE OUTPUT: render items strictly by mapping over the \`products\`/\`services\` props. The production page must contain ZERO hardcoded catalog data and ZERO dead links — sample data is supplied by the host ONLY for the builder preview and is never part of your source. Do NOT hardcode fake products, names, prices, reviews, or links. If a list is empty, map yields nothing — so also render a tasteful empty-state / "coming soon" block (with an on-brand Unsplash image per rule 3) for that case. The result must be deploy-ready as-is.
 
 DATA CONTRACT (props passed to App):
-  storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor
+  storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor, apiBase
   - \`products\`: array of { id, name, price, image }. \`services\`: array of { id, name, price, image, duration }. These arrive with the store's REAL data at runtime (and harmless sample data ONLY inside the builder preview). Treat both as possibly-empty.
+  - \`apiBase\`: the store's own public storefront API base (e.g. "https://acme.ola.ug/api/storefront"). The \`products\`/\`services\` props are ALREADY provided for first paint, so do NOT block rendering on a fetch. You MAY use \`apiBase\` for progressive enhancement only — e.g. "Load more" pagination via \`fetch(apiBase + "/products?page=2&limit=24")\` → \`{ data: { products, pagination } }\`, or refreshing services via \`fetch(apiBase + "/services")\` → \`{ data: { services } }\`. If \`apiBase\` is empty, skip all fetching and rely solely on the props. Never invent other endpoints.
 
 === NAVIGATION & ROUTING CONTRACT (PRODUCTION-READY — ABSOLUTELY NO GHOST LINKS) ===
 This component IS the entire storefront, rendered as ONE single page. It is NOT inside a router, so you must NOT invent page routes.
@@ -487,7 +488,9 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       { id: "s2", name: "Premium Session",        price: 200, duration: "90 min", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&auto=format&fit=crop" },
       { id: "s3", name: "Express Service",        price: 75,  duration: "30 min", image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&auto=format&fit=crop" },
       { id: "s4", name: "Full Experience Package", price: 350, duration: "Half day", image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=500&auto=format&fit=crop" }
-    ]
+    ],
+    // No live API in the preview — templates fall back to the sample props above.
+    apiBase: ""
   };
 
   const viewWidths = { desktop: 1440, tablet: 768, mobile: 375 };

@@ -31,7 +31,7 @@ const ArtStore = ({ store }) => <div className="p-8 text-center bg-zinc-50 text-
 const CustomAIStore = ({ store }) => {
   const srcDoc = React.useMemo(() => {
     // Standardize the product data so the AI template knows exactly what to expect
-    const formattedProducts = (store.products || []).map(p => {
+    const formattedProducts = (store.products || []).map((p, i) => {
       // FIX: Ensure price is a Number so AI templates calling .toFixed() don't crash
       let numericPrice = 0;
       if (typeof p.price === 'number') {
@@ -41,9 +41,9 @@ const CustomAIStore = ({ store }) => {
         const cleanString = p.price.replace(/[^0-9.-]+/g, "");
         numericPrice = parseFloat(cleanString);
       }
-      
+
       return {
-        id: p._id || p.id || Math.random().toString(),
+        id: (p._id || p.id || `p-${i}`).toString(),
         name: p.title || p.name,
         price: isNaN(numericPrice) ? 0 : numericPrice,
         image: p.image || p.images?.[0] || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=500&auto=format&fit=crop'
@@ -68,7 +68,11 @@ const CustomAIStore = ({ store }) => {
       serviceType: store.serviceType || null,
       products: formattedProducts,
       services: Array.isArray(store.services) ? store.services : [],
-      categories: formattedCategories // Injected safely into the template
+      categories: formattedCategories, // Injected safely into the template
+      // The store's own public API base — a standalone template MAY use it to
+      // lazy-load / refresh data (e.g. fetch(apiBase + '/products?page=2')).
+      // Optional: products/services above are already provided for first paint.
+      apiBase: store.apiBase || ""
     };
 
     // If no template exists yet, show a fallback gracefully, implementing the redirect logic
@@ -218,8 +222,10 @@ const Storefront = ({ store: initialStore, onBack }) => {
 
       try {
         setIsLoadingProducts(true);
+        // Use the dedicated, vendor-scoped storefront API (Host-resolved on the
+        // live subdomain; pass storeId/domain explicitly as a safety net).
         const query = initialStore._id ? `storeId=${initialStore._id}` : `domain=${initialStore.domain}`;
-        const response = await fetch(`/api/products?${query}&limit=100`, {
+        const response = await fetch(`/api/storefront/products?${query}&limit=100`, {
           headers: { 'ngrok-skip-browser-warning': 'true' }
         });
 
