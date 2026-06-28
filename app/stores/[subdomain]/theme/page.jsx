@@ -92,8 +92,7 @@ const fileToBase64 = (file) =>
   });
 
 // Fetch an image URL and return it as inline image data ({ mimeType, data })
-// so it can be attached to the AI request — letting the model actually SEE the
-// real logo/banner instead of just receiving a URL string it can't read.
+// so it can be attached to the AI request.
 const urlToInlineImage = async (url) => {
   if (!url) return null;
   try {
