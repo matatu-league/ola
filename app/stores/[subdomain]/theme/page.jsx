@@ -132,7 +132,10 @@ const generateCodeAI = async (
 
   let siteBrief;
   if (bt === 'products')      siteBrief = productBrief;
-  else if (isBoth)           siteBrief = `${SITE_BRIEFS[st] || SITE_BRIEFS.generic}\n   PLUS, because this business ALSO sells physical items, include a clearly-labelled "Shop" tab/section in the top navigation with a product grid (image, name, price, add-to-cart). Buyers must be able to switch between the ${st || 'service'} experience and the Shop.`;
+  else if (isBoth)           siteBrief = `This business offers BOTH ${st || 'services'} AND physical products. Structure the site as a multi-view single-page app driven by a top-level \`view\` state (see the NAVIGATION & ROUTING CONTRACT):
+   • HOME / landing view (default) — leads with the ${st || 'service'} experience: ${SITE_BRIEFS[st] || SITE_BRIEFS.generic} The services/menu list is the PRIMARY content of the home page; do not bury it under a product grid.
+   • A DEDICATED "Shop" / "Products" view — reached from a clearly-labelled top-nav item. This is its own page (toggled via \`setView('products')\`), rendering the full PRODUCT grid (image, name, price, working search/filter, "Add to Cart"). Products are NOT shown on the services home page — they live on this dedicated products view.
+   • The top nav must let buyers move between the Services home and the Products view (and the logo / a "Home" item returns to the services home). Clicking a product card opens its real detail route \`/p/{id}\`.`;
   else                        siteBrief = SITE_BRIEFS[st] || SITE_BRIEFS.generic;
   
   const isEditing = isEditingExplicit || (promptText && currentCode && promptText.toLowerCase().includes("change"));
@@ -184,13 +187,26 @@ OUTPUT RULES:
    Example: \`const SearchIcon = ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;\`
 4. DO NOT import React or any module. \`useState\`, \`useEffect\`, \`useMemo\`, \`useRef\` are available globally.
 5. Use Tailwind CSS utility classes exclusively.
-6. NO DUMMY DATA: render the items strictly from the \`products\`/\`services\` props (these are injected with the store's REAL data at runtime). Do NOT hardcode or fabricate fake sample products, fake names, fake prices, or dummy catalog entries in the source. If a list is empty, render a tasteful empty-state / "coming soon" block (with an on-brand Unsplash hero image per rule 3) instead of inventing items.
+6. NO DUMMY DATA IN THE OUTPUT: render items strictly by mapping over the \`products\`/\`services\` props. The production page must contain ZERO hardcoded catalog data and ZERO dead links — sample data is supplied by the host ONLY for the builder preview and is never part of your source. Do NOT hardcode fake products, names, prices, reviews, or links. If a list is empty, map yields nothing — so also render a tasteful empty-state / "coming soon" block (with an on-brand Unsplash image per rule 3) for that case. The result must be deploy-ready as-is.
 
 DATA CONTRACT (props passed to App):
   storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor
+  - \`products\`: array of { id, name, price, image }. \`services\`: array of { id, name, price, image, duration }. These arrive with the store's REAL data at runtime (and harmless sample data ONLY inside the builder preview). Treat both as possibly-empty.
 
-CRITICAL INTERACTION RULE:
-On clicking a product, redirect with: \`window.top.location.href = "/p/" + id;\` (the themed, store-scoped product page).
+=== NAVIGATION & ROUTING CONTRACT (PRODUCTION-READY — ABSOLUTELY NO GHOST LINKS) ===
+This component IS the entire storefront, rendered as ONE single page. It is NOT inside a router, so you must NOT invent page routes.
+1. MULTI-"PAGE" NAV = IN-COMPONENT VIEW STATE. Implement separate "pages" (e.g. Home/Services, Products/Shop, About, Contact) as a top-level \`const [view, setView] = useState('home')\` and conditionally render each section. Nav links call \`setView('...')\` (and may smooth-scroll). They are buttons, not anchors to fake URLs.
+2. THE ONLY REAL URLS you may navigate to (always via \`window.top.location.href\`) are EXACTLY these — nothing else exists:
+   - \`"/p/" + id\`  → a product's detail page (use when a PRODUCT card/button is clicked)
+   - \`"/cart"\`      → the cart page (use for "View Cart" / after add-to-cart)
+   - \`"/checkout"\`  → the checkout page (use for a "Checkout" CTA)
+3. NEVER emit a ghost / dead / placeholder link. Forbidden: \`href="#"\`, \`href="javascript:void(0)"\`, empty \`href\`, \`href="/about"\`, \`href="/services"\`, \`href="/products"\`, \`href="/login"\`, fabricated social-media URLs, or any \`onClick\` that does nothing. EVERY interactive element must do something real: \`setView(...)\`, smooth-scroll to an id that ACTUALLY exists on the page, mutate cart state, navigate to one of the 3 real URLs above, or open a real on-page modal/form you also render.
+4. If a conventional link has no real destination (e.g. Privacy, Terms, Instagram), render it as plain NON-interactive text (a \`<span>\`), not a clickable dead link.
+5. Booking/quote CTAs for services must open a real on-page booking form/modal (built with React state) — never link out to a non-existent route.
+
+CRITICAL INTERACTION RULES:
+- Product click → \`window.top.location.href = "/p/" + id;\` (the themed, store-scoped product detail page).
+- "Add to Cart" must update a real in-component cart state (count/badge) and may then offer "/cart". Service "Book"/"Request" opens the on-page booking form.
 
 ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 `;
@@ -463,6 +479,14 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       { id: "6", name: "Silk Blend Scarf", price: 65, image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=500&auto=format&fit=crop" },
       { id: "7", name: "Premium Knit Beanie", price: 35, image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=500&auto=format&fit=crop" },
       { id: "8", name: "Suede Chelsea Boots", price: 210, image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=500&auto=format&fit=crop" }
+    ],
+    // Preview-only sample services so service / "both" templates render their
+    // services view. Real services are injected at runtime on the live store.
+    services: [
+      { id: "s1", name: "Signature Consultation", price: 120, duration: "60 min", image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&auto=format&fit=crop" },
+      { id: "s2", name: "Premium Session",        price: 200, duration: "90 min", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&auto=format&fit=crop" },
+      { id: "s3", name: "Express Service",        price: 75,  duration: "30 min", image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=500&auto=format&fit=crop" },
+      { id: "s4", name: "Full Experience Package", price: 350, duration: "Half day", image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=500&auto=format&fit=crop" }
     ]
   };
 
