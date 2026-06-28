@@ -1,11 +1,19 @@
 // ─── AI provider abstraction ────────────────────────────────────────────────
 //
 // One switchable entry point for the long-form text generation that powers the
-// AI store-template builder. The active provider is chosen entirely from the
-// environment so we can move between Google Gemini and DeepSeek (v4) without
-// touching application code:
+// AI store-template builder. The active provider defaults to the environment so
+// we can move between Google Gemini, DeepSeek (v4) and our own self-hosted
+// "Custom" engine without touching application code — and the theme studio can
+// override it per generation by passing an explicit provider (see the engine
+// selector in the theme builder):
 //
-//   NEXT_PUBLIC_AI_TEMPLATE_PROVIDER = 'gemini' | 'deepseek'   (default 'gemini')
+//   NEXT_PUBLIC_AI_TEMPLATE_PROVIDER = 'gemini' | 'deepseek' | 'custom'   (default 'gemini')
+//
+// Custom config (our own AI REPO — a Puppeteer-driven Gemini service that
+// exposes a chat endpoint; see the `ai` repo):
+//   NEXT_PUBLIC_CUSTOM_AI_BASE_URL   (default 'http://localhost:5000')
+//   NEXT_PUBLIC_CUSTOM_AI_CHAT_PATH  (default '/api/chat')
+//   NEXT_PUBLIC_CUSTOM_AI_KEY        (optional bearer token, if the service is protected)
 //
 // Gemini config:
 //   NEXT_PUBLIC_GEMINI_API_KEY
@@ -53,6 +61,25 @@ const deepseekMessagesUrl = () => {
   return `${base}/v1/messages`;
 };
 
+// Custom engine — our own AI REPO service (Puppeteer-driven Gemini web app).
+// It exposes POST {base}/api/chat accepting { prompt, imageBase64?, newChat? }
+// and replying { success, text, images }. We point at it via env so the same
+// build can target localhost in dev and the deployed service in production.
+const CUSTOM_BASE      = (process.env.NEXT_PUBLIC_CUSTOM_AI_BASE_URL || 'http://localhost:5000')
+  .replace(/\/$/, '');
+const CUSTOM_CHAT_PATH = process.env.NEXT_PUBLIC_CUSTOM_AI_CHAT_PATH || '/api/chat';
+const CUSTOM_KEY       = process.env.NEXT_PUBLIC_CUSTOM_AI_KEY || '';
+const customChatUrl    = () =>
+  `${CUSTOM_BASE}/${String(CUSTOM_CHAT_PATH).replace(/^\//, '')}`;
+
+// Providers the theme studio can offer in its engine selector. `id` matches the
+// values accepted by `generateTemplateText` / NEXT_PUBLIC_AI_TEMPLATE_PROVIDER.
+export const AI_PROVIDERS = [
+  { id: 'gemini',   label: 'Gemini',   blurb: 'Google Generative Language API' },
+  { id: 'deepseek', label: 'DeepSeek', blurb: 'DeepSeek V-series (Anthropic-compatible)' },
+  { id: 'custom',   label: 'Custom',   blurb: 'Our self-hosted AI engine' },
+];
+
 const UNSPLASH_KEY    = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
 
 // ─── Text generation ─────────────────────────────────────────────────────────
@@ -65,10 +92,14 @@ const UNSPLASH_KEY    = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
  *
  * @param {string} prompt
  * @param {{ mimeType?: string, data: string }[]} [images] - inline base64 images
+ * @param {string} [provider] - explicit provider override ('gemini'|'deepseek'|
+ *                              'custom'); falls back to the env-selected default.
  * @returns {Promise<string>} raw text from the model
  */
-export const generateTemplateText = async (prompt, images = []) => {
-  if (TEMPLATE_PROVIDER === 'deepseek') return deepseekGenerate(prompt, images);
+export const generateTemplateText = async (prompt, images = [], provider) => {
+  const active = (provider || TEMPLATE_PROVIDER || 'gemini').toLowerCase();
+  if (active === 'deepseek') return deepseekGenerate(prompt, images);
+  if (active === 'custom')   return customGenerate(prompt, images);
   return geminiGenerate(prompt, images);
 };
 
@@ -134,6 +165,41 @@ const deepseekGenerate = async (prompt, images) => {
   }
   // Fallback for an OpenAI-shaped response, just in case.
   return result?.choices?.[0]?.message?.content || '';
+};
+
+const customGenerate = async (prompt, images) => {
+  // Our self-hosted engine (the AI REPO) drives the Gemini web app and exposes a
+  // simple chat endpoint. Its request shape is { prompt, imageBase64?, newChat? }
+  // and it takes a SINGLE data-URL image — so we forward the most identity-defining
+  // reference (the store logo, which the theme builder pushes first) as a base64
+  // data URL. `newChat: true` guarantees a clean conversation per generation so
+  // one storefront's context never bleeds into the next.
+  const first = Array.isArray(images) ? images.find(img => img?.data) : null;
+  const imageBase64 = first
+    ? `data:${first.mimeType || 'image/png'};base64,${first.data}`
+    : undefined;
+
+  const body = { prompt, newChat: true };
+  if (imageBase64) body.imageBase64 = imageBase64;
+
+  const result = await fetchWithRetry(
+    customChatUrl(),
+    {
+      method:  'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(CUSTOM_KEY ? { Authorization: `Bearer ${CUSTOM_KEY}` } : {}),
+      },
+      body: JSON.stringify(body),
+    }
+  );
+
+  // The service answers { success, text, images }. A 200 with success:false still
+  // carries a human-readable error, so surface it rather than returning empty JSX.
+  if (result && result.success === false) {
+    throw new Error(result.error || 'Custom AI engine returned an error.');
+  }
+  return result?.text || '';
 };
 
 // ─── Unsplash imagery ─────────────────────────────────────────────────────────
