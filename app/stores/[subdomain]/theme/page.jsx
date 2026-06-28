@@ -118,6 +118,9 @@ const generateCodeAI = async (
   const bt = business.businessType || 'products';
   const st = business.serviceType || null;
   const isBoth = bt === 'both';
+  // A products-only store is a PURE e-commerce shop — no service/booking wording
+  // of any kind. Service language is reserved for 'services' and 'both'.
+  const isProductOnly = bt === 'products';
 
   // Industry-specific blueprint so a hotel gets a hotel site, not a product grid.
   const SITE_BRIEFS = {
@@ -128,7 +131,7 @@ const generateCodeAI = async (
     venue:   `Build a VENUE / EVENT-SPACE RENTAL website. Spaces as cards (capacity, hourly/day rate, amenities), a "Request Booking" CTA, gallery, and location.`,
     generic: `Build a SERVICES website. Services as cards (what's included + pricing) with "Book" / "Request a Quote" CTAs, an about section, and trust signals.`,
   };
-  const productBrief = `Build an online SHOP. A product grid (cards with image, name, price, add-to-cart), working local search and pagination, and category navigation.`;
+  const productBrief = `Build a clean, modern, conversion-focused E-COMMERCE STORE — and ONLY that. The entire site is: a brand hero, a PRODUCT GRID (cards: image, name, price, "Add to Cart"), working local search + category filter + pagination, a cart (icon with item count), and a footer. That is the whole site. Do NOT add services, bookings, appointments, reservations, quotes, "our services", "how it works" service steps, or any service-style sections or wording. It is a shop: people browse products and buy them.`;
 
   let siteBrief;
   if (bt === 'products')      siteBrief = productBrief;
@@ -140,9 +143,28 @@ const generateCodeAI = async (
   
   const isEditing = isEditingExplicit || (promptText && currentCode && promptText.toLowerCase().includes("change"));
 
+  // ── Mode-specific prompt fragments — products get a PURE e-commerce build with
+  //    zero service wording; services/both keep the richer service language. ───
+  const modeDirective = isProductOnly
+    ? `\nSTRICT SCOPE — PRODUCTS-ONLY E-COMMERCE STORE: build ONLY a shopping experience (catalogue + cart + checkout). Do NOT include any service, booking, appointment, reservation, consultation or quote content or wording ANYWHERE — not in the nav, hero, sections, CTAs, or footer. Ignore the \`services\` prop entirely. Keep copy lean and commercial; no filler "service" paragraphs.\n`
+    : '';
+  const ctaRule = isProductOnly
+    ? `4. PRIMARY CTA: "Add to Cart" on every product card, plus a cart icon with a live count and a checkout CTA. Use ONLY e-commerce wording — never "Book"/"Appointment"/"Reservation"/"Quote".`
+    : `4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.`;
+  const navPagesExample = isProductOnly
+    ? `e.g. Shop/Home, Categories, Cart, About, Contact`
+    : `e.g. Home/Services, Products/Shop, About, Contact`;
+  const bookingRule = isProductOnly
+    ? ''
+    : `\n5. Booking/quote CTAs for services must open a real on-page booking form/modal (built with React state) — never link out to a non-existent route.`;
+  const interactionBookingLine = isProductOnly
+    ? ''
+    : ` Service "Book"/"Request" opens the on-page booking form.`;
+
   const prompt = `
 You are an avant-garde, world-class creative frontend engineer known for building wildly unique, award-winning (Awwwards level) custom websites.
 Your mission: generate a COMPLETE, mind-blowing, UNIQUE React component (JSX) for the SPECIFIC business described below — every vendor must get a site tailored to THEIR business, never a generic template.
+${modeDirective}
 
 ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their current design. I am providing the CURRENT SOURCE CODE below. Apply their requested changes specifically to this code without breaking existing logic.\n\n--- CURRENT CODE ---\n${currentCode}\n--- END CURRENT CODE ---\n` : ''}
 
@@ -162,7 +184,7 @@ CRITICAL ARCHITECTURE RULES (STRICT COMPLIANCE):
 1. BREAK THE GRID: avoid a boring Bootstrap-style grid. Use overlapping elements, asymmetry, bold typography, advanced Tailwind.
 2. UNIQUE CARDS: invent fresh ways to present the items relevant to THIS business (rooms, services, events, or products — per the brief above).
 3. IMAGES: use \`object-cover\`; product/room/service images should be a clean aspect ratio. ALWAYS include inline SVG fallbacks for missing images (when \`!item.image\`). For ALL decorative / hero / gallery / section photography use REAL Unsplash source URLs (\`https://source.unsplash.com/<width>x<height>/?<industry keywords>\`). NEVER invent fake/placeholder/lorem image URLs and NEVER use AI-generated image services — only Unsplash.
-4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.
+${ctaRule}
 5. SEARCH/FILTER: where a list of items is shown, implement working local search/filter with React state.
 6. DARK FOOTER: include a dark footer (#050505 or similar) with the contact details, location, and legal links.
 7. LOGO-DRIVEN DESIGN: use the storeLogo prop in the header (and footer) when present, and let it drive the whole look — palette, accents, and overall feel must be inspired by the logo. For the hero/background imagery use Unsplash photos (rule 3), NOT a storeBanner. Make the design feel bespoke to ${business.storeName || 'the store'}.
@@ -196,18 +218,17 @@ DATA CONTRACT (props passed to App):
 
 === NAVIGATION & ROUTING CONTRACT (PRODUCTION-READY — ABSOLUTELY NO GHOST LINKS) ===
 This component IS the entire storefront, rendered as ONE single page. It is NOT inside a router, so you must NOT invent page routes.
-1. MULTI-"PAGE" NAV = IN-COMPONENT VIEW STATE. Implement separate "pages" (e.g. Home/Services, Products/Shop, About, Contact) as a top-level \`const [view, setView] = useState('home')\` and conditionally render each section. Nav links call \`setView('...')\` (and may smooth-scroll). They are buttons, not anchors to fake URLs.
+1. MULTI-"PAGE" NAV = IN-COMPONENT VIEW STATE. Implement separate "pages" (${navPagesExample}) as a top-level \`const [view, setView] = useState('home')\` and conditionally render each section. Nav links call \`setView('...')\` (and may smooth-scroll). They are buttons, not anchors to fake URLs.
 2. THE ONLY REAL URLS you may navigate to (always via \`window.top.location.href\`) are EXACTLY these — nothing else exists:
    - \`"/p/" + id\`  → a product's detail page (use when a PRODUCT card/button is clicked)
    - \`"/cart"\`      → the cart page (use for "View Cart" / after add-to-cart)
    - \`"/checkout"\`  → the checkout page (use for a "Checkout" CTA)
-3. NEVER emit a ghost / dead / placeholder link. Forbidden: \`href="#"\`, \`href="javascript:void(0)"\`, empty \`href\`, \`href="/about"\`, \`href="/services"\`, \`href="/products"\`, \`href="/login"\`, fabricated social-media URLs, or any \`onClick\` that does nothing. EVERY interactive element must do something real: \`setView(...)\`, smooth-scroll to an id that ACTUALLY exists on the page, mutate cart state, navigate to one of the 3 real URLs above, or open a real on-page modal/form you also render.
-4. If a conventional link has no real destination (e.g. Privacy, Terms, Instagram), render it as plain NON-interactive text (a \`<span>\`), not a clickable dead link.
-5. Booking/quote CTAs for services must open a real on-page booking form/modal (built with React state) — never link out to a non-existent route.
+3. NEVER emit a ghost / dead / placeholder / dummy link. Forbidden: \`href="#"\`, \`href="javascript:void(0)"\`, empty \`href\`, \`href="/about"\`, \`href="/services"\`, \`href="/products"\`, \`href="/login"\`, fabricated/example social-media URLs, or any \`onClick\` that does nothing. EVERY interactive element must do something real: \`setView(...)\`, smooth-scroll to an id that ACTUALLY exists on the page, mutate cart state, navigate to one of the 3 real URLs above, or open a real on-page modal/form you also render.
+4. If a conventional link has no real destination (e.g. Privacy, Terms, Instagram), render it as plain NON-interactive text (a \`<span>\`), not a clickable dead link.${bookingRule}
 
 CRITICAL INTERACTION RULES:
 - Product click → \`window.top.location.href = "/p/" + id;\` (the themed, store-scoped product detail page).
-- "Add to Cart" must update a real in-component cart state (count/badge) and may then offer "/cart". Service "Book"/"Request" opens the on-page booking form.
+- "Add to Cart" must update a real in-component cart state (count/badge) and may then offer "/cart".${interactionBookingLine}
 
 ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 `;
