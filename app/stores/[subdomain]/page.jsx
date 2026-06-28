@@ -3,13 +3,15 @@ import Storefront from '@/components/storefronts/Storefront';
 import StoreThemeProvider from '@/components/storefronts/StoreThemeProvider';
 import { storeDomain } from '@/lib/domain';
 
-// Helper function to fetch the store securely on the server
+// Fetch the store + its products/services/categories from the dedicated,
+// vendor-scoped storefront API (one round trip). This is the SAME public API the
+// standalone template can call at runtime, so SSR and client stay consistent.
 async function getStore(domain) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://127.0.0.1:3000';
-    
-    const res = await fetch(`${baseUrl}/api/stores/lookup?domain=${domain}`, {
-      cache: 'no-store', 
+
+    const res = await fetch(`${baseUrl}/api/storefront?domain=${domain}`, {
+      cache: 'no-store',
       headers: {
         'ngrok-skip-browser-warning': 'true',
       }
