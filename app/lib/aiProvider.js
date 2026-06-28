@@ -42,6 +42,17 @@ const DEEPSEEK_BASE   = (process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://a
   .replace(/\/$/, '');
 const DEEPSEEK_VISION = String(process.env.NEXT_PUBLIC_DEEPSEEK_VISION || 'false').toLowerCase() === 'true';
 
+// Resolve the Anthropic-compatible Messages endpoint regardless of how the base
+// URL is configured. DeepSeek mounts the Anthropic API at /anthropic, so a bare
+// `https://api.deepseek.com` base (a common .env value) would 404 on /v1/messages
+// — append /anthropic for it. Also tolerate a base that already ends in /v1.
+const deepseekMessagesUrl = () => {
+  let base = DEEPSEEK_BASE;
+  if (/(?:^|\/\/)[^/]*api\.deepseek\.com$/i.test(base)) base += '/anthropic';
+  if (/\/v1$/.test(base)) return `${base}/messages`;
+  return `${base}/v1/messages`;
+};
+
 const UNSPLASH_KEY    = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
 
 // ─── Text generation ─────────────────────────────────────────────────────────
@@ -99,7 +110,7 @@ const deepseekGenerate = async (prompt, images) => {
     : prompt;
 
   const result = await fetchWithRetry(
-    `${DEEPSEEK_BASE}/v1/messages`,
+    deepseekMessagesUrl(),
     {
       method:  'POST',
       headers: {
