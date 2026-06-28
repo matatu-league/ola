@@ -8,26 +8,75 @@ import {
   Wand2, Settings2, FileUp, Link as LinkIcon
 } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
+import { uploadFileToFirebase } from '@/lib/firebaseLib';
+import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl } from '@/lib/aiProvider';
 
 // --- CONFIG & UTILITIES ---
+// Template text generation is provider-switchable (Gemini / DeepSeek v4) via
+// env — see @/lib/aiProvider. This key is only used for the lightweight inline
+// text rewrites in Visual Edit mode (always Gemini).
 const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
-const TEXT_MODEL_ID = 'gemini-3.5-flash';
+const TEXT_MODEL_ID = process.env.NEXT_PUBLIC_AI_TEXT_MODEL || 'gemini-3.5-flash';
 
-const fetchWithRetry = async (url, options, retries = 5) => {
-  for (let i = 0; i <= retries; i++) {
-    try {
-      const res = await fetch(url, options);
-      if (res.ok) return res.json();
-      if (i === retries) throw new Error(`API Error: ${res.status}`);
-    } catch (err) {
-      if (i === retries) throw err;
-    }
-    await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
-  }
+// Replace only the FIRST exact occurrence of `a` with `b` in `src`. Used by the
+// visual editor to map a click-to-edit change back to the template source. If
+// `a` isn't found (e.g. it was dynamic, data-driven content), this is a safe
+// no-op — which is exactly why the editor only affects static content.
+const replaceFirst = (src, a, b) => {
+  if (!a) return src;
+  const i = src.indexOf(a);
+  return i === -1 ? src : src.slice(0, i) + b + src.slice(i + a.length);
 };
 
-const safeExtractCode = (apiResult) => {
-  const text = apiResult?.candidates?.[0]?.content?.parts?.[0]?.text;
+// Injected into the preview iframe in Visual Edit mode. Plain JS (no JSX). Makes
+// static text leaves click-to-edit and images click-to-replace, posting changes
+// to the parent. Dynamic content edits are harmless (see replaceFirst).
+const EDITOR_BRIDGE = `
+(function(){
+  var TAGS = 'H1,H2,H3,H4,H5,H6,P,SPAN,A,BUTTON,LI,BLOCKQUOTE,LABEL,SMALL,STRONG,EM,FIGCAPTION,DIV'.split(',');
+  function isTextLeaf(el){
+    if(!el || TAGS.indexOf(el.tagName)===-1) return false;
+    if(el.children.length>0) return false;
+    return el.textContent.trim().length>0;
+  }
+  var hovered=null;
+  document.addEventListener('mouseover', function(e){
+    if(hovered){ hovered.style.outline=''; hovered.style.cursor=''; }
+    var el=e.target;
+    if(isTextLeaf(el) || el.tagName==='IMG'){ el.style.outline='2px solid #2563EB'; el.style.outlineOffset='1px'; el.style.cursor='text'; hovered=el; }
+  });
+  document.addEventListener('click', function(e){
+    var a=e.target.closest && e.target.closest('a'); if(a) e.preventDefault();
+    var el=e.target;
+    if(el.tagName==='IMG'){
+      e.preventDefault(); e.stopPropagation();
+      parent.postMessage({ __olaEdit:true, type:'image-edit', src: el.getAttribute('src') }, '*');
+      return;
+    }
+    if(isTextLeaf(el) && !el.getAttribute('data-ola-editing')){
+      e.preventDefault(); e.stopPropagation();
+      el.setAttribute('data-ola-editing','1');
+      el.setAttribute('contenteditable','true');
+      var original = el.textContent.trim();
+      el.focus();
+      parent.postMessage({ __olaEdit:true, type:'text-focus', original: original }, '*');
+      var done=function(){
+        el.removeAttribute('contenteditable'); el.removeAttribute('data-ola-editing');
+        el.style.outline='';
+        var updated=el.textContent.trim();
+        if(updated && updated!==original){
+          parent.postMessage({ __olaEdit:true, type:'text-edit', original: original, updated: updated }, '*');
+        }
+        el.removeEventListener('blur', done);
+      };
+      el.addEventListener('blur', done);
+    }
+  }, true);
+})();
+`;
+
+// Clean raw model text into bare JSX: strip markdown fences and stray exports.
+const cleanTemplateText = (text) => {
   if (!text) throw new Error('Empty or blocked response from AI.');
   let cleanCode = text.replace(/```(?:jsx|javascript|js|react|html)?\n?/gi, '').replace(/```/gi, '').trim();
   cleanCode = cleanCode.replace(/export\s+default\s+[a-zA-Z0-9_]+;?/gi, '');
@@ -100,8 +149,8 @@ ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their curr
 - Business type: ${bt}${st ? ` (service type: ${st})` : ''}
 - About / description: ${business.description || '(none provided — infer from the industry)'}
 - Contact: ${business.contactEmail || ''} ${business.contactPhone || ''}
-- Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src) and match the site palette to it` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
-- Hero Banner Image: YOU act as the Art Director. You MUST recommend and use a stunning, high-quality image URL from a trusted source like Unsplash (e.g., https://images.unsplash.com/photo-...) that PERFECTLY matches the business industry (${categoryContext || business.industry || 'General'}) and chosen art direction. Do NOT use generic placeholders; supply a realistic, gorgeous photo URL for the hero background.
+- Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src). The logo is the SOLE creative anchor: derive the entire palette, mood, typography pairing and art direction FROM it so the whole design feels inspired by and built around this logo` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src and design the palette around it` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
+- Hero / section imagery: there is NO uploaded banner. For the hero background and every other photographic image, use REAL Unsplash photos via deterministic source URLs of the form \`${unsplashSourceUrl('RELEVANT KEYWORDS', 1600, 900)}\` — replace the keywords with terms specific to THIS business/industry (e.g. for a hotel: "luxury hotel lobby", for a salon: "modern hair salon"). Vary the keywords per section so images differ.
 
 === WHAT TO BUILD ===
 ${siteBrief}
@@ -109,11 +158,11 @@ ${siteBrief}
 CRITICAL ARCHITECTURE RULES (STRICT COMPLIANCE):
 1. BREAK THE GRID: avoid a boring Bootstrap-style grid. Use overlapping elements, asymmetry, bold typography, advanced Tailwind.
 2. UNIQUE CARDS: invent fresh ways to present the items relevant to THIS business (rooms, services, events, or products — per the brief above).
-3. IMAGES: use \`object-cover\`; product/room/service images should be a clean aspect ratio. ALWAYS include inline SVG fallbacks for missing images (when \`!item.image\`).
+3. IMAGES: use \`object-cover\`; product/room/service images should be a clean aspect ratio. ALWAYS include inline SVG fallbacks for missing images (when \`!item.image\`). For ALL decorative / hero / gallery / section photography use REAL Unsplash source URLs (\`https://source.unsplash.com/<width>x<height>/?<industry keywords>\`). NEVER invent fake/placeholder/lorem image URLs and NEVER use AI-generated image services — only Unsplash.
 4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.
 5. SEARCH/FILTER: where a list of items is shown, implement working local search/filter with React state.
 6. DARK FOOTER: include a dark footer (#050505 or similar) with the contact details, location, and legal links.
-7. LOGO & BANNER: use the storeLogo prop when present. For the banner, always use your recommended Unsplash image URL. Make them feel bespoke to ${business.storeName || 'the store'}.
+7. LOGO-DRIVEN DESIGN: use the storeLogo prop in the header (and footer) when present, and let it drive the whole look — palette, accents, and overall feel must be inspired by the logo. For the hero/background imagery use Unsplash photos (rule 3), NOT a storeBanner. Make the design feel bespoke to ${business.storeName || 'the store'}.
 8. NO RAW JS COMMENTS IN JSX: NEVER use single-line // comments inside the JSX return block — they render as visible text. Use {/* ... */} only.
 
 DESIGN SYSTEM:
@@ -135,7 +184,7 @@ OUTPUT RULES:
    Example: \`const SearchIcon = ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;\`
 4. DO NOT import React or any module. \`useState\`, \`useEffect\`, \`useMemo\`, \`useRef\` are available globally.
 5. Use Tailwind CSS utility classes exclusively.
-6. If a relevant data array (products/services) is empty, invent 4–8 realistic sample items appropriate to a ${categoryContext || business.industry || 'business'} so the page never looks empty.
+6. NO DUMMY DATA: render the items strictly from the \`products\`/\`services\` props (these are injected with the store's REAL data at runtime). Do NOT hardcode or fabricate fake sample products, fake names, fake prices, or dummy catalog entries in the source. If a list is empty, render a tasteful empty-state / "coming soon" block (with an on-brand Unsplash hero image per rule 3) instead of inventing items.
 
 DATA CONTRACT (props passed to App):
   storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor
@@ -146,30 +195,17 @@ On clicking a product, redirect with: \`window.top.location.href = "/p/" + id;\`
 ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 `;
 
-  const contents = [{ parts: [{ text: prompt }] }];
+  // Attach the store's REAL logo as inline image bytes so the model can "see"
+  // it and build the entire palette/identity around it. There is NO banner —
+  // hero/section imagery comes from Unsplash (see prompt). An optional user
+  // style reference can also be attached.
+  const images = [];
+  if (business.logoBase64) images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
+  if (imageBase64 && imageMimeType) images.push({ mimeType: imageMimeType, data: imageBase64 });
 
-  // Attach the store's REAL logo so the model can render it and pull its palette.
-  // We no longer attach the banner image since we want the AI to select a fresh Unsplash image instead.
-  if (business.logoBase64) {
-    contents[0].parts.push({ text: "ATTACHED IMAGE — the store's ACTUAL LOGO. Render this exact logo in the header (and footer), and draw the site's accent palette from it." });
-    contents[0].parts.push({ inlineData: { mimeType: business.logoMime || 'image/png', data: business.logoBase64 } });
-  }
-
-  if (imageBase64 && imageMimeType) {
-    contents[0].parts.push({ text: 'ATTACHED IMAGE — an optional style/design reference from the user.' });
-    contents[0].parts.push({ inlineData: { mimeType: imageMimeType, data: imageBase64 } });
-  }
-
-  const result = await fetchWithRetry(
-    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`,
-    {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ contents, generationConfig: { temperature: 1.0 } }),
-    }
-  );
-
-  return safeExtractCode(result);
+  // Provider-switchable (Gemini / DeepSeek v4) — chosen via env in @/lib/aiProvider.
+  const text = await generateTemplateText(prompt, images);
+  return cleanTemplateText(text);
 };
 
 // --- DATA LISTS ---
@@ -392,15 +428,26 @@ const App = ({ storeName = "My Store", storeLogo, storeBanner, contactEmail = "h
 };
 export default App;`;
 
-const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor }) => {
+const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor, editMode = false, onVisualEdit }) => {
   const containerRef = useRef(null);
+  const iframeRef = useRef(null);
   const [scale, setScale] = useState(1);
+
+  // Receive click-to-edit events from the in-iframe editor bridge.
+  useEffect(() => {
+    const handler = (e) => {
+      if (iframeRef.current && e.source !== iframeRef.current.contentWindow) return;
+      if (e.data && e.data.__olaEdit) onVisualEdit?.(e.data);
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, [onVisualEdit]);
 
   const dynamicStoreData = {
     // Identity reflects THIS store so the preview looks like the real business.
     storeName:    storeProfile.title || "",
     storeLogo:    storeProfile.logo || "",
-    storeBanner:  storeProfile.banner || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000",
+    storeBanner:  storeProfile.banner || unsplashSourceUrl(storeProfile.industry || 'modern storefront business', 2000, 1000),
     contactEmail: storeProfile.contactEmail || "",
     contactPhone: storeProfile.contactPhone || "+1 (555) 123-4567",
     businessType: storeProfile.businessType || "products",
@@ -474,12 +521,13 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
         
         try {
           ReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData} />);
+          ${editMode ? `setTimeout(function(){ ${EDITOR_BRIDGE} }, 350);` : ''}
         } catch(err) {
           document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Render Error</h2><pre>' + err.toString() + '</pre></div>';
         }
       </script>
     </body></html>
-  `, [processedCode]);
+  `, [processedCode, editMode]);
 
   return (
     <div ref={containerRef} className="w-full h-full flex justify-center overflow-hidden bg-transparent">
@@ -498,7 +546,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       >
         {viewMode !== 'desktop' && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[24px] bg-[#111] rounded-b-[16px] z-50"></div>}
         {viewMode !== 'desktop' && <div className="absolute inset-0 pointer-events-none rounded-[36px] border-[12px] border-[#111] z-40"></div>}
-        <iframe srcDoc={srcDoc} className="w-full h-full border-0 absolute inset-0 bg-white" sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups" title="Live AI Preview" />
+        <iframe ref={iframeRef} srcDoc={srcDoc} className="w-full h-full border-0 absolute inset-0 bg-white" sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups" title="Live AI Preview" />
       </div>
     </div>
   );
@@ -535,7 +583,75 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   const [viewport, setViewport]         = useState('desktop');
   const [toastMsg, setToastMsg]         = useState('');
 
+  // Visual edit state
+  const [editMode, setEditMode]         = useState(false);
+  const [activeText, setActiveText]     = useState(null);   // text literal being edited
+  const [imageEdit, setImageEdit]       = useState(null);   // { src } of clicked image
+  const [imgOverview, setImgOverview]   = useState('');
+  const [editBusy, setEditBusy]         = useState(false);
+
   const fileRef = useRef(null);
+  const imgReplaceRef = useRef(null);
+
+  // ── Visual editor: handle click-to-edit events from the preview ────────────
+  const handleVisualEdit = (msg) => {
+    if (msg.type === 'text-focus') { setActiveText(msg.original); return; }
+    if (msg.type === 'text-edit') {
+      setCode(c => replaceFirst(c, msg.original, msg.updated));
+      setActiveText(msg.updated);
+      return;
+    }
+    if (msg.type === 'image-edit') { setImgOverview(''); setImageEdit({ src: msg.src }); }
+  };
+
+  // AI rewrite of the currently-selected text literal.
+  const rewriteActiveText = async (instruction) => {
+    if (!activeText) return;
+    setEditBusy(true);
+    try {
+      const prompt = `${instruction} this website copy. Keep it the same language and intent. Return ONLY the rewritten text, no quotes, no preamble:\n\n${activeText}`;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      });
+      const data = await res.json();
+      const out = (data?.candidates?.[0]?.content?.parts?.[0]?.text || '').trim().replace(/^["']|["']$/g, '');
+      if (out) { setCode(c => replaceFirst(c, activeText, out)); setActiveText(out); }
+    } catch (e) {
+      setToastMsg(`⚠️ AI rewrite failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setEditBusy(false); }
+  };
+
+  // Swap the clicked image's src in the source for a new URL.
+  const applyImageSrc = (newUrl) => {
+    if (imageEdit?.src && newUrl) setCode(c => replaceFirst(c, imageEdit.src, newUrl));
+    setImageEdit(null);
+  };
+
+  const handleImageUploadReplace = async (file) => {
+    if (!file) return;
+    setEditBusy(true);
+    try {
+      const url = await uploadFileToFirebase(file, 'stores/template-images');
+      applyImageSrc(url);
+    } catch (e) {
+      setToastMsg(`⚠️ Upload failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setEditBusy(false); }
+  };
+
+  // Swap the image for a real Unsplash photo matching the user's description
+  // (or the store's industry). All template imagery is real photography.
+  const handleImageGenerateReplace = async () => {
+    setEditBusy(true);
+    try {
+      const query = imgOverview.trim() || storeProfile.industry || storeProfile.title || 'business';
+      const url = await searchUnsplashImage(query, 'landscape');
+      if (!url) throw new Error('No image found');
+      applyImageSrc(url);
+    } catch (e) {
+      setToastMsg(`⚠️ Image search failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setEditBusy(false); }
+  };
 
   useEffect(() => {
     const handler = (e) => { if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) setShowColorPicker(false); };
@@ -557,7 +673,6 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
     [!storeProfile.title, 'store name'],
     [!storeProfile.description, 'description'],
     [!storeProfile.logo, 'logo'],
-    // We removed banner requirements since AI sources the banner now!
     [!dialogThemeColor, 'brand color'],
     [!storeProfile.contactEmail && !storeProfile.contactPhone, 'contact info'],
   ].filter(([missing]) => missing).map(([, label]) => label);
@@ -582,16 +697,15 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
       businessType: storeProfile.businessType || 'products',
       serviceType:  storeProfile.serviceType || null,
       logo:         storeProfile.logo || '',
-      banner:       storeProfile.banner || '',
       contactEmail: storeProfile.contactEmail || '',
       contactPhone: storeProfile.contactPhone || '',
     };
 
     setLoading(true);
     try {
-      // Attach ONLY the actual brand logo as inline image data so the model can
-      // SEE the real logo and design around its color palette. 
-      // We skip fetching the banner base64 since AI will recommend an Unsplash image instead.
+      // Attach the actual logo as inline image data so the model can SEE the
+      // real brand mark and design the whole palette/identity around it. No
+      // banner — hero imagery comes from Unsplash.
       const logoImg = await urlToInlineImage(business.logo);
       if (logoImg) { business.logoBase64 = logoImg.data; business.logoMime = logoImg.mimeType; }
 
@@ -893,6 +1007,16 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
                 ))}
               </div>
             )}
+
+            {!showCode && (
+              <button
+                onClick={() => { setEditMode(e => !e); setActiveText(null); setImageEdit(null); }}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-none text-xs font-bold border backdrop-blur-md shadow-lg transition-colors ${editMode ? 'bg-blue-600 text-white border-blue-500' : 'bg-black/80 text-white/70 border-white/10 hover:text-white'}`}
+                title="Click text or images in the preview to edit them"
+              >
+                <Wand2 size={12} /> {editMode ? 'Editing — click text / images' : 'Visual Edit'}
+              </button>
+            )}
           </div>
 
           {showCode ? (
@@ -905,7 +1029,72 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
             </div>
           ) : (
             <div className="w-full h-full animate-in zoom-in-95 duration-500 relative flex items-center justify-center">
-              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} />
+              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} editMode={editMode} onVisualEdit={handleVisualEdit} />
+
+              {/* Hidden input for replacing an image by upload */}
+              <input
+                ref={imgReplaceRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageUploadReplace(f); e.target.value=''; }}
+              />
+
+              {/* Text AI toolbar — shown while a text element is selected */}
+              {editMode && activeText && !imageEdit && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-[#111] border border-white/10 rounded-none px-2 py-1.5 shadow-2xl backdrop-blur-md">
+                  <span className="text-[11px] text-white/40 max-w-[160px] truncate pr-1">“{activeText}”</span>
+                  {[['Rephrase', 'Rephrase'], ['Shorten', 'Shorten'], ['Expand', 'Expand']].map(([label, instr]) => (
+                    <button
+                      key={label}
+                      type="button"
+                      disabled={editBusy}
+                      onClick={() => rewriteActiveText(instr)}
+                      className="flex items-center gap-1 px-2 py-1 rounded-none text-[11px] font-bold text-white/80 hover:bg-blue-600 hover:text-white disabled:opacity-50 transition-colors"
+                    >
+                      {editBusy ? <Loader2 size={11} className="animate-spin" /> : <Sparkles size={11} />} {label}
+                    </button>
+                  ))}
+                  <button type="button" onClick={() => setActiveText(null)} className="p-1 text-white/40 hover:text-white"><X size={12} /></button>
+                </div>
+              )}
+
+              {/* Image edit popover */}
+              {editMode && imageEdit && (
+                <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40" onClick={() => setImageEdit(null)}>
+                  <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-sm font-bold text-white">Replace image</h4>
+                      <button onClick={() => setImageEdit(null)} className="text-white/40 hover:text-white"><X size={16} /></button>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={imageEdit.src} alt="" className="w-full h-28 object-cover border border-white/10 mb-3" />
+                    <button
+                      type="button"
+                      disabled={editBusy}
+                      onClick={() => imgReplaceRef.current?.click()}
+                      className="w-full flex items-center justify-center gap-2 py-2 mb-2 rounded-none text-xs font-bold bg-white/5 text-white hover:bg-white/10 disabled:opacity-50 transition-colors"
+                    >
+                      <FileUp size={13} /> Upload an image
+                    </button>
+                    <textarea
+                      rows={2}
+                      value={imgOverview}
+                      onChange={(e) => setImgOverview(e.target.value)}
+                      placeholder="Describe the image to find on Unsplash (optional)…"
+                      className="w-full bg-[#1a1a1a] border border-white/10 rounded-none px-2.5 py-1.5 text-[12px] text-white focus:outline-none focus:border-blue-500/50 resize-none mb-2"
+                    />
+                    <button
+                      type="button"
+                      disabled={editBusy}
+                      onClick={handleImageGenerateReplace}
+                      className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                    >
+                      {editBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Find on Unsplash
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

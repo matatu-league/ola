@@ -58,14 +58,14 @@ export default function StoreOnboarding() {
   const [error, setError] = useState('');
   const [domainStatus, setDomainStatus] = useState('idle'); // idle, checking, available, unavailable, invalid_length
   const [isDomainDirty, setIsDomainDirty] = useState(false);
-  const [uploading, setUploading] = useState({ logo: false, banner: false });
+  const [uploading, setUploading] = useState({ logo: false });
 
   // Store temporary file objects until we're ready to upload
-  const [pendingUploads, setPendingUploads] = useState({ logo: null, banner: null });
+  const [pendingUploads, setPendingUploads] = useState({ logo: null });
   // Store local preview URLs for display
-  const [previewUrls, setPreviewUrls] = useState({ logo: '', banner: '' });
+  const [previewUrls, setPreviewUrls] = useState({ logo: '' });
   // AI image generation state (per field) + the user's optional overview text
-  const [generatingImg, setGeneratingImg] = useState({ logo: false, banner: false });
+  const [generatingImg, setGeneratingImg] = useState({ logo: false });
 
   const [formData, setFormData] = useState({
     title: '',
@@ -82,7 +82,6 @@ export default function StoreOnboarding() {
     layoutStyle: 'Classic',
     description: '',
     logo: '',
-    banner: '',
     themeColor: '#161823',
   });
 
@@ -317,8 +316,8 @@ export default function StoreOnboarding() {
     setError('');
   };
 
-  // Generate a logo/banner with AI. The user gives a short overview; we compose
-  // a concrete, dimensioned prompt and send THAT to the model for a usable image.
+  // Generate the brand LOGO with AI. The user gives a short overview; we compose
+  // a concrete, dimensioned prompt and send THAT to the model for a usable logo.
   const handleGenerateImage = async (field, overview = '') => {
     if (!GEMINI_KEY) {
       setError('AI image generation is not configured (missing API key).');
@@ -331,9 +330,7 @@ export default function StoreOnboarding() {
       const industry = formData.categoryName || 'general';
       const extra = overview.trim() ? ` Specific request: ${overview.trim()}.` : '';
 
-      const prompt = field === 'logo'
-        ? `Design a professional, modern, minimalist brand LOGO for "${name}", a ${industry} business.${extra} A single vibrant central icon/symbol on a clean solid or transparent background, premium crisp vector-style branding, perfectly centered, NO text or letters. Square 1:1 aspect ratio, high resolution (1024x1024).`
-        : `Design an ultra-wide, high-quality hero BANNER image for "${name}", a ${industry} business.${extra} Professional, inviting, well-lit and cinematic, suitable as a website storefront header background, with calm empty space for overlaying text, NO text or words in the image. Ultra-wide panoramic 16:9 aspect ratio, high resolution (1920x1080).`;
+      const prompt = `Design a professional, modern, minimalist brand LOGO for "${name}", a ${industry} business.${extra} A single vibrant central icon/symbol on a clean solid or transparent background, premium crisp vector-style branding, perfectly centered, NO text or letters. Square 1:1 aspect ratio, high resolution (1024x1024).`;
 
       const res = await fetch(`${AI_IMAGE_BASEURL}/${AI_IMAGE_MODEL}:generateContent?key=${GEMINI_KEY}`, {
         method: 'POST',
@@ -342,7 +339,7 @@ export default function StoreOnboarding() {
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
           generationConfig: {
             responseModalities: ['IMAGE'],
-            imageConfig: { aspectRatio: field === 'logo' ? '1:1' : '16:9' },
+            imageConfig: { aspectRatio: '1:1' },
           },
         }),
       });
@@ -374,10 +371,9 @@ export default function StoreOnboarding() {
     setFormData(prev => ({ ...prev, [field]: '' }));
   };
 
-  // Upload all pending files to Firebase and get permanent URLs
+  // Upload the pending logo to Firebase and get its permanent URL
   const uploadProfileImages = async () => {
-    const uploads = {};
-    const urls = { logo: '', banner: '' };
+    const urls = { logo: '' };
 
     // Upload logo if pending
     if (pendingUploads.logo) {
@@ -385,7 +381,6 @@ export default function StoreOnboarding() {
       try {
         const url = await uploadFileToFirebase(pendingUploads.logo, 'stores/logos');
         urls.logo = url;
-        uploads.logo = url;
       } catch (err) {
         console.error('Logo upload failed:', err);
         throw new Error('Failed to upload logo. Please try again.');
@@ -395,24 +390,6 @@ export default function StoreOnboarding() {
     } else if (formData.logo) {
       // Already uploaded from a previous attempt
       urls.logo = formData.logo;
-    }
-
-    // Upload banner if pending
-    if (pendingUploads.banner) {
-      setUploading(prev => ({ ...prev, banner: true }));
-      try {
-        const url = await uploadFileToFirebase(pendingUploads.banner, 'stores/banners');
-        urls.banner = url;
-        uploads.banner = url;
-      } catch (err) {
-        console.error('Banner upload failed:', err);
-        throw new Error('Failed to upload banner. Please try again.');
-      } finally {
-        setUploading(prev => ({ ...prev, banner: false }));
-      }
-    } else if (formData.banner) {
-      // Already uploaded from a previous attempt
-      urls.banner = formData.banner;
     }
 
     return urls;
@@ -450,7 +427,6 @@ export default function StoreOnboarding() {
   const isProfileValid = Boolean(
     formData.description.trim().length > 0 &&
     (previewUrls.logo || formData.logo) &&
-    (previewUrls.banner || formData.banner) &&
     formData.themeColor
   );
 
@@ -461,21 +437,18 @@ export default function StoreOnboarding() {
     setError('');
 
     try {
-      // 1. Upload images to Firebase first
+      // 1. Upload the logo to Firebase first
       let logoUrl = formData.logo;
-      let bannerUrl = formData.banner;
 
-      if (pendingUploads.logo || pendingUploads.banner) {
+      if (pendingUploads.logo) {
         const uploadedUrls = await uploadProfileImages();
         logoUrl = uploadedUrls.logo || logoUrl;
-        bannerUrl = uploadedUrls.banner || bannerUrl;
       }
 
-      // 2. Update form data with the permanent URLs
+      // 2. Update form data with the permanent URL
       const updatedFormData = {
         ...formData,
         logo: logoUrl,
-        banner: bannerUrl,
       };
 
       // 3. Save to database (now with Firebase URLs)
@@ -485,7 +458,6 @@ export default function StoreOnboarding() {
         body: JSON.stringify({
           description: updatedFormData.description,
           logo:        updatedFormData.logo,
-          banner:      updatedFormData.banner,
           themeColor:  updatedFormData.themeColor,
         }),
       });
@@ -495,11 +467,10 @@ export default function StoreOnboarding() {
       if (res.ok && result.success) {
         // Clean up preview URLs
         if (previewUrls.logo) URL.revokeObjectURL(previewUrls.logo);
-        if (previewUrls.banner) URL.revokeObjectURL(previewUrls.banner);
-        
+
         setFormData(updatedFormData);
-        setPendingUploads({ logo: null, banner: null });
-        setPreviewUrls({ logo: '', banner: '' });
+        setPendingUploads({ logo: null });
+        setPreviewUrls({ logo: '' });
         
         setStep(3);
       } else {
@@ -858,17 +829,8 @@ export default function StoreOnboarding() {
               </div>
             </div>
 
-            {/* Logo + Banner uploads */}
+            {/* Logo upload — the brand mark that anchors the whole design */}
             <div className="space-y-4 pt-2">
-              <ImageUpload
-                label="Store Banner (Ultra Wide)" required field="banner"
-                previewUrl={previewUrls.banner || formData.banner}
-                uploading={uploading.banner} containerClass="w-full aspect-[4/1]"
-                onSelect={(file) => handleFileSelect('banner', file)}
-                onClear={() => handleRemoveFile('banner')}
-                generating={generatingImg.banner}
-                onGenerate={(overview) => handleGenerateImage('banner', overview)}
-              />
               <ImageUpload
                 label="Store Logo" required field="logo"
                 previewUrl={previewUrls.logo || formData.logo}
