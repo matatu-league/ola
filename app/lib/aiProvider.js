@@ -12,10 +12,14 @@
 //   NEXT_PUBLIC_AI_TEXT_MODEL        (default 'gemini-3.5-flash')
 //   NEXT_PUBLIC_AI_TEXT_BASE_URL     (default Google Generative Language API)
 //
-// DeepSeek config (OpenAI-compatible Chat Completions):
+// DeepSeek config (Anthropic-compatible Messages API — POST {base}/v1/messages):
 //   NEXT_PUBLIC_DEEPSEEK_API_KEY
 //   NEXT_PUBLIC_DEEPSEEK_MODEL       (default 'deepseek-chat' — points at the latest V-series)
-//   NEXT_PUBLIC_DEEPSEEK_BASE_URL    (default 'https://api.deepseek.com')
+//   NEXT_PUBLIC_DEEPSEEK_BASE_URL    (default 'https://api.deepseek.com/anthropic')
+//   NEXT_PUBLIC_DEEPSEEK_VISION      ('true' to attach the logo as a base64 image
+//                                     block — only enable for a vision-capable
+//                                     model; DeepSeek's text-only chat models
+//                                     reject images, so this defaults to false)
 //
 // Imagery for generated storefronts is sourced from Unsplash (never AI-painted)
 // so every design is built from real, high-quality photography; see
@@ -34,8 +38,9 @@ const GEMINI_BASE     = process.env.NEXT_PUBLIC_AI_TEXT_BASE_URL
 
 const DEEPSEEK_KEY    = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY || '';
 const DEEPSEEK_MODEL  = process.env.NEXT_PUBLIC_DEEPSEEK_MODEL || 'deepseek-chat';
-const DEEPSEEK_BASE   = (process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com')
+const DEEPSEEK_BASE   = (process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com/anthropic')
   .replace(/\/$/, '');
+const DEEPSEEK_VISION = String(process.env.NEXT_PUBLIC_DEEPSEEK_VISION || 'false').toLowerCase() === 'true';
 
 const UNSPLASH_KEY    = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
 
@@ -75,35 +80,48 @@ const geminiGenerate = async (prompt, images) => {
 };
 
 const deepseekGenerate = async (prompt, images) => {
-  // OpenAI-compatible multimodal content: a text part plus optional image_url
-  // parts (data URLs) so vision-capable DeepSeek models can "see" the logo.
-  const hasImages = Array.isArray(images) && images.length > 0;
-  const content = hasImages
+  // DeepSeek via its Anthropic-compatible Messages API (POST {base}/v1/messages).
+  // The message content is a plain string for text-only models (DeepSeek's chat
+  // models are text-only and REJECT image parts). Only when NEXT_PUBLIC_DEEPSEEK_VISION
+  // is enabled (i.e. a vision-capable model is configured) do we attach the logo
+  // as an Anthropic base64 image block.
+  const attachImages = DEEPSEEK_VISION && Array.isArray(images) && images.some(i => i?.data);
+  const content = attachImages
     ? [
         { type: 'text', text: prompt },
         ...images
           .filter(img => img?.data)
           .map(img => ({
-            type: 'image_url',
-            image_url: { url: `data:${img.mimeType || 'image/png'};base64,${img.data}` },
+            type: 'image',
+            source: { type: 'base64', media_type: img.mimeType || 'image/png', data: img.data },
           })),
       ]
     : prompt;
 
   const result = await fetchWithRetry(
-    `${DEEPSEEK_BASE}/chat/completions`,
+    `${DEEPSEEK_BASE}/v1/messages`,
     {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${DEEPSEEK_KEY}` },
-      body:    JSON.stringify({
+      headers: {
+        'Content-Type':     'application/json',
+        'x-api-key':        DEEPSEEK_KEY,
+        Authorization:      `Bearer ${DEEPSEEK_KEY}`,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
         model:       DEEPSEEK_MODEL,
-        messages:    [{ role: 'user', content }],
-        temperature: 1.0,
         max_tokens:  8192,
+        temperature: 1.0,
+        messages:    [{ role: 'user', content }],
       }),
     }
   );
 
+  // Anthropic Messages response: { content: [{ type:'text', text }, ...] }.
+  if (Array.isArray(result?.content)) {
+    return result.content.filter(b => b?.type === 'text').map(b => b.text).join('') || '';
+  }
+  // Fallback for an OpenAI-shaped response, just in case.
   return result?.choices?.[0]?.message?.content || '';
 };
 
