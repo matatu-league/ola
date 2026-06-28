@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
-import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl } from '@/lib/aiProvider';
+import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl, AI_PROVIDERS, TEMPLATE_PROVIDER } from '@/lib/aiProvider';
 
 // --- CONFIG & UTILITIES ---
 // Template text generation is provider-switchable (Gemini / DeepSeek v4) via
@@ -112,7 +112,7 @@ const generateCodeAI = async (
   categoryContext, blueprintPrompt, themeColor, themeMode, artDirection,
   advancedConfig, isEditingExplicit, business = {}
 ) => {
-  const { bgStyle, fontFamily, borderRadius, animationFeel } = advancedConfig;
+  const { bgStyle, fontFamily, borderRadius, animationFeel, aiProvider } = advancedConfig;
 
   // ── Business brief — makes generation specific to THIS vendor/industry ──────
   const bt = business.businessType || 'products';
@@ -241,8 +241,9 @@ ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
   if (business.logoBase64) images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
   if (imageBase64 && imageMimeType) images.push({ mimeType: imageMimeType, data: imageBase64 });
 
-  // Provider-switchable (Gemini / DeepSeek v4) — chosen via env in @/lib/aiProvider.
-  const text = await generateTemplateText(prompt, images);
+  // Provider-switchable (Gemini / DeepSeek v4 / Custom) — the engine selector in
+  // the theme studio passes an explicit choice; otherwise the env default wins.
+  const text = await generateTemplateText(prompt, images, aiProvider);
   return cleanTemplateText(text);
 };
 
@@ -616,6 +617,10 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   const colorPickerRef = useRef(null);
   
 
+  // Which AI engine generates the storefront. Defaults to the env-selected
+  // provider, but the vendor can switch it per generation in the engine selector.
+  const [aiProvider, setAiProvider]       = useState(TEMPLATE_PROVIDER || 'gemini');
+
   // Advanced Form State
   const [fontFamily, setFontFamily]       = useState('auto');
   const [borderRadius, setBorderRadius]   = useState('auto');
@@ -761,7 +766,8 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
         bgStyle: bgStyle === 'auto' ? '✨ Let AI Decide based on vibe' : bgStyle,
         fontFamily: fontFamily === 'auto' ? '✨ Let AI Decide based on vibe' : fontFamily,
         borderRadius: borderRadius === 'auto' ? '✨ Let AI Decide based on vibe' : borderRadius,
-        animationFeel: animationFeel === 'auto' ? '✨ Let AI Decide based on vibe' : animationFeel
+        animationFeel: animationFeel === 'auto' ? '✨ Let AI Decide based on vibe' : animationFeel,
+        aiProvider,
       };
 
       const newCode = await generateCodeAI(
@@ -911,6 +917,29 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
                   <select value={selectedArtDirection} onChange={(e) => setSelectedArtDirection(e.target.value)} className="w-full bg-[#1a1a1a] border border-white/10 rounded-none px-3 py-2 text-sm text-white outline-none focus:border-blue-500/50">
                     {ART_DIRECTIONS.map(art => <option key={art.id} value={art.id}>{art.name}</option>)}
                   </select>
+                </div>
+
+                {/* AI Engine — which model builds the storefront. */}
+                <div className="space-y-2">
+                  <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles size={11} className="text-blue-500" /> AI Engine
+                  </h3>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {AI_PROVIDERS.map(p => (
+                      <button
+                        key={p.id}
+                        type="button"
+                        onClick={() => setAiProvider(p.id)}
+                        title={p.blurb}
+                        className={`flex flex-col items-center justify-center gap-0.5 rounded-none border px-2 py-2 text-xs font-bold transition-all ${aiProvider === p.id ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-white/10 bg-[#1a1a1a] text-white/50 hover:text-white hover:border-white/20'}`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-white/30 leading-tight">
+                    {AI_PROVIDERS.find(p => p.id === aiProvider)?.blurb}
+                  </p>
                 </div>
 
                 {/* Layout Blueprint */}
