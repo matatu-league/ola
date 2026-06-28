@@ -9,11 +9,14 @@ import {
 } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
+import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl } from '@/lib/aiProvider';
 
 // --- CONFIG & UTILITIES ---
+// Template text generation is provider-switchable (Gemini / DeepSeek v4) via
+// env — see @/lib/aiProvider. This key is only used for the lightweight inline
+// text rewrites in Visual Edit mode (always Gemini).
 const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
-const TEXT_MODEL_ID = 'gemini-3.5-flash';
-const AI_IMAGE_MODEL = process.env.NEXT_PUBLIC_AI_IMAGE_MODEL || 'gemini-3.1-flash-image-preview';
+const TEXT_MODEL_ID = process.env.NEXT_PUBLIC_AI_TEXT_MODEL || 'gemini-3.5-flash';
 
 // Replace only the FIRST exact occurrence of `a` with `b` in `src`. Used by the
 // visual editor to map a click-to-edit change back to the template source. If
@@ -23,28 +26,6 @@ const replaceFirst = (src, a, b) => {
   if (!a) return src;
   const i = src.indexOf(a);
   return i === -1 ? src : src.slice(0, i) + b + src.slice(i + a.length);
-};
-
-// Text-to-image via Gemini; returns a data URL (or null).
-const generateImageDataUrl = async (prompt, aspectRatio = '16:9') => {
-  const base = process.env.NEXT_PUBLIC_AI_IMAGE_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/models';
-  const res = await fetch(`${base}/${AI_IMAGE_MODEL}:generateContent?key=${geminiApiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio } },
-    }),
-  });
-  const data = await res.json();
-  const part = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-  return part?.inlineData ? `data:${part.inlineData.mimeType};base64,${part.inlineData.data}` : null;
-};
-
-// Browser-side: data URL → File (for Firebase upload).
-const dataUrlToFile = async (dataUrl, filename) => {
-  const blob = await (await fetch(dataUrl)).blob();
-  return new File([blob], filename, { type: blob.type || 'image/png' });
 };
 
 // Injected into the preview iframe in Visual Edit mode. Plain JS (no JSX). Makes
@@ -94,21 +75,8 @@ const EDITOR_BRIDGE = `
 })();
 `;
 
-const fetchWithRetry = async (url, options, retries = 5) => {
-  for (let i = 0; i <= retries; i++) {
-    try {
-      const res = await fetch(url, options);
-      if (res.ok) return res.json();
-      if (i === retries) throw new Error(`API Error: ${res.status}`);
-    } catch (err) {
-      if (i === retries) throw err;
-    }
-    await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
-  }
-};
-
-const safeExtractCode = (apiResult) => {
-  const text = apiResult?.candidates?.[0]?.content?.parts?.[0]?.text;
+// Clean raw model text into bare JSX: strip markdown fences and stray exports.
+const cleanTemplateText = (text) => {
   if (!text) throw new Error('Empty or blocked response from AI.');
   let cleanCode = text.replace(/```(?:jsx|javascript|js|react|html)?\n?/gi, '').replace(/```/gi, '').trim();
   cleanCode = cleanCode.replace(/export\s+default\s+[a-zA-Z0-9_]+;?/gi, '');
@@ -182,8 +150,8 @@ ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their curr
 - Business type: ${bt}${st ? ` (service type: ${st})` : ''}
 - About / description: ${business.description || '(none provided — infer from the industry)'}
 - Contact: ${business.contactEmail || ''} ${business.contactPhone || ''}
-- Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src) and match the site palette to it` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
-- Banner: ${business.bannerBase64 ? `attached below as an image at URL "${business.banner}" — use it as the hero background (src = that URL)` : (business.banner ? `available at "${business.banner}" — use as the hero background src` : '(none — render a tasteful hero placeholder using the brand color and an industry-appropriate gradient)')}
+- Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src). The logo is the SOLE creative anchor: derive the entire palette, mood, typography pairing and art direction FROM it so the whole design feels inspired by and built around this logo` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src and design the palette around it` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
+- Hero / section imagery: there is NO uploaded banner. For the hero background and every other photographic image, use REAL Unsplash photos via deterministic source URLs of the form \`${unsplashSourceUrl('RELEVANT KEYWORDS', 1600, 900)}\` — replace the keywords with terms specific to THIS business/industry (e.g. for a hotel: "luxury hotel lobby", for a salon: "modern hair salon"). Vary the keywords per section so images differ.
 
 === WHAT TO BUILD ===
 ${siteBrief}
@@ -191,11 +159,11 @@ ${siteBrief}
 CRITICAL ARCHITECTURE RULES (STRICT COMPLIANCE):
 1. BREAK THE GRID: avoid a boring Bootstrap-style grid. Use overlapping elements, asymmetry, bold typography, advanced Tailwind.
 2. UNIQUE CARDS: invent fresh ways to present the items relevant to THIS business (rooms, services, events, or products — per the brief above).
-3. IMAGES: use \`object-cover\`; product/room/service images should be a clean aspect ratio. ALWAYS include inline SVG fallbacks for missing images (when \`!item.image\`).
+3. IMAGES: use \`object-cover\`; product/room/service images should be a clean aspect ratio. ALWAYS include inline SVG fallbacks for missing images (when \`!item.image\`). For ALL decorative / hero / gallery / section photography use REAL Unsplash source URLs (\`https://source.unsplash.com/<width>x<height>/?<industry keywords>\`). NEVER invent fake/placeholder/lorem image URLs and NEVER use AI-generated image services — only Unsplash.
 4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.
 5. SEARCH/FILTER: where a list of items is shown, implement working local search/filter with React state.
 6. DARK FOOTER: include a dark footer (#050505 or similar) with the contact details, location, and legal links.
-7. LOGO & BANNER: use the storeLogo and storeBanner props when present; otherwise render the placeholders described in the brief. Make them feel bespoke to ${business.storeName || 'the store'}.
+7. LOGO-DRIVEN DESIGN: use the storeLogo prop in the header (and footer) when present, and let it drive the whole look — palette, accents, and overall feel must be inspired by the logo. For the hero/background imagery use Unsplash photos (rule 3), NOT a storeBanner. Make the design feel bespoke to ${business.storeName || 'the store'}.
 8. NO RAW JS COMMENTS IN JSX: NEVER use single-line // comments inside the JSX return block — they render as visible text. Use {/* ... */} only.
 
 DESIGN SYSTEM:
@@ -217,7 +185,7 @@ OUTPUT RULES:
    Example: \`const SearchIcon = ({size=24}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;\`
 4. DO NOT import React or any module. \`useState\`, \`useEffect\`, \`useMemo\`, \`useRef\` are available globally.
 5. Use Tailwind CSS utility classes exclusively.
-6. If a relevant data array (products/services) is empty, invent 4–8 realistic sample items appropriate to a ${categoryContext || business.industry || 'business'} so the page never looks empty.
+6. NO DUMMY DATA: render the items strictly from the \`products\`/\`services\` props (these are injected with the store's REAL data at runtime). Do NOT hardcode or fabricate fake sample products, fake names, fake prices, or dummy catalog entries in the source. If a list is empty, render a tasteful empty-state / "coming soon" block (with an on-brand Unsplash hero image per rule 3) instead of inventing items.
 
 DATA CONTRACT (props passed to App):
   storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor
@@ -228,35 +196,17 @@ On clicking a product, redirect with: \`window.top.location.href = "/p/" + id;\`
 ${promptText ? `USER DIRECTIVE / EDIT REQUEST: "${promptText}"` : ''}
 `;
 
-  const contents = [{ parts: [{ text: prompt }] }];
+  // Attach the store's REAL logo as inline image bytes so the model can "see"
+  // it and build the entire palette/identity around it. There is NO banner —
+  // hero/section imagery comes from Unsplash (see prompt). An optional user
+  // style reference can also be attached.
+  const images = [];
+  if (business.logoBase64) images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
+  if (imageBase64 && imageMimeType) images.push({ mimeType: imageMimeType, data: imageBase64 });
 
-  // Attach the store's REAL logo so the model can render it and pull its
-  // palette, then the banner for art direction. These are actual image bytes,
-  // not URLs — the model can decode and "see" them.
-  if (business.logoBase64) {
-    contents[0].parts.push({ text: "ATTACHED IMAGE — the store's ACTUAL LOGO. Render this exact logo in the header (and footer), and draw the site's accent palette from it." });
-    contents[0].parts.push({ inlineData: { mimeType: business.logoMime || 'image/png', data: business.logoBase64 } });
-  }
-  if (business.bannerBase64) {
-    contents[0].parts.push({ text: "ATTACHED IMAGE — the store's hero BANNER. Use it as the hero background / art direction reference." });
-    contents[0].parts.push({ inlineData: { mimeType: business.bannerMime || 'image/png', data: business.bannerBase64 } });
-  }
-
-  if (imageBase64 && imageMimeType) {
-    contents[0].parts.push({ text: 'ATTACHED IMAGE — an optional style/design reference from the user.' });
-    contents[0].parts.push({ inlineData: { mimeType: imageMimeType, data: imageBase64 } });
-  }
-
-  const result = await fetchWithRetry(
-    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`,
-    {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ contents, generationConfig: { temperature: 1.0 } }),
-    }
-  );
-
-  return safeExtractCode(result);
+  // Provider-switchable (Gemini / DeepSeek v4) — chosen via env in @/lib/aiProvider.
+  const text = await generateTemplateText(prompt, images);
+  return cleanTemplateText(text);
 };
 
 // --- DATA LISTS ---
@@ -498,7 +448,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
     // Identity reflects THIS store so the preview looks like the real business.
     storeName:    storeProfile.title || "",
     storeLogo:    storeProfile.logo || "",
-    storeBanner:  storeProfile.banner || "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2000",
+    storeBanner:  storeProfile.banner || unsplashSourceUrl(storeProfile.industry || 'modern storefront business', 2000, 1000),
     contactEmail: storeProfile.contactEmail || "",
     contactPhone: storeProfile.contactPhone || "+1 (555) 123-4567",
     businessType: storeProfile.businessType || "products",
@@ -690,17 +640,17 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
     } finally { setEditBusy(false); }
   };
 
+  // Swap the image for a real Unsplash photo matching the user's description
+  // (or the store's industry). All template imagery is real photography.
   const handleImageGenerateReplace = async () => {
     setEditBusy(true);
     try {
-      const prompt = `A high-quality, professional website image for "${storeProfile.title || 'this business'}" (${storeProfile.industry || 'general'} business). ${imgOverview.trim() || 'Tasteful, on-brand, no text.'} No text or words in the image. High resolution.`;
-      const dataUrl = await generateImageDataUrl(prompt, '16:9');
-      if (!dataUrl) throw new Error('No image returned');
-      const file = await dataUrlToFile(dataUrl, `tpl-${Date.now()}.png`);
-      const url = await uploadFileToFirebase(file, 'stores/template-images');
+      const query = imgOverview.trim() || storeProfile.industry || storeProfile.title || 'business';
+      const url = await searchUnsplashImage(query, 'landscape');
+      if (!url) throw new Error('No image found');
       applyImageSrc(url);
     } catch (e) {
-      setToastMsg(`⚠️ Generation failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+      setToastMsg(`⚠️ Image search failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
     } finally { setEditBusy(false); }
   };
 
@@ -724,7 +674,6 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
     [!storeProfile.title, 'store name'],
     [!storeProfile.description, 'description'],
     [!storeProfile.logo, 'logo'],
-    [!storeProfile.banner, 'banner'],
     [!dialogThemeColor, 'brand color'],
     [!storeProfile.contactEmail && !storeProfile.contactPhone, 'contact info'],
   ].filter(([missing]) => missing).map(([, label]) => label);
@@ -749,19 +698,17 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
       businessType: storeProfile.businessType || 'products',
       serviceType:  storeProfile.serviceType || null,
       logo:         storeProfile.logo || '',
-      banner:       storeProfile.banner || '',
       contactEmail: storeProfile.contactEmail || '',
       contactPhone: storeProfile.contactPhone || '',
     };
 
     setLoading(true);
     try {
-      // Attach the actual brand assets as inline image data so the model can
-      // SEE the real logo/banner and design around them (palette, placement).
+      // Attach the actual logo as inline image data so the model can SEE the
+      // real brand mark and design the whole palette/identity around it. No
+      // banner — hero imagery comes from Unsplash.
       const logoImg = await urlToInlineImage(business.logo);
       if (logoImg) { business.logoBase64 = logoImg.data; business.logoMime = logoImg.mimeType; }
-      const bannerImg = await urlToInlineImage(business.banner);
-      if (bannerImg) { business.bannerBase64 = bannerImg.data; business.bannerMime = bannerImg.mimeType; }
 
       const advancedConfig = {
         bgStyle: bgStyle === 'auto' ? '✨ Let AI Decide based on vibe' : bgStyle,
@@ -1135,7 +1082,7 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
                       rows={2}
                       value={imgOverview}
                       onChange={(e) => setImgOverview(e.target.value)}
-                      placeholder="Describe a new image to generate (optional)…"
+                      placeholder="Describe the image to find on Unsplash (optional)…"
                       className="w-full bg-[#1a1a1a] border border-white/10 rounded-none px-2.5 py-1.5 text-[12px] text-white focus:outline-none focus:border-blue-500/50 resize-none mb-2"
                     />
                     <button
@@ -1144,7 +1091,7 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
                       onClick={handleImageGenerateReplace}
                       className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
                     >
-                      {editBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Generate with AI
+                      {editBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Find on Unsplash
                     </button>
                   </div>
                 </div>
