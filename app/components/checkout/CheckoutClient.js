@@ -9,6 +9,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 import AccountStep  from './AccountStep';
+import { setWildcardCookie } from '@/lib/cookies';
 import { useUser }  from '@/contexts/UserContext';
 import AddressStep  from './AddressStep';
 import ShippingStep from './ShippingStep';

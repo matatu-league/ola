@@ -100,18 +100,45 @@ export function publicStoreShape(store) {
   };
 }
 
-/** Normalise a Product into the storefront contract `{ id, name, price, image, category }`. */
+/**
+ * Normalise a Product into the storefront contract. Core fields stay
+ * `{ id, name, price, image, category }`; we ALSO carry the richer fields a
+ * detailed PDP + the shared system cart need (images gallery, description,
+ * specifications, variants, storeId, moq, compareAtPrice) so the AI template can
+ * render specs/variants and build correct `cart_items` for the real checkout.
+ */
 export function formatProduct(p) {
   let price = 0;
   if (typeof p.price === 'number') price = p.price;
   else if (typeof p.price === 'string') price = parseFloat(p.price.replace(/[^0-9.-]+/g, '')) || 0;
 
+  const images = Array.isArray(p.images) && p.images.length
+    ? p.images.filter(Boolean)
+    : (p.image ? [p.image] : []);
+
+  let comparePrice = 0;
+  if (typeof p.compareAtPrice === 'number') comparePrice = p.compareAtPrice;
+  else if (typeof p.compareAtPrice === 'string') comparePrice = parseFloat(p.compareAtPrice.replace(/[^0-9.-]+/g, '')) || 0;
+
   return {
     id:       (p._id || p.id || '').toString(),
     name:     p.title || p.name || '',
     price:    Number.isNaN(price) ? 0 : price,
-    image:    p.image || p.images?.[0] || '',
+    image:    images[0] || '',
     category: p.storeCategoryId?.name || p.categoryId?.name || null,
+
+    // ── Richer fields for the detailed PDP + system-cart handoff ──────────────
+    storeId:        (p.storeId || '').toString() || null,
+    title:          p.title || p.name || '',
+    images,
+    description:    p.description || '',
+    specifications: Array.isArray(p.attributes)
+      ? p.attributes.filter(a => a && a.name).map(a => ({ name: a.name, value: a.value }))
+      : [],
+    variants:       Array.isArray(p.variants) ? p.variants : [],
+    moq:            p.moq ?? null,
+    stock:          p.stock ?? null,
+    compareAtPrice: comparePrice || null,
   };
 }
 

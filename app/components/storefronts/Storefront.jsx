@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
+import { olaBridgeScript } from '@/lib/storefrontBridge';
 
 // --- Mock Components for Missing Variants ---
 const ClassicStore = ({ store }) => <div className="p-8 text-center"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Classic Store'}</h1><p>Classic Layout Preview</p></div>;
@@ -42,11 +43,31 @@ const CustomAIStore = ({ store }) => {
         numericPrice = parseFloat(cleanString);
       }
 
+      const images = Array.isArray(p.images) && p.images.length
+        ? p.images.filter(Boolean)
+        : (p.image ? [p.image] : []);
+
+      const id = (p._id || p.id || `p-${i}`).toString();
+
       return {
-        id: (p._id || p.id || `p-${i}`).toString(),
+        id,
+        _id: id,
         name: p.title || p.name,
+        title: p.title || p.name,
         price: isNaN(numericPrice) ? 0 : numericPrice,
-        image: p.image || p.images?.[0] || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=500&auto=format&fit=crop'
+        compareAtPrice: p.compareAtPrice ?? null,
+        image: images[0] || 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?w=500&auto=format&fit=crop',
+        images,
+        description: p.description || '',
+        // Specifications: support both the already-normalised `specifications`
+        // and the raw product `attributes` (name/value pairs from the DB).
+        specifications: Array.isArray(p.specifications) ? p.specifications
+          : (Array.isArray(p.attributes) ? p.attributes.filter(a => a && a.name).map(a => ({ name: a.name, value: a.value })) : []),
+        variants: Array.isArray(p.variants) ? p.variants : [],
+        moq: p.moq ?? null,
+        stock: p.stock ?? null,
+        // Needed so the template can build a correct system cart item.
+        storeId: (p.storeId || store._id || '').toString() || null,
       };
     });
 
@@ -58,6 +79,7 @@ const CustomAIStore = ({ store }) => {
     // Map the actual store data from your MongoDB document to the AI props
     const dynamicStoreData = {
       storeName: store.title || "My Store",
+      storeId: (store._id || "").toString(),
       storeLogo: store.logo || "",
       storeBanner: store.banner || (store.bannerImages && store.bannerImages[0]) || "",
       contactEmail: store.contact?.email || "",
@@ -154,7 +176,11 @@ const CustomAIStore = ({ store }) => {
             window.redirectToProduct = function(id) {
               window.top.location.href = "https://ola.ug/products/" + id;
             };
-            
+
+            // ── System bridge: cart (shared localStorage), auth cookie, and the
+            //    real themed /checkout · /cart · /p/<id> handoff. window.__OLA__.
+            ${olaBridgeScript({ storeId: (store._id || '').toString(), live: true })}
+
             const dynamicStoreData = ${JSON.stringify(dynamicStoreData)};
             try {
               ${processedCode}
