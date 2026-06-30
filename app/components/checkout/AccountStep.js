@@ -2,7 +2,10 @@
 
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
-export default function AccountStep({ activeStep, user, isAuthLoading, onGoogleLogin }) {
+export default function AccountStep({
+  activeStep, user, isAuthLoading, onGoogleLogin,
+  needsPhone = false, phoneValue = '', setPhoneValue, onSavePhone, phoneSaving = false, phoneError = '',
+}) {
   const isDone = activeStep > 1;
   const isActive = activeStep === 1;
 
@@ -18,8 +21,38 @@ export default function AccountStep({ activeStep, user, isAuthLoading, onGoogleL
         </h3>
       </div>
 
+      {/* Active + first-time user: collect a phone number before continuing */}
+      {isActive && needsPhone && (
+        <div className="p-5 md:p-6">
+          <h4 className="text-[15px] font-bold text-[var(--s-text,#161823)] mb-1.5 tracking-tight">Add your phone number</h4>
+          <p className="text-[12px] text-[var(--s-muted,#8A8B91)] mb-4 font-medium">
+            We use it to coordinate delivery and send order updates. Just once — we'll remember it next time.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <input
+              type="tel"
+              inputMode="tel"
+              autoFocus
+              value={phoneValue}
+              onChange={(e) => setPhoneValue?.(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') onSavePhone?.(); }}
+              placeholder="e.g. +256 7XX XXX XXX"
+              className="flex-1 bg-white border border-[var(--s-border,#E3E3E4)] focus:border-[var(--s-text,#161823)] outline-none rounded-sm px-3.5 py-2.5 text-[14px] text-[var(--s-text,#161823)] transition-colors"
+            />
+            <button
+              onClick={() => onSavePhone?.()}
+              disabled={phoneSaving}
+              className="inline-flex items-center justify-center gap-2 bg-[var(--s-primary,#161823)] text-[var(--s-on-primary,#fff)] hover:opacity-90 rounded-sm px-5 py-2.5 text-[13px] font-bold transition-opacity disabled:opacity-50 tracking-tight"
+            >
+              {phoneSaving ? <Loader2 size={16} className="animate-spin" /> : 'Save & continue'}
+            </button>
+          </div>
+          {phoneError && <p className="text-[12px] text-[#EF4444] font-semibold mt-2">{phoneError}</p>}
+        </div>
+      )}
+
       {/* Active: show login */}
-      {isActive && (
+      {isActive && !needsPhone && (
         <div className="p-5 md:p-6">
           <h4 className="text-[15px] font-bold text-[var(--s-text,#161823)] mb-1.5 tracking-tight">Sign in to checkout</h4>
           <p className="text-[12px] text-[var(--s-muted,#8A8B91)] mb-5 font-medium">

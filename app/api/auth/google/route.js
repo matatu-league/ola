@@ -6,7 +6,8 @@ import Store from '@/models/Store';
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { id, name, email, avatar } = body; // 🔴 Removed phoneNumber
+    // `role` lets the caller mark intent (e.g. checkout sign-in → 'buyer').
+    const { id, name, email, avatar, phoneNumber, role } = body;
 
     if (!id || !email) {
       return NextResponse.json({ success: false, message: 'Missing required fields' }, { status: 400 });
@@ -38,15 +39,19 @@ export async function POST(request) {
       }
 
     } else {
-      // 3. Create a brand new user
+      // 3. Create a brand new user. First-time sign-ins (e.g. from a storefront
+      //    checkout) are BUYERS — a user only becomes a 'seller' when they
+      //    actually create a store via onboarding. Honour an explicit role only
+      //    when it's a valid one; otherwise default to buyer.
+      const newRole = ['buyer', 'seller', 'admin'].includes(role) ? role : 'buyer';
       user = await User.create({
         googleId: id,
         email: email,
         displayName: name || 'Google User',
         avatarUrl: avatar || '',
-        phoneNumber: '', // 🔴 Empty for now
+        phoneNumber: phoneNumber || '',
         authProviders: ['google'],
-        role: 'seller', 
+        role: newRole,
         status: 'active'
       });
     }
@@ -62,7 +67,8 @@ export async function POST(request) {
         name: user.displayName,
         email: user.email,
         avatar: user.avatarUrl,
-        phoneNumber: user.phoneNumber || null, 
+        phoneNumber: user.phoneNumber || null,
+        role: user.role || 'buyer',
         hasStore: !!store,
         storeDomain: store ? store.domain : null
       }
