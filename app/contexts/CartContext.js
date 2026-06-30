@@ -43,56 +43,73 @@ export function CartProvider({ children }) {
   const [cartItems,    setCartItemsState] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen]  = useState(false);
   const [isSyncing,    setIsSyncing]     = useState(false);
+  // True once the first load (localStorage + backend attempt) has settled. UIs
+  // (e.g. checkout) MUST wait for this before deciding the cart is "empty" —
+  // otherwise they flash an empty state during the hydration gap.
+  const [isHydrated,   setIsHydrated]    = useState(false);
 
   const syncTimerRef = useRef(null);
   const hasMergedRef = useRef(false);
 
-  // ── Load cart on mount ────────────────────────────────────────────────────
-  useEffect(() => {
-    const loadCart = async () => {
-      // Instant load from localStorage
-      try {
-        const local = localStorage.getItem('cart_items');
-        if (local) setCartItemsState(JSON.parse(local));
-      } catch (_) {}
+  // ── Load cart: instant from localStorage, then reconcile with the backend ──
+  // Re-runs when the identity changes (guest → logged-in) so a returning user
+  // sees their server-side cart on the same (or any) vendor site.
+  const loadCart = useCallback(async () => {
+    try {
+      const local = localStorage.getItem('cart_items');
+      if (local) setCartItemsState(JSON.parse(local));
+    } catch (_) {}
 
-      // Then sync from backend
-      // user comes from useUser() context above
-      const sessionId = getSessionId();
-      const query     = user ? `userId=${user.id}` : `sessionId=${sessionId}`;
+    const sessionId = getSessionId();
+    const query     = user ? `userId=${user.id}` : `sessionId=${sessionId}`;
 
-      try {
-        const res  = await fetch(`/api/cart?${query}`);
-        const data = await res.json();
-        if (data.success && data.data?.items?.length) {
-          const backendItems = data.data.items.map(item => ({
-            id:              `${item.product._id}-${JSON.stringify(item.variants || {})}`,
-            product:         item.product,
-            quantity:        item.quantity,
-            priceAtAddition: item.priceAtAddition,
-            variants:        item.variants || {},
-          }));
-          setCartItemsState(prev => mergeItems(prev, backendItems));
-        }
-      } catch (_) {
-        // Offline — localStorage only
+    try {
+      const res  = await fetch(`/api/cart?${query}`);
+      const data = await res.json();
+      if (data.success && data.data?.items?.length) {
+        const backendItems = data.data.items.map(item => ({
+          id:              `${item.product._id}-${JSON.stringify(item.variants || {})}`,
+          product:         item.product,
+          quantity:        item.quantity,
+          priceAtAddition: item.priceAtAddition,
+          variants:        item.variants || {},
+        }));
+        setCartItemsState(prev => {
+          const merged = mergeItems(prev, backendItems);
+          // Persist the reconciled cart so a full-page handoff (e.g. storefront
+          // → /checkout) reads a complete cart and never an empty one.
+          try { localStorage.setItem('cart_items', JSON.stringify(merged)); } catch (_) {}
+          return merged;
+        });
       }
-    };
+    } catch (_) {
+      // Offline — localStorage only
+    } finally {
+      setIsHydrated(true);
+    }
+  }, [user?.id]);
 
-    loadCart();
-  }, []);
+  useEffect(() => { loadCart(); }, [loadCart]);
 
-  // ── Merge guest cart into user cart on login ──────────────────────────────
+  // ── Merge the guest cart into the user cart when they log in, THEN reload ──
+  // Depends on the user id so it fires on the login transition (the checkout
+  // case), not only on first mount — otherwise the guest cart is orphaned and
+  // the items "disappear" after sign-in.
   useEffect(() => {
-    if (!user || hasMergedRef.current) return;
+    if (!user?.id || hasMergedRef.current) return;
     hasMergedRef.current = true;
     const sessionId = getSessionId();
-    fetch('/api/cart/merge', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ userId: user.id, sessionId }),
-    }).catch(() => {});
-  }, []);
+    (async () => {
+      try {
+        await fetch('/api/cart/merge', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ userId: user.id, sessionId }),
+        });
+      } catch (_) {}
+      loadCart(); // reflect the merged server cart in the UI
+    })();
+  }, [user?.id, loadCart]);
 
   // ── Debounced backend sync ────────────────────────────────────────────────
   const syncToBackend = useCallback((items) => {
@@ -176,6 +193,7 @@ export function CartProvider({ children }) {
       setCartItems,     // exposed for cart recovery page
       cartTotal,
       cartCount,
+      isHydrated,       // false until the first cart load settles (avoid empty flash)
       isDrawerOpen,
       isSyncing,
       addToCart,

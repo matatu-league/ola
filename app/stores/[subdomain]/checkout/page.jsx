@@ -7,6 +7,7 @@
  */
 import StoreThemeProvider from '@/components/storefronts/StoreThemeProvider';
 import CheckoutClient from '@/components/checkout/CheckoutClient';
+import CheckoutTopNav from '@/components/checkout/CheckoutTopNav';
 import { storeDomain } from '@/lib/domain';
 
 async function getStore(subdomain) {
@@ -31,8 +32,11 @@ export default async function StoreCheckoutPage({ params }) {
 
   return (
     <StoreThemeProvider store={store || {}}>
-      <div className="py-8" style={{ minHeight: '100vh', background: 'var(--s-bg)' }}>
-        <CheckoutClient />
+      <div style={{ minHeight: '100vh', background: 'var(--s-bg)' }}>
+        <CheckoutTopNav storeName={store?.title || 'Store'} storeLogo={store?.logo || ''} backHref="/" />
+        <div className="py-8">
+          <CheckoutClient />
+        </div>
       </div>
     </StoreThemeProvider>
   );

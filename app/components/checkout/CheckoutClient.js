@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
-import { ShoppingCart, AlertCircle } from 'lucide-react';
+import { ShoppingCart, AlertCircle, Loader2 } from 'lucide-react';
 
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
@@ -34,13 +34,19 @@ const googleProvider = new GoogleAuthProvider();
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function CheckoutClient() {
   const router = useRouter();
-  const { cartItems, cartTotal, clearCart } = useCart();
+  const { cartItems, cartTotal, clearCart, isHydrated } = useCart();
 
   // ── Wizard state
   const [activeStep,    setActiveStep]    = useState(1);
   const [isSubmitting,  setIsSubmitting]  = useState(false);
   const [generalError,  setGeneralError]  = useState('');
   const [isAuthLoading, setIsAuthLoading] = useState(false);
+
+  // ── First-time sign-in: collect a phone number before continuing ──────────
+  const [needsPhone,  setNeedsPhone]  = useState(false);
+  const [phoneValue,  setPhoneValue]  = useState('');
+  const [phoneSaving, setPhoneSaving] = useState(false);
+  const [phoneError,  setPhoneError]  = useState('');
 
   // ── Config from backend
   const [shippingOptions,  setShippingOptions]  = useState([]);
@@ -116,18 +122,67 @@ export default function CheckoutClient() {
           id: firebaseUser.uid, name: firebaseUser.displayName,
           email: firebaseUser.email, avatar: firebaseUser.photoURL,
           phoneNumber: firebaseUser.phoneNumber,
+          role: 'buyer', // signing in from checkout → this is a shopper
         }),
       });
       const data = await res.json();
       if (data.success) {
-        const session = { id: data.user.id, name: data.user.name, email: data.user.email, avatar: data.user.avatar, phoneNumber: data.user.phoneNumber || '' };
+        const session = {
+          id: data.user.id, name: data.user.name, email: data.user.email,
+          avatar: data.user.avatar, phoneNumber: data.user.phoneNumber || '',
+          role: data.user.role || 'buyer', hasStore: data.user.hasStore,
+        };
         setWildcardCookie('user_session', encodeURIComponent(JSON.stringify(session)));
         refreshUser(); // re-read cookie into UserContext
         setShipping(p => ({ ...p, fullName: session.name, phoneNumber: session.phoneNumber || p.phoneNumber }));
-        setActiveStep(2);
+
+        // First-time buyers usually have no phone yet — require it before
+        // continuing (we need it for delivery + order contact).
+        if (!session.phoneNumber) {
+          setPhoneValue(firebaseUser.phoneNumber || '');
+          setNeedsPhone(true);
+        } else {
+          setActiveStep(2);
+        }
       }
     } catch (e) { console.error(e); }
     finally { setIsAuthLoading(false); }
+  };
+
+  // ── Save the phone for a first-time user, persist to the session, continue ──
+  const handleSavePhone = async () => {
+    const phone = phoneValue.trim();
+    // Lightweight phone check — at least 9 digits, allow + and spaces.
+    if (!phone || phone.replace(/[^0-9]/g, '').length < 9) {
+      setPhoneError('Please enter a valid phone number.');
+      return;
+    }
+    if (!user?.id) { setNeedsPhone(false); setActiveStep(2); return; }
+
+    setPhoneSaving(true);
+    setPhoneError('');
+    try {
+      const res  = await fetch('/api/user/phone', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ userId: user.id, phoneNumber: phone }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Could not save your phone number.');
+
+      // Persist the phone into the shared session cookie so it sticks across
+      // pages / the vendor site, and prefill the shipping form.
+      const nextSession = { ...(user || {}), id: user.id, phoneNumber: data.phoneNumber || phone };
+      setWildcardCookie('user_session', encodeURIComponent(JSON.stringify(nextSession)));
+      refreshUser();
+      setShipping(p => ({ ...p, phoneNumber: p.phoneNumber || data.phoneNumber || phone }));
+      setNeedsPhone(false);
+      setActiveStep(2);
+    } catch (err) {
+      setPhoneError(err.message || 'Could not save your phone number. Please try again.');
+    } finally {
+      setPhoneSaving(false);
+    }
   };
 
   // ── Validation
@@ -283,7 +338,19 @@ export default function CheckoutClient() {
     }
   };
 
-  // ── Empty cart
+  // ── Loading: wait for the cart to hydrate before judging it empty. Without
+  //    this guard a fresh navigation (e.g. storefront → /checkout) flashes the
+  //    empty state during the localStorage/backend load and feels unstable.
+  if (!isHydrated && cartItems.length === 0 && !isSubmitting) {
+    return (
+      <div className="max-w-[1200px] mx-auto px-4 py-24 flex flex-col items-center text-center bg-white">
+        <Loader2 size={28} className="animate-spin text-[var(--s-muted,#8A8B91)] mb-4" />
+        <p className="text-[13px] text-[var(--s-muted,#8A8B91)] font-medium">Loading your cart…</p>
+      </div>
+    );
+  }
+
+  // ── Empty cart (only once we KNOW it's empty)
   if (cartItems.length === 0 && !isSubmitting) {
     return (
       <div className="max-w-[1200px] mx-auto px-4 py-20 flex flex-col items-center text-center bg-white">
@@ -322,6 +389,12 @@ export default function CheckoutClient() {
             user={user}
             isAuthLoading={isAuthLoading}
             onGoogleLogin={handleGoogleLogin}
+            needsPhone={needsPhone}
+            phoneValue={phoneValue}
+            setPhoneValue={setPhoneValue}
+            onSavePhone={handleSavePhone}
+            phoneSaving={phoneSaving}
+            phoneError={phoneError}
           />
 
           <AddressStep
