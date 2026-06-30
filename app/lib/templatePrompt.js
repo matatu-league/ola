@@ -71,10 +71,10 @@ export const buildTemplatePrompt = ({
 
   let siteBrief;
   if (bt === 'products')      siteBrief = productBrief;
-  else if (isBoth)           siteBrief = `This business offers BOTH ${st || 'services'} AND physical products. Structure the site as a multi-view single-page app driven by a top-level \`view\` state (see the NAVIGATION & ROUTING CONTRACT):
+  else if (isBoth)           siteBrief = `This business offers BOTH ${st || 'services'} AND physical products. Structure the site as a multi-view single-page app driven by the hash router (see the SINGLE-PAGE, HASH-ROUTED ARCHITECTURE):
    • HOME / landing view (default) — leads with the ${st || 'service'} experience: ${SITE_BRIEFS[st] || SITE_BRIEFS.generic} The services/menu list is the PRIMARY content of the home page; do not bury it under a product grid.
-   • A DEDICATED "Shop" / "Products" view — reached from a clearly-labelled top-nav item. This is its own page (toggled via \`setView('products')\`), rendering the full PRODUCT grid (image, name, price, working search/filter, "Add to Cart"). Products are NOT shown on the services home page — they live on this dedicated products view.
-   • The top nav must let buyers move between the Services home and the Products view (and the logo / a "Home" item returns to the services home). Clicking a product card opens its real detail route \`/p/{id}\`.`;
+   • A DEDICATED "Shop" / "Products" view — reached from a clearly-labelled top-nav item. This is its own hash route (\`#/shop\`), rendering the full PRODUCT grid (image, name, price, working search/filter, "Add to Cart"). Products are NOT shown on the services home page — they live on this dedicated shop view.
+   • The top nav must let buyers move between the Services home (\`#/\`) and the Shop (\`#/shop\`) (and the logo / a "Home" item returns to the services home). Clicking a product card opens its in-page detail view \`#/product/<id>\` (see the hash-router contract below).`;
   else                        siteBrief = SITE_BRIEFS[st] || SITE_BRIEFS.generic;
 
   const isEditing = isEditingExplicit || (promptText && currentCode && promptText.toLowerCase().includes('change'));
@@ -87,9 +87,6 @@ export const buildTemplatePrompt = ({
   const ctaRule = isProductOnly
     ? `4. PRIMARY CTA: "Add to Cart" on every product card, plus a cart icon with a live count and a checkout CTA. Use ONLY e-commerce wording — never "Book"/"Appointment"/"Reservation"/"Quote".`
     : `4. PRIMARY CTAs: use the correct call to action for the business — "Book Now"/"Book Appointment"/"Buy Tickets"/"Request Booking" for services, "Add to Cart" for products.`;
-  const navPagesExample = isProductOnly
-    ? `e.g. Shop/Home, Categories, Cart, About, Contact`
-    : `e.g. Home/Services, Products/Shop, About, Contact`;
   const bookingRule = isProductOnly
     ? ''
     : `\n5. Booking/quote CTAs for services must open a real on-page booking form/modal (built with React state) — never link out to a non-existent route.`;
@@ -178,21 +175,55 @@ DATA CONTRACT (props passed to App):
   - \`products\`: array of { id, name, price, image }. \`services\`: array of { id, name, price, image, duration }. These arrive with the store's REAL data at runtime (and harmless sample data ONLY inside the builder preview). Treat both as possibly-empty.
   - \`apiBase\`: the store's own public storefront API base (e.g. "https://acme.ola.ug/api/storefront"). The \`products\`/\`services\` props are ALREADY provided for first paint, so do NOT block rendering on a fetch. You MAY use \`apiBase\` for progressive enhancement only — e.g. "Load more" pagination via \`fetch(apiBase + "/products?page=2&limit=24")\` → \`{ data: { products, pagination } }\`, or refreshing services via \`fetch(apiBase + "/services")\` → \`{ data: { services } }\`. If \`apiBase\` is empty, skip all fetching and rely solely on the props. Never invent other endpoints.
 
-=== NAVIGATION & ROUTING CONTRACT (PRODUCTION-READY — ABSOLUTELY NO GHOST LINKS) ===
-This component IS the entire storefront, rendered as ONE single page. It is NOT inside a router, so you must NOT invent page routes.
-1. MULTI-"PAGE" NAV = IN-COMPONENT VIEW STATE. Implement separate "pages" (${navPagesExample}) as a top-level \`const [view, setView] = useState('home')\` and conditionally render each section. Nav links call \`setView('...')\` (and may smooth-scroll). They are buttons, not anchors to fake URLs. Scroll to top on view change.
-2. THE ONLY REAL URLS you may navigate to (always via \`window.top.location.href\`) are EXACTLY these — nothing else exists:
-   - \`"/p/" + id\`  → a product's detail page (use when a PRODUCT card/button is clicked)
-   - \`"/cart"\`      → the cart page (use for "View Cart" / after add-to-cart)
-   - \`"/checkout"\`  → the checkout page (use for a "Checkout" CTA)
-3. NEVER emit a ghost / dead / placeholder / dummy link. Forbidden: \`href="#"\`, \`href="javascript:void(0)"\`, empty \`href\`, \`href="/about"\`, \`href="/services"\`, \`href="/products"\`, \`href="/login"\`, fabricated/example social-media URLs, or any \`onClick\` that does nothing. EVERY interactive element must do something real: \`setView(...)\`, smooth-scroll to an id that ACTUALLY exists on the page, mutate cart state, navigate to one of the 3 real URLs above, or open a real on-page modal/form you also render.
-4. If a conventional link has no real destination (e.g. Privacy, Terms, Instagram), render it as plain NON-interactive text (a \`<span>\`), not a clickable dead link.${bookingRule}
+=== SINGLE-PAGE, HASH-ROUTED ARCHITECTURE (FULL PACK — ONE PAGE, NO SERVER ROUTES, NO GHOST LINKS) ===
+This component IS the ENTIRE storefront — home, shop, PRODUCT DETAIL, CART and CHECKOUT all live inside this ONE component. It is NOT inside a router and you must NEVER navigate the browser to a server route (NO \`window.top.location\`, NO \`/p/...\`, \`/cart\`, \`/checkout\` page loads, NO \`<a href>\` to real paths). Everything is one page; you switch "pages"/tabs with state that is MIRRORED IN THE URL HASH, so views are deep-linkable, shareable, and survive refresh + browser back/forward.
+1. HASH ROUTER (build this FIRST, before the views):
+   - Hold a top-level route in state and keep it in sync with \`window.location.hash\`. Parse the hash into a \`{ view, id, tab }\` shape. These are the ONLY routes — invent no others:
+       \`#/\` → home · \`#/shop\` → product listing/shop · \`#/product/<id>\` → product detail · \`#/cart\` → cart · \`#/checkout\` → checkout (multi-step) · \`#/order\` → order confirmation/success.
+   - On mount read the current hash; add a \`hashchange\` listener inside a \`useEffect\` and derive state from it; CLEAN UP the listener on unmount. Navigate with a tiny helper (\`const go = (h) => { window.location.hash = h; };\`). Scroll to top on every route change.
+   - Header nav, product cards, cart and checkout buttons all navigate by changing the hash (plain \`<a href="#/shop">\` hash anchors are allowed and good for accessibility). They are real, working navigations — never dead.
+2. NO GHOST / DEAD LINKS. Forbidden: \`href="#"\`, \`href="javascript:void(0)"\`, empty \`href\`, server paths like \`/about\`/\`/login\`, fabricated social URLs, or any \`onClick\` that does nothing. Every interactive element must do something real: change the hash route, switch a tab, mutate cart state, smooth-scroll to an id that ACTUALLY exists, or open an on-page modal/form you also render. If a conventional link has no real destination (Privacy, Terms, Instagram), render it as plain NON-interactive \`<span>\` text — not a clickable dead link.
+3. TABS use the same approach (e.g. product-detail "Description / Specifications / Shipping" tabs; checkout steps). You MAY reflect the active tab in the hash (e.g. \`#/product/12?tab=specs\`) so it is deep-linkable; at minimum keep it in state.${bookingRule}
+
+=== PRODUCT DETAIL VIEW (#/product/<id>) — AS COMPLETE AS A REAL PDP ===
+Find the product by id from the \`products\` prop (if not found → a friendly "product not found" with a link back to \`#/shop\`). Build a rich, conversion-grade detail view:
+- BREADCRUMB: Home / Shop / <name> (crumbs navigate via hash; the current product crumb is plain text).
+- GALLERY: a large main image in a FIXED-ASPECT container (\`aspect-square\` or \`aspect-[4/5]\`, \`object-cover\`, \`overflow-hidden\`) plus a thumbnail strip when \`product.images\` has more than one — clicking a thumb swaps the main image (state) with an active-thumb ring. One image → no strip. No image → inline-SVG placeholder. Lazy-load + descriptive alt.
+- CORE: title, PRICE formatted with currency (e.g. \`USh \${Number(product.price||0).toLocaleString()}\`), optional compare-at/strikethrough + discount badge (only if such a field exists), and "Min. order"/MOQ if present.
+- DESCRIPTION with \`whitespace-pre-line\`; for very long copy add a "Read more / Read less" toggle.
+- OPTIONS: variant selectors (size/colour) ONLY if the product actually carries those fields; a QUANTITY stepper (min 1, sane max).
+- ACTIONS: a prominent "Add to Cart" (updates cart + toast + badge bump) and "Buy Now" (add then route to \`#/checkout\`). On mobile, a sticky bottom add-to-cart bar.
+- SECONDARY: tabbed Description / Specifications / Shipping; truthful generic trust badges only (secure checkout, delivery) — never fabricated claims/reviews.
+- RELATED: a "You may also like" grid mapping OTHER products (exclude the current id), each routing to its own \`#/product/<id>\`.
+
+=== CART VIEW (#/cart) ===
+List every line item: thumbnail, name (gracefully truncated — see EDGE CASES), chosen variant, unit price, a live quantity stepper, line total, and a remove control. Show subtotal + item count and a clear "Proceed to Checkout" → \`#/checkout\` plus "Continue shopping" → \`#/shop\`. Empty cart → tasteful empty state. Reducing a quantity to 0 removes the line; totals always recompute correctly.
+
+=== CHECKOUT VIEW (#/checkout) — FULL FLOW, RIGHT UP TO PAYMENT ===
+Reproduce a COMPLETE, WORKING, self-contained multi-step checkout (client-state-driven — do NOT call backends or invent APIs). Steps/tabs (reflected in state, optionally hash):
+  1. CONTACT — name, email, phone.
+  2. SHIPPING ADDRESS — full name, phone, address, city, optional delivery instructions.
+  3. DELIVERY METHOD — a few options (e.g. Standard / Express / Pickup), each with a fee that feeds the total.
+  4. PAYMENT METHOD — options suited to the market (Mobile Money / MTN / Airtel, Card, Cash on Delivery); collect only the minimal fields for the chosen method. This is a FRONT-END flow — never claim to actually charge a card.
+  5. PLACE ORDER — validate everything, then show ORDER CONFIRMATION (\`#/order\`): success message, a generated order reference, the items, the grand total — and clear the cart.
+Render a persistent ORDER SUMMARY (items, subtotal, shipping fee, grand total) that updates live as choices change. VALIDATE each step: required fields, basic email/phone checks, inline errors, and block progress until valid. Disable the pay button while "submitting" and show a spinner. It must be genuinely usable end-to-end.
+
+=== EDGE CASES — THINK THESE THROUGH BEFORE BUILDING EACH VIEW ===
+Pause and reason deliberately about resilience; the catalogue is REAL vendor data, so assume anything:
+- LONG TITLES/NAMES: never overflow or break layout — clamp (\`line-clamp-1/2\`) + \`break-words\`, keep card heights consistent (fixed image ratio + min-height), and add a \`title=\` attribute so the full text is still discoverable.
+- LONG DESCRIPTIONS: "Read more" toggle — never an unbounded wall of text.
+- MISSING DATA: no image → inline-SVG placeholder; no price → "Price on request"; no description → hide the block; no variants → no selector. Guard everything with optional chaining + fallbacks.
+- PRICES: thousands separators; coerce safely (\`Number(x||0)\`); never render \`NaN\`/\`undefined\`.
+- QUANTITIES: enforce min 1 on the PDP, allow 0-removal in the cart; recompute totals correctly.
+- EMPTY COLLECTIONS: empty shop, empty cart, no related products, no search results — each gets a tasteful empty state.
+- VERY MANY ITEMS: keep the grid performant and paginated / "load more" — don't render thousands at once.
+- NARROW SCREENS: every view (PDP gallery, cart rows, checkout form, order summary) must reflow cleanly at 375px.
 
 CRITICAL INTERACTION RULES:
-- Product click → \`window.top.location.href = "/p/" + id;\` (the themed, store-scoped product detail page).
-- "Add to Cart" must update a real in-component cart state (count/badge with a bump animation + toast) and may then offer "/cart".${interactionBookingLine}
+- Product card / "View" → route to \`#/product/<id>\` (the in-page detail view). NEVER load a server route.
+- "Add to Cart" updates real in-component cart state (count/badge with a bump animation + toast) and offers a route to \`#/cart\`. "Buy Now" → add then \`#/checkout\`.${interactionBookingLine}
 
-FINAL SELF-CHECK before you output (fix anything that fails): unique & on-brand (not a template) · accent color & radius applied consistently · motion present and reduced-motion-safe · fully responsive incl. working mobile menu · AA contrast & semantic/aria correct · zero ghost links · zero hardcoded catalog data · empty/loading states present · no // comments in JSX · component named \`App\` with the exact prop signature.
+FINAL SELF-CHECK before you output (fix anything that fails): unique & on-brand (not a template) · accent color & radius applied consistently · motion present and reduced-motion-safe · fully responsive incl. working mobile menu · AA contrast & semantic/aria correct · hash router works (home/shop/product/cart/checkout/order — deep-linkable, back/forward, listener cleaned up) · product detail complete (gallery+thumbs, qty, variants, tabs, related) · cart + full checkout-to-payment + order confirmation all in-page and working · every EDGE CASE handled (long titles truncate, missing image/price/description, empty states) · zero ghost links · zero server-route navigations · zero hardcoded catalog data · no // comments in JSX · component named \`App\` with the exact prop signature.
 
 ${promptText ? `USER DIRECTIVE / EDIT REQUEST (highest priority — honor this specifically): "${promptText}"` : ''}
 `;
