@@ -19,7 +19,9 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products?owner=true&limit=1000', {
+        // Admin sees EVERY product across ALL stores (any status), not just
+        // their own — so drop `owner=true` and request all statuses.
+        const response = await fetch('/api/products?status=all&limit=1000', {
           headers: { 'ngrok-skip-browser-warning': 'true' }
         });
         const result = await response.json();
@@ -70,8 +72,8 @@ export default function ProductsPage() {
 
   const counts = {
     'All Products': products.length,
-    'Active': products.filter(p => p.status === 'Active').length,
-    'Drafts': products.filter(p => p.status === 'Draft').length,
+    'Active': products.filter(p => (p.status || '').toLowerCase() === 'active').length,
+    'Drafts': products.filter(p => (p.status || '').toLowerCase() === 'draft').length,
     'Out of Stock': products.filter(p => {
       const stock = p.hasVariants && Array.isArray(p.variants) 
         ? p.variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) 
@@ -81,8 +83,8 @@ export default function ProductsPage() {
   };
 
   const filteredProducts = products.filter(product => {
-    if (activeTab === 'Active' && product.status !== 'Active') return false;
-    if (activeTab === 'Drafts' && product.status !== 'Draft') return false;
+    if (activeTab === 'Active' && (product.status || '').toLowerCase() !== 'active') return false;
+    if (activeTab === 'Drafts' && (product.status || '').toLowerCase() !== 'draft') return false;
     if (activeTab === 'Out of Stock') {
       const stock = product.hasVariants && Array.isArray(product.variants) 
         ? product.variants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0) 

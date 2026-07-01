@@ -16,6 +16,7 @@
 //   </UserProvider>
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { useUser } from './UserContext';
 import { io as socketIO } from 'socket.io-client';
 
@@ -23,6 +24,7 @@ const NotificationContext = createContext(null);
 
 export function NotificationProvider({ children }) {
   const { user, isLoggedIn } = useUser();
+  const pathname = usePathname();
   const [totalUnread, setTotalUnread] = useState(0);
   const socketRef = useRef(null);
 
@@ -55,7 +57,7 @@ export function NotificationProvider({ children }) {
 
     const socket = socketIO(socketUrl, {
       // Default path /socket.io — same server, no proxy needed
-      auth:                 { userId: user.id },
+      auth:                 { userId: user.id, page: typeof window !== 'undefined' ? window.location.pathname : '/' },
       transports:           ['websocket', 'polling'],
       reconnection:         true,
       reconnectionDelay:    2000,
@@ -67,6 +69,8 @@ export function NotificationProvider({ children }) {
 
     socket.on('connect', () => {
       console.log('[Socket] Connected:', socket.id);
+      // Report the page we're on so the admin monitor sees it immediately.
+      try { socket.emit('presence:page', { page: window.location.pathname }); } catch (_) {}
     });
 
     socket.on('connect_error', (err) => {
@@ -95,6 +99,15 @@ export function NotificationProvider({ children }) {
       socketRef.current = null;
     };
   }, [isLoggedIn, user?.id]);
+
+  // ── Report the current page to the server on every route change ───────────
+  // Powers the admin live-monitoring view (which page each user is browsing).
+  useEffect(() => {
+    const s = socketRef.current;
+    if (s && s.connected && pathname) {
+      try { s.emit('presence:page', { page: pathname }); } catch (_) {}
+    }
+  }, [pathname]);
 
   // ── Expose socket for child components (MessagesPage) ────────────────────
   const getSocket = useCallback(() => socketRef.current, []);

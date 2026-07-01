@@ -42,8 +42,9 @@ export async function GET(request) {
     const query = {};
 
     // ── Status filter ──────────────────────────────────────────────────
-    if (!isOwnerQuery) {
-      // For public queries, only show active products
+    if (!isOwnerQuery && status !== 'all') {
+      // Public queries show only active products; `status=all` (admin) returns
+      // every product across every store regardless of status.
       query.status = status;
     }
 

@@ -112,6 +112,44 @@ app.prepare().then(async () => {
 
   const onlineUsers = new Map();
 
+  // ── Live presence for /admin/monitoring ─────────────────────────────────────
+  // userId -> { userId, name, avatar, role, page, country, countryCode, ip,
+  //             connectedAt, lastActive, sockets }
+  const presence = new Map();
+
+  const serializePresence = (e) => ({
+    userId: e.userId, name: e.name, avatar: e.avatar, role: e.role,
+    page: e.page, country: e.country, countryCode: e.countryCode,
+    connectedAt: e.connectedAt, lastActive: e.lastActive,
+  });
+  const emitPresence = (e) => { try { io.to('admins').emit('admin:presence:update', serializePresence(e)); } catch (_) {} };
+
+  // Profile lookup via the raw users collection (server.js has no @/ alias).
+  const getUserProfile = async (uid) => {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(uid)) return {};
+      const u = await mongoose.connection.db.collection('users').findOne(
+        { _id: new mongoose.Types.ObjectId(uid) },
+        { projection: { displayName: 1, name: 1, avatarUrl: 1, avatar: 1, role: 1 } },
+      );
+      return u || {};
+    } catch { return {}; }
+  };
+
+  // Best-effort geo (only when no CDN country header + public IP). Never blocks.
+  const lookupCountry = async (ip) => {
+    if (!ip || /^(::1|::ffff:127\.|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(ip)) return null;
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 2500);
+      const res = await fetch(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,countryCode,country`, { signal: ctrl.signal });
+      clearTimeout(t);
+      const j = await res.json();
+      if (j && j.status === 'success') return { countryCode: j.countryCode, country: j.country };
+    } catch (_) {}
+    return null;
+  };
+
   io.on('connection', async (socket) => {
     const userId = socket.userId;
     console.log(`[Socket] Connected: ${userId}`);
@@ -123,12 +161,71 @@ app.prepare().then(async () => {
     onlineUsers.set(userId, (onlineUsers.get(userId) || 0) + 1);
     socket.broadcast.emit('user:online', { userId });
 
+    // ── Presence enrichment (admin monitoring) ──
+    try {
+      const h        = socket.handshake.headers || {};
+      const xff      = String(h['x-forwarded-for'] || '').split(',')[0].trim();
+      const ip       = xff || socket.handshake.address || '';
+      const hdrCC    = String(h['cf-ipcountry'] || h['x-vercel-ip-country'] || h['x-country-code'] || '').toUpperCase();
+      const authPage = socket.handshake.auth?.page;
+
+      let entry = presence.get(userId);
+      if (!entry) {
+        const prof = await getUserProfile(userId);
+        entry = {
+          userId,
+          name:        prof.displayName || prof.name || 'User',
+          avatar:      prof.avatarUrl || prof.avatar || '',
+          role:        prof.role || 'buyer',
+          page:        typeof authPage === 'string' ? authPage : '/',
+          country:     null,
+          countryCode: (hdrCC && hdrCC.length === 2 && hdrCC !== 'XX') ? hdrCC : null,
+          ip,
+          connectedAt: new Date().toISOString(),
+          lastActive:  new Date().toISOString(),
+          sockets:     0,
+        };
+        presence.set(userId, entry);
+        if (!entry.countryCode) {
+          lookupCountry(ip).then((geo) => {
+            const cur = presence.get(userId);
+            if (geo && cur) { cur.countryCode = geo.countryCode; cur.country = geo.country; emitPresence(cur); }
+          });
+        }
+      }
+      entry.sockets   += 1;
+      entry.lastActive = new Date().toISOString();
+      emitPresence(entry);
+    } catch (e) { console.error('[presence connect]', e); }
+
     socket.on('presence:check', ({ userId: targetId }) => {
       socket.emit('presence:status', {
         userId: targetId,
         online: (onlineUsers.get(String(targetId)) || 0) > 0,
       });
     });
+
+    // ── Admin monitoring: report current page + subscribe to the live feed ──
+    socket.on('presence:page', ({ page } = {}) => {
+      try {
+        const entry = presence.get(userId);
+        if (entry) {
+          entry.page       = (typeof page === 'string' ? page : '/').slice(0, 200);
+          entry.lastActive = new Date().toISOString();
+          emitPresence(entry);
+        }
+      } catch (_) {}
+    });
+
+    socket.on('admin:presence:subscribe', async () => {
+      try {
+        const prof = await getUserProfile(userId);
+        if (prof.role !== 'admin') return; // gate: only admins get the feed
+        socket.join('admins');
+        socket.emit('admin:presence:snapshot', Array.from(presence.values()).map(serializePresence));
+      } catch (e) { console.error('[presence subscribe]', e); }
+    });
+    socket.on('admin:presence:unsubscribe', () => { try { socket.leave('admins'); } catch (_) {} });
 
     socket.on('join:conversation',  (id) => socket.join(`conv:${id}`));
     socket.on('leave:conversation', (id) => socket.leave(`conv:${id}`));
@@ -221,6 +318,21 @@ app.prepare().then(async () => {
       } else {
         onlineUsers.set(userId, count);
       }
+
+      // ── Presence (admin monitoring) ──
+      try {
+        const entry = presence.get(userId);
+        if (entry) {
+          entry.sockets -= 1;
+          if (entry.sockets <= 0) {
+            presence.delete(userId);
+            io.to('admins').emit('admin:presence:offline', { userId });
+          } else {
+            entry.lastActive = new Date().toISOString();
+            emitPresence(entry);
+          }
+        }
+      } catch (_) {}
     });
   });
 
