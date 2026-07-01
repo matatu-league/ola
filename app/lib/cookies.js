@@ -23,6 +23,13 @@ const PUBLIC_SUFFIXES = [
   'firebaseapp.com', 'github.io', 'workers.dev', 'railway.app', 'fly.dev',
 ];
 
+// The session is ALSO mirrored to localStorage under this key. localStorage is
+// per-origin (not shared across subdomains) but it survives reloads even when a
+// cookie is dropped, so it's a bulletproof same-origin fallback: the cookie
+// (with NEXT_PUBLIC_COOKIE_DOMAIN=.ola.ug) carries the session ACROSS subdomains,
+// and localStorage guarantees it PERSISTS on each one.
+export const USER_SESSION_LS_KEY = 'ola_user_session';
+
 /**
  * The `domain=...; ` attribute to write — or '' for a host-only cookie.
  * Exported so every login path stays consistent.
@@ -52,6 +59,9 @@ export function setWildcardCookie(name, value, maxAge = 604800) {
   if (typeof window === 'undefined') return;
   const secure = window.location.protocol === 'https:' ? ' Secure;' : '';
   document.cookie = `${name}=${value}; path=/; max-age=${maxAge}; ${cookieDomainAttr()}SameSite=Lax;${secure}`;
+  // Mirror the session to localStorage so it survives reloads even if the
+  // cookie is rejected/stripped in this environment.
+  if (name === 'user_session') { try { window.localStorage.setItem(USER_SESSION_LS_KEY, value); } catch (_) {} }
 }
 
 export function clearCookie(name) {
@@ -60,4 +70,20 @@ export function clearCookie(name) {
   // Clear BOTH the domain-scoped and the host-only variants so logout is total.
   document.cookie = `${name}=; path=/; ${expire}; ${cookieDomainAttr()}`;
   document.cookie = `${name}=; path=/; ${expire};`;
+  if (name === 'user_session') { try { window.localStorage.removeItem(USER_SESSION_LS_KEY); } catch (_) {} }
+}
+
+/**
+ * Raw (still URI-encoded) session value from the cookie if present, else from
+ * the localStorage mirror. UserContext decodes/parses this.
+ */
+export function readUserSessionRaw() {
+  if (typeof document !== 'undefined') {
+    const m = document.cookie.split('; ').find(r => r.startsWith('user_session='));
+    if (m) return m.slice('user_session='.length);
+  }
+  if (typeof window !== 'undefined') {
+    try { return window.localStorage.getItem(USER_SESSION_LS_KEY); } catch (_) {}
+  }
+  return null;
 }
