@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { setWildcardCookie } from '@/lib/cookies';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,13 +19,8 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-export function setWildcardCookie(name, value, maxAge = 604800) {
-  const hostname = window.location.hostname;
-  const parts = hostname.split('.');
-  const rootDomain = parts.length >= 2 ? parts.slice(-2).join('.') : hostname;
-  const domainString = hostname.includes('.') ? `domain=.${rootDomain};` : '';
-  document.cookie = `${name}=${value}; path=/; max-age=${maxAge}; ${domainString} SameSite=Lax`;
-}
+// Cross-subdomain-safe cookie writer (single source: @/lib/cookies).
+export { setWildcardCookie };
 
 export function getCookieValue(name) {
   if (typeof document === 'undefined') return null;
