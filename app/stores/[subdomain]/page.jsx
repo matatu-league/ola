@@ -48,9 +48,15 @@ export async function generateMetadata({ params }) {
   const title       = store.seoTitle || `${name} — Online Store`;
   const description = (store.seoDescription || store.description ||
     `Shop ${name} online — browse products and check out securely.`).slice(0, 160);
-  const url    = `https://${store.domain || domain}`;
-  const ogImg  = store.logo || store.banner || (store.bannerImages && store.bannerImages[0]) || null;
-  const images = ogImg ? [ogImg] : [];
+  const url = `https://${store.domain || domain}`;
+
+  // Social/OG preview: prefer the wide banner for a big card; fall back to the
+  // (optimised) logo for a compact square preview. The logo is ALWAYS the
+  // favicon. Absolute Firebase URLs unfurl correctly on WhatsApp/Instagram/etc.
+  const banner    = store.banner || (store.bannerImages && store.bannerImages[0]) || null;
+  const ogImage   = banner || store.logo || null;
+  const largeCard = !!banner;
+  const ogImages  = ogImage ? [{ url: ogImage, alt: name }] : [];
 
   return {
     title,
@@ -59,14 +65,14 @@ export async function generateMetadata({ params }) {
     alternates: { canonical: url },
     openGraph: {
       title, description, url, siteName: name, type: 'website',
-      ...(images.length ? { images } : {}),
+      ...(ogImages.length ? { images: ogImages } : {}),
     },
     twitter: {
-      card: images.length ? 'summary_large_image' : 'summary',
+      card: largeCard ? 'summary_large_image' : 'summary',
       title, description,
-      ...(images.length ? { images } : {}),
+      ...(ogImage ? { images: [ogImage] } : {}),
     },
-    ...(store.logo ? { icons: { icon: store.logo, apple: store.logo } } : {}),
+    ...(store.logo ? { icons: { icon: store.logo, shortcut: store.logo, apple: store.logo } } : {}),
     robots: { index: true, follow: true },
   };
 }
