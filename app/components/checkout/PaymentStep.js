@@ -81,7 +81,7 @@ function PaymentCard({ method, isSelected, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="relative border rounded-sm p-3 cursor-pointer transition-all duration-150 flex flex-col items-start justify-between gap-2.5 min-h-[96px]"
+      className="relative border rounded-[var(--s-radius,0.125rem)] p-3 cursor-pointer transition-all duration-150 flex flex-col items-start justify-between gap-2.5 min-h-[96px]"
       style={isSelected
         ? { borderColor: selectedBdr, background: selectedBg }
         : { borderColor: '#E3E3E4', background: '#ffffff' }
@@ -184,7 +184,7 @@ function StripeForm({ amount, onCreatePendingOrder, onSuccess, onError, isSubmit
 
   return (
     <div className="space-y-4">
-      <div className="p-4 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm">
+      <div className="p-4 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)]">
         <CardElement
           options={{
             style: {
@@ -195,7 +195,7 @@ function StripeForm({ amount, onCreatePendingOrder, onSuccess, onError, isSubmit
         />
       </div>
       {/* Show USD equivalent — Stripe charges in USD */}
-      <div className="flex items-center gap-1.5 text-[11px] text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm px-3 py-2">
+      <div className="flex items-center gap-1.5 text-[11px] text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)] px-3 py-2">
         <span>Stripe charges in USD:</span>
         <span className="font-bold text-[var(--s-text,#161823)]">
           ≈ ${((amount / 3900)).toFixed(2)} USD
@@ -205,7 +205,7 @@ function StripeForm({ amount, onCreatePendingOrder, onSuccess, onError, isSubmit
       <button
         onClick={handlePay}
         disabled={isSubmitting || !stripe}
-        className="w-full bg-[#635BFF] hover:bg-[#5145e5] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
+        className="w-full bg-[#635BFF] hover:bg-[#5145e5] text-white py-2.5 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
       >
         {isSubmitting && <Loader2 size={15} className="animate-spin" />}
         {isSubmitting ? 'Processing...' : `Pay $${(amount / 3900).toFixed(2)} USD via Stripe`}
@@ -266,13 +266,13 @@ function RazorpayForm({ amount, user, onCreatePendingOrder, onSuccess, onError, 
     <div className="space-y-3">
       <div className="flex flex-wrap gap-1.5">
         {['UPI', 'Debit Card', 'Credit Card', 'Net Banking', 'Wallet'].map(l => (
-          <span key={l} className="text-[10px] font-semibold border border-[var(--s-border,#E3E3E4)] rounded-sm px-2 py-0.5 text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)]">{l}</span>
+          <span key={l} className="text-[10px] font-semibold border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)] px-2 py-0.5 text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)]">{l}</span>
         ))}
       </div>
       <button
         onClick={handlePay}
         disabled={isSubmitting}
-        className="w-full bg-[#2D9CDB] hover:bg-[#1f86c0] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
+        className="w-full bg-[#2D9CDB] hover:bg-[#1f86c0] text-white py-2.5 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
       >
         {isSubmitting && <Loader2 size={15} className="animate-spin" />}
         {isSubmitting ? 'Opening Razorpay...' : 'Pay with Razorpay'}
@@ -338,7 +338,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
     <div className="space-y-4">
 
       {/* ── Segmented network selector ─────────────────────────────────── */}
-      <div className="flex border border-[var(--s-border,#E3E3E4)] rounded-sm overflow-hidden bg-[var(--s-surface,#F8F8F8)]">
+      <div className="flex border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)] overflow-hidden bg-[var(--s-surface,#F8F8F8)]">
         {NETWORKS.map((n, idx) => {
           const isActive = network === n.code;
           return (
@@ -382,7 +382,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
 
       {/* Selected network info strip */}
       <div
-        className="flex items-center gap-2 px-3 py-2 rounded-sm border text-[11px] font-medium"
+        className="flex items-center gap-2 px-3 py-2 rounded-[var(--s-radius,0.125rem)] border text-[11px] font-medium"
         style={{
           background:   `${activeNet?.activeBg}18`,
           borderColor:  `${activeNet?.activeBg}60`,
@@ -411,7 +411,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
           value={phone}
           onChange={e => setPhone(e.target.value)}
           placeholder={activeNet?.placeholder}
-          className="w-full bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm px-3 py-2 text-[13px] outline-none focus:border-[var(--s-text,#161823)] transition-colors text-[var(--s-text,#161823)] placeholder:text-[var(--s-muted,#8A8B91)]"
+          className="w-full bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)] px-3 py-2 text-[13px] outline-none focus:border-[var(--s-text,#161823)] transition-colors text-[var(--s-text,#161823)] placeholder:text-[var(--s-muted,#8A8B91)]"
         />
         <p className="text-[11px] text-[var(--s-muted,#8A8B91)]">
           You will receive a USSD prompt on your phone to confirm payment.
@@ -421,7 +421,7 @@ function MobileMoneyForm({ phone, setPhone, onSuccess, onError, isSubmitting, se
       <button
         onClick={handlePay}
         disabled={isSubmitting}
-        className="w-full bg-[var(--s-primary,#161823)] hover:bg-black text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
+        className="w-full bg-[var(--s-primary,#161823)] hover:bg-black text-white py-2.5 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors tracking-tight"
       >
         {isSubmitting && <Loader2 size={15} className="animate-spin" />}
         {isSubmitting ? 'Sending Prompt...' : `Send ${activeNet?.shortLabel} Prompt`}
@@ -477,7 +477,7 @@ export default function PaymentStep({
   };
 
   return (
-    <div className={`bg-white border rounded-sm overflow-hidden transition-all duration-300
+    <div className={`bg-white border rounded-[var(--s-radius,0.125rem)] overflow-hidden transition-all duration-300
       ${isActive ? 'border-[var(--s-text,#161823)] ring-1 ring-[var(--s-primary,#161823)]' : 'border-[var(--s-border,#E3E3E4)]'}
       ${isLocked ? 'opacity-50 pointer-events-none' : ''}`}>
 
@@ -587,7 +587,7 @@ export default function PaymentStep({
 
                 {provider === 'cash' && (
                   <div className="space-y-4">
-                    <div className="flex items-start gap-2 bg-[#F0FDF4] p-3 rounded-sm border border-[#10B981]">
+                    <div className="flex items-start gap-2 bg-[#F0FDF4] p-3 rounded-[var(--s-radius,0.125rem)] border border-[#10B981]">
                       <CheckCircle2 size={15} className="text-[#10B981] shrink-0 mt-0.5" />
                       <p className="text-[12px] text-[var(--s-text,#161823)] leading-relaxed">
                         You will pay <strong>UGX {Number(amount).toLocaleString()}</strong> in cash directly to our delivery agent upon successful delivery.
@@ -596,7 +596,7 @@ export default function PaymentStep({
                     <button
                       onClick={() => onPlaceOrder({ paymentReference: null, paymentProvider: 'cash' })}
                       disabled={isSubmitting}
-                      className="w-full bg-[var(--s-primary,#FE2C55)] hover:bg-[#e0264b] text-white px-6 py-2.5 rounded-sm font-semibold text-[13px] transition-colors flex justify-center items-center gap-2 disabled:opacity-50 tracking-tight"
+                      className="w-full bg-[var(--s-primary,#FE2C55)] hover:bg-[#e0264b] text-white px-6 py-2.5 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] transition-colors flex justify-center items-center gap-2 disabled:opacity-50 tracking-tight"
                     >
                       {isSubmitting && <Loader2 size={16} className="animate-spin" />}
                       Confirm & Place Order
@@ -607,13 +607,13 @@ export default function PaymentStep({
 
               {/* Errors */}
               {(payError || generalError) && (
-                <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm mb-4">
+                <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-[var(--s-radius,0.125rem)] mb-4">
                   <AlertCircle size={14} className="shrink-0" /> {payError || generalError}
                 </div>
               )}
 
               {/* Security note */}
-              <div className="flex items-start gap-2 bg-[var(--s-surface,#F8F8F8)] p-3 rounded-sm border border-[var(--s-border,#E3E3E4)]">
+              <div className="flex items-start gap-2 bg-[var(--s-surface,#F8F8F8)] p-3 rounded-[var(--s-radius,0.125rem)] border border-[var(--s-border,#E3E3E4)]">
                 <ShieldCheck size={15} className="text-[var(--s-text,#161823)] shrink-0 mt-0.5" />
                 <p className="text-[11px] text-[var(--s-muted,#8A8B91)] font-medium leading-relaxed">
                   All transactions are encrypted and secured. We never store your full card details or PIN.

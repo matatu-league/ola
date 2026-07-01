@@ -120,7 +120,7 @@ export default function FlutterwaveButton({
     <div className="space-y-4">
 
       {/* Supported methods */}
-      <div className="bg-[#F0FDF4] border border-[#10B981] rounded-sm p-3">
+      <div className="bg-[#F0FDF4] border border-[#10B981] rounded-[var(--s-radius,0.125rem)] p-3">
         <p className="text-[11px] text-[#065F46] font-medium leading-relaxed">
           Supports <strong>MTN Mobile Money</strong>, <strong>Airtel Money</strong>,
           Visa / Mastercard, and USSD — all in <strong>UGX</strong>.
@@ -129,7 +129,7 @@ export default function FlutterwaveButton({
 
       {/* Awaiting return state */}
       {awaitingReturn && (
-        <div className="flex items-center gap-2 bg-[#FFF8EC] border border-[#F5A623] rounded-sm p-3">
+        <div className="flex items-center gap-2 bg-[#FFF8EC] border border-[#F5A623] rounded-[var(--s-radius,0.125rem)] p-3">
           <Loader2 size={14} className="animate-spin text-[#F5A623] shrink-0" />
           <p className="text-[12px] text-[#92560A] font-medium">
             Waiting for payment confirmation in the Flutterwave window...
@@ -141,7 +141,7 @@ export default function FlutterwaveButton({
       <button
         onClick={handlePay}
         disabled={isSubmitting || awaitingReturn}
-        className="w-full bg-[#F5A623] hover:bg-[#e09420] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-60 transition-colors tracking-tight"
+        className="w-full bg-[#F5A623] hover:bg-[#e09420] text-white py-2.5 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-60 transition-colors tracking-tight"
       >
         {isSubmitting && !awaitingReturn
           ? <Loader2 size={15} className="animate-spin" />
@@ -156,7 +156,7 @@ export default function FlutterwaveButton({
       </button>
 
       {localError && (
-        <div className="flex items-start gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm">
+        <div className="flex items-start gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-[var(--s-radius,0.125rem)]">
           <AlertCircle size={13} className="shrink-0 mt-0.5" />
           {localError}
         </div>

@@ -120,7 +120,7 @@ export default function RazorpayForm({
         {['UPI', 'Debit Card', 'Credit Card', 'Net Banking', 'Wallet'].map(label => (
           <span
             key={label}
-            className="text-[10px] font-semibold text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] px-2 py-0.5 rounded-sm"
+            className="text-[10px] font-semibold text-[var(--s-muted,#8A8B91)] bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] px-2 py-0.5 rounded-[var(--s-radius,0.125rem)]"
           >
             {label}
           </span>
@@ -130,7 +130,7 @@ export default function RazorpayForm({
       <button
         onClick={handlePay}
         disabled={isSubmitting}
-        className="w-full bg-[#2D9CDB] hover:bg-[#1f86c0] text-white py-2.5 rounded-sm font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"
+        className="w-full bg-[#2D9CDB] hover:bg-[#1f86c0] text-white py-2.5 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"
       >
         {isSubmitting && <Loader2 size={15} className="animate-spin" />}
         Pay with Razorpay

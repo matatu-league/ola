@@ -47,8 +47,8 @@ export default function CheckoutTopNav({ storeName = 'Store', storeLogo = '', ba
         >
           <ChevronLeft size={16} className="shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
           {storeLogo
-            ? <img src={storeLogo} alt={storeName} className="h-7 w-7 rounded-sm object-cover shrink-0" />
-            : <span className="h-7 w-7 rounded-sm shrink-0 flex items-center justify-center text-[12px] font-extrabold text-white" style={{ background: 'var(--s-primary, #161823)' }}>{(storeName || 'S').charAt(0).toUpperCase()}</span>
+            ? <img src={storeLogo} alt={storeName} className="h-7 w-7 rounded-[var(--s-radius,0.125rem)] object-cover shrink-0" />
+            : <span className="h-7 w-7 rounded-[var(--s-radius,0.125rem)] shrink-0 flex items-center justify-center text-[12px] font-extrabold text-white" style={{ background: 'var(--s-primary, #161823)' }}>{(storeName || 'S').charAt(0).toUpperCase()}</span>
           }
           <span className="font-bold text-[14px] tracking-tight truncate">{storeName}</span>
         </a>

@@ -99,7 +99,7 @@ export default function PayPalForm({ amount, onSuccess, onError }) {
   return (
     <div className="space-y-3">
       {/* Currency note — important for Ugandan merchants */}
-      <div className="bg-[#FFF8E7] border border-[#F5A623] rounded-sm p-3">
+      <div className="bg-[#FFF8E7] border border-[#F5A623] rounded-[var(--s-radius,0.125rem)] p-3">
         <p className="text-[11px] text-[#856404] font-medium leading-relaxed">
           <strong>Note:</strong> PayPal processes in <strong>USD</strong>. The amount shown
           in the PayPal window is the USD equivalent of your order total.
@@ -123,7 +123,7 @@ export default function PayPalForm({ amount, onSuccess, onError }) {
       </PayPalScriptProvider>
 
       {localError && (
-        <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm">
+        <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-[var(--s-radius,0.125rem)]">
           <AlertCircle size={13} /> {localError}
         </div>
       )}

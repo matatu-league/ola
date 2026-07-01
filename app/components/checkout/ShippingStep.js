@@ -24,7 +24,7 @@ export default function ShippingStep({
   const activeOption = shippingOptions.find(m => m.code === shippingMethod);
 
   return (
-    <div className={`bg-white border rounded-sm transition-all duration-300
+    <div className={`bg-white border rounded-[var(--s-radius,0.125rem)] transition-all duration-300
       ${isActive ? 'border-[var(--s-text,#161823)] ring-1 ring-[var(--s-primary,#161823)]' : 'border-[var(--s-border,#E3E3E4)]'}
       ${isLocked ? 'opacity-50 pointer-events-none' : ''}`}>
 
@@ -37,7 +37,7 @@ export default function ShippingStep({
           Shipping Method
         </h3>
         {isDone && (
-          <button onClick={onEdit} className="text-[12px] font-bold text-[var(--s-muted,#8A8B91)] hover:text-[var(--s-text,#161823)] flex items-center gap-1.5 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] hover:border-[var(--s-muted,#8A8B91)] px-3 py-1.5 rounded-sm transition-colors">
+          <button onClick={onEdit} className="text-[12px] font-bold text-[var(--s-muted,#8A8B91)] hover:text-[var(--s-text,#161823)] flex items-center gap-1.5 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] hover:border-[var(--s-muted,#8A8B91)] px-3 py-1.5 rounded-[var(--s-radius,0.125rem)] transition-colors">
             <Edit2 size={12} /> Edit
           </button>
         )}
@@ -60,11 +60,11 @@ export default function ShippingStep({
                     <div
                       key={method.code}
                       onClick={() => setShippingMethod(method.code)}
-                      className={`border rounded-sm p-4 cursor-pointer transition-all duration-200 flex items-center justify-between gap-4
+                      className={`border rounded-[var(--s-radius,0.125rem)] p-4 cursor-pointer transition-all duration-200 flex items-center justify-between gap-4
                         ${isSelected ? 'border-[var(--s-text,#161823)] bg-[var(--s-surface,#F8F8F8)] ring-1 ring-[var(--s-primary,#161823)]' : 'border-[var(--s-border,#E3E3E4)] bg-white hover:border-[var(--s-text,#161823)]'}`}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-sm flex items-center justify-center shrink-0 ${isSelected ? 'bg-[var(--s-primary,#161823)] text-white' : 'bg-[var(--s-surface,#F8F8F8)] text-[var(--s-muted,#8A8B91)]'}`}>
+                        <div className={`w-10 h-10 rounded-[var(--s-radius,0.125rem)] flex items-center justify-center shrink-0 ${isSelected ? 'bg-[var(--s-primary,#161823)] text-white' : 'bg-[var(--s-surface,#F8F8F8)] text-[var(--s-muted,#8A8B91)]'}`}>
                           {method.image
                             ? <img src={method.image} alt={method.title} className="w-full h-full object-cover" />
                             : <Icon size={20} />}
@@ -84,7 +84,7 @@ export default function ShippingStep({
 
               {/* Pickup stations */}
               {shippingMethod === 'pickup' && (
-                <div className="mt-4 p-4 border border-[var(--s-border,#E3E3E4)] bg-[var(--s-surface,#F8F8F8)] rounded-sm animate-in fade-in duration-200">
+                <div className="mt-4 p-4 border border-[var(--s-border,#E3E3E4)] bg-[var(--s-surface,#F8F8F8)] rounded-[var(--s-radius,0.125rem)] animate-in fade-in duration-200">
                   <p className="text-[12px] font-bold text-[var(--s-text,#161823)] mb-2">Select your nearest station <span className="text-[var(--s-primary,#FE2C55)]">*</span></p>
                   {pickupStations.length === 0
                     ? <p className="text-[12px] text-[var(--s-muted,#8A8B91)]">No pickup stations available.</p>
@@ -95,7 +95,7 @@ export default function ShippingStep({
                           return (
                             <label
                               key={id}
-                              className={`flex items-start gap-3 p-3 border rounded-sm cursor-pointer transition-colors
+                              className={`flex items-start gap-3 p-3 border rounded-[var(--s-radius,0.125rem)] cursor-pointer transition-colors
                                 ${selectedStation === id ? 'border-[var(--s-text,#161823)] bg-white ring-1 ring-[var(--s-primary,#161823)]' : 'border-[var(--s-border,#E3E3E4)] bg-white hover:border-[var(--s-text,#161823)]'}`}
                             >
                               <input
@@ -121,7 +121,7 @@ export default function ShippingStep({
               )}
 
               {methodError && (
-                <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-sm mt-4">
+                <div className="flex items-center gap-2 text-[12px] text-[var(--s-primary,#FE2C55)] font-semibold bg-[#FFF0F3] border border-[var(--s-primary,#FE2C55)] p-3 rounded-[var(--s-radius,0.125rem)] mt-4">
                   <AlertCircle size={14} /> {methodError}
                 </div>
               )}
@@ -129,7 +129,7 @@ export default function ShippingStep({
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={onContinue}
-                  className="w-full md:w-auto bg-[var(--s-primary,#161823)] hover:bg-black text-white px-5 py-2 rounded-sm font-semibold text-[13px] transition-colors flex items-center justify-center gap-2 tracking-tight"
+                  className="w-full md:w-auto bg-[var(--s-primary,#161823)] hover:bg-black text-white px-5 py-2 rounded-[var(--s-radius,0.125rem)] font-semibold text-[13px] transition-colors flex items-center justify-center gap-2 tracking-tight"
                 >
                   Continue to Payment <ChevronRight size={14} />
                 </button>
