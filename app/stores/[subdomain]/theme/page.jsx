@@ -13,6 +13,64 @@ import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl, AI_PROVID
 import { buildTemplatePrompt } from '@/lib/templatePrompt';
 import { olaBridgeScript } from '@/lib/storefrontBridge';
 
+// Category-appropriate SAMPLE catalog for the builder preview, so an electronics
+// store previews electronics (names + on-category Unsplash imagery), a fashion
+// store previews fashion, etc. Real products replace these on the live store.
+const _img = (kw) => unsplashSourceUrl(kw, 600, 600);
+const _mk  = (arr) => arr.map((x, i) => ({ id: String(i + 1), name: x[0], price: x[1], image: _img(x[2]) }));
+function sampleCatalog(industry) {
+  const i = (industry || '').toLowerCase();
+  if (/electronic|tech|gadget|computer|phone|device|digital|appliance/.test(i))
+    return { categories: ['New Arrivals', 'Laptops', 'Phones', 'Audio', 'Accessories'], products: _mk([
+      ['Wireless Noise-Cancelling Headphones', 220, 'wireless headphones'], ['Ultrabook Pro 14"', 1450, 'laptop computer'],
+      ['Flagship Smartphone', 980, 'smartphone'], ['4K Action Camera', 310, 'action camera'],
+      ['Mechanical Keyboard', 130, 'mechanical keyboard'], ['Smart Watch Series X', 260, 'smartwatch'],
+      ['Portable Bluetooth Speaker', 90, 'bluetooth speaker'], ['USB-C Fast Charger', 35, 'usb charger gadget'],
+    ]) };
+  if (/beauty|cosmet|skincare|makeup|salon|spa|hair/.test(i))
+    return { categories: ['Bestsellers', 'Skincare', 'Makeup', 'Fragrance'], products: _mk([
+      ['Radiance Serum', 48, 'skincare serum'], ['Velvet Matte Lipstick', 24, 'lipstick cosmetics'],
+      ['Hydrating Day Cream', 39, 'face cream jar'], ['Signature Eau de Parfum', 95, 'perfume bottle'],
+      ['Silk Foundation', 42, 'makeup foundation'], ['Nourishing Hair Oil', 28, 'hair oil bottle'],
+      ['Clay Detox Mask', 32, 'face mask skincare'], ['Rose Gold Brush Set', 55, 'makeup brushes'],
+    ]) };
+  if (/food|grocer|restaurant|cafe|bakery|drink|beverage|coffee|kitchen/.test(i))
+    return { categories: ['Fresh', 'Bakery', 'Beverages', 'Pantry'], products: _mk([
+      ['Artisan Sourdough Loaf', 6, 'sourdough bread'], ['Single-Origin Coffee Beans', 18, 'coffee beans bag'],
+      ['Cold-Pressed Juice', 5, 'fresh juice bottle'], ['Farm Fresh Eggs', 4, 'fresh eggs carton'],
+      ['Handmade Chocolate Box', 22, 'chocolate box'], ['Organic Honey Jar', 12, 'honey jar'],
+      ['Seasonal Fruit Basket', 30, 'fruit basket'], ['Stone-Baked Pizza', 14, 'gourmet pizza'],
+    ]) };
+  if (/furnitur|home|decor|interior|kitchenware|homeware/.test(i))
+    return { categories: ['Living', 'Bedroom', 'Lighting', 'Decor'], products: _mk([
+      ['Oak Lounge Chair', 420, 'lounge chair furniture'], ['Linen Sofa 3-Seater', 980, 'modern sofa'],
+      ['Ceramic Table Lamp', 85, 'table lamp decor'], ['Handwoven Area Rug', 240, 'area rug interior'],
+      ['Solid Wood Dining Table', 650, 'dining table wood'], ['Minimalist Bookshelf', 190, 'bookshelf interior'],
+      ['Velvet Accent Cushion', 35, 'throw cushion decor'], ['Framed Wall Art Set', 120, 'framed wall art'],
+    ]) };
+  if (/sport|fitness|gym|outdoor|athletic/.test(i))
+    return { categories: ['Training', 'Footwear', 'Apparel', 'Gear'], products: _mk([
+      ['Performance Running Shoes', 130, 'running shoes'], ['Adjustable Dumbbell Set', 220, 'dumbbells gym'],
+      ['Breathable Training Tee', 38, 'sports t-shirt'], ['Yoga Mat Pro', 45, 'yoga mat'],
+      ['Insulated Water Bottle', 25, 'sports water bottle'], ['Resistance Band Kit', 30, 'resistance bands'],
+      ['Trail Backpack 30L', 90, 'hiking backpack'], ['Smart Fitness Tracker', 150, 'fitness tracker'],
+    ]) };
+  if (/fashion|cloth|apparel|wear|boutique|shoe|jewel|accessor/.test(i))
+    return { categories: ['New In', 'Men', 'Women', 'Accessories'], products: _mk([
+      ['Minimalist Linen Shirt', 85, 'linen shirt'], ['Essential Cotton Crew', 45, 'cotton t-shirt'],
+      ['Relaxed Fit Trousers', 120, 'tailored trousers'], ['Classic Wool Coat', 295, 'wool coat fashion'],
+      ['Leather Weekend Bag', 180, 'leather bag'], ['Silk Blend Scarf', 65, 'silk scarf'],
+      ['Premium Knit Beanie', 35, 'knit beanie'], ['Suede Chelsea Boots', 210, 'chelsea boots'],
+    ]) };
+  // Generic fallback — keyed to whatever the industry is.
+  const kw = i || 'premium product';
+  const tags = ['premium', 'classic', 'modern', 'deluxe', 'essential', 'signature', 'limited', 'pro'];
+  return {
+    categories: ['Featured', 'New Arrivals', 'Best Sellers', 'Deals'],
+    products: tags.map((t, n) => ({ id: String(n + 1), name: `${industry || 'Signature'} ${t.charAt(0).toUpperCase() + t.slice(1)}`, price: 40 + n * 25, image: _img(`${t} ${kw}`) })),
+  };
+}
+
 // --- CONFIG & UTILITIES ---
 // Template text generation is provider-switchable (Gemini / DeepSeek v4) via
 // env — see @/lib/aiProvider. This key is only used for the lightweight inline
@@ -390,17 +448,9 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
     businessType: storeProfile.businessType || "products",
     serviceType:  storeProfile.serviceType || null,
     themeColor:   themeColor || "#2563EB",
-    categories: ["Featured", "New Arrivals", "Trending", "Clearance"],
-    products: [
-      { id: "1", name: "Minimalist Linen Shirt", price: 85, image: "https://images.unsplash.com/photo-1596755094514-f87e32f85e98?w=500&auto=format&fit=crop" },
-      { id: "2", name: "Essential Cotton Crew", price: 45, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop" },
-      { id: "3", name: "Relaxed Fit Trousers", price: 120, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&auto=format&fit=crop" },
-      { id: "4", name: "Classic Wool Coat", price: 295, image: "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=500&auto=format&fit=crop" },
-      { id: "5", name: "Leather Weekend Bag", price: 180, image: "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=500&auto=format&fit=crop" },
-      { id: "6", name: "Silk Blend Scarf", price: 65, image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=500&auto=format&fit=crop" },
-      { id: "7", name: "Premium Knit Beanie", price: 35, image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=500&auto=format&fit=crop" },
-      { id: "8", name: "Suede Chelsea Boots", price: 210, image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=500&auto=format&fit=crop" }
-    ],
+    // Category-matched sample catalog (electronics store → electronics, etc.).
+    categories: sampleCatalog(storeProfile.industry).categories,
+    products:   sampleCatalog(storeProfile.industry).products,
     // Preview-only sample services so service / "both" templates render their
     // services view. Real services are injected at runtime on the live store.
     services: [

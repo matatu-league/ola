@@ -3,19 +3,19 @@
 // contexts/UserContext.jsx
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { clearCookie } from '@/lib/cookies';
+import { clearCookie, readUserSessionRaw } from '@/lib/cookies';
 
-// ── Cookie parser ─────────────────────────────────────────────────────────────
+// ── Session parser ────────────────────────────────────────────────────────────
+// Reads from the cross-subdomain cookie first, then the per-origin localStorage
+// mirror — so a reload keeps the user signed in even if the cookie was dropped.
 function parseUserCookie() {
-  if (typeof document === 'undefined') return null;
+  if (typeof window === 'undefined') return null;
   try {
-    const match = document.cookie
-      .split('; ')
-      .find(r => r.startsWith('user_session='));
-    if (!match) return null;
+    let raw = readUserSessionRaw();
+    if (!raw) return null;
 
-    let raw = decodeURIComponent(match.split('=')[1]).replace(/^"|"$/g, '');
-    // Handle double-encoded cookies
+    raw = decodeURIComponent(raw).replace(/^"|"$/g, '');
+    // Handle double-encoded values
     if (raw.startsWith('%7B')) raw = decodeURIComponent(raw);
     return JSON.parse(raw);
   } catch {
