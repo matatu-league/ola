@@ -3,6 +3,7 @@
 // contexts/UserContext.jsx
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { clearCookie } from '@/lib/cookies';
 
 // ── Cookie parser ─────────────────────────────────────────────────────────────
 function parseUserCookie() {
@@ -45,13 +46,8 @@ export function UserProvider({ children }) {
 
   // ── Logout — clears cookie + resets state ─────────────────────────────────
   const logout = useCallback(() => {
-    // Clear across all subdomains
-    const hostname  = typeof window !== 'undefined' ? window.location.hostname : '';
-    const parts     = hostname.split('.');
-    const root      = parts.length >= 2 ? parts.slice(-2).join('.') : hostname;
-    const domainStr = hostname.includes('.') ? `domain=.${root};` : '';
-
-    document.cookie = `user_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT; ${domainStr}`;
+    // Clear across all subdomains (host-only + domain-scoped variants).
+    clearCookie('user_session');
     setUser(null);
 
     // Redirect to home
