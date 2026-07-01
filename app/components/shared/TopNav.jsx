@@ -3,7 +3,7 @@
 // components/shared/TopNav.jsx
 // Clean top navigation — category menu is handled by CategoryDropdown component.
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link                 from 'next/link';
 import { useRouter }        from 'next/navigation';
 import {
@@ -30,6 +30,24 @@ export default function TopNav({ showSearch = false }) {
   const [modalPhone,      setModalPhone]      = useState('');
   const [isUpdatingPhone, setIsUpdatingPhone] = useState(false);
   const [accountType,     setAccountType]     = useState('buyer');
+
+  // The account menu is click-toggled (not hover) so its items are reliably
+  // clickable — a hover menu closes as the pointer travels to a lower item
+  // (e.g. Admin Dashboard) and it's unusable on touch. Close on outside-click/Esc.
+  const accountRef = useRef(null);
+  useEffect(() => {
+    if (!showAccountMenu) return;
+    const onDocMouseDown = (e) => {
+      if (accountRef.current && !accountRef.current.contains(e.target)) setShowAccountMenu(false);
+    };
+    const onKeyDown = (e) => { if (e.key === 'Escape') setShowAccountMenu(false); };
+    document.addEventListener('mousedown', onDocMouseDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onDocMouseDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [showAccountMenu]);
 
   const handleSaveProfile = async () => {
     setIsUpdatingPhone(true);
@@ -172,26 +190,30 @@ export default function TopNav({ showSearch = false }) {
             </div>
 
             {/* Account */}
-            <div
-              className="relative flex items-center gap-1.5 cursor-pointer py-2"
-              onMouseEnter={() => setShowAccountMenu(true)}
-              onMouseLeave={() => setShowAccountMenu(false)}
-            >
-              {user?.avatar
-                ? <img src={user.avatar} alt={user.name} className="w-6 h-6 rounded-full border border-gray-200 object-cover" />
-                : <User size={20} className="text-gray-700" />
-              }
-              <div className="hidden md:flex flex-col">
-                <span className="text-[10px] text-gray-500 leading-none mb-0.5 truncate max-w-[70px]">
-                  {user ? `Hi, ${user.name?.split(' ')[0]}` : 'Sign In'}
-                </span>
-                <span className="text-[12px] font-bold text-gray-900 flex items-center leading-none">
-                  Account <ChevronDown size={11} className="ml-0.5" />
-                </span>
-              </div>
+            <div className="relative py-2" ref={accountRef}>
+              <button
+                type="button"
+                className="flex items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0"
+                aria-haspopup="menu"
+                aria-expanded={showAccountMenu}
+                onClick={() => setShowAccountMenu(v => !v)}
+              >
+                {user?.avatar
+                  ? <img src={user.avatar} alt={user.name} className="w-6 h-6 rounded-full border border-gray-200 object-cover" />
+                  : <User size={20} className="text-gray-700" />
+                }
+                <div className="hidden md:flex flex-col items-start">
+                  <span className="text-[10px] text-gray-500 leading-none mb-0.5 truncate max-w-[70px]">
+                    {user ? `Hi, ${user.name?.split(' ')[0]}` : 'Sign In'}
+                  </span>
+                  <span className="text-[12px] font-bold text-gray-900 flex items-center leading-none">
+                    Account <ChevronDown size={11} className="ml-0.5" />
+                  </span>
+                </div>
+              </button>
 
               {showAccountMenu && (
-                <div className="acct-popover absolute top-full right-0 z-50" style={{ marginTop: 4 }}>
+                <div className="acct-popover absolute top-full right-0 z-50" style={{ marginTop: 4 }} onClick={() => setShowAccountMenu(false)}>
                   {user ? (
                     <>
                       <div className="acct-popover-header">
