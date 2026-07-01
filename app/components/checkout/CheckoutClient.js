@@ -91,9 +91,11 @@ export default function CheckoutClient() {
         const json = await res.json();
         if (json.success && json.settings) {
           const s = json.settings;
-          const activeShipping = (s.shippingMethods || []).filter(m => m.active);
-          const activeStations = (s.pickupStations  || []).filter(x => x.active);
-          const activePayments = (s.paymentMethods  || []).filter(m => m.active);
+          // Only surface methods the admin hasn't explicitly disabled (a missing
+          // flag = active, so legacy/default methods still show).
+          const activeShipping = (s.shippingMethods || []).filter(m => m.active !== false);
+          const activeStations = (s.pickupStations  || []).filter(x => x.active !== false);
+          const activePayments = (s.paymentMethods  || []).filter(m => m.active !== false);
           setShippingOptions(activeShipping);
           setPickupStations(activeStations);
           setPaymentOptions(activePayments);

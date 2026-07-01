@@ -209,10 +209,22 @@ export default function MasterSettingsPage() {
   const toggleArrayItem = (arrayName, itemId) => {
     setFormData(prev => ({
       ...prev,
-      [arrayName]: prev[arrayName].map(item => 
+      [arrayName]: prev[arrayName].map(item =>
         item.id === itemId ? { ...item, active: !item.active } : item
       )
     }));
+  };
+
+  // The checkout method arrays (shippingMethods / paymentMethods / pickupStations)
+  // are keyed by `code`/`_id`, not `id`, so toggle their active flag by index.
+  // Disabling one hides it from every buyer's checkout on the next load.
+  const toggleMethodActive = (arrayName, index) => {
+    setFormData(prev => {
+      const list = [...(prev[arrayName] || [])];
+      if (!list[index]) return prev;
+      list[index] = { ...list[index], active: !(list[index].active !== false) };
+      return { ...prev, [arrayName]: list };
+    });
   };
 
   const handleArrayTextChange = (arrayName, itemId, value) => {
@@ -232,6 +244,54 @@ export default function MasterSettingsPage() {
       <span className={`absolute left-[2px] top-[2px] bg-white w-[18px] h-[18px] rounded-full transition-transform duration-200 ease-in-out shadow-sm ${active ? 'translate-x-[18px]' : 'translate-x-0'}`} />
     </button>
   );
+
+  // Enable/disable the actual checkout methods buyers see. Non-destructive:
+  // toggling Active only hides/shows the method at checkout (see CheckoutClient,
+  // which filters on `active !== false`).
+  const MethodManager = ({ title, description, arrayName, labelKey = 'title', showPrice = false }) => {
+    const list = formData[arrayName] || [];
+    return (
+      <div className="bg-white border border-[#E3E3E4] rounded-lg overflow-hidden mt-6">
+        <div className="p-5 border-b border-[#E3E3E4]">
+          <h3 className="text-[15px] font-semibold text-[#161823]">{title}</h3>
+          <p className="text-[13px] text-[#8A8B91] mt-0.5">{description}</p>
+        </div>
+        <div className="p-5 space-y-3">
+          {list.length === 0 && (
+            <p className="text-[13px] text-[#8A8B91]">None configured yet.</p>
+          )}
+          {list.map((item, idx) => {
+            const isActive = item.active !== false;
+            return (
+              <div
+                key={item.code || item._id || idx}
+                className={`flex items-center gap-4 p-3 bg-[#F8F8F8] border border-[#E3E3E4] rounded-md transition-opacity ${isActive ? '' : 'opacity-60'}`}
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-semibold text-[#161823] truncate">
+                    {item[labelKey] || item.name || item.title || item.code}
+                  </p>
+                  {(item.description || (showPrice && item.price != null)) && (
+                    <p className="text-[12px] text-[#8A8B91] truncate">
+                      {showPrice && item.price != null ? `${getCurrencySymbol(formData.baseCurrency)} ${Number(item.price).toLocaleString()}` : ''}
+                      {showPrice && item.price != null && item.description ? ' · ' : ''}
+                      {item.description || ''}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className={`text-[12px] font-medium ${isActive ? 'text-[#16A34A]' : 'text-[#8A8B91]'}`}>
+                    {isActive ? 'Active' : 'Hidden'}
+                  </span>
+                  <Toggle active={isActive} onClick={() => toggleMethodActive(arrayName, idx)} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   const DynamicListManager = ({ title, description, arrayName }) => (
     <div className="bg-white border border-[#E3E3E4] rounded-lg overflow-hidden mt-6">
@@ -479,11 +539,19 @@ export default function MasterSettingsPage() {
                 </div>
               </div>
 
+              {/* Checkout payment methods buyers actually see */}
+              <MethodManager
+                title="Checkout Payment Methods"
+                description="Buyers only see methods marked Active. Turn one off to hide it at checkout everywhere."
+                arrayName="paymentMethods"
+                labelKey="title"
+              />
+
               {/* Dynamic Gateways List */}
-              <DynamicListManager 
-                title="Payment Gateways" 
-                description="Manage available checkout providers (e.g. Flutterwave, Paystack, MTN MoMo)." 
-                arrayName="paymentGateways" 
+              <DynamicListManager
+                title="Payment Gateways"
+                description="Manage available checkout providers (e.g. Flutterwave, Paystack, MTN MoMo)."
+                arrayName="paymentGateways"
               />
             </div>
           )}
@@ -516,11 +584,26 @@ export default function MasterSettingsPage() {
                 </div>
               </div>
 
+              {/* Checkout shipping methods + pickup stations buyers actually see */}
+              <MethodManager
+                title="Checkout Shipping Methods"
+                description="Buyers only see methods marked Active. Turn one off to hide it at checkout everywhere."
+                arrayName="shippingMethods"
+                labelKey="title"
+                showPrice
+              />
+              <MethodManager
+                title="Pickup Stations"
+                description="Hidden stations won't be offered when a buyer chooses pickup."
+                arrayName="pickupStations"
+                labelKey="name"
+              />
+
               {/* Dynamic Couriers List */}
-              <DynamicListManager 
-                title="Delivery Couriers" 
-                description="Manage integrated logistics providers (e.g. DHL, SafeBoda, FedEx)." 
-                arrayName="couriers" 
+              <DynamicListManager
+                title="Delivery Couriers"
+                description="Manage integrated logistics providers (e.g. DHL, SafeBoda, FedEx)."
+                arrayName="couriers"
               />
             </div>
           )}
