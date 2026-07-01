@@ -9,7 +9,7 @@ import { useRouter }        from 'next/navigation';
 import {
   Search, ShoppingCart, User, ChevronDown, MapPin,
   Inbox, LogOut, LayoutDashboard, Loader2, MessageSquare,
-  Phone, Store, ShoppingBag, CheckCircle2,
+  Phone, Store, ShoppingBag, CheckCircle2, ShieldCheck,
 } from 'lucide-react';
 
 import { useCart }           from '@/contexts/CartContext';
@@ -22,7 +22,7 @@ export default function TopNav({ showSearch = false }) {
   const router = useRouter();
 
   const { cartCount, toggleDrawer }                              = useCart();
-  const { user, logout, sellerPortalUrl }                        = useUser();
+  const { user, logout, sellerPortalUrl, isAdmin }               = useUser();
   const { totalUnread }                                          = useNotifications();
   const { loginWithGoogle, loginWithTikTok, authProvider, updatePhone } = useAuth();
 
@@ -217,6 +217,11 @@ export default function TopNav({ showSearch = false }) {
                           <LayoutDashboard size={15} />
                           {user.hasStore ? 'Seller Dashboard' : 'Open a Store'}
                         </Link>
+                        {isAdmin && (
+                          <Link href="/admin/dashboard" className="acct-menu-item">
+                            <ShieldCheck size={15} /> Admin Dashboard
+                          </Link>
+                        )}
                         <div className="acct-menu-divider" />
                         <button
                           onClick={logout}

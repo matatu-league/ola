@@ -96,14 +96,15 @@ export function useAuth() {
       
       const data = await res.json();
       if (data.success) {
-        const sessionData = { 
-          id: data.user.id, 
-          name: data.user.name, 
-          email: data.user.email, 
-          avatar: data.user.avatar, 
+        const sessionData = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          avatar: data.user.avatar,
           phoneNumber: data.user.phoneNumber, // Include phone number in session
-          hasStore: data.user.hasStore, 
-          domain: data.user.storeDomain 
+          role: data.user.role,               // needed to gate admin-dashboard access
+          hasStore: data.user.hasStore,
+          domain: data.user.storeDomain
         };
         setWildcardCookie('user_session', encodeURIComponent(JSON.stringify(sessionData)));
         setUser(sessionData);

@@ -61,6 +61,7 @@ export function UserProvider({ children }) {
   // ── Derived values ────────────────────────────────────────────────────────
   const isLoggedIn = !!user;
   const hasStore   = !!user?.hasStore;
+  const isAdmin    = user?.role === 'admin';
 
   // Seller portal URL — computed from user data
   const sellerPortalUrl = hasStore
@@ -78,6 +79,7 @@ export function UserProvider({ children }) {
 
       // ── Store / seller ──────────────────────────────────────────────────
       hasStore,
+      isAdmin,        // user.role === 'admin' — gates admin-dashboard access
       sellerPortalUrl,
 
       // ── Actions ────────────────────────────────────────────────────────
