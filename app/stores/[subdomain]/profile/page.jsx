@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { storage } from '@/lib/firebaseLib';
 import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
+import { optimizeLogo, optimizeImage } from '@/lib/imageOptimize';
 
 // ============================================================================
 // CONFIG
@@ -471,7 +472,9 @@ export default function StoreProfile() {
     if (pendingUploads.logo) {
       setIsUploading(prev => ({ ...prev, logo: true }));
       try {
-        const downloadURL = await uploadFileToFirebase(pendingUploads.logo, 'stores/logos');
+        // Standard-size + compress before storage — reused as favicon + OG image.
+        const optimizedLogo = await optimizeLogo(pendingUploads.logo);
+        const downloadURL = await uploadFileToFirebase(optimizedLogo, 'stores/logos');
         urls.logo = downloadURL;
       } catch (error) {
         console.error('Logo upload failed:', error);
@@ -485,7 +488,9 @@ export default function StoreProfile() {
     if (pendingUploads.banner) {
       setIsUploading(prev => ({ ...prev, banner: true }));
       try {
-        const downloadURL = await uploadFileToFirebase(pendingUploads.banner, 'stores/banners');
+        // Banners are wide hero/OG images — cap at 1600×900 and compress.
+        const optimizedBanner = await optimizeImage(pendingUploads.banner, { maxWidth: 1600, maxHeight: 900, quality: 0.82 });
+        const downloadURL = await uploadFileToFirebase(optimizedBanner, 'stores/banners');
         urls.banner = downloadURL;
       } catch (error) {
         console.error('Banner upload failed:', error);

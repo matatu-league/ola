@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { storage } from '@/lib/firebaseLib';
 import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
+import { optimizeLogo } from '@/lib/imageOptimize';
 import { convertDataUrlToFile } from '@/lib/ai';
 
 // AI image generation (Gemini). The frontend composes a concrete, dimensioned
@@ -379,7 +380,10 @@ export default function StoreOnboarding() {
     if (pendingUploads.logo) {
       setUploading(prev => ({ ...prev, logo: true }));
       try {
-        const url = await uploadFileToFirebase(pendingUploads.logo, 'stores/logos');
+        // Resize + compress to the standard logo size before it hits storage —
+        // this same asset becomes the favicon and the social/OG preview.
+        const optimized = await optimizeLogo(pendingUploads.logo);
+        const url = await uploadFileToFirebase(optimized, 'stores/logos');
         urls.logo = url;
       } catch (err) {
         console.error('Logo upload failed:', err);
