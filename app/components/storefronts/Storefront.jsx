@@ -138,7 +138,7 @@ const CustomAIStore = ({ store }) => {
 
     const templateCode = store.themeTemplate || fallbackTemplate;
 
-    const processedCode = sanitizeTemplateCode(templateCode, 'window.lucide || window.lucideFallback || {}');
+    const processedCode = sanitizeTemplateCode(templateCode, 'window.__olaIcons');
 
     return `
       <!DOCTYPE html>
@@ -165,11 +165,22 @@ const CustomAIStore = ({ store }) => {
             const { useState, useEffect, useRef, useMemo } = React;
             
             // Generate fallback placeholder blocks if icon library misses a load
-            window.lucideFallback = new Proxy({}, { 
-              get: (_, prop) => (p) => React.createElement('div', { 
-                ...p, 
-                style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: p.size||24, height: p.size||24, border: '1px dashed currentColor', borderRadius: '4px', fontSize: '10px' } 
-              }, prop.slice(0, 2)) 
+            window.lucideFallback = new Proxy({}, {
+              get: (_, prop) => (p) => React.createElement('div', {
+                ...p,
+                style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: p.size||24, height: p.size||24, border: '1px dashed currentColor', borderRadius: '4px', fontSize: '10px' }
+              }, prop.slice(0, 2))
+            });
+
+            // Real lucide-react icons come from the UMD CDN above (global name
+            // varies by build), with a graceful SVG placeholder for any name the
+            // CDN doesn't expose — so a template can freely import any icon.
+            window.__olaIcons = new Proxy({}, {
+              get: (_, name) => {
+                const lib = window.LucideReact || window.lucideReact || window.lucide || null;
+                const Icon = lib && lib[name];
+                return (typeof Icon === 'function' || (Icon && Icon.$$typeof)) ? Icon : window.lucideFallback[name];
+              }
             });
 
             // Global helper injected for AI convenience

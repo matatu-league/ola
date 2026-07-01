@@ -9,10 +9,10 @@ export default function OrderSummary({ cartItems, cartTotal, shippingFee, isFetc
     <div className="sticky top-6 space-y-4">
 
       {/* Cart items + totals */}
-      <div className="bg-white border border-[var(--s-border,#E3E3E4)] rounded-sm">
+      <div className="bg-white border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)]">
         <h3 className="p-4 md:p-5 font-bold text-[15px] text-[var(--s-text,#161823)] border-b border-[var(--s-border,#E3E3E4)] bg-[var(--s-surface,#F8F8F8)] tracking-tight flex items-center justify-between uppercase">
           <span>Order Summary</span>
-          <span className="text-[12px] font-medium text-[var(--s-muted,#8A8B91)] bg-white border border-[var(--s-border,#E3E3E4)] px-2 py-0.5 rounded-sm">
+          <span className="text-[12px] font-medium text-[var(--s-muted,#8A8B91)] bg-white border border-[var(--s-border,#E3E3E4)] px-2 py-0.5 rounded-[var(--s-radius,0.125rem)]">
             {cartItems.length} item{cartItems.length !== 1 ? 's' : ''}
           </span>
         </h3>
@@ -22,7 +22,7 @@ export default function OrderSummary({ cartItems, cartTotal, shippingFee, isFetc
           <div className="space-y-4">
             {cartItems.map(item => (
               <div key={item.id} className="flex gap-3">
-                <div className="w-14 h-14 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm shrink-0 overflow-hidden">
+                <div className="w-14 h-14 bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)] shrink-0 overflow-hidden">
                   {item.product.images?.[0]
                     ? <img src={item.product.images[0]} alt={item.product.title} className="w-full h-full object-cover" />
                     : <div className="w-full h-full flex items-center justify-center text-[18px]">🛍️</div>
@@ -52,7 +52,7 @@ export default function OrderSummary({ cartItems, cartTotal, shippingFee, isFetc
         </div>
 
         {/* Totals */}
-        <div className="p-4 md:p-5 space-y-2.5 bg-white rounded-b-sm">
+        <div className="p-4 md:p-5 space-y-2.5 bg-white rounded-b-[var(--s-radius,0.125rem)]">
           <div className="flex justify-between text-[12px] text-[var(--s-muted,#8A8B91)] font-medium">
             <span>Subtotal</span>
             <span className="text-[var(--s-text,#161823)] font-semibold">UGX {cartTotal.toLocaleString()}</span>
@@ -73,7 +73,7 @@ export default function OrderSummary({ cartItems, cartTotal, shippingFee, isFetc
       </div>
 
       {/* Support box */}
-      <div className="bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-sm p-4 md:p-5">
+      <div className="bg-[var(--s-surface,#F8F8F8)] border border-[var(--s-border,#E3E3E4)] rounded-[var(--s-radius,0.125rem)] p-4 md:p-5">
         <h4 className="text-[12px] font-bold text-[var(--s-text,#161823)] mb-3 uppercase tracking-wide">Need Help?</h4>
         <div className="space-y-2.5">
           <div className="flex items-center gap-2.5">

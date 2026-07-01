@@ -432,7 +432,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
     return () => observer.disconnect();
   }, [targetWidth, viewMode]);
 
-  const processedCode = useMemo(() => sanitizeTemplateCode(code), [code]);
+  const processedCode = useMemo(() => sanitizeTemplateCode(code, 'window.__olaIcons'), [code]);
 
   const srcDoc = useMemo(() => `
     <!DOCTYPE html><html lang="en"><head>
@@ -442,6 +442,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
       <script>window.react = window.React;</script>
       <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+      <script crossorigin src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script>
       <script src="https://cdn.tailwindcss.com"></script>
       <style>body{margin:0;padding:0;}::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2);}</style>
     </head><body>
@@ -455,11 +456,21 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
         
-        window.lucideFallback = new Proxy({}, { 
-          get: (_, prop) => (p) => React.createElement('svg', { 
-            width: p.size || 24, height: p.size || 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 
+        window.lucideFallback = new Proxy({}, {
+          get: (_, prop) => (p) => React.createElement('svg', {
+            width: p.size || 24, height: p.size || 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
             strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', className: p.className, style: p.style
-          }, React.createElement('circle', {cx: 12, cy: 12, r: 10}), React.createElement('path', {d: 'M12 8v4M12 16h.01'})) 
+          }, React.createElement('circle', {cx: 12, cy: 12, r: 10}), React.createElement('path', {d: 'M12 8v4M12 16h.01'}))
+        });
+
+        // Real lucide-react icons (UMD CDN) with a graceful SVG fallback for any
+        // name the build doesn't expose — templates can import any icon safely.
+        window.__olaIcons = new Proxy({}, {
+          get: (_, name) => {
+            const lib = window.LucideReact || window.lucideReact || window.lucide || null;
+            const Icon = lib && lib[name];
+            return (typeof Icon === 'function' || (Icon && Icon.$$typeof)) ? Icon : window.lucideFallback[name];
+          }
         });
 
         ${olaBridgeScript({ storeId: dynamicStoreData.storeId || null, live: false })}
@@ -613,9 +624,9 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
   }, []);
 
   const openInNewTab = () => {
-    const processedCode = sanitizeTemplateCode(code);
+    const processedCode = sanitizeTemplateCode(code, 'window.__olaIcons');
 
-    const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script type="text/babel">const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});${olaBridgeScript({ storeId: null, live: false })}const dynamicStoreData={storeName:"",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}</script></body></html>`;
+    const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script crossorigin src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script type="text/babel">const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});window.__olaIcons=new Proxy({},{get:(_,name)=>{var lib=window.LucideReact||window.lucideReact||window.lucide||null;var Icon=lib&&lib[name];return (typeof Icon==='function'||(Icon&&Icon.$$typeof))?Icon:window.lucideFallback[name];}});${olaBridgeScript({ storeId: null, live: false })}const dynamicStoreData={storeName:"",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}</script></body></html>`;
     const w = window.open('', '_blank');
     if (w) { w.document.open(); w.document.write(htmlContent); w.document.close(); }
   };
@@ -997,11 +1008,24 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
           </div>
 
           {showCode ? (
-            <div className="w-full max-w-[1280px] h-full overflow-hidden rounded-none border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-500 bg-[#1e1e1e] relative">
+            <div className="w-full max-w-[1280px] h-full overflow-hidden rounded-none border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-500 bg-[#1e1e1e] relative flex flex-col">
+              <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-[#181818] shrink-0">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-white/40">Template source — editable · paste your own to replace</span>
+                <button
+                  onClick={() => setShowCode(false)}
+                  className="text-[11px] font-bold text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Apply & view render →
+                </button>
+              </div>
               <textarea
                 value={code}
-                readOnly
-                className="w-full h-full bg-transparent text-[#d4d4d4] font-mono text-sm leading-relaxed p-6 outline-none resize-none custom-scrollbar"
+                onChange={(e) => setCode(e.target.value)}
+                spellCheck={false}
+                autoCapitalize="off"
+                autoCorrect="off"
+                placeholder="Paste or edit the full template component here. It must export a component named App."
+                className="w-full flex-1 bg-transparent text-[#d4d4d4] font-mono text-sm leading-relaxed p-6 outline-none resize-none custom-scrollbar"
               />
             </div>
           ) : (
