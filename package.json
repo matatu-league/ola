@@ -9,7 +9,8 @@
     "start": "node server.js",
     "lint": "eslint",
     "seed:filters": "node scripts/seed-filters.mjs",
-    "seed:services": "node scripts/seed-service-fields.mjs"
+    "seed:services": "node scripts/seed-service-fields.mjs",
+    "seed:marketplace": "node scripts/seed-marketplace.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.1.0",

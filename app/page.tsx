@@ -8,6 +8,7 @@ import ProductsView from './components/marketplace/ProductsView';
 import StoresView from './components/marketplace/StoresView';
 import Storefront from './components/storefronts/Storefront';
 import CategoryListingView from './components/marketplace/CategoryListingView';
+import MarketplaceHero from './components/marketplace/MarketplaceHero';
 
 function MarketplaceContent() {
   const router = useRouter();
@@ -83,6 +84,12 @@ function MarketplaceContent() {
     <div className="font-sans text-gray-800 flex flex-col min-h-screen">
       <div className={`transition-colors duration-500 relative ${activeTab === 'Products' ? 'bg-gradient-to-tr from-white via-white to-[#fff0f4] animate-bg-gradient' : 'bg-gradient-to-br from-white via-white to-red-50'}`}>
         <TopNav />
+
+        {/* Professional hybrid hero — only on the marketplace home (not inside a
+            specific category listing). Leads with products + services. */}
+        {!activeCategory && (
+          <MarketplaceHero onCategorySelect={handleCategorySelect} onTabChange={handleTabChange} />
+        )}
 
         {/* Hide SearchHeader when browsing a specific category */}
         {!activeCategory && (
