@@ -84,6 +84,31 @@ export function olaBridgeScript({ storeId = null, live = false } = {}) {
     viewProduct: function(id){ if(CFG.live && id){ nav('/p/' + id); } }
   };
   window.__OLA__ = api;
+
+  // ── Iframe escape hatch: real links must NEVER load the app inside this frame ──
+  // The template's hash routes ("#/", "#/shop", …) are the in-page router and stay
+  // in-frame. But if a template slips in a REAL path or absolute URL (a "/shop"
+  // nav tab, a logo href="/") the click would load the ENTIRE site inside the
+  // srcDoc iframe — nesting another system banner + another storefront per click
+  // (banner shows 2x, 3x… with a black flash while the nested app boots). Catch
+  // every anchor click in the capture phase: hash links pass through untouched;
+  // anything else is handed to the TOP frame on the live store, or politely
+  // no-op'd in the builder preview so designers never navigate away.
+  document.addEventListener('click', function(e){
+    var el = e.target, a = null;
+    while (el && el !== document) { if (el.tagName === 'A') { a = el; break; } el = el.parentNode; }
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (href == null || href === '') return;                   // non-navigating anchor
+    if (href.charAt(0) === '#') return;                        // in-template hash route
+    if (/^(mailto:|tel:|sms:)/i.test(href)) return;            // OS-handled schemes
+    if (a.target === '_blank') return;                         // new tab (allow-popups)
+    e.preventDefault();
+    e.stopPropagation();
+    if (/^javascript:/i.test(href)) return;                    // never execute
+    if (CFG.live) { nav(a.href); }
+    else { try { console.info('[OLA preview] link -> ' + href + ' (navigates on the live store)'); } catch(_){} }
+  }, true);
 })();
 `;
 }

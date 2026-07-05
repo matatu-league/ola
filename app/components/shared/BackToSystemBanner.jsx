@@ -8,13 +8,24 @@
  * SYSTEM look — not the vendor theme — so buyers always have a clear, consistent
  * way back to the Ola marketplace from inside any vendor's themed store.
  */
+import { useEffect, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { getRootDomain, ROOT_DOMAIN } from '@/lib/domain';
 
 export default function BackToSystemBanner() {
+  // If the app somehow renders inside a frame (e.g. a storefront iframe
+  // navigated to a real route), showing the banner again would stack a second/
+  // third copy under the real one — the top frame already has it, so hide ours.
+  const [framed, setFramed] = useState(false);
+  useEffect(() => {
+    try { setFramed(window.self !== window.top); } catch { setFramed(true); }
+  }, []);
+
   // getRootDomain() is browser-only (returns '' during SSR); fall back to the
   // configured apex domain so the link is correct before hydration.
   const href = getRootDomain() || `https://${ROOT_DOMAIN}`;
+
+  if (framed) return null;
 
   return (
     <div className="w-full bg-[#161823] text-white">
