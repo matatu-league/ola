@@ -162,19 +162,23 @@ const EDITOR_BRIDGE = `
   window.addEventListener('scroll', function(){ if (hovered && hovered.tagName === 'IMG') showOverlayOn(hovered); }, true);
   window.addEventListener('resize', function(){ if (hovered && hovered.tagName === 'IMG') showOverlayOn(hovered); });
 
+  // Image hover-to-replace is ALWAYS on (regardless of Visual Edit mode) — a
+  // vendor should see a photo is replaceable without hunting for a toggle
+  // first. Text click-to-edit (contenteditable + the blanket anchor-click
+  // guard that protects it from navigating away mid-edit) stays gated behind
+  // window.__OLA_TEXT_EDIT__, since rewriting copy is a more deliberate action.
   var hovered=null;
   document.addEventListener('mouseover', function(e){
     if(hovered && hovered.tagName!=='IMG'){ hovered.style.outline=''; hovered.style.cursor=''; }
     var el=e.target;
     if(el.tagName==='IMG'){ el.style.cursor='pointer'; showOverlayOn(el); hovered=el; return; }
     hideOverlay();
-    if(isTextLeaf(el)){ el.style.outline='2px solid #2563EB'; el.style.outlineOffset='1px'; el.style.cursor='text'; hovered=el; }
+    if(window.__OLA_TEXT_EDIT__ && isTextLeaf(el)){ el.style.outline='2px solid #2563EB'; el.style.outlineOffset='1px'; el.style.cursor='text'; hovered=el; }
   });
   document.addEventListener('mouseout', function(e){
     if(e.target && e.target.tagName==='IMG') hideOverlay();
   });
   document.addEventListener('click', function(e){
-    var a=e.target.closest && e.target.closest('a'); if(a) e.preventDefault();
     var el=e.target;
     if(el.tagName==='IMG'){
       e.preventDefault(); e.stopPropagation();
@@ -182,6 +186,8 @@ const EDITOR_BRIDGE = `
       parent.postMessage({ __olaEdit:true, type:'image-edit', src: el.getAttribute('src') }, '*');
       return;
     }
+    if(!window.__OLA_TEXT_EDIT__) return;
+    var a=e.target.closest && e.target.closest('a'); if(a) e.preventDefault();
     if(isTextLeaf(el) && !el.getAttribute('data-ola-editing')){
       e.preventDefault(); e.stopPropagation();
       el.setAttribute('data-ola-editing','1');
@@ -673,7 +679,12 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
 
     try {
       ReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData} />);
-      ${editMode ? `setTimeout(function(){ ${EDITOR_BRIDGE} }, 350);` : ''}
+      // The image hover-to-replace overlay is ALWAYS on in the builder preview
+      // (so a vendor sees "this photo can be replaced" without first finding
+      // the Visual Edit toggle). Text click-to-edit stays gated behind that
+      // toggle via this flag, since rewriting copy is a more deliberate action.
+      window.__OLA_TEXT_EDIT__ = ${editMode ? 'true' : 'false'};
+      setTimeout(function(){ ${EDITOR_BRIDGE} }, 350);
     } catch(err) {
       document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Render Error</h2><pre>' + err.toString() + '</pre></div>';
     }
@@ -1486,8 +1497,9 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                 </div>
               )}
 
-              {/* Image edit popover */}
-              {editMode && imageEdit && (
+              {/* Image edit popover — opens on image click even outside Visual
+                  Edit mode, since hover-to-replace is always available. */}
+              {imageEdit && (
                 <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40" onClick={() => setImageEdit(null)}>
                   <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between mb-3">
