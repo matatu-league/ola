@@ -21,8 +21,11 @@ export async function GET(request, { params }) {
     return NextResponse.json({
       layoutStyle: store.layoutStyle || 'Classic',
       themeColor: store.themeColor || '#161823',
+      themeMode: store.themeMode || 'light',
       flashSales: store.features?.flashSales || false,
       themeTemplate: store.themeTemplate || null,
+      templateFormat: store.templateFormat || 'jsx',
+      templateJson: store.templateJson || null,
       title: store.title,
       logo: store.logo
     }, { status: 200 });
@@ -72,7 +75,7 @@ export async function PUT(request, { params }) {
     // ---------------------------------------------------------
 
     const body = await request.json();
-    const { layoutStyle, themeColor, flashSales, themeTemplate } = body;
+    const { layoutStyle, themeColor, themeMode, flashSales, themeTemplate, templateFormat, templateJson } = body;
 
     if (layoutStyle !== undefined) {
       store.layoutStyle = layoutStyle;
@@ -82,8 +85,21 @@ export async function PUT(request, { params }) {
       store.themeColor = themeColor;
     }
 
+    if (themeMode !== undefined) {
+      store.themeMode = themeMode;
+    }
+
     if (themeTemplate !== undefined) {
       store.themeTemplate = themeTemplate;
+    }
+
+    // Structured JSON template (docs/template-json-schema.md).
+    if (templateFormat !== undefined && ['jsx', 'json'].includes(templateFormat)) {
+      store.templateFormat = templateFormat;
+    }
+    if (templateJson !== undefined) {
+      store.templateJson = templateJson;
+      store.markModified('templateJson'); // Mixed type — mongoose can't see deep changes
     }
 
     if (flashSales !== undefined) {

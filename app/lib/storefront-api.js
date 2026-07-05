@@ -92,6 +92,8 @@ export function publicStoreShape(store) {
     theme:        store.theme || null,          // structured design tokens (StoreThemeProvider)
     layoutStyle:  store.layoutStyle || 'Classic',
     themeTemplate: store.themeTemplate || null,
+    templateFormat: store.templateFormat || 'jsx',
+    templateJson:   store.templateJson || null,
     businessType: store.businessType || 'products',
     serviceType:  store.serviceType || null,
     contactEmail: store.contact?.email || '',

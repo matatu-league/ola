@@ -65,7 +65,17 @@ const StoreSchema = new Schema(
     logoDescribedFor: { type: String },
     banner:        { type: String },
     bannerImages:  [{ type: String }],
-    themeTemplate: { type: String, default: null }, 
+    themeTemplate: { type: String, default: null },
+
+    // ── Structured JSON template (docs/template-json-schema.md) ──────────────
+    // 'jsx'  → legacy: themeTemplate holds raw JSX compiled in-iframe by Babel.
+    // 'json' → templateJson holds the structured document (tokens + sections of
+    //          nodes carrying full Tailwind classes, backgrounds/gradients,
+    //          interactions as closed action verbs, motion tokens, bindings)
+    //          rendered by the fixed runtime renderer — no Babel, validated,
+    //          and cheaper to generate.
+    templateFormat: { type: String, enum: ['jsx', 'json'], default: 'jsx' },
+    templateJson:   { type: Schema.Types.Mixed, default: null },
 
     // Structured, config-driven theme.
     theme: {
