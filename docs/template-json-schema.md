@@ -111,12 +111,31 @@ Layout/primitives: `box` · `text` · `image` · `icon` · `button` · `link` ·
 Commerce/section components (render real, wired behaviour): `hero` ·
 `productGrid` · `productCard` · `serviceMenu` · `serviceCard` · `categoryRail` ·
 `gallery` · `cartDrawer` · `navbar` · `footer` · `banner` · `stats` ·
-`testimonials` · `faq` · `bookingForm`.
+`testimonials` · `faq` · `bookingForm` · `modal` · `tabs`.
 
 Each section component accepts a small, typed `props` object AND still supports
 `class`/`style`/`motion`/`on`, so it's themable but never free-form-unsafe. New
 capabilities are added by adding a type here (and, per your AI-commands feature,
 a category command can restrict which types/sections an industry may use).
+
+### `tabs` and `modal` — the in-page switching primitives
+
+The runtime never reloads or re-navigates for anything except the checkout
+handoff. The 3 hash routes (`#/`, `#/shop`, `#/product/<id>`) are the only
+top-level views; everything else that looks like "switching content" is one of
+these two client-state-only primitives — never a new route:
+
+- **`tabs`**: `{ "type": "tabs", "attrs": { "key": "pdpTabs" }, "children": [Node, ...] }`.
+  Each direct child is one tab's panel and carries `attrs.tabLabel` (its header
+  button text). The runtime renders the tab strip and swaps the active panel
+  itself, keyed by `attrs.key` in local state — zero navigation. Use it for PDP
+  Description/Specifications/Shipping, shop category filters, service
+  categories, FAQ groups — anywhere content comes in labelled variants.
+- **`modal`**: `{ "type": "modal", "attrs": { "id": "booking" }, "children": [Node, ...] }`,
+  shown via the `openModal {"id":"booking"}` action and hidden via `closeModal`.
+  Use for booking forms, quick-view, filters, confirmations, image lightboxes.
+- **Cart** is always the built-in `cartDrawer` node (route `"*"`) — never a
+  route, never a modal you build yourself.
 
 ---
 
