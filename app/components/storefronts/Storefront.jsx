@@ -233,7 +233,31 @@ const CustomAIStore = ({ store }) => {
         </body>
       </html>
     `;
-  }, [store]);
+  // IMPORTANT: memoize on a STABLE CONTENT SIGNATURE, not the `store` object.
+  // The parent (`Storefront`) rebuilds `activeStore` as a brand-new object on
+  // every render (and re-renders when the async product fetch resolves). Keying
+  // the memo on `[store]` therefore recomputed `srcDoc` on every render, which
+  // fully RELOADED the iframe — the heavy React/Babel/Tailwind CDN + re-compile
+  // made the storefront flash: render → blank/black → render again ("shows
+  // twice"). Depending on the fields that actually change the output means the
+  // iframe is built once and only rebuilds when the content genuinely changes
+  // (e.g. products arrive with new ids).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    store._id,
+    store.themeTemplate,
+    store.themeColor,
+    store.title,
+    store.logo,
+    store.banner,
+    store.businessType,
+    store.serviceType,
+    store.contact?.email,
+    store.contact?.phone,
+    (store.products || []).length,
+    (store.products || []).map(p => (p._id || p.id || '')).join(','),
+    (store.services || []).length,
+  ]);
 
   return (
     <iframe

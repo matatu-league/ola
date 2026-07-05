@@ -55,6 +55,14 @@ const StoreSchema = new Schema(
     themeColor:    { type: String, default: '#161823' },
     layoutStyle:   { type: String, default: 'Classic' }, // 'Classic' | 'Modern' | 'Bold' | 'Custom_AI'
     logo:          { type: String },
+    // AI-decoded description of the logo (colors, layout, wordmark/text, typography,
+    // mark, mood). Generated ONCE per logo and attached to the template prompt as
+    // text instead of re-uploading the image bytes on every generation — cheaper
+    // on tokens and a richer brief for the designer model.
+    logoDescription:  { type: String },
+    // The logo URL the description was generated for; when the logo changes this
+    // differs from `logo`, triggering a one-time re-decode.
+    logoDescribedFor: { type: String },
     banner:        { type: String },
     bannerImages:  [{ type: String }],
     themeTemplate: { type: String, default: null }, 

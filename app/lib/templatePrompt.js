@@ -19,6 +19,22 @@
 
 import { unsplashSourceUrl } from '@/lib/aiProvider';
 
+// ─── Logo decode prompt ─────────────────────────────────────────────────────
+// A one-off vision prompt: the model "reads" the uploaded logo image and returns
+// a rich TEXT description of it (exact wording, colours as hex, typography, mark,
+// layout, mood + a suggested palette). We run this ONCE per logo and cache the
+// result on the store, then attach the text — not the image — to every template
+// generation. Cheaper on tokens and gives the designer model a fuller brief.
+export const LOGO_DECODE_PROMPT = `You are a brand designer. Look at this LOGO image and decode it into a precise, structured text brief that another designer could use to build a whole website around WITHOUT seeing the image. Be concrete and specific. Return PLAIN TEXT (no markdown fences, no preamble), under ~200 words, in exactly these labelled lines:
+
+WORDMARK: the exact text/brand name in the logo, verbatim (and any tagline/subtext, verbatim). If there is no text, write "none".
+TYPOGRAPHY: the letterform style — serif / sans-serif / slab / script / handwritten / geometric / monospace; weight (light…black); case (upper/lower/title); notable traits (rounded, condensed, wide tracking, italic, custom ligatures).
+MARK / ICON: describe the symbol, emblem or graphic (shape, what it depicts, style — line/solid/gradient, level of detail). If it is a pure wordmark, write "wordmark only".
+COLORS: the exact colours as HEX best-guesses, labelled — Primary, Secondary, Accent, Background (e.g. "Primary #1E3A8A, Accent #F59E0B, Background #FFFFFF"). List every distinct colour you see.
+LAYOUT: composition — icon left of text / icon above text (stacked) / text only / inside a badge or container; alignment and proportions.
+STYLE & MOOD: 3–6 adjectives capturing the vibe (e.g. minimal, premium, playful, techy, organic, retro) and whether it reads light or dark.
+PALETTE FOR SITE: a suggested 3–4 colour palette (hex) to theme the storefront with, derived from the logo, noting which is the primary accent.`;
+
 // Industry-specific blueprint so a hotel gets a hotel site, not a product grid.
 const SITE_BRIEFS = {
   hotel:   `Build a HOTEL / ACCOMMODATION website. Hero with a Date / Guests check-in–check-out availability picker, ROOM TYPES as cards (image, nightly price, capacity, a clear "Book Now" button), an AMENITIES section (Wi-Fi, pool, parking, breakfast, AC…), check-in / check-out info, a photo GALLERY, and a location block. Do NOT build a generic product grid.`,
@@ -112,7 +128,11 @@ ${isEditing ? `CRITICAL EDITING INSTRUCTION: The user wants to MODIFY their curr
 - Business type: ${bt}${st ? ` (service type: ${st})` : ''}
 - About / description: ${business.description || '(none provided — infer from the industry)'}
 - Contact: ${business.contactEmail || ''} ${business.contactPhone || ''}
-- Logo: ${business.logoBase64 ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src). The logo is the SOLE creative anchor: derive the entire palette, mood, typography pairing and art direction FROM it so the whole design feels inspired by and built around this logo` : (business.logo ? `available at "${business.logo}" — use this URL as the logo src and design the palette around it` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
+- Logo: ${business.logoDescription
+    ? `available at "${business.logo}" — render THIS exact logo in the header (and footer) using the URL as the \`src\`. A detailed DECODE of the logo is provided so you can build the ENTIRE brand around it without needing the image itself — treat it as the SOLE creative anchor and derive the whole palette, accents, gradients, mood and typography pairing FROM it:\n"""\n${business.logoDescription}\n"""`
+    : business.logoBase64
+      ? `attached below as an image at URL "${business.logo}" — render THIS exact logo (use the URL as the src). The logo is the SOLE creative anchor: derive the entire palette, mood, typography pairing and art direction FROM it so the whole design feels inspired by and built around this logo`
+      : (business.logo ? `available at "${business.logo}" — use this URL as the logo src and design the palette around it` : '(none — render a tasteful placeholder using the store name initial + brand color)')}
 - Hero / section imagery: there is NO uploaded banner. For the hero background and every other photographic image, use REAL Unsplash photos via deterministic source URLs of the form \`${unsplashSourceUrl('RELEVANT KEYWORDS', 1600, 900)}\` — replace the keywords with terms specific to THIS business/industry (e.g. for a hotel: "luxury hotel lobby", for a salon: "modern hair salon"). Vary the keywords per section so images differ.
 
 === WHAT TO BUILD ===

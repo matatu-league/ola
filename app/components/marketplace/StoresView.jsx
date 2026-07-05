@@ -8,6 +8,7 @@ const StoresView = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let alive = true; // guard against StrictMode double-invoke clobbering state
     const fetchStores = async () => {
       try {
         const response = await fetch('/api/stores?directory=1',{
@@ -16,20 +17,31 @@ const StoresView = () => {
           },
         });
         const result = await response.json();
+        if (!alive) return;
 
         if (result.success) {
-          setStores(Array.isArray(result.data) ? result.data : []);
+          const list = Array.isArray(result.data) ? result.data : [];
+          // De-duplicate by id so a store can never render twice.
+          const seen = new Set();
+          const unique = list.filter((s) => {
+            const key = String(s?._id || s?.id || s?.domain || '');
+            if (!key || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+          setStores(unique);
         } else {
           setError(result.error || result.message || 'Could not load stores.');
         }
       } catch (err) {
-        setError('Failed to fetch stores. Is your backend running?');
+        if (alive) setError('Failed to fetch stores. Is your backend running?');
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
     };
 
     fetchStores();
+    return () => { alive = false; };
   }, []);
 
   if (loading) {
