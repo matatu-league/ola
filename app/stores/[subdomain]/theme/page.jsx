@@ -129,17 +129,56 @@ const EDITOR_BRIDGE = `
     if(el.children.length>0) return false;
     return el.textContent.trim().length>0;
   }
+
+  // ── Noticeable "replace image" hover affordance ───────────────────────────
+  // A floating overlay positioned over whichever <img> is hovered — a dashed
+  // border, dark scrim, upload icon and "Click to replace image" label — so
+  // images read as obviously editable, distinct from the thin text-hover
+  // outline. pointer-events:none on the overlay lets the click still land on
+  // the underlying <img>, which the existing click handler below opens the
+  // replace popover for.
+  var overlay = null;
+  function ensureOverlay(){
+    if (overlay) return overlay;
+    overlay = document.createElement('div');
+    overlay.setAttribute('data-ola-image-overlay', '1');
+    overlay.style.cssText = 'position:fixed;z-index:2147483647;display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;background:rgba(15,15,20,.6);color:#fff;font:700 12px/1.3 system-ui,-apple-system,sans-serif;pointer-events:none;box-sizing:border-box;border:2px dashed rgba(255,255,255,.9);text-align:center;padding:8px;';
+    overlay.innerHTML =
+      '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
+      '<span>Click to replace image</span>';
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+  function showOverlayOn(img){
+    var o = ensureOverlay();
+    var r = img.getBoundingClientRect();
+    o.style.top = r.top + 'px';
+    o.style.left = r.left + 'px';
+    o.style.width = r.width + 'px';
+    o.style.height = r.height + 'px';
+    o.style.display = 'flex';
+  }
+  function hideOverlay(){ if (overlay) overlay.style.display = 'none'; }
+  window.addEventListener('scroll', function(){ if (hovered && hovered.tagName === 'IMG') showOverlayOn(hovered); }, true);
+  window.addEventListener('resize', function(){ if (hovered && hovered.tagName === 'IMG') showOverlayOn(hovered); });
+
   var hovered=null;
   document.addEventListener('mouseover', function(e){
-    if(hovered){ hovered.style.outline=''; hovered.style.cursor=''; }
+    if(hovered && hovered.tagName!=='IMG'){ hovered.style.outline=''; hovered.style.cursor=''; }
     var el=e.target;
-    if(isTextLeaf(el) || el.tagName==='IMG'){ el.style.outline='2px solid #2563EB'; el.style.outlineOffset='1px'; el.style.cursor='text'; hovered=el; }
+    if(el.tagName==='IMG'){ el.style.cursor='pointer'; showOverlayOn(el); hovered=el; return; }
+    hideOverlay();
+    if(isTextLeaf(el)){ el.style.outline='2px solid #2563EB'; el.style.outlineOffset='1px'; el.style.cursor='text'; hovered=el; }
+  });
+  document.addEventListener('mouseout', function(e){
+    if(e.target && e.target.tagName==='IMG') hideOverlay();
   });
   document.addEventListener('click', function(e){
     var a=e.target.closest && e.target.closest('a'); if(a) e.preventDefault();
     var el=e.target;
     if(el.tagName==='IMG'){
       e.preventDefault(); e.stopPropagation();
+      hideOverlay();
       parent.postMessage({ __olaEdit:true, type:'image-edit', src: el.getAttribute('src') }, '*');
       return;
     }
@@ -739,6 +778,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   const [reviewTarget, setReviewTarget]   = useState(null); // url currently being replaced
   const [reviewQuery, setReviewQuery]     = useState('');
   const [reviewBusy, setReviewBusy]       = useState(false);
+  const [reviewAction, setReviewAction]   = useState(null); // 'upload' | 'search' | null
   const reviewUploadRef = useRef(null);
 
   // Basic Form State
@@ -777,6 +817,10 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   const [imageEdit, setImageEdit]       = useState(null);   // { src } of clicked image
   const [imgOverview, setImgOverview]   = useState('');
   const [editBusy, setEditBusy]         = useState(false);
+  // Which image action is in flight — lets the popover show the RIGHT button
+  // spinning (and confirms visually that the file is uploading to storage
+  // before anything is swapped, not just "busy" generically).
+  const [imageAction, setImageAction]   = useState(null); // 'upload' | 'search' | null
 
   const fileRef = useRef(null);
   const imgReplaceRef = useRef(null);
@@ -816,21 +860,26 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
     setImageEdit(null);
   };
 
+  // Uploads to Firebase Storage FIRST and only swaps the src once that upload
+  // resolves with a real hosted URL — the template never points at a local
+  // blob: URL, so what's saved is always a real, durable asset.
   const handleImageUploadReplace = async (file) => {
     if (!file) return;
     setEditBusy(true);
+    setImageAction('upload');
     try {
       const url = await uploadFileToFirebase(file, 'stores/template-images');
       applyImageSrc(url);
     } catch (e) {
       setToastMsg(`⚠️ Upload failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
-    } finally { setEditBusy(false); }
+    } finally { setEditBusy(false); setImageAction(null); }
   };
 
   // Swap the image for a real Unsplash photo matching the user's description
   // (or the store's industry). All template imagery is real photography.
   const handleImageGenerateReplace = async () => {
     setEditBusy(true);
+    setImageAction('search');
     try {
       const query = imgOverview.trim() || storeProfile.industry || storeProfile.title || 'business';
       const url = await searchUnsplashImage(query, 'landscape');
@@ -838,7 +887,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       applyImageSrc(url);
     } catch (e) {
       setToastMsg(`⚠️ Image search failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
-    } finally { setEditBusy(false); }
+    } finally { setEditBusy(false); setImageAction(null); }
   };
 
   // ── Post-generation image review actions ──────────────────────────────────
@@ -854,20 +903,24 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
     setReviewQuery('');
   };
 
+  // Uploads to Firebase Storage FIRST, then only swaps the src once the
+  // upload resolves with a real hosted URL — never a local blob: URL.
   const handleReviewUpload = async (file) => {
     if (!file || !reviewTarget) return;
     setReviewBusy(true);
+    setReviewAction('upload');
     try {
       const url = await uploadFileToFirebase(file, 'stores/template-images');
       applyReviewImage(url);
     } catch (e) {
       setToastMsg(`⚠️ Upload failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
-    } finally { setReviewBusy(false); }
+    } finally { setReviewBusy(false); setReviewAction(null); }
   };
 
   const handleReviewUnsplash = async () => {
     if (!reviewTarget) return;
     setReviewBusy(true);
+    setReviewAction('search');
     try {
       const query = reviewQuery.trim() || storeProfile.industry || storeProfile.title || 'business';
       const url = await searchUnsplashImage(query, 'landscape');
@@ -875,7 +928,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       applyReviewImage(url);
     } catch (e) {
       setToastMsg(`⚠️ Image search failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
-    } finally { setReviewBusy(false); }
+    } finally { setReviewBusy(false); setReviewAction(null); }
   };
 
   useEffect(() => {
@@ -1449,7 +1502,9 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                       onClick={() => imgReplaceRef.current?.click()}
                       className="w-full flex items-center justify-center gap-2 py-2 mb-2 rounded-none text-xs font-bold bg-white/5 text-white hover:bg-white/10 disabled:opacity-50 transition-colors"
                     >
-                      <FileUp size={13} /> Upload an image
+                      {imageAction === 'upload'
+                        ? <><Loader2 size={13} className="animate-spin" /> Uploading to storage…</>
+                        : <><FileUp size={13} /> Upload an image</>}
                     </button>
                     <textarea
                       rows={2}
@@ -1464,7 +1519,9 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                       onClick={handleImageGenerateReplace}
                       className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
                     >
-                      {editBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Find on Unsplash
+                      {imageAction === 'search'
+                        ? <><Loader2 size={13} className="animate-spin" /> Finding photo…</>
+                        : <><Sparkles size={13} /> Find on Unsplash</>}
                     </button>
                   </div>
                 </div>
@@ -1542,7 +1599,9 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                   onClick={() => reviewUploadRef.current?.click()}
                   className="w-full flex items-center justify-center gap-2 py-2 mb-2 rounded-none text-xs font-bold bg-white/5 text-white hover:bg-white/10 disabled:opacity-50 transition-colors"
                 >
-                  <FileUp size={13} /> Upload an image
+                  {reviewAction === 'upload'
+                    ? <><Loader2 size={13} className="animate-spin" /> Uploading to storage…</>
+                    : <><FileUp size={13} /> Upload an image</>}
                 </button>
                 <textarea
                   rows={2}
@@ -1557,7 +1616,9 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                   onClick={handleReviewUnsplash}
                   className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
                 >
-                  {reviewBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Find on Unsplash
+                  {reviewAction === 'search'
+                    ? <><Loader2 size={13} className="animate-spin" /> Finding photo…</>
+                    : <><Sparkles size={13} /> Find on Unsplash</>}
                 </button>
               </div>
             </div>
