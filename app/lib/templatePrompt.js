@@ -185,7 +185,7 @@ F. SMOOTH SCROLLING: enable smooth in-page scrolling for anchor/section navigati
 - SEO-FRIENDLY HEADER & CONTENT: the header is a \`<header>\` with a \`<nav>\`; the hero contains the ONE \`<h1>\` and it MUST include the real store name (e.g. "Welcome to \${storeName}" or the brand name), not a generic word. Use a logical heading order (section titles as \`<h2>\`), descriptive \`alt\` text with product/brand keywords, and meaningful link/button text (no "click here"). This makes each vendor's storefront read as a distinct, indexable brand.
 
 CRITICAL ARCHITECTURE — OUTPUT RULES:
-1. Output ONLY raw React JSX code. No markdown fences. No explanations.
+1. Output ONLY raw React JSX code. No markdown fences. No explanations. PLAIN JAVASCRIPT ONLY — NO TypeScript syntax anywhere: no type annotations on parameters or variables (never \`(v: any)\`, \`(item: Product)\`, \`const x: string\`), no \`as\` casts, no interfaces/types, no generics (\`useState<T>\`). Every function parameter is untyped (\`(v) =>\`, not \`(v: any) =>\`).
 2. Main component MUST be named \`App\` and MUST be a standard React arrow function.
    EXACT SYNTAX REQUIRED: \`const App = ({ storeName, storeLogo, storeBanner, contactEmail, contactPhone, categories, products, services, businessType, serviceType, themeColor, apiBase }) => { ... }\`
    DO NOT use shorthand object methods like \`App() { ... }\` or class syntax. You MAY declare small helper components (e.g. \`Reveal\`, icon components, a \`Toast\`) ABOVE or INSIDE \`App\`, but \`App\` remains the single exported root and the last top-level component.
