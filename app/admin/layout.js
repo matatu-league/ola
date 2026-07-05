@@ -21,7 +21,8 @@ import {
   ScrollText,
   ShieldCheck,
   ChevronDown,
-  Tags
+  Tags,
+  Sparkles
 } from 'lucide-react';
 
 const navigationGroups = [
@@ -51,6 +52,7 @@ const navigationGroups = [
   {
     title: 'Configuration',
     items: [
+      { name: 'AI Commands', href: '/admin/commands', icon: Sparkles },
       { name: 'Global Settings', href: '/admin/settings', icon: Settings },
     ]
   }
