@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Package, ClipboardList, Settings, LogOut,
   Menu, Bell, Search, Store, Palette, X, Layers, CalendarCheck,
-  MessageSquare, ChevronDown, Plus, Check, FileText,
+  MessageSquare, ChevronDown, Plus, Check,
 } from 'lucide-react';
 import { io as socketIO } from 'socket.io-client';
 import {
@@ -27,7 +27,6 @@ const navigation = [
   { name: 'Orders',       href: '/orders',      icon: ClipboardList   },
   { name: 'Messages',     href: '/messages',    icon: MessageSquare   },
   { name: 'Store Profile', href: '/profile',    icon: Store           },
-  { name: 'Pages',        href: '/pages',       icon: FileText        },
   { name: 'Theme & Design', href: '/theme',     icon: Palette         },
   { name: 'Settings',     href: '/settings',    icon: Settings        },
 ];
@@ -65,9 +64,7 @@ export default function SellerLayout({ children }) {
   // Buyer-facing "shop" routes render the themed storefront experience (no
   // seller sidebar, no owner redirect) with the system banner on top. Seller
   // dashboard routes (/dashboard, /products, …) keep the management chrome.
-  // '/page/' (singular) is the PUBLIC custom-page route; '/pages' (plural) is
-  // the dashboard manager and keeps the seller chrome.
-  const SHOP_PREFIXES = ['/p/', '/cart', '/checkout', '/page/'];
+  const SHOP_PREFIXES = ['/p/', '/cart', '/checkout'];
   const isShopRoute = pathname === '/' || SHOP_PREFIXES.some(p => pathname === p || pathname.startsWith(p));
 
   useEffect(() => {

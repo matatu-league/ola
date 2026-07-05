@@ -121,9 +121,9 @@ a category command can restrict which types/sections an industry may use).
 ### `tabs` and `modal` — the in-page switching primitives
 
 The runtime never reloads or re-navigates for anything except the checkout
-handoff. The 3 hash routes (`#/`, `#/shop`, `#/product/<id>`) are the only
-top-level views; everything else that looks like "switching content" is one of
-these two client-state-only primitives — never a new route:
+handoff. The 4 hash routes (`#/`, `#/shop`, `#/product/<id>`, `#/page/<slug>`)
+are the only top-level views; everything else that looks like "switching
+content" is one of these two client-state-only primitives — never a new route:
 
 - **`tabs`**: `{ "type": "tabs", "attrs": { "key": "pdpTabs" }, "children": [Node, ...] }`.
   Each direct child is one tab's panel and carries `attrs.tabLabel` (its header
@@ -136,6 +136,13 @@ these two client-state-only primitives — never a new route:
   Use for booking forms, quick-view, filters, confirmations, image lightboxes.
 - **Cart** is always the built-in `cartDrawer` node (route `"*"`) — never a
   route, never a modal you build yourself.
+- **Custom pages** (About, FAQ, Shipping policy, …) are vendor-authored content
+  managed from the AI Theme Builder — never an independent Next.js route (that
+  would reintroduce the exact routing issues this architecture exists to
+  avoid). ONE section with `route: "page"` handles every custom page, exactly
+  like the `product` route handles every product: it resolves `{{page.title}}`
+  / `{{page.content}}` by slug from the `pages` data source, reached via
+  `navigate {"to":"#/page/<slug>"}`.
 
 ---
 

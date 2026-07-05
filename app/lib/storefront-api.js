@@ -99,6 +99,11 @@ export function publicStoreShape(store) {
     contactEmail: store.contact?.email || '',
     contactPhone: store.contact?.phone || '',
     flashSales:   store.features?.flashSales || false,
+    // Vendor-authored custom pages, published only — rendered by the template
+    // itself as its own #/page/<slug> view, never an independent Next.js route.
+    pages: (store.pages || [])
+      .filter((p) => p.published !== false)
+      .map((p) => ({ title: p.title, slug: p.slug, content: p.content || '' })),
   };
 }
 

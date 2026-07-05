@@ -31,7 +31,7 @@ export const buildJsonTemplatePrompt = ({
     : '';
 
   const editBlock = currentJson
-    ? `\nEDITING MODE: modify the CURRENT template document below according to the user directive, keeping everything else intact.\n--- CURRENT TEMPLATE JSON ---\n${JSON.stringify(currentJson)}\n--- END CURRENT TEMPLATE JSON ---\n`
+    ? `\nEDITING MODE: modify the CURRENT template document below according to the user directive, keeping everything else intact. EVERY rule in this brief — the 3 closed routes plus the pages route, tabs/dialogs instead of new routes, cartDrawer, checkout-only-handoff, no ghost interactions — applies EQUALLY to this edit as to a fresh build. If the current document violates any of them, FIX it as part of this edit even if not explicitly requested — preserving a broken pattern is not "keeping everything else intact".\n--- CURRENT TEMPLATE JSON ---\n${JSON.stringify(currentJson)}\n--- END CURRENT TEMPLATE JSON ---\n`
     : '';
 
   return `
@@ -60,7 +60,7 @@ Tokens become CSS variables: reference them in classes as bg-[var(--s-primary)],
 {
   "type": one of: ${NODE_TYPES.join(' · ')},
   "as": optional semantic tag ("section"|"header"|"nav"|"main"|"footer"|"h1".."h6"|"p"|"ul"|"li"|"span"),
-  "route": (TOP-LEVEL sections only) "*" = every view (navbar/footer/cartDrawer), "home", "shop", or "product",
+  "route": (TOP-LEVEL sections only) "*" = every view (navbar/footer/cartDrawer), "home", "shop", "product", or "page" (vendor custom pages — one section handles ALL of them, resolved by slug, exactly like "product" handles all products),
   "class": THE FULL TAILWIND CLASS STRING — this is where the design lives. Include EVERY class needed: layout, spacing, color, responsive md:/lg:, states hover:/active:/focus-visible:/group-hover:, arbitrary values (text-[clamp(2rem,6vw,4rem)], bg-[var(--s-surface)]), and gradient utilities (bg-gradient-to-br from-[#0b0b0f] via-[#1d1f2b] to-[#3a0d1a]). Nothing is implied.
   "style": optional inline CSS object for what Tailwind can't express (multi-stop gradients: {"backgroundImage":"linear-gradient(135deg,#0b0b0f 0%,#1d1f2b 55%,#3a0d1a 100%)"}, clip-path, animation timing),
   "text": literal text OR a binding "{{item.name}}" / "USh {{item.price|money}}",
@@ -73,7 +73,7 @@ Tokens become CSS variables: reference them in classes as bg-[var(--s-primary)],
 }
 
 === ACTIONS (closed set — ${ACTION_VERBS.join(', ')}) ===
-- navigate {"to":"#/"|"#/shop"|"#/product/{{item.id}}"} — the ONLY routes. These 3 top-level views are the only thing that changes the hash; everything else within a view is a TAB or a DIALOG (see below), never a new route.
+- navigate {"to":"#/"|"#/shop"|"#/product/{{item.id}}"|"#/page/{{item.slug}}"} — the ONLY routes. These top-level views are the only thing that changes the hash; everything else within a view is a TAB or a DIALOG (see below), never a new route.
 - addToCart {"product":"{{item}}","qty":1} · buyNow {"product":"{{item}}"} · checkout {} — real system cart/checkout.
 - openDrawer/closeDrawer {} — the cart drawer. setState/toggle {"key":..} for menus. setVariant {"key","value"}. scrollTo {"target":elementId}. openModal/closeModal {"id"}. toast {"text"}. external {"href"} only for real URLs.
 - NO GHOST INTERACTIONS: every button/link either carries a real action or is plain text. Footer links with no destination are plain text nodes.
@@ -86,7 +86,12 @@ The runtime never reloads or re-navigates for anything except the checkout hando
 - The ONLY step that ever leaves this page is the checkout action, which hands off to the real, separate, already-themed system checkout. Never build your own checkout UI, never make it a modal/tab, never route to it.
 
 === DATA BINDINGS ===
-Available: {{store.name}} {{store.logo}} {{store.email}} {{store.phone}}; inside repeat: {{item.*}} ({{item.id}}, {{item.name}}, {{item.price}}, {{item.image}}, {{item.description}}, {{item.duration}} for services) and {{index}}; {{cartCount}} for the header badge; on the product route: {{product.*}}. Pipe |money formats numbers with thousands separators. Use "{{item}}" (whole object) as the product param of cart actions.
+Available: {{store.name}} {{store.logo}} {{store.email}} {{store.phone}}; inside repeat: {{item.*}} ({{item.id}}, {{item.name}}, {{item.price}}, {{item.image}}, {{item.description}}, {{item.duration}} for services; {{item.title}}, {{item.slug}} for pages) and {{index}}; {{cartCount}} for the header badge; on the product route: {{product.*}}; on the page route: {{page.title}}, {{page.content}}. Pipe |money formats numbers with thousands separators. Use "{{item}}" (whole object) as the product param of cart actions.
+
+=== CUSTOM PAGES (vendor-authored — About, FAQ, Shipping policy, …) ===
+${business.pages && business.pages.length
+    ? `This store has ${business.pages.length} custom page(s). Build them INTO the site as ONE "page" route (route:"page") — never a separate route/page per title, exactly like ONE "product" section handles every product. Render {{page.title}} as a heading and {{page.content}} as body copy with class "whitespace-pre-line" (it's plain text with real line breaks). Add a nav link for EACH page below (in the navbar and/or footer) using navigate {"to":"#/page/<slug>"} — plain literal hrefs, not a repeat, since this is a small fixed list:\n${business.pages.map((p) => `  - "${p.title}" → #/page/${p.slug}`).join('\n')}`
+    : 'This store has no custom pages yet — omit the "page" route and any page nav links entirely.'}
 
 === WHAT TO BUILD ===
 ${bt === 'products'

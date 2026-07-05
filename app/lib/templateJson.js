@@ -26,9 +26,13 @@ export const ACTION_VERBS = [
 
 export const EVENT_NAMES = ['click', 'submit', 'change', 'mouseenter', 'load', 'inview'];
 
-export const REPEAT_SOURCES = ['products', 'services', 'categories', 'related'];
+export const REPEAT_SOURCES = ['products', 'services', 'categories', 'related', 'pages'];
 
-export const ROUTE_NAMES = ['*', 'home', 'shop', 'product'];
+// 'page' is the 4th and last closed route — vendor-authored custom pages
+// (About, FAQ, Shipping policy, …). Like 'product', it's parameterized
+// (#/page/<slug>) and matched by prefix, never a real Next.js route — the
+// same client-state, zero-navigation hash router as every other view.
+export const ROUTE_NAMES = ['*', 'home', 'shop', 'product', 'page'];
 
 /**
  * Extract the JSON document from raw model output: strips markdown fences and
