@@ -118,19 +118,25 @@ function olaJsonRuntime() {
   }
 
   // ── App ────────────────────────────────────────────────────────────────────
-  function parseHash() {
-    var hRaw = (window.location.hash || '#/').replace(/^#\/?/, '');
-    var seg = hRaw.split('/');
+  // NO ROUTING, EVER: views (home/shop/product/page) are pure in-memory tab
+  // state. The runtime never reads or writes window.location — a "navigate"
+  // action's "to" string (e.g. "#/shop", "#/product/12") is just a VIEW NAME
+  // in a familiar spelling, parsed into { view, id } and stored in state. The
+  // URL never changes, nothing can reload, and the only interaction that ever
+  // leaves the page is the __OLA__.checkout() handoff.
+  function parseViewName(to) {
+    var raw = String(to == null ? '' : to).replace(/^#\/?/, '').replace(/^\//, '');
+    var seg = raw.split('/');
     if (seg[0] === 'product' && seg[1]) return { view: 'product', id: decodeURIComponent(seg[1]) };
     // Vendor-authored custom pages (About, FAQ, Shipping policy, …) — built
-    // INTO the storefront as their own view, never a separate route/page.
+    // INTO the storefront as their own tab-view, never a separate route/page.
     if (seg[0] === 'page' && seg[1]) return { view: 'page', id: decodeURIComponent(seg[1]) };
     if (seg[0] === 'shop') return { view: 'shop', id: null };
     return { view: 'home', id: null };
   }
 
   function App() {
-    var routeState = R.useState(parseHash());
+    var routeState = R.useState({ view: 'home', id: null });
     var route = routeState[0], setRoute = routeState[1];
     var uiState = R.useState({});
     var ui = uiState[0], setUiObj = uiState[1];
@@ -143,16 +149,18 @@ function olaJsonRuntime() {
       setUiObj(function (prev) { var n = {}; Object.keys(prev).forEach(function (k) { n[k] = prev[k]; }); n[key] = value; return n; });
     }
 
+    function goView(to) {
+      setRoute(parseViewName(to));
+      window.scrollTo(0, 0);
+    }
+
     R.useEffect(function () {
-      function onHash() { setRoute(parseHash()); window.scrollTo(0, 0); }
-      window.addEventListener('hashchange', onHash);
       var off = window.__OLA__ && window.__OLA__.onCartChange
         ? window.__OLA__.onCartChange(function (items) { setCart(items || []); })
         : null;
       function onKey(e) { if (e.key === 'Escape') { setUi('__drawer', false); } }
       window.addEventListener('keydown', onKey);
       return function () {
-        window.removeEventListener('hashchange', onHash);
         window.removeEventListener('keydown', onKey);
         if (off) off();
       };
@@ -217,8 +225,8 @@ function olaJsonRuntime() {
         var O = window.__OLA__;
         switch (a.action) {
           case 'navigate': {
-            var to = String(resolve(a.to || '#/', ctx2) || '#/');
-            window.location.hash = to.charAt(0) === '#' ? to.slice(1) : to;
+            // Pure state switch — the URL is NEVER touched (see parseViewName).
+            goView(String(resolve(a.to || '#/', ctx2) || '#/'));
             break;
           }
           case 'openDrawer': setUi('__drawer', true); break;
@@ -436,6 +444,18 @@ function olaJsonRuntime() {
       if (tag === 'form' && !props.onSubmit) props.onSubmit = function (e) { e.preventDefault(); flash('Request sent — we will get back to you.'); };
       if (tag === 'img' && !props.onError) {
         props.onError = function (e) { e.target.style.display = 'none'; };
+      }
+      // Anchors with a view-style href ("#/shop", "#/product/…") but no click
+      // action (older saved documents relied on hash navigation): wire them to
+      // the state-based view switch and neutralise the href so the URL never
+      // changes. Newer documents carry an explicit navigate action instead.
+      if (tag === 'a' && !props.onClick && typeof props.href === 'string' && props.href.indexOf('#/') === 0) {
+        var viewHref = props.href;
+        delete props.href;
+        props.role = props.role || 'link';
+        props.tabIndex = props.tabIndex == null ? 0 : props.tabIndex;
+        props.style = Object.assign({ cursor: 'pointer' }, props.style || {});
+        props.onClick = function (e) { e.preventDefault(); goView(viewHref); };
       }
 
       var kids = [];
