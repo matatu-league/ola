@@ -576,6 +576,43 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [format, JSON.stringify(jsonDoc || null), JSON.stringify(dynamicStoreData)]);
 
+  // The full source Babel compiles, built as a plain JS string so it can be
+  // safely JSON-stringified into the bootstrap script below (see its comment
+  // for why we don't use babel-standalone's <script type="text/babel"> scan).
+  const babelSource = useMemo(() => `
+    const { useState, useEffect, useRef, useMemo } = React;
+
+    window.lucideFallback = new Proxy({}, {
+      get: (_, prop) => (p) => React.createElement('svg', {
+        width: p.size || 24, height: p.size || 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+        strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', className: p.className, style: p.style
+      }, React.createElement('circle', {cx: 12, cy: 12, r: 10}), React.createElement('path', {d: 'M12 8v4M12 16h.01'}))
+    });
+
+    // Real lucide-react icons (UMD CDN) with a graceful SVG fallback for any
+    // name the build doesn't expose — templates can import any icon safely.
+    window.__olaIcons = new Proxy({}, {
+      get: (_, name) => {
+        const lib = window.LucideReact || window.lucideReact || window.lucide || null;
+        const Icon = lib && lib[name];
+        return (typeof Icon === 'function' || (Icon && Icon.$$typeof)) ? Icon : window.lucideFallback[name];
+      }
+    });
+
+    ${olaBridgeScript({ storeId: dynamicStoreData.storeId || null, live: false })}
+
+    const dynamicStoreData = ${JSON.stringify(dynamicStoreData)};
+
+    ${processedCode}
+
+    try {
+      ReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData} />);
+      ${editMode ? `setTimeout(function(){ ${EDITOR_BRIDGE} }, 350);` : ''}
+    } catch(err) {
+      document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Render Error</h2><pre>' + err.toString() + '</pre></div>';
+    }
+  `, [processedCode, editMode]);
+
   const jsxSrcDoc = useMemo(() => `
     <!DOCTYPE html><html lang="en"><head>
       <meta charset="UTF-8">
@@ -595,41 +632,33 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
           return true;
         };
       </script>
-      <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
-        
-        window.lucideFallback = new Proxy({}, {
-          get: (_, prop) => (p) => React.createElement('svg', {
-            width: p.size || 24, height: p.size || 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
-            strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round', className: p.className, style: p.style
-          }, React.createElement('circle', {cx: 12, cy: 12, r: 10}), React.createElement('path', {d: 'M12 8v4M12 16h.01'}))
-        });
-
-        // Real lucide-react icons (UMD CDN) with a graceful SVG fallback for any
-        // name the build doesn't expose — templates can import any icon safely.
-        window.__olaIcons = new Proxy({}, {
-          get: (_, name) => {
-            const lib = window.LucideReact || window.lucideReact || window.lucide || null;
-            const Icon = lib && lib[name];
-            return (typeof Icon === 'function' || (Icon && Icon.$$typeof)) ? Icon : window.lucideFallback[name];
-          }
-        });
-
-        ${olaBridgeScript({ storeId: dynamicStoreData.storeId || null, live: false })}
-
-        const dynamicStoreData = ${JSON.stringify(dynamicStoreData)};
-
-        ${processedCode}
-        
+      <script>
+        // Compile with Babel's JS API directly (filename ending in ".tsx")
+        // instead of babel-standalone's <script type="text/babel"> auto-scan.
+        // The auto-scan hardcodes filename to "Inline Babel script" (no
+        // recognised extension), so its "typescript" preset can't tell JSX is
+        // allowed there — any stray TypeScript syntax the model slips in
+        // (very common: "(v: any) =>", "as string", ...) throws a hard
+        // SyntaxError and white-screens the preview. A ".tsx" filename lets
+        // the typescript preset parse both JSX and type annotations.
         try {
-          ReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData} />);
-          ${editMode ? `setTimeout(function(){ ${EDITOR_BRIDGE} }, 350);` : ''}
-        } catch(err) {
-          document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Render Error</h2><pre>' + err.toString() + '</pre></div>';
+          var __compiled = Babel.transform(${JSON.stringify(babelSource)}, {
+            filename: 'template.tsx',
+            // runtime:'classic' -> React.createElement(...) calls, NOT the
+            // automatic runtime's "import { jsx } from 'react/jsx-runtime'"
+            // (that import throws "Cannot use import statement outside a
+            // module" in this classic, non-module script).
+            presets: [['react', { runtime: 'classic' }], 'typescript'],
+          }).code;
+          var __s = document.createElement('script');
+          __s.text = __compiled;
+          document.head.appendChild(__s);
+        } catch (e) {
+          document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Template Compile Error</h2><pre>' + String((e && e.message) || e).replace(/</g, '&lt;') + '</pre></div>';
         }
       </script>
     </body></html>
-  `, [processedCode, editMode]);
+  `, [babelSource]);
 
   const srcDoc = (format === 'json' && jsonSrcDoc) ? jsonSrcDoc : jsxSrcDoc;
 
@@ -784,7 +813,29 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   const openInNewTab = () => {
     const processedCode = sanitizeTemplateCode(code, 'window.__olaIcons');
 
-    const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script crossorigin src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script type="text/babel">const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});window.__olaIcons=new Proxy({},{get:(_,name)=>{var lib=window.LucideReact||window.lucideReact||window.lucide||null;var Icon=lib&&lib[name];return (typeof Icon==='function'||(Icon&&Icon.$$typeof))?Icon:window.lucideFallback[name];}});${olaBridgeScript({ storeId: null, live: false })}const dynamicStoreData={storeName:"",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}</script></body></html>`;
+    // Plain JS string Babel compiles at runtime (see the bootstrap script's
+    // comment below for why we don't use <script type="text/babel">).
+    const babelSrc = `const{useState,useEffect,useRef,useMemo}=React;window.lucideFallback=new Proxy({},{get:(_,prop)=>(p)=>React.createElement('svg',{width:p.size||24,height:p.size||24,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:'2',strokeLinecap:'round',strokeLinejoin:'round',className:p.className,style:p.style},React.createElement('circle',{cx:12,cy:12,r:10}),React.createElement('path',{d:'M12 8v4M12 16h.01'}))});window.__olaIcons=new Proxy({},{get:(_,name)=>{var lib=window.LucideReact||window.lucideReact||window.lucide||null;var Icon=lib&&lib[name];return (typeof Icon==='function'||(Icon&&Icon.$$typeof))?Icon:window.lucideFallback[name];}});${olaBridgeScript({ storeId: null, live: false })}const dynamicStoreData={storeName:"",themeColor:"${dialogThemeColor}",categories:["Featured"],products:[{id:"1",name:"Sample Item",price:85}]};try{${processedCode}\nReactDOM.createRoot(document.getElementById('root')).render(<App {...dynamicStoreData}/>);}catch(e){console.error(e)}`;
+
+    const htmlContent = `<!DOCTYPE html><html><head><script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script><script>window.react = window.React;</script><script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script crossorigin src="https://unpkg.com/lucide-react@0.344.0/dist/umd/lucide-react.js"></script><script src="https://cdn.tailwindcss.com"></script></head><body><div id="root"></div><script>window.onerror=function(m,u,l,c,e){document.getElementById('root').innerHTML='<div style="padding:32px;color:red;font-family:monospace;"><h2>Error</h2><pre>'+m+'</pre></div>';return true;}</script><script>
+      // Compile with Babel's JS API directly (filename ending in ".tsx") instead
+      // of babel-standalone's <script type="text/babel"> auto-scan, whose
+      // hardcoded "Inline Babel script" filename has no recognised extension —
+      // its typescript preset then can't tell JSX is allowed there, so any
+      // stray TypeScript syntax the model slips in ("(v: any) =>", etc.)
+      // throws a hard SyntaxError. A ".tsx" filename allows both.
+      try {
+        // runtime:'classic' -> React.createElement(...), NOT the automatic
+        // runtime's "import { jsx } from 'react/jsx-runtime'" (throws "Cannot
+        // use import statement outside a module" in this classic script).
+        var __compiled = Babel.transform(${JSON.stringify(babelSrc)}, { filename: 'template.tsx', presets: [['react', { runtime: 'classic' }], 'typescript'] }).code;
+        var __s = document.createElement('script');
+        __s.text = __compiled;
+        document.head.appendChild(__s);
+      } catch (e) {
+        document.getElementById('root').innerHTML = '<div style="padding:32px;color:red;font-family:monospace;"><h2>Template Compile Error</h2><pre>' + String((e && e.message) || e).replace(/</g, '&lt;') + '</pre></div>';
+      }
+    </script></body></html>`;
     const w = window.open('', '_blank');
     if (w) { w.document.open(); w.document.write(htmlContent); w.document.close(); }
   };

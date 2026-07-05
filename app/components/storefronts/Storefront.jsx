@@ -153,6 +153,72 @@ const CustomAIStore = ({ store }) => {
 
     const processedCode = sanitizeTemplateCode(templateCode, 'window.__olaIcons');
 
+    // The full source Babel compiles. Built as a plain JS string (not inlined
+    // directly as HTML script content) so it can be safely JSON-stringified
+    // below — see the note by the bootstrap script for why.
+    const babelSource = `
+      const { useState, useEffect, useRef, useMemo } = React;
+
+      // Generate fallback placeholder blocks if icon library misses a load
+      window.lucideFallback = new Proxy({}, {
+        get: (_, prop) => (p) => React.createElement('div', {
+          ...p,
+          style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: p.size||24, height: p.size||24, border: '1px dashed currentColor', borderRadius: '4px', fontSize: '10px' }
+        }, prop.slice(0, 2))
+      });
+
+      // Real lucide-react icons come from the UMD CDN above (global name
+      // varies by build), with a graceful SVG placeholder for any name the
+      // CDN doesn't expose — so a template can freely import any icon.
+      window.__olaIcons = new Proxy({}, {
+        get: (_, name) => {
+          const lib = window.LucideReact || window.lucideReact || window.lucide || null;
+          const Icon = lib && lib[name];
+          return (typeof Icon === 'function' || (Icon && Icon.$$typeof)) ? Icon : window.lucideFallback[name];
+        }
+      });
+
+      // Global helper injected for AI convenience
+      window.redirectToProduct = function(id) {
+        window.top.location.href = "https://ola.ug/products/" + id;
+      };
+
+      // ── System bridge: cart (shared localStorage), auth cookie, and the
+      //    real themed /checkout · /cart · /p/<id> handoff. window.__OLA__.
+      ${olaBridgeScript({ storeId: (store._id || '').toString(), live: true })}
+
+      const dynamicStoreData = ${JSON.stringify(dynamicStoreData)};
+      try {
+        ${processedCode}
+
+        // Vital ErrorBoundary to catch asynchronous React rendering errors gracefully
+        class ErrorBoundary extends React.Component {
+          constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+          static getDerivedStateFromError(error) { return { hasError: true, error }; }
+          render() {
+            if (this.state.hasError) {
+              return (
+                <div style={{ padding: '32px', color: '#e53e3e', fontFamily: 'monospace', fontSize: '13px', backgroundColor: '#fef2f2', minHeight: '100vh', boxSizing: 'border-box' }}>
+                  <h2 style={{ marginBottom: '12px', fontWeight: 'bold', fontSize: '16px' }}>AI Render Error</h2>
+                  <pre style={{ whiteSpace: 'pre-wrap', backgroundColor: '#fee2e2', padding: '16px', borderRadius: '8px' }}>{this.state.error.toString()}</pre>
+                  <p style={{ marginTop: '16px', color: '#991b1b' }}>The AI generated code crashed. Try regenerating the design.</p>
+                </div>
+              );
+            }
+            return this.props.children;
+          }
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ErrorBoundary><App {...dynamicStoreData} /></ErrorBoundary>);
+      } catch (err) {
+        document.getElementById('root').innerHTML =
+          '<div style="padding:20px;color:#FE2C55;font-family:monospace;background:#FEE2E2;min-height:100vh;">' +
+          '<h2 style="font-size:20px;font-weight:bold;margin-bottom:16px;">Syntax Error in Generated Code</h2>' +
+          '<pre>' + err.toString() + '</pre></div>';
+      }
+    `;
+
     return `
       <!DOCTYPE html>
       <html lang="en">
@@ -179,68 +245,34 @@ const CustomAIStore = ({ store }) => {
         </head>
         <body>
           <div id="root"></div>
-          <script type="text/babel">
-            const { useState, useEffect, useRef, useMemo } = React;
-            
-            // Generate fallback placeholder blocks if icon library misses a load
-            window.lucideFallback = new Proxy({}, {
-              get: (_, prop) => (p) => React.createElement('div', {
-                ...p,
-                style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: p.size||24, height: p.size||24, border: '1px dashed currentColor', borderRadius: '4px', fontSize: '10px' }
-              }, prop.slice(0, 2))
-            });
-
-            // Real lucide-react icons come from the UMD CDN above (global name
-            // varies by build), with a graceful SVG placeholder for any name the
-            // CDN doesn't expose — so a template can freely import any icon.
-            window.__olaIcons = new Proxy({}, {
-              get: (_, name) => {
-                const lib = window.LucideReact || window.lucideReact || window.lucide || null;
-                const Icon = lib && lib[name];
-                return (typeof Icon === 'function' || (Icon && Icon.$$typeof)) ? Icon : window.lucideFallback[name];
-              }
-            });
-
-            // Global helper injected for AI convenience
-            window.redirectToProduct = function(id) {
-              window.top.location.href = "https://ola.ug/products/" + id;
-            };
-
-            // ── System bridge: cart (shared localStorage), auth cookie, and the
-            //    real themed /checkout · /cart · /p/<id> handoff. window.__OLA__.
-            ${olaBridgeScript({ storeId: (store._id || '').toString(), live: true })}
-
-            const dynamicStoreData = ${JSON.stringify(dynamicStoreData)};
+          <script>
+            // Compile with Babel's JS API directly (filename ending in ".tsx")
+            // instead of babel-standalone's <script type="text/babel"> auto-scan.
+            // The auto-scan hardcodes filename to "Inline Babel script", which
+            // has no recognised extension — its "typescript" preset then can't
+            // tell it's allowed to contain JSX, so ANY stray TypeScript syntax
+            // the model slips in (very common — "(v: any) =>", "as string",
+            // etc., since LLMs blend JSX/TSX habits) throws a hard SyntaxError
+            // and the whole storefront white-screens. Compiling manually with a
+            // ".tsx" filename lets the typescript preset parse both JSX AND type
+            // annotations, so stray TS-isms are tolerated instead of fatal.
             try {
-              ${processedCode}
-              
-              // Vital ErrorBoundary to catch asynchronous React rendering errors gracefully
-              class ErrorBoundary extends React.Component {
-                constructor(props) { super(props); this.state = { hasError: false, error: null }; }
-                static getDerivedStateFromError(error) { return { hasError: true, error }; }
-                render() {
-                  if (this.state.hasError) {
-                    return (
-                      <div style={{ padding: '32px', color: '#e53e3e', fontFamily: 'monospace', fontSize: '13px', backgroundColor: '#fef2f2', minHeight: '100vh', boxSizing: 'border-box' }}>
-                        <h2 style={{ marginBottom: '12px', fontWeight: 'bold', fontSize: '16px' }}>AI Render Error</h2>
-                        <pre style={{ whiteSpace: 'pre-wrap', backgroundColor: '#fee2e2', padding: '16px', borderRadius: '8px' }}>{this.state.error.toString()}</pre>
-                        <p style={{ marginTop: '16px', color: '#991b1b' }}>The AI generated code crashed. Try regenerating the design.</p>
-                      </div>
-                    );
-                  }
-                  return this.props.children;
-                }
-              }
-
-              const root = ReactDOM.createRoot(document.getElementById('root'));
-              root.render(<ErrorBoundary><App {...dynamicStoreData} /></ErrorBoundary>);
-            } catch (err) {
-              document.getElementById('root').innerHTML = \`
-                <div style="padding:20px;color:#FE2C55;font-family:monospace;background:#FEE2E2;min-height:100vh;">
-                  <h2 style="font-size:20px;font-weight:bold;margin-bottom:16px;">Syntax Error in Generated Code</h2>
-                  <pre>\${err.toString()}</pre>
-                </div>
-              \`;
+              var __compiled = Babel.transform(${JSON.stringify(babelSource)}, {
+                filename: 'template.tsx',
+                // runtime:'classic' -> React.createElement(...) calls, NOT the
+                // automatic runtime's "import { jsx } from 'react/jsx-runtime'"
+                // (that import throws "Cannot use import statement outside a
+                // module" in this classic, non-module script).
+                presets: [['react', { runtime: 'classic' }], 'typescript'],
+              }).code;
+              var __s = document.createElement('script');
+              __s.text = __compiled;
+              document.head.appendChild(__s);
+            } catch (e) {
+              document.getElementById('root').innerHTML =
+                '<div style="padding:20px;color:#FE2C55;font-family:monospace;background:#FEE2E2;min-height:100vh;">' +
+                '<h2 style="font-size:20px;font-weight:bold;margin-bottom:16px;">Template Compile Error</h2>' +
+                '<pre>' + String((e && e.message) || e).replace(/</g, '&lt;') + '</pre></div>';
             }
           </script>
         </body>
