@@ -137,6 +137,17 @@ const StoreSchema = new Schema(
       flashSales: { type: Boolean, default: false },
     },
 
+    // Vendor-authored custom pages (About, FAQ, Shipping policy, …) managed from
+    // the dashboard "Pages" section and served publicly at /page/<slug> on the
+    // store's own domain.
+    pages: [{
+      title:     { type: String, required: true },
+      slug:      { type: String, required: true },
+      content:   { type: String, default: '' },
+      published: { type: Boolean, default: true },
+      updatedAt: { type: Date, default: Date.now },
+    }],
+
     verified:      { type: Boolean, default: false },
     years:         { type: Number },
     staff:         { type: String },
