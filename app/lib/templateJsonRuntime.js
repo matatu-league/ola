@@ -122,6 +122,9 @@ function olaJsonRuntime() {
     var hRaw = (window.location.hash || '#/').replace(/^#\/?/, '');
     var seg = hRaw.split('/');
     if (seg[0] === 'product' && seg[1]) return { view: 'product', id: decodeURIComponent(seg[1]) };
+    // Vendor-authored custom pages (About, FAQ, Shipping policy, …) — built
+    // INTO the storefront as their own view, never a separate route/page.
+    if (seg[0] === 'page' && seg[1]) return { view: 'page', id: decodeURIComponent(seg[1]) };
     if (seg[0] === 'shop') return { view: 'shop', id: null };
     return { view: 'home', id: null };
   }
@@ -175,6 +178,12 @@ function olaJsonRuntime() {
     var product = route.view === 'product'
       ? products.filter(function (p) { return String(p.id) === String(route.id) || String(p._id) === String(route.id); })[0] || null
       : null;
+    // Vendor-authored custom pages (About, FAQ, Shipping policy, …) — a data
+    // source like products/services, resolved by slug for the "page" route.
+    var pages = data.pages || [];
+    var page = route.view === 'page'
+      ? pages.filter(function (pg) { return String(pg.slug) === String(route.id); })[0] || null
+      : null;
     var cartCount = cart.reduce(function (s, i) { return s + (i.quantity || 0); }, 0);
     var cartTotal = cart.reduce(function (s, i) { return s + (Number(i.priceAtAddition) || 0) * (i.quantity || 0); }, 0);
 
@@ -186,8 +195,10 @@ function olaJsonRuntime() {
       products: products,
       services: data.services || [],
       categories: data.categories || [],
+      pages: pages,
       related: product ? products.filter(function (p) { return p !== product; }).slice(0, 8) : products.slice(0, 8),
       product: product,
+      page: page,
       route: route,
       state: ui,
       cart: cart,

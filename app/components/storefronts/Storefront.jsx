@@ -92,6 +92,9 @@ const CustomAIStore = ({ store }) => {
       products: formattedProducts,
       services: Array.isArray(store.services) ? store.services : [],
       categories: formattedCategories, // Injected safely into the template
+      // Vendor-authored custom pages — rendered by the template itself as its
+      // own #/page/<slug> view, never an independent Next.js route.
+      pages: Array.isArray(store.pages) ? store.pages : [],
       // The store's own public API base — a standalone template MAY use it to
       // lazy-load / refresh data (e.g. fetch(apiBase + '/products?page=2')).
       // Optional: products/services above are already provided for first paint.

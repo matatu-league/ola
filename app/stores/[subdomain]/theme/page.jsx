@@ -6,7 +6,7 @@ import {
   Zap, Sparkles, X, ArrowLeft, Code, ExternalLink,
   Monitor, Smartphone, Tablet, ChevronDown, Sun, Moon,
   Wand2, Settings2, FileUp, Link as LinkIcon,
-  Image as ImageIcon, Check
+  Image as ImageIcon, Check, Plus, Trash2, FileText
 } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
@@ -574,7 +574,7 @@ const App = ({ storeName = "My Store", storeLogo, storeBanner, contactEmail = "h
 };
 export default App;`;
 
-const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor, editMode = false, onVisualEdit, format = 'jsx', jsonDoc = null }) => {
+const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor, editMode = false, onVisualEdit, format = 'jsx', jsonDoc = null, pages = [] }) => {
   const containerRef = useRef(null);
   const iframeRef = useRef(null);
   const [scale, setScale] = useState(1);
@@ -602,6 +602,9 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
     // Category-matched sample catalog (electronics store → electronics, etc.).
     categories: sampleCatalog(storeProfile.industry).categories,
     products:   sampleCatalog(storeProfile.industry).products,
+    // Custom pages managed live in this dialog — reflected in the preview
+    // immediately, before saving, so the vendor sees them wired up right away.
+    pages: (pages || []).filter((p) => p.published !== false).map((p) => ({ title: p.title, slug: p.slug, content: p.content })),
     // Preview-only sample services so service / "both" templates render their
     // services view. Real services are injected at runtime on the live store.
     services: [
@@ -688,7 +691,8 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
     } catch(err) {
       document.getElementById('root').innerHTML = '<div style="padding:32px;color:#ef4444;font-family:monospace;font-size:13px;"><h2 style="margin-bottom:12px;">Render Error</h2><pre>' + err.toString() + '</pre></div>';
     }
-  `, [processedCode, editMode]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  `, [processedCode, editMode, JSON.stringify(dynamicStoreData)]);
 
   const jsxSrcDoc = useMemo(() => `
     <!DOCTYPE html><html lang="en"><head>
@@ -790,6 +794,55 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   // dialog (same page load) also sees it without a full page reload.
   const [logoDescription, setLogoDescription]   = useState(storeProfile.logoDescription || '');
   const [logoDescribedFor, setLogoDescribedFor] = useState(storeProfile.logoDescribedFor || '');
+
+  // ── Custom pages (About, FAQ, Shipping policy, …) ──────────────────────────
+  // Managed HERE, in the AI Theme Builder — not as a separate seller-dashboard
+  // section — because a page is never an independent Next.js route. It's built
+  // INTO the generated storefront as its own tab (#/page/<slug>), the same
+  // client-state, zero-navigation architecture as Home/Shop/Product, so it can
+  // never cause the routing issues a real standalone page would.
+  const [pages, setPages]             = useState([]);
+  const [showAddPage, setShowAddPage] = useState(false);
+  const [newPageTitle, setNewPageTitle]     = useState('');
+  const [newPageContent, setNewPageContent] = useState('');
+  const [addingPage, setAddingPage]   = useState(false);
+
+  useEffect(() => {
+    fetch('/api/stores/pages')
+      .then((r) => r.json())
+      .then((json) => { if (json.success) setPages(json.pages || []); })
+      .catch(() => {});
+  }, []);
+
+  const addPage = async () => {
+    if (!newPageTitle.trim()) return;
+    setAddingPage(true);
+    try {
+      const res  = await fetch('/api/stores/pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: newPageTitle, content: newPageContent, published: true }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setPages(json.pages || []);
+        setNewPageTitle('');
+        setNewPageContent('');
+        setShowAddPage(false);
+      } else {
+        setToastMsg(`⚠️ ${json.message || 'Could not add page'}`);
+        setTimeout(() => setToastMsg(''), 4000);
+      }
+    } catch (e) {
+      setToastMsg(`⚠️ ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setAddingPage(false); }
+  };
+
+  const deletePage = async (slug) => {
+    const res  = await fetch(`/api/stores/pages?slug=${encodeURIComponent(slug)}`, { method: 'DELETE' });
+    const json = await res.json();
+    if (json.success) setPages(json.pages || []);
+  };
 
   // Post-generation image review — surfaced the moment a design finishes so
   // the vendor immediately knows which photos are AI stock placeholders and
@@ -1021,6 +1074,10 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       logoDescription: logoDescription,
       contactEmail: storeProfile.contactEmail || '',
       contactPhone: storeProfile.contactPhone || '',
+      // Custom pages (About, FAQ, Shipping policy, …) — built into the
+      // generated site as its own #/page/<slug> view, never an independent
+      // Next.js route. Published-only, matching what the live store serves.
+      pages: (pages || []).filter((p) => p.published !== false).map((p) => ({ title: p.title, slug: p.slug, content: p.content })),
     };
 
     setLoading(true);
@@ -1308,6 +1365,65 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                   </div>
                 </div>
 
+                {/* Custom Pages — built into the generated site as its own
+                    tab (#/page/<slug>), never an independent route. */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider flex items-center gap-1.5">
+                      <FileText size={11} className="text-blue-500" /> Custom Pages
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowAddPage((v) => !v)}
+                      className="text-[11px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors"
+                    >
+                      <Plus size={12} /> Add page
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-white/30 leading-tight">
+                    About, FAQ, Shipping policy… built INTO the generated site as its own tab — never a separate page, so there's nothing to cause routing issues.
+                  </p>
+
+                  {pages.length > 0 && (
+                    <div className="space-y-1">
+                      {pages.map((p) => (
+                        <div key={p.slug} className="flex items-center justify-between bg-[#1a1a1a] border border-white/10 px-2.5 py-1.5">
+                          <span className="text-xs font-semibold text-white truncate" title={p.title}>{p.title}</span>
+                          <button type="button" onClick={() => deletePage(p.slug)} className="text-white/30 hover:text-red-400 transition-colors shrink-0">
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {showAddPage && (
+                    <div className="bg-[#1a1a1a] border border-white/10 p-3 space-y-2">
+                      <input
+                        value={newPageTitle}
+                        onChange={(e) => setNewPageTitle(e.target.value)}
+                        placeholder="Page title (e.g. About Us)"
+                        className="w-full bg-[#111] border border-white/10 rounded-none px-2.5 py-1.5 text-xs text-white outline-none focus:border-blue-500/50"
+                      />
+                      <textarea
+                        rows={3}
+                        value={newPageContent}
+                        onChange={(e) => setNewPageContent(e.target.value)}
+                        placeholder="What should this page say?"
+                        className="w-full bg-[#111] border border-white/10 rounded-none px-2.5 py-1.5 text-xs text-white outline-none focus:border-blue-500/50 resize-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={addPage}
+                        disabled={addingPage || !newPageTitle.trim()}
+                        className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                      >
+                        {addingPage ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />} Add page
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {/* Upload & Notes */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -1483,7 +1599,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
             </div>
           ) : (
             <div className="w-full h-full animate-in zoom-in-95 duration-500 relative flex items-center justify-center">
-              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} editMode={outputFormat === 'jsx' && editMode} onVisualEdit={handleVisualEdit} format={outputFormat} jsonDoc={jsonDoc} />
+              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} editMode={outputFormat === 'jsx' && editMode} onVisualEdit={handleVisualEdit} format={outputFormat} jsonDoc={jsonDoc} pages={pages} />
 
               {/* Hidden input for replacing an image by upload */}
               <input
