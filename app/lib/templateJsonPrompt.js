@@ -73,13 +73,13 @@ Tokens become CSS variables: reference them in classes as bg-[var(--s-primary)],
 }
 
 === ACTIONS (closed set — ${ACTION_VERBS.join(', ')}) ===
-- navigate {"to":"#/"|"#/shop"|"#/product/{{item.id}}"|"#/page/{{item.slug}}"} — the ONLY routes. These top-level views are the only thing that changes the hash; everything else within a view is a TAB or a DIALOG (see below), never a new route.
+- navigate {"to":"#/"|"#/shop"|"#/product/{{item.id}}"|"#/page/{{item.slug}}"} — switches the visible VIEW. There is NO routing of any kind: "to" is just a view name in a familiar spelling; the engine swaps views in memory like tabs and the URL NEVER changes. These are the only view names — everything else within a view is a TAB or a DIALOG (see below). Never put an "href" on a view link — the navigate action IS the link.
 - addToCart {"product":"{{item}}","qty":1} · buyNow {"product":"{{item}}"} · checkout {} — real system cart/checkout.
 - openDrawer/closeDrawer {} — the cart drawer. setState/toggle {"key":..} for menus. setVariant {"key","value"}. scrollTo {"target":elementId}. openModal/closeModal {"id"}. toast {"text"}. external {"href"} only for real URLs.
 - NO GHOST INTERACTIONS: every button/link either carries a real action or is plain text. Footer links with no destination are plain text nodes.
 
-=== TABS & DIALOGS — how in-page switching works (prefer these over new routes) ===
-The runtime never reloads or re-navigates for anything except the checkout handoff (below) — every other interaction is either a TAB (swap which content shows, same view) or a DIALOG (a transient overlay). Reach for these, not new routes/pages, whenever a design needs "sections that switch":
+=== EVERYTHING IS A TAB OR A DIALOG — THERE IS NO ROUTING, PERIOD ===
+The engine has NO router. Views, tabs, panels, custom pages — ALL of it is in-memory state swapped like tabs; the URL never changes, nothing ever reloads, and nothing ever leaves the page except the checkout handoff (below). This applies to fresh builds AND edits equally. Reach for these whenever a design needs "sections that switch":
 - TABS node: {"type":"tabs","attrs":{"key":"pdpTabs"},"children":[ Node, Node, ... ]} — each direct child is one tab's PANEL and MUST carry "attrs":{"tabLabel":"Description"} (its header button text); the runtime renders the tab strip and swaps panels itself, purely client-state, zero navigation. Use this for PDP Description/Specifications/Shipping, shop category filters, service categories, FAQ groups — anywhere content comes in labelled variants.
 - MODAL node: {"type":"modal","attrs":{"id":"booking"}, "children":[...]} shown via openModal {"id":"booking"} / hidden via closeModal — use for booking forms, quick-view, filters, confirmations, image lightboxes. Also purely client-state, zero navigation.
 - CART is always the built-in cartDrawer node (route "*") — never a route, never a modal you build yourself.
@@ -90,8 +90,8 @@ Available: {{store.name}} {{store.logo}} {{store.email}} {{store.phone}}; inside
 
 === CUSTOM PAGES (vendor-authored — About, FAQ, Shipping policy, …) ===
 ${business.pages && business.pages.length
-    ? `This store has ${business.pages.length} custom page(s). Build them INTO the site as ONE "page" route (route:"page") — never a separate route/page per title, exactly like ONE "product" section handles every product. Render {{page.title}} as a heading and {{page.content}} as body copy with class "whitespace-pre-line" (it's plain text with real line breaks). Add a nav link for EACH page below (in the navbar and/or footer) using navigate {"to":"#/page/<slug>"} — plain literal hrefs, not a repeat, since this is a small fixed list:\n${business.pages.map((p) => `  - "${p.title}" → #/page/${p.slug}`).join('\n')}`
-    : 'This store has no custom pages yet — omit the "page" route and any page nav links entirely.'}
+    ? `This store has ${business.pages.length} custom page(s). They are called "pages" but they are TABS: build them INTO the site as ONE "page" VIEW (route:"page") — never a separate route/page per title, exactly like ONE "product" section handles every product. Render {{page.title}} as a heading and {{page.content}} as body copy with class "whitespace-pre-line" (it's plain text with real line breaks). Add a nav item for EACH page below (in the navbar and/or footer) — a button/text node with the navigate action (NO href):\n${business.pages.map((p) => `  - "${p.title}" → navigate {"to":"#/page/${p.slug}"}`).join('\n')}`
+    : 'This store has no custom pages yet — omit the "page" view and any page nav items entirely.'}
 
 === WHAT TO BUILD ===
 ${bt === 'products'

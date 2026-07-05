@@ -120,10 +120,12 @@ a category command can restrict which types/sections an industry may use).
 
 ### `tabs` and `modal` — the in-page switching primitives
 
-The runtime never reloads or re-navigates for anything except the checkout
-handoff. The 4 hash routes (`#/`, `#/shop`, `#/product/<id>`, `#/page/<slug>`)
-are the only top-level views; everything else that looks like "switching
-content" is one of these two client-state-only primitives — never a new route:
+There is NO routing of any kind — the runtime never reads or writes the URL.
+The 4 view names (`#/`, `#/shop`, `#/product/<id>`, `#/page/<slug>` — familiar
+spellings, but purely in-memory state switched like tabs) are the only
+top-level views; everything else that looks like "switching content" is one of
+these two client-state-only primitives — never a new route. The single
+interaction that ever leaves the page is the checkout handoff:
 
 - **`tabs`**: `{ "type": "tabs", "attrs": { "key": "pdpTabs" }, "children": [Node, ...] }`.
   Each direct child is one tab's panel and carries `attrs.tabLabel` (its header
