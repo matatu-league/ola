@@ -73,19 +73,26 @@ Tokens become CSS variables: reference them in classes as bg-[var(--s-primary)],
 }
 
 === ACTIONS (closed set — ${ACTION_VERBS.join(', ')}) ===
-- navigate {"to":"#/"|"#/shop"|"#/product/{{item.id}}"} — the ONLY routes.
+- navigate {"to":"#/"|"#/shop"|"#/product/{{item.id}}"} — the ONLY routes. These 3 top-level views are the only thing that changes the hash; everything else within a view is a TAB or a DIALOG (see below), never a new route.
 - addToCart {"product":"{{item}}","qty":1} · buyNow {"product":"{{item}}"} · checkout {} — real system cart/checkout.
-- openDrawer/closeDrawer {} — the cart drawer. setState/toggle {"key":..} for tabs/menus. setVariant {"key","value"}. scrollTo {"target":elementId}. openModal/closeModal {"id"}. toast {"text"}. external {"href"} only for real URLs.
+- openDrawer/closeDrawer {} — the cart drawer. setState/toggle {"key":..} for menus. setVariant {"key","value"}. scrollTo {"target":elementId}. openModal/closeModal {"id"}. toast {"text"}. external {"href"} only for real URLs.
 - NO GHOST INTERACTIONS: every button/link either carries a real action or is plain text. Footer links with no destination are plain text nodes.
+
+=== TABS & DIALOGS — how in-page switching works (prefer these over new routes) ===
+The runtime never reloads or re-navigates for anything except the checkout handoff (below) — every other interaction is either a TAB (swap which content shows, same view) or a DIALOG (a transient overlay). Reach for these, not new routes/pages, whenever a design needs "sections that switch":
+- TABS node: {"type":"tabs","attrs":{"key":"pdpTabs"},"children":[ Node, Node, ... ]} — each direct child is one tab's PANEL and MUST carry "attrs":{"tabLabel":"Description"} (its header button text); the runtime renders the tab strip and swaps panels itself, purely client-state, zero navigation. Use this for PDP Description/Specifications/Shipping, shop category filters, service categories, FAQ groups — anywhere content comes in labelled variants.
+- MODAL node: {"type":"modal","attrs":{"id":"booking"}, "children":[...]} shown via openModal {"id":"booking"} / hidden via closeModal — use for booking forms, quick-view, filters, confirmations, image lightboxes. Also purely client-state, zero navigation.
+- CART is always the built-in cartDrawer node (route "*") — never a route, never a modal you build yourself.
+- The ONLY step that ever leaves this page is the checkout action, which hands off to the real, separate, already-themed system checkout. Never build your own checkout UI, never make it a modal/tab, never route to it.
 
 === DATA BINDINGS ===
 Available: {{store.name}} {{store.logo}} {{store.email}} {{store.phone}}; inside repeat: {{item.*}} ({{item.id}}, {{item.name}}, {{item.price}}, {{item.image}}, {{item.description}}, {{item.duration}} for services) and {{index}}; {{cartCount}} for the header badge; on the product route: {{product.*}}. Pipe |money formats numbers with thousands separators. Use "{{item}}" (whole object) as the product param of cart actions.
 
 === WHAT TO BUILD ===
 ${bt === 'products'
-    ? 'A pure e-commerce storefront: navbar (route "*", with cart icon → openDrawer + {{cartCount}} badge), a striking hero (route "home"), featured products (route "home"), a full product grid with cards (route "shop"), a product detail section (route "product": gallery image, {{product.name}}, {{product.price|money}} price, description, Add to Cart + Buy Now), a rich dark footer (route "*"), and a cartDrawer node (route "*"). NO service/booking wording anywhere.'
+    ? 'A pure e-commerce storefront: navbar (route "*", with cart icon → openDrawer + {{cartCount}} badge), a striking hero (route "home"), featured products (route "home"), a full product grid with cards (route "shop"), a product detail section (route "product": gallery image, {{product.name}}, {{product.price|money}} price, a "tabs" node for Description/Specifications/Shipping, Add to Cart + Buy Now), a rich dark footer (route "*"), and a cartDrawer node (route "*"). NO service/booking wording anywhere.'
     : bt === 'both'
-      ? `Lead with the ${st || 'service'} experience on route "home" (service menu cards from the services repeat with prices/durations and Book CTAs → openModal a booking modal you also declare), a dedicated shop on route "shop" (full product grid), product detail on route "product", navbar with Home/Shop links + cart (route "*"), dark footer (route "*"), cartDrawer (route "*").`
+      ? `Lead with the ${st || 'service'} experience on route "home" (service menu cards from the services repeat with prices/durations and Book CTAs → openModal a booking modal you also declare), a dedicated shop on route "shop" (full product grid), product detail on route "product" (include a "tabs" node for Description/Specifications/Shipping), navbar with Home/Shop links + cart (route "*"), dark footer (route "*"), cartDrawer (route "*").`
       : `A ${st || 'services'} website: hero, service menu (services repeat: name, duration, price, Book CTA → openModal a booking modal node you also declare), about/trust section, gallery, dark footer, navbar (route "*").`}
 Every product/service card image uses its binding ({{item.image}}); decorative/hero photography uses keyword URLs "https://loremflickr.com/1600/900/<industry,keywords>?lock=<n>" with category-specific keywords and a fixed lock number per image. Design for the "${categoryContext || business.industry || 'General'}" category: palette, section names, copy and imagery must instantly signal it.
 

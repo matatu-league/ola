@@ -15,7 +15,7 @@ export const NODE_TYPES = [
   'box', 'text', 'image', 'icon', 'button', 'link', 'input', 'divider', 'spacer',
   'hero', 'section', 'navbar', 'footer', 'banner', 'stats', 'testimonials', 'faq',
   'productGrid', 'productCard', 'serviceMenu', 'serviceCard', 'categoryRail',
-  'gallery', 'cartDrawer', 'bookingForm', 'modal',
+  'gallery', 'cartDrawer', 'bookingForm', 'modal', 'tabs',
 ];
 
 export const ACTION_VERBS = [

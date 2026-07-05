@@ -347,6 +347,32 @@ function olaJsonRuntime() {
             (node.children || []).map(function (c, i) { return renderNode(c, ctx2, (key || 'm') + '-' + i); })));
       }
 
+      if (node.type === 'tabs') {
+        // A structured, always-in-page tab group — no route/hash change, no
+        // reload: just a state index picking which child panel renders. This
+        // is the preferred way to switch between content variations (PDP
+        // Description/Specs/Shipping, shop category filters, etc.) instead of
+        // adding new routes for them.
+        var tabsKey = 'tabs:' + ((node.attrs && node.attrs.key) || 'tabs');
+        var panels = node.children || [];
+        var activeIdx = ctx2.state[tabsKey] || 0;
+        if (activeIdx >= panels.length) activeIdx = 0;
+        return h('div', { key: key, className: node.class || '' },
+          h('div', { className: 'flex gap-1 mb-4', role: 'tablist' },
+            panels.map(function (p, i) {
+              var isActive = i === activeIdx;
+              return h('button', {
+                key: 'tab-' + i,
+                role: 'tab',
+                'aria-selected': isActive,
+                className: (p.attrs && p.attrs.tabClass) || ('px-4 py-2 text-sm font-semibold rounded-[var(--s-radius,8px)] transition-colors ' +
+                  (isActive ? 'bg-[var(--s-primary,#111)] text-[var(--s-on-primary,#fff)]' : 'text-[var(--s-muted,#888)] hover:text-[var(--s-text,#111)]')),
+                onClick: function () { setUi(tabsKey, i); },
+              }, (p.attrs && p.attrs.tabLabel) || ('Tab ' + (i + 1)));
+            })),
+          renderNode(panels[activeIdx], ctx2, (key || 't') + '-panel-' + activeIdx));
+      }
+
       if (node.type === 'icon') {
         var iconName = (node.attrs && node.attrs.name) || 'Circle';
         var Icon = window.__olaIcons ? window.__olaIcons[iconName] : null;
