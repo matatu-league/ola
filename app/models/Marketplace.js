@@ -351,10 +351,30 @@ const OrderSchema = new Schema({
 
 }, { timestamps: true });
 
+// ─── AI storefront-generation commands ─────────────────────────────────────
+// DB-backed, editable prompt "commands" that steer template generation — the
+// same idea as CategoryFilter/ServiceFields but for the AI brief. Resolution
+// layers them: the `global` command (cuts across everything) + the most
+// specific match for the store (a category slug, a serviceType, or the generic
+// `store` command). Editable from the admin dashboard, no deploy needed.
+//   scope:  'global' | 'store' | 'category' | 'service'
+//   target: 'global' | 'store' | <category-slug> | <serviceType>  (unique key)
+const AiCommandSchema = new Schema(
+  {
+    scope:   { type: String, enum: ['global', 'store', 'category', 'service'], required: true, index: true },
+    target:  { type: String, required: true, unique: true, trim: true, index: true },
+    label:   { type: String, default: '' },
+    command: { type: String, default: '' },
+    active:  { type: Boolean, default: true },
+  },
+  { timestamps: true },
+);
+
 // ─── Exports ──────────────────────────────────────────────────────────────────
 export const Category       = models.Category       || model('Category',       CategorySchema);
 export const CategoryFilter = models.CategoryFilter || model('CategoryFilter', CategoryFilterSchema);
 export const ServiceCategoryFields = models.ServiceCategoryFields || model('ServiceCategoryFields', ServiceFieldSchema);
+export const AiCommand      = models.AiCommand      || model('AiCommand',      AiCommandSchema);
 export const Collection     = models.Collection     || model('Collection',     CollectionSchema);
 export const Product        = models.Product        || model('Product',        ProductSchema);
 export const ProductReview  = models.ProductReview  || model('ProductReview',  ReviewSchema);

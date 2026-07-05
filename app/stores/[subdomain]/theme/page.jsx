@@ -174,6 +174,20 @@ const generateCodeAI = async (
 ) => {
   const { aiProvider } = advancedConfig;
 
+  // Admin-defined "command" for this industry (global + most-specific), stored
+  // in the DB and editable from the admin dashboard. Layered into the brief.
+  let command = '';
+  try {
+    const params = new URLSearchParams();
+    const catSlug = (business.industry || categoryContext || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    if (catSlug) params.set('category', catSlug);
+    if (business.serviceType) params.set('serviceType', business.serviceType);
+    if (business.businessType) params.set('businessType', business.businessType);
+    const res  = await fetch(`/api/commands?${params.toString()}`);
+    const json = await res.json();
+    if (json?.success) command = json.command || '';
+  } catch (_) { /* no command → default brief only */ }
+
   // The master prompt lives in its own module (@/lib/templatePrompt) so it can
   // evolve independently of this page — see buildTemplatePrompt for the full brief.
   const prompt = buildTemplatePrompt({
@@ -187,6 +201,7 @@ const generateCodeAI = async (
     advancedConfig,
     isEditingExplicit,
     business,
+    command,
   });
 
   // Attach the store's REAL logo as inline image bytes so the model can "see"
