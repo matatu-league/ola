@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Store from '@/models/Store';
-import { Category } from '@/models/Marketplace';
+import { Category, Product } from '@/models/Marketplace';
 import { cookies } from 'next/headers';
 import { getActiveStore } from '@/lib/store-context';
 
@@ -25,6 +25,42 @@ const getUserId = async () => {
 
 export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+
+    // ── Public store directory (marketplace "Stores" tab). No auth. ──────────
+    if (searchParams.get('directory') === '1') {
+      await connectToDatabase();
+      const limit  = Math.min(60, parseInt(searchParams.get('limit'), 10) || 40);
+      const stores = await Store.find({})
+        .select('title domain logo banner themeColor verified years industry businessType description')
+        .sort({ verified: -1, createdAt: -1 })
+        .limit(limit)
+        .lean();
+
+      const ids = stores.map(s => s._id);
+      const prods = ids.length
+        ? await Product.find({ storeId: { $in: ids }, status: 'active' })
+            .select('storeId title price image images moq')
+            .sort({ createdAt: -1 })
+            .lean()
+        : [];
+      const byStore = new Map();
+      for (const p of prods) {
+        const k = String(p.storeId);
+        if (!byStore.has(k)) byStore.set(k, []);
+        const arr = byStore.get(k);
+        if (arr.length < 4) arr.push({
+          _id: p._id, title: p.title,
+          price: typeof p.price === 'string' ? p.price : `UGX ${Number(p.price || 0).toLocaleString()}`,
+          image: p.image || p.images?.[0] || '',
+          moq: p.moq || '1',
+        });
+      }
+
+      const data = stores.map(s => ({ ...s, products: byStore.get(String(s._id)) || [] }));
+      return NextResponse.json({ success: true, data });
+    }
+
     const userId = await getUserId();
     if (!userId) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
@@ -32,7 +68,6 @@ export async function GET(request) {
     const ownerFilter = { $or: [{ userId }, { owner: userId }] };
 
     // ?all=1 → list every store the user owns (for the dashboard store switcher).
-    const { searchParams } = new URL(request.url);
     if (searchParams.get('all') === '1') {
       const stores = await Store.find(ownerFilter)
         .select('_id title domain logo businessType serviceType')

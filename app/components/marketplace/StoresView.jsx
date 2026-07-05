@@ -10,17 +10,17 @@ const StoresView = () => {
   useEffect(() => {
     const fetchStores = async () => {
       try {
-        const response = await fetch('/api/stores',{
+        const response = await fetch('/api/stores?directory=1',{
           headers: {
-            'ngrok-skip-browser-warning': 'true', 
+            'ngrok-skip-browser-warning': 'true',
           },
         });
         const result = await response.json();
-        
+
         if (result.success) {
-          setStores(result.data);
+          setStores(Array.isArray(result.data) ? result.data : []);
         } else {
-          setError(result.error);
+          setError(result.error || result.message || 'Could not load stores.');
         }
       } catch (err) {
         setError('Failed to fetch stores. Is your backend running?');
@@ -43,6 +43,12 @@ const StoresView = () => {
   return (
     <div className="bg-[#f2f2f6] min-h-screen pb-16">
       <div className="max-w-[1400px] mx-auto px-4 mt-6 md:mt-8">
+        {stores.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-[15px] font-bold text-gray-700">No stores yet</p>
+            <p className="text-[13px] text-gray-500 mt-1">Check back soon — new stores are on the way.</p>
+          </div>
+        )}
         <div className="flex flex-col gap-4">
           {stores.map((store) => {
             // Determine the store URL (fallback to main site if no domain is set)
@@ -70,11 +76,10 @@ const StoresView = () => {
                       </Link>
                       <div className="flex items-center flex-wrap gap-x-1.5 gap-y-1 text-[11px] text-gray-500 font-medium">
                         {store.verified && <span className="text-[#25F4EE] font-bold flex items-center gap-0.5"><ShieldCheck size={12}/> Verified</span>}
-                        <span>{store.years} yrs</span>
-                        <span>·</span>
-                        <span>{store.staff}</span>
-                        <span>·</span>
-                        <span>{store.revenue}</span>
+                        {store.industry && <span className="capitalize">{store.industry}</span>}
+                        {store.years ? <><span>·</span><span>{store.years} yr{store.years > 1 ? 's' : ''}</span></> : null}
+                        {store.staff && <><span>·</span><span>{store.staff}</span></>}
+                        {store.revenue && <><span>·</span><span>{store.revenue}</span></>}
                       </div>
                     </div>
                   </div>

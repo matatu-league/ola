@@ -2,21 +2,21 @@
  * ============================================================================
  * scripts/seed-marketplace.mjs
  * ----------------------------------------------------------------------------
- * Seeds demo marketplace data so a fresh install has something to show:
+ * Seeds demo marketplace data so a fresh install has something real to show:
  *   • 5 hybrid stores (products + services)
- *   • 100 products and 100 services, spread across the current categories
+ *   • 100 products (REAL titles + images from the open DummyJSON dataset)
+ *   • 100 services (generated, with real keyword photos via LoremFlickr)
  *
- * All demo data is owned by a single seed vendor (seed-vendor@ola.ug), so the
- * script is IDEMPOTENT: on every run it wipes that vendor's previous stores /
- * products / services and recreates them. Existing real data is never touched.
+ * IMAGES: source.unsplash.com was discontinued (404s), so products use real
+ * photos from https://dummyjson.com/products (a free open store API) and
+ * services use https://loremflickr.com keyword photos.
  *
- * Base categories are upserted by slug if the DB has fewer than 5 categories;
- * otherwise the existing categories are used as-is.
+ * IDEMPOTENT: all demo data is owned by one seed vendor (seed-vendor@ola.ug).
+ * Every run WIPES that vendor's previous stores/products/services (and any
+ * leftover SEED- products) before recreating. Real data is never touched.
  *
  * Usage:
- *   MATATU_DB_URI="mongodb+srv://..." node scripts/seed-marketplace.mjs
- *   # or with the URI in .env.local / .env:
- *   npm run seed:marketplace
+ *   MATATU_DB_URI="mongodb+srv://..." npm run seed:marketplace
  * ============================================================================
  */
 import path from 'path';
@@ -25,8 +25,6 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });
 dotenv.config();
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const { connectToDatabase } = await import('../app/lib/mongodb.js');
 const mongooseMod = await import('mongoose');
@@ -40,73 +38,58 @@ const Service = ServiceMod.default || ServiceMod.Service;
 const User    = UserMod.default    || UserMod.User;
 
 const SEED_EMAIL = 'seed-vendor@ola.ug';
-const img = (kw) => `https://source.unsplash.com/600x600/?${encodeURIComponent(kw)}`;
-const banner = (kw) => `https://source.unsplash.com/1600x600/?${encodeURIComponent(kw)}`;
+const USD_TO_UGX = 3800;
+
 const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 const pick = (arr, i) => arr[i % arr.length];
 const slugify = (s) => String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-// Base categories (upserted only if the DB is under-seeded). key drives pools.
+// LoremFlickr keyword photo, deterministic via a lock hash (no flicker).
+function lf(keywords, w = 600, h = 600) {
+  const kw = String(keywords || 'product').trim().split(/\s+/).map(encodeURIComponent).join(',');
+  let lock = 0; const s = String(keywords);
+  for (let i = 0; i < s.length; i++) lock = (lock * 31 + s.charCodeAt(i)) % 100000;
+  return `https://loremflickr.com/${w}/${h}/${kw}?lock=${lock}`;
+}
+
 const BASE_CATEGORIES = [
-  { name: 'Electronics',        slug: 'electronics',    key: 'electronics' },
-  { name: 'Fashion',            slug: 'fashion',        key: 'fashion' },
-  { name: 'Beauty & Cosmetics', slug: 'beauty',         key: 'beauty' },
-  { name: 'Home & Furniture',   slug: 'home-furniture', key: 'home' },
-  { name: 'Food & Grocery',     slug: 'food-grocery',   key: 'food' },
-  { name: 'Sports & Fitness',   slug: 'sports-fitness', key: 'sports' },
+  { name: 'Electronics',        slug: 'electronics' },
+  { name: 'Fashion',            slug: 'fashion' },
+  { name: 'Beauty & Cosmetics', slug: 'beauty' },
+  { name: 'Home & Furniture',   slug: 'home-furniture' },
+  { name: 'Food & Grocery',     slug: 'food-grocery' },
+  { name: 'Sports & Fitness',   slug: 'sports-fitness' },
 ];
 
-// Product/service name pools + image keyword per category key.
-const POOLS = {
-  electronics: {
-    kw: 'electronics gadget',
-    products: ['Wireless Noise-Cancelling Headphones', 'Ultrabook Pro 14"', 'Flagship Smartphone', '4K Action Camera', 'Mechanical Keyboard', 'Smart Watch Series X', 'Bluetooth Speaker', 'USB-C Fast Charger', '27" 4K Monitor', 'Drone Camera Kit', 'Gaming Mouse', 'Power Bank 20000mAh'],
-    services: ['Phone Screen Repair', 'Laptop Diagnostics', 'Home Network Setup', 'Data Recovery', 'CCTV Installation', 'Smart Home Setup', 'PC Custom Build', 'Device Trade-in Valuation'],
-  },
-  fashion: {
-    kw: 'fashion clothing',
-    products: ['Minimalist Linen Shirt', 'Essential Cotton Crew', 'Relaxed Fit Trousers', 'Classic Wool Coat', 'Leather Weekend Bag', 'Silk Blend Scarf', 'Knit Beanie', 'Suede Chelsea Boots', 'Denim Jacket', 'Summer Maxi Dress', 'Canvas Sneakers', 'Aviator Sunglasses'],
-    services: ['Bespoke Tailoring', 'Personal Styling Session', 'Wardrobe Consultation', 'Alterations & Repairs', 'Bridal Fitting', 'Fashion Photoshoot', 'Custom Embroidery', 'Shoe Restoration'],
-  },
-  beauty: {
-    kw: 'beauty cosmetics',
-    products: ['Radiance Serum', 'Velvet Matte Lipstick', 'Hydrating Day Cream', 'Signature Eau de Parfum', 'Silk Foundation', 'Nourishing Hair Oil', 'Clay Detox Mask', 'Rose Gold Brush Set', 'Vitamin C Toner', 'SPF 50 Sunscreen'],
-    services: ['Classic Facial', 'Gel Manicure', 'Hair Colour & Style', 'Bridal Makeup', 'Deep Tissue Massage', 'Lash Extensions', 'Spa Day Package', 'Skin Consultation'],
-  },
-  home: {
-    kw: 'home furniture interior',
-    products: ['Oak Lounge Chair', 'Linen Sofa 3-Seater', 'Ceramic Table Lamp', 'Handwoven Area Rug', 'Solid Wood Dining Table', 'Minimalist Bookshelf', 'Velvet Accent Cushion', 'Framed Wall Art Set', 'Storage Ottoman', 'Pendant Light Fixture'],
-    services: ['Interior Design Consultation', 'Furniture Assembly', 'Custom Carpentry', 'Home Deep Cleaning', 'Curtain & Blinds Fitting', 'Painting & Decorating', 'Space Planning', 'Upholstery Repair'],
-  },
-  food: {
-    kw: 'food fresh produce',
-    products: ['Artisan Sourdough Loaf', 'Single-Origin Coffee Beans', 'Cold-Pressed Juice', 'Farm Fresh Eggs', 'Handmade Chocolate Box', 'Organic Honey Jar', 'Seasonal Fruit Basket', 'Stone-Baked Pizza', 'Gourmet Cheese Board', 'Herbal Tea Sampler'],
-    services: ['Private Chef Experience', 'Event Catering', 'Weekly Meal Prep', 'Cake & Bakery Orders', 'Barista Training', 'Grocery Delivery', 'Cooking Class', 'Cocktail Bartending'],
-  },
-  sports: {
-    kw: 'sports fitness gym',
-    products: ['Performance Running Shoes', 'Adjustable Dumbbell Set', 'Breathable Training Tee', 'Yoga Mat Pro', 'Insulated Water Bottle', 'Resistance Band Kit', 'Trail Backpack 30L', 'Smart Fitness Tracker', 'Foam Roller', 'Jump Rope Speed'],
-    services: ['Personal Training', 'Group Fitness Class', 'Nutrition Coaching', 'Physio Session', 'Bike Servicing', 'Sports Massage', 'Yoga Session', 'Running Clinic'],
-  },
-  generic: {
-    kw: 'premium product',
-    products: ['Signature Item', 'Premium Bundle', 'Classic Edition', 'Deluxe Set', 'Essential Pack', 'Limited Release', 'Everyday Staple', 'Pro Collection', 'Starter Kit', 'Gift Box'],
-    services: ['Consultation', 'Installation', 'Maintenance Plan', 'Custom Order', 'Express Service', 'On-site Visit', 'Support Package', 'Setup & Onboarding'],
-  },
+const SERVICE_POOLS = {
+  electronics: { kw: 'electronics repair', names: ['Phone Screen Repair', 'Laptop Diagnostics', 'Home Network Setup', 'Data Recovery', 'CCTV Installation', 'Smart Home Setup', 'PC Custom Build', 'Device Trade-in Valuation'] },
+  fashion:     { kw: 'tailoring fashion',  names: ['Bespoke Tailoring', 'Personal Styling', 'Wardrobe Consultation', 'Alterations & Repairs', 'Bridal Fitting', 'Fashion Photoshoot', 'Custom Embroidery', 'Shoe Restoration'] },
+  beauty:      { kw: 'salon spa',          names: ['Classic Facial', 'Gel Manicure', 'Hair Colour & Style', 'Bridal Makeup', 'Deep Tissue Massage', 'Lash Extensions', 'Spa Day Package', 'Skin Consultation'] },
+  home:        { kw: 'home service',       names: ['Interior Design Consultation', 'Furniture Assembly', 'Custom Carpentry', 'Home Deep Cleaning', 'Curtain & Blinds Fitting', 'Painting & Decorating', 'Space Planning', 'Upholstery Repair'] },
+  food:        { kw: 'catering chef',      names: ['Private Chef Experience', 'Event Catering', 'Weekly Meal Prep', 'Cake & Bakery Orders', 'Barista Training', 'Grocery Delivery', 'Cooking Class', 'Cocktail Bartending'] },
+  sports:      { kw: 'fitness training',   names: ['Personal Training', 'Group Fitness Class', 'Nutrition Coaching', 'Physio Session', 'Bike Servicing', 'Sports Massage', 'Yoga Session', 'Running Clinic'] },
+  generic:     { kw: 'professional service', names: ['Consultation', 'Installation', 'Maintenance Plan', 'Custom Order', 'Express Service', 'On-site Visit', 'Support Package', 'Setup & Onboarding'] },
 };
 
 function keyForCategory(name) {
   const n = (name || '').toLowerCase();
-  if (/electronic|tech|gadget|computer|phone|device|digital|appliance/.test(n)) return 'electronics';
-  if (/beauty|cosmet|skincare|makeup|salon|spa|hair/.test(n)) return 'beauty';
+  if (/electronic|tech|gadget|computer|phone|laptop|tablet|device|digital|appliance/.test(n)) return 'electronics';
+  if (/beauty|cosmet|skincare|skin-care|makeup|fragrance|salon|spa|hair/.test(n)) return 'beauty';
   if (/food|grocer|restaurant|cafe|bakery|drink|beverage|coffee|kitchen/.test(n)) return 'food';
   if (/furnitur|home|decor|interior|homeware/.test(n)) return 'home';
-  if (/sport|fitness|gym|outdoor|athletic/.test(n)) return 'sports';
-  if (/fashion|cloth|apparel|wear|boutique|shoe|jewel|accessor/.test(n)) return 'fashion';
+  if (/sport|fitness|gym|outdoor|athletic|motorcycle|vehicle/.test(n)) return 'sports';
+  if (/fashion|cloth|apparel|wear|boutique|shoe|shirt|top|watch|sunglass|jewel|accessor|women|men/.test(n)) return 'fashion';
   return 'generic';
 }
 
-const priceStr = (min, max) => String(rand(min, max) * 1000); // UGX, as the model stores a string
+async function fetchDummyProducts() {
+  try {
+    const res = await fetch('https://dummyjson.com/products?limit=100&select=title,price,description,category,thumbnail,images,rating,stock');
+    if (!res.ok) return null;
+    const j = await res.json();
+    return Array.isArray(j?.products) && j.products.length ? j.products : null;
+  } catch { return null; }
+}
 
 async function main() {
   console.log('🚀 Seeding marketplace demo data…');
@@ -115,16 +98,12 @@ async function main() {
   // 1. Seed vendor
   let owner = await User.findOne({ email: SEED_EMAIL });
   if (!owner) {
-    owner = await User.create({
-      email: SEED_EMAIL, displayName: 'Ola Demo Vendor', role: 'seller',
-      status: 'active', authProviders: ['email'],
-    });
+    owner = await User.create({ email: SEED_EMAIL, displayName: 'Ola Demo Vendor', role: 'seller', status: 'active', authProviders: ['email'] });
     console.log('👤 Created seed vendor');
   }
 
   // 2. Categories — ensure a usable set, then use whatever exists.
-  const existing = await Category.countDocuments();
-  if (existing < 5) {
+  if (await Category.countDocuments() < 5) {
     for (const c of BASE_CATEGORIES) {
       await Category.updateOne({ slug: c.slug }, { $setOnInsert: { name: c.name, slug: c.slug } }, { upsert: true });
     }
@@ -132,18 +111,17 @@ async function main() {
   }
   const categories = await Category.find().limit(24).lean();
   if (!categories.length) throw new Error('No categories available to attach data to.');
+  const catByKey = (k) => categories.find(c => keyForCategory(c.name) === k) || categories[0];
 
-  // 3. Wipe this seed vendor's previous data (idempotent).
-  const oldStores = await Store.find({ userId: owner._id }).select('_id').lean();
-  const oldStoreIds = oldStores.map(s => s._id);
-  await Promise.all([
-    Product.deleteMany({ userId: owner._id }),
+  // 3. WIPE previous demo data (idempotent).
+  const del = await Promise.all([
+    Product.deleteMany({ $or: [{ userId: owner._id }, { sku: { $regex: '^SEED-' } }] }),
     Service.deleteMany({ userId: owner._id }),
     Store.deleteMany({ userId: owner._id }),
   ]);
-  if (oldStoreIds.length) console.log(`🧹 Removed ${oldStoreIds.length} previous demo store(s) and their items`);
+  console.log(`🧹 Wiped previous demo data (products:${del[0].deletedCount} services:${del[1].deletedCount} stores:${del[2].deletedCount})`);
 
-  // 4. Five hybrid stores, each specialising in one of the first categories.
+  // 4. Five hybrid stores.
   const STORE_DEFS = [
     { title: 'VoltEdge Electronics', key: 'electronics' },
     { title: 'Atelier Mode',         key: 'fashion' },
@@ -151,67 +129,88 @@ async function main() {
     { title: 'Nest & Grain Home',    key: 'home' },
     { title: 'Fresh Harvest Market', key: 'food' },
   ];
-
-  const catByKey = (k) => categories.find(c => keyForCategory(c.name) === k) || categories[0];
-
   const stores = [];
   for (const def of STORE_DEFS) {
     const cat = catByKey(def.key);
-    const pool = POOLS[def.key] || POOLS.generic;
     const store = await Store.create({
       userId: owner._id,
       title: def.title,
       domain: `${slugify(def.title)}.ola.ug`,
       businessType: 'both',
       industry: cat?.name || def.key,
-      description: `${def.title} — your destination for quality ${(cat?.name || def.key).toLowerCase()} products and services.`,
+      description: `${def.title} — quality ${(cat?.name || def.key).toLowerCase()} products and services, delivered across Uganda.`,
       themeColor: '#161823',
       layoutStyle: 'Modern',
       verified: true,
-      logo: img(`${pool.kw} logo`),
-      banner: banner(pool.kw),
+      years: rand(1, 6),
+      logo: lf(`${def.key} logo`, 200, 200),
+      banner: lf(SERVICE_POOLS[def.key]?.kw || def.key, 1600, 600),
       contact: { email: `hello@${slugify(def.title)}.ola.ug`, phone: `+2567${rand(10, 99)}${rand(100000, 999999)}` },
       location: { isOnlineOnly: false, address: 'Kampala, Uganda' },
     });
-    stores.push({ store, cat, key: def.key, pool });
+    stores.push({ store, cat, key: def.key });
   }
   console.log(`🏬 Created ${stores.length} hybrid stores`);
 
-  // 5. 100 products + 100 services, 20 of each per store.
+  // 5. 100 products — real data from DummyJSON when reachable, else generated.
+  const dummy = await fetchDummyProducts();
   const products = [];
-  const services = [];
-  for (const { store, cat, pool } of stores) {
-    for (let i = 0; i < 20; i++) {
-      const name = pick(pool.products, i);
+  if (dummy) {
+    console.log(`🌐 Using ${dummy.length} real products from DummyJSON`);
+    dummy.slice(0, 100).forEach((dp, i) => {
+      const { store } = stores[i % stores.length];
+      const key = keyForCategory(dp.category);
+      const cat = catByKey(key);
       products.push({
-        userId: owner._id, storeId: store._id, categoryId: cat?._id,
-        status: 'active',
-        title: `${name}${i >= pool.products.length ? ' ' + (Math.floor(i / pool.products.length) + 1) : ''}`,
-        description: `Premium ${name.toLowerCase()} from ${store.title}. Quality you can trust, delivered across Uganda.`,
-        price: priceStr(20, 900),
-        image: img(pool.kw), images: [img(pool.kw), img(pool.kw + ' detail')],
-        stock: rand(3, 120), sku: `SEED-${slugify(store.title)}-P${i + 1}`,
-        rating: rand(38, 50) / 10, reviewsCount: rand(0, 240), sold: rand(0, 500), views: rand(20, 5000),
+        userId: owner._id, storeId: store._id, categoryId: cat?._id, status: 'active',
+        title: dp.title,
+        description: dp.description || `${dp.title} available at ${store.title}.`,
+        price: String(Math.max(1000, Math.round((dp.price || 10) * USD_TO_UGX))),
+        image: dp.thumbnail || dp.images?.[0] || lf(dp.category || 'product'),
+        images: (dp.images && dp.images.length ? dp.images : [dp.thumbnail]).filter(Boolean),
+        stock: dp.stock ?? rand(3, 120), sku: `SEED-P${i + 1}`,
+        rating: dp.rating ? Math.round(dp.rating * 10) / 10 : rand(38, 50) / 10,
+        reviewsCount: rand(0, 240), sold: rand(0, 500), views: rand(20, 5000),
       });
-    }
-    for (let i = 0; i < 20; i++) {
-      const name = pick(pool.services, i);
-      services.push({
-        userId: owner._id, storeId: store._id, category: cat?._id,
-        status: 'active',
-        title: `${name}${i >= pool.services.length ? ' ' + (Math.floor(i / pool.services.length) + 1) : ''}`,
-        description: `${name} by ${store.title}. Book online and pick a time that suits you.`,
-        price: priceStr(15, 400),
-        durationMinutes: String([30, 45, 60, 90, 120][rand(0, 4)]),
-        images: [img(pool.kw + ' service')],
-      });
-    }
+    });
+  } else {
+    console.log('⚠️  DummyJSON unreachable — generating products with LoremFlickr images');
+    stores.forEach(({ store, cat, key }) => {
+      for (let i = 0; i < 20; i++) {
+        const kw = SERVICE_POOLS[key]?.kw || 'product';
+        products.push({
+          userId: owner._id, storeId: store._id, categoryId: cat?._id, status: 'active',
+          title: `${store.title.split(' ')[0]} ${key} #${i + 1}`,
+          description: `Quality ${key} item from ${store.title}.`,
+          price: String(rand(20, 900) * 1000),
+          image: lf(`${kw} ${i}`), images: [lf(`${kw} ${i}`)],
+          stock: rand(3, 120), sku: `SEED-${slugify(store.title)}-P${i + 1}`,
+          rating: rand(38, 50) / 10, reviewsCount: rand(0, 240), sold: rand(0, 500), views: rand(20, 5000),
+        });
+      }
+    });
   }
+
+  // 6. 100 services (20 per store).
+  const services = [];
+  stores.forEach(({ store, cat, key }) => {
+    const pool = SERVICE_POOLS[key] || SERVICE_POOLS.generic;
+    for (let i = 0; i < 20; i++) {
+      const name = pick(pool.names, i);
+      services.push({
+        userId: owner._id, storeId: store._id, category: cat?._id, status: 'active',
+        title: `${name}${i >= pool.names.length ? ' ' + (Math.floor(i / pool.names.length) + 1) : ''}`,
+        description: `${name} by ${store.title}. Book online and pick a time that suits you.`,
+        price: String(rand(15, 400) * 1000),
+        durationMinutes: String([30, 45, 60, 90, 120][rand(0, 4)]),
+        images: [lf(`${pool.kw} ${i}`)],
+      });
+    }
+  });
 
   await Product.insertMany(products);
   await Service.insertMany(services);
   console.log(`📦 Inserted ${products.length} products and 🛎️  ${services.length} services`);
-
   console.log('✅ Marketplace seed complete.');
   await mongoose.connection.close();
   process.exit(0);
