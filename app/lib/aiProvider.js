@@ -205,16 +205,27 @@ const customGenerate = async (prompt, images) => {
 // ─── Unsplash imagery ─────────────────────────────────────────────────────────
 
 /**
- * Deterministic Unsplash URL that needs no API key — handy as a prompt
- * instruction and as a fallback. Returns a stable photo for the given keywords.
+ * Keyword-based stock photo URL that needs no API key — handy as a prompt
+ * instruction and as a fallback.
+ *
+ * NOTE: Unsplash discontinued source.unsplash.com (it now 404s), so we use
+ * LoremFlickr, which serves real Creative-Commons photos matching the keywords.
+ * A stable `lock` derived from the keywords keeps the same photo per keyword set
+ * (no flicker on reload).
  *
  * @param {string} query
  * @param {number} [w=1600]
  * @param {number} [h=900]
  * @returns {string}
  */
-export const unsplashSourceUrl = (query, w = 1600, h = 900) =>
-  `https://source.unsplash.com/${w}x${h}/?${encodeURIComponent(query || 'business')}`;
+export const unsplashSourceUrl = (query, w = 1600, h = 900) => {
+  const q  = (query || 'business').trim();
+  const kw = q.split(/\s+/).map(encodeURIComponent).join(',');
+  // Small stable hash → deterministic photo per keyword set.
+  let lock = 0;
+  for (let i = 0; i < q.length; i++) lock = (lock * 31 + q.charCodeAt(i)) % 100000;
+  return `https://loremflickr.com/${w}/${h}/${kw}?lock=${lock}`;
+};
 
 /**
  * Resolve a real Unsplash photo URL for a search query. Uses the official API
