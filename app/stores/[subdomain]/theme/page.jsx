@@ -10,7 +10,7 @@ import {
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
 import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl, AI_PROVIDERS, TEMPLATE_PROVIDER } from '@/lib/aiProvider';
-import { buildTemplatePrompt } from '@/lib/templatePrompt';
+import { buildTemplatePrompt, LOGO_DECODE_PROMPT } from '@/lib/templatePrompt';
 import { olaBridgeScript } from '@/lib/storefrontBridge';
 
 // Category-appropriate SAMPLE catalog for the builder preview, so an electronics
@@ -166,6 +166,23 @@ const urlToInlineImage = async (url) => {
   }
 };
 
+// Decode a logo image into a rich TEXT brief (colors, wordmark, typography,
+// mark, layout, mood + suggested palette) using the active vision engine. Run
+// ONCE per logo and cache the result on the store — thereafter every template
+// generation attaches this text instead of re-uploading the image bytes, which
+// is cheaper on tokens and gives the designer model a fuller picture of the
+// brand. Returns a trimmed string, or '' if the logo can't be read.
+const describeLogo = async (logoUrl, provider) => {
+  const img = await urlToInlineImage(logoUrl);
+  if (!img) return '';
+  const text = await generateTemplateText(
+    LOGO_DECODE_PROMPT,
+    [{ mimeType: img.mimeType, data: img.data }],
+    provider,
+  );
+  return (text || '').trim();
+};
+
 // --- CORE AI CODE GENERATION ENGINE ---
 const generateCodeAI = async (
   promptText, imageBase64, imageMimeType, currentCode,
@@ -204,12 +221,16 @@ const generateCodeAI = async (
     command,
   });
 
-  // Attach the store's REAL logo as inline image bytes so the model can "see"
-  // it and build the entire palette/identity around it. There is NO banner —
+  // Attach the store's REAL logo as inline image bytes ONLY when we don't have a
+  // cached text decode of it — the decode (business.logoDescription, injected
+  // into the prompt above) already carries the colors/typography/mark/mood, so
+  // re-sending the image every time is wasted tokens. There is NO banner —
   // hero/section imagery comes from Unsplash (see prompt). An optional user
   // style reference can also be attached.
   const images = [];
-  if (business.logoBase64) images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
+  if (!business.logoDescription && business.logoBase64) {
+    images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
+  }
   if (imageBase64 && imageMimeType) images.push({ mimeType: imageMimeType, data: imageBase64 });
 
   // Provider-switchable (Gemini / DeepSeek v4 / Custom) — the engine selector in
@@ -726,17 +747,41 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
       businessType: storeProfile.businessType || 'products',
       serviceType:  storeProfile.serviceType || null,
       logo:         storeProfile.logo || '',
+      logoDescription: storeProfile.logoDescription || '',
       contactEmail: storeProfile.contactEmail || '',
       contactPhone: storeProfile.contactPhone || '',
     };
 
     setLoading(true);
     try {
-      // Attach the actual logo as inline image data so the model can SEE the
-      // real brand mark and design the whole palette/identity around it. No
-      // banner — hero imagery comes from Unsplash.
-      const logoImg = await urlToInlineImage(business.logo);
-      if (logoImg) { business.logoBase64 = logoImg.data; business.logoMime = logoImg.mimeType; }
+      // Decode the logo to a rich TEXT brief ONCE and cache it on the store, then
+      // attach that text (not the image) to every generation — cheaper on tokens
+      // and a fuller brand picture. Re-decode only when the logo has changed
+      // (logoDescribedFor !== current logo). Falls back to sending the image
+      // bytes if the decode is unavailable, so we never regress.
+      const staleDescription = business.logo && storeProfile.logoDescribedFor !== business.logo;
+      if (business.logo && (!business.logoDescription || staleDescription)) {
+        try {
+          const desc = await describeLogo(business.logo, aiProvider);
+          if (desc) {
+            business.logoDescription = desc;
+            // Persist so future generations reuse it without re-decoding.
+            fetch('/api/stores', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ logoDescription: desc, logoDescribedFor: business.logo }),
+            }).catch(() => {});
+          }
+        } catch (_) { /* fall through to image fallback below */ }
+      }
+
+      // Fallback ONLY when we still have no text decode: send the raw logo bytes
+      // so the model can still see the brand mark. No banner — hero imagery comes
+      // from Unsplash.
+      if (!business.logoDescription) {
+        const logoImg = await urlToInlineImage(business.logo);
+        if (logoImg) { business.logoBase64 = logoImg.data; business.logoMime = logoImg.mimeType; }
+      }
 
       const advancedConfig = {
         bgStyle: bgStyle === 'auto' ? '✨ Let AI Decide based on vibe' : bgStyle,
@@ -1340,6 +1385,8 @@ export default function ThemePage() {
           setStoreData({
             title:        s.title || 'My Store',
             logo:         s.logo || '',
+            logoDescription:  s.logoDescription || '',
+            logoDescribedFor: s.logoDescribedFor || '',
             banner:       s.banner || (s.bannerImages && s.bannerImages[0]) || '',
             description:  s.description || '',
             industry:     s.industry || '',
