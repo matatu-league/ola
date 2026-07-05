@@ -771,7 +771,7 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
 };
 
 // --- AI BUILDER DIALOG (Dark Theme with Blue-600 Primary) ---
-const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = null, onSave, onClose, globalThemeColor, globalThemeMode, storeProfile = {} }) => {
+const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = null, onSave, onClose, globalThemeColor, globalThemeMode, storeProfile = {}, onLogoDescribed }) => {
   const [code, setCode]                   = useState(initialCode);
   const [activeTab, setActiveTab]         = useState('basic');
 
@@ -780,6 +780,16 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   const [outputFormat, setOutputFormat]   = useState(initialFormat === 'json' ? 'json' : 'jsx');
   const [jsonDoc, setJsonDoc]             = useState(initialJson || null);
   const [jsonText, setJsonText]           = useState(initialJson ? JSON.stringify(initialJson, null, 2) : '');
+
+  // Logo decode cache for THIS dialog session. `storeProfile` is a point-in-
+  // time prop snapshot from when the dialog opened — it never updates itself
+  // after we PUT a fresh decode to the DB below, so without this local cache a
+  // second "Generate" click in the same session would decode the logo AGAIN.
+  // Seeded from storeProfile (itself loaded from the DB), then kept current
+  // locally and also pushed up via onLogoDescribed so a close/reopen of this
+  // dialog (same page load) also sees it without a full page reload.
+  const [logoDescription, setLogoDescription]   = useState(storeProfile.logoDescription || '');
+  const [logoDescribedFor, setLogoDescribedFor] = useState(storeProfile.logoDescribedFor || '');
 
   // Post-generation image review — surfaced the moment a design finishes so
   // the vendor immediately knows which photos are AI stock placeholders and
@@ -1008,7 +1018,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       businessType: storeProfile.businessType || 'products',
       serviceType:  storeProfile.serviceType || null,
       logo:         storeProfile.logo || '',
-      logoDescription: storeProfile.logoDescription || '',
+      logoDescription: logoDescription,
       contactEmail: storeProfile.contactEmail || '',
       contactPhone: storeProfile.contactPhone || '',
     };
@@ -1017,16 +1027,22 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
     try {
       // Decode the logo to a rich TEXT brief ONCE and cache it on the store, then
       // attach that text (not the image) to every generation — cheaper on tokens
-      // and a fuller brand picture. Re-decode only when the logo has changed
-      // (logoDescribedFor !== current logo). Falls back to sending the image
-      // bytes if the decode is unavailable, so we never regress.
-      const staleDescription = business.logo && storeProfile.logoDescribedFor !== business.logo;
+      // and a fuller brand picture. Re-decode ONLY when the logo has actually
+      // changed (logoDescribedFor !== current logo) — never on every
+      // generation. Falls back to sending the image bytes if the decode is
+      // unavailable, so we never regress.
+      const staleDescription = business.logo && logoDescribedFor !== business.logo;
       if (business.logo && (!business.logoDescription || staleDescription)) {
         try {
           const desc = await describeLogo(business.logo, aiProvider);
           if (desc) {
             business.logoDescription = desc;
-            // Persist so future generations reuse it without re-decoding.
+            // Cache locally (so a second Generate click in THIS session reuses
+            // it) and persist to the DB (so it survives reload / dialog
+            // reopen without ever re-decoding the same logo again).
+            setLogoDescription(desc);
+            setLogoDescribedFor(business.logo);
+            onLogoDescribed?.(desc, business.logo);
             fetch('/api/stores', {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
@@ -2064,6 +2080,7 @@ export default function ThemePage() {
           globalThemeColor={themeColor}
           globalThemeMode={themeMode}
           storeProfile={storeData}
+          onLogoDescribed={(desc, logoUrl) => setStoreData((prev) => ({ ...prev, logoDescription: desc, logoDescribedFor: logoUrl }))}
         />
       )}
     </div>
