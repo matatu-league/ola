@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Palette, Save, Loader2, CheckCircle2, LayoutTemplate,
-  Zap, Sparkles, X, ArrowLeft, Code, ExternalLink, 
-  Monitor, Smartphone, Tablet, ChevronDown, Sun, Moon, 
-  Wand2, Settings2, FileUp, Link as LinkIcon
+  Zap, Sparkles, X, ArrowLeft, Code, ExternalLink,
+  Monitor, Smartphone, Tablet, ChevronDown, Sun, Moon,
+  Wand2, Settings2, FileUp, Link as LinkIcon,
+  Image as ImageIcon, Check
 } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
@@ -89,6 +90,32 @@ const replaceFirst = (src, a, b) => {
   if (!a) return src;
   const i = src.indexOf(a);
   return i === -1 ? src : src.slice(0, i) + b + src.slice(i + a.length);
+};
+
+// ── Post-generation image review ────────────────────────────────────────────
+// The AI fills hero/decorative photography with stock imagery (LoremFlickr by
+// default, or real Unsplash photos when a key is configured) per the prompt's
+// image rule — never product/service photos (those are the vendor's real data)
+// and never the vendor's own logo (Firebase-hosted). Matching only these two
+// stock domains means the review list is exactly "placeholders worth swapping".
+const DUMMY_IMAGE_RE = /https:\/\/(?:loremflickr\.com|images\.unsplash\.com)\/[^\s"'\\]+/g;
+
+const extractDummyImages = (sourceText) => {
+  if (!sourceText) return [];
+  const matches = sourceText.match(DUMMY_IMAGE_RE) || [];
+  return Array.from(new Set(matches));
+};
+
+// Replace EVERY occurrence of one dummy image URL across the generated source.
+// Works for both output formats: JSX is a plain string; JSON is compared/
+// replaced via its serialised text (safe here since these URLs contain no
+// characters that need JSON-escaping), then re-parsed back into an object.
+const replaceImageEverywhere = (format, code, jsonDoc, oldUrl, newUrl) => {
+  if (format === 'json') {
+    const nextText = JSON.stringify(jsonDoc).split(oldUrl).join(newUrl);
+    try { return { code, jsonDoc: JSON.parse(nextText) }; } catch { return { code, jsonDoc }; }
+  }
+  return { code: code.split(oldUrl).join(newUrl), jsonDoc };
 };
 
 // Injected into the preview iframe in Visual Edit mode. Plain JS (no JSX). Makes
@@ -704,6 +731,16 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   const [jsonDoc, setJsonDoc]             = useState(initialJson || null);
   const [jsonText, setJsonText]           = useState(initialJson ? JSON.stringify(initialJson, null, 2) : '');
 
+  // Post-generation image review — surfaced the moment a design finishes so
+  // the vendor immediately knows which photos are AI stock placeholders and
+  // can swap them (or explicitly skip and do it later).
+  const [dummyImages, setDummyImages]     = useState([]);   // [{ url, replaced, newUrl? }]
+  const [showImageReview, setShowImageReview] = useState(false);
+  const [reviewTarget, setReviewTarget]   = useState(null); // url currently being replaced
+  const [reviewQuery, setReviewQuery]     = useState('');
+  const [reviewBusy, setReviewBusy]       = useState(false);
+  const reviewUploadRef = useRef(null);
+
   // Basic Form State
   const [formNotes, setFormNotes]         = useState('');
   const [isEditingMode, setIsEditingMode] = useState(false);
@@ -802,6 +839,43 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
     } catch (e) {
       setToastMsg(`⚠️ Image search failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
     } finally { setEditBusy(false); }
+  };
+
+  // ── Post-generation image review actions ──────────────────────────────────
+  // Swap ONE placeholder (identified by its exact stock URL) everywhere it
+  // appears in the generated source, then mark it done in the review list.
+  const applyReviewImage = (newUrl) => {
+    if (!reviewTarget || !newUrl) { setReviewTarget(null); return; }
+    const { code: nextCode, jsonDoc: nextJson } = replaceImageEverywhere(outputFormat, code, jsonDoc, reviewTarget, newUrl);
+    if (outputFormat === 'json') { setJsonDoc(nextJson); setJsonText(JSON.stringify(nextJson, null, 2)); }
+    else { setCode(nextCode); }
+    setDummyImages((prev) => prev.map((d) => (d.url === reviewTarget ? { ...d, replaced: true, newUrl } : d)));
+    setReviewTarget(null);
+    setReviewQuery('');
+  };
+
+  const handleReviewUpload = async (file) => {
+    if (!file || !reviewTarget) return;
+    setReviewBusy(true);
+    try {
+      const url = await uploadFileToFirebase(file, 'stores/template-images');
+      applyReviewImage(url);
+    } catch (e) {
+      setToastMsg(`⚠️ Upload failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setReviewBusy(false); }
+  };
+
+  const handleReviewUnsplash = async () => {
+    if (!reviewTarget) return;
+    setReviewBusy(true);
+    try {
+      const query = reviewQuery.trim() || storeProfile.industry || storeProfile.title || 'business';
+      const url = await searchUnsplashImage(query, 'landscape');
+      if (!url) throw new Error('No image found');
+      applyReviewImage(url);
+    } catch (e) {
+      setToastMsg(`⚠️ Image search failed: ${e.message}`); setTimeout(() => setToastMsg(''), 4000);
+    } finally { setReviewBusy(false); }
   };
 
   useEffect(() => {
@@ -914,6 +988,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
         aiProvider,
       };
 
+      let sourceForScan = '';
       if (outputFormat === 'json') {
         // Structured document generation (validated, one corrective retry).
         const doc = await generateJsonAI(
@@ -923,6 +998,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
         );
         setJsonDoc(doc);
         setJsonText(JSON.stringify(doc, null, 2));
+        sourceForScan = JSON.stringify(doc);
       } else {
         const newCode = await generateCodeAI(
           formNotes, rawBase64, imageMimeType, code,
@@ -930,7 +1006,15 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
           advancedConfig, isEditingMode, business
         );
         setCode(newCode);
+        sourceForScan = newCode;
       }
+
+      // The design is ready — immediately surface every stock placeholder photo
+      // it used so the vendor knows it's time to swap them in (or skip for now).
+      const foundImages = extractDummyImages(sourceForScan);
+      setDummyImages(foundImages.map((url) => ({ url, replaced: false })));
+      setShowImageReview(foundImages.length > 0);
+
       setToastMsg('✨ Design successfully generated!');
       setTimeout(() => setToastMsg(''), 4000);
     } catch (e) {
@@ -1389,6 +1473,105 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
           )}
         </div>
       </div>
+
+      {/* Post-generation image review — surfaced the instant a design finishes
+          so the vendor knows exactly which photos are AI stock placeholders. */}
+      {showImageReview && (
+        <div className="fixed inset-0 z-[110] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-[#141414] border border-white/10 rounded-none w-full max-w-[640px] max-h-[85vh] flex flex-col shadow-2xl">
+            <div className="flex items-start justify-between gap-4 px-5 py-4 border-b border-white/10">
+              <div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <ImageIcon size={16} className="text-blue-500" /> Your design is ready — review its images
+                </h3>
+                <p className="text-[12px] text-white/50 mt-1.5 max-w-[480px] leading-relaxed">
+                  It uses {dummyImages.length} stock placeholder image{dummyImages.length !== 1 ? 's' : ''} (not your own photos). Swap any of them now, or skip — you can always replace them later from Visual Edit.
+                </p>
+              </div>
+              <button onClick={() => setShowImageReview(false)} className="text-white/40 hover:text-white shrink-0"><X size={18} /></button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5 grid grid-cols-2 sm:grid-cols-3 gap-3 custom-scrollbar">
+              {dummyImages.map((d) => (
+                <div key={d.url} className="relative border border-white/10 bg-[#1a1a1a] group aspect-video overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={d.newUrl || d.url} alt="" className="w-full h-full object-cover" />
+                  {d.replaced ? (
+                    <div className="absolute inset-0 bg-black/55 flex items-center justify-center">
+                      <span className="text-[11px] font-bold text-green-400 flex items-center gap-1 bg-black/60 px-2 py-1"><Check size={12} /> Replaced</span>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => { setReviewTarget(d.url); setReviewQuery(''); }}
+                      className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/60 transition-colors"
+                    >
+                      <span className="text-[11px] font-bold text-white px-2.5 py-1 bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">Replace</span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between px-5 py-4 border-t border-white/10">
+              <span className="text-[11px] text-white/40">{dummyImages.filter((d) => d.replaced).length} of {dummyImages.length} replaced</span>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setShowImageReview(false)} className="px-4 py-2 text-xs font-bold text-white/60 hover:text-white transition-colors">
+                  Skip for now
+                </button>
+                <button onClick={() => setShowImageReview(false)} className="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-none transition-colors">
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Per-image replace popover (upload or AI-picked stock photo) */}
+          {reviewTarget && (
+            <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/40" onClick={() => setReviewTarget(null)}>
+              <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-bold text-white">Replace image</h4>
+                  <button onClick={() => setReviewTarget(null)} className="text-white/40 hover:text-white"><X size={16} /></button>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={reviewTarget} alt="" className="w-full h-28 object-cover border border-white/10 mb-3" />
+                <button
+                  type="button"
+                  disabled={reviewBusy}
+                  onClick={() => reviewUploadRef.current?.click()}
+                  className="w-full flex items-center justify-center gap-2 py-2 mb-2 rounded-none text-xs font-bold bg-white/5 text-white hover:bg-white/10 disabled:opacity-50 transition-colors"
+                >
+                  <FileUp size={13} /> Upload an image
+                </button>
+                <textarea
+                  rows={2}
+                  value={reviewQuery}
+                  onChange={(e) => setReviewQuery(e.target.value)}
+                  placeholder="Describe the image to find on Unsplash (optional)…"
+                  className="w-full bg-[#1a1a1a] border border-white/10 rounded-none px-2.5 py-1.5 text-[12px] text-white focus:outline-none focus:border-blue-500/50 resize-none mb-2"
+                />
+                <button
+                  type="button"
+                  disabled={reviewBusy}
+                  onClick={handleReviewUnsplash}
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-none text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {reviewBusy ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />} Find on Unsplash
+                </button>
+              </div>
+            </div>
+          )}
+
+          <input
+            ref={reviewUploadRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleReviewUpload(f); e.target.value = ''; }}
+          />
+        </div>
+      )}
 
       <style dangerouslySetInnerHTML={{__html:`
         .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
