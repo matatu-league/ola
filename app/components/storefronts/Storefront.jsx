@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { olaBridgeScript } from '@/lib/storefrontBridge';
+import { buildJsonStorefrontSrcDoc } from '@/lib/templateJsonRuntime';
 
 // --- Mock Components for Missing Variants ---
 const ClassicStore = ({ store }) => <div className="p-8 text-center"><h1 className="text-2xl font-bold">{store?.title || store?.storeName || 'Classic Store'}</h1><p>Classic Layout Preview</p></div>;
@@ -96,6 +97,18 @@ const CustomAIStore = ({ store }) => {
       // Optional: products/services above are already provided for first paint.
       apiBase: store.apiBase || ""
     };
+
+    // ── Structured JSON template (templateFormat: 'json') ────────────────────
+    // Rendered by the fixed runtime (no Babel compile) — the document carries
+    // the full Tailwind classes / gradients / actions / motion per the schema.
+    if (store.templateFormat === 'json' && store.templateJson) {
+      return buildJsonStorefrontSrcDoc({
+        doc: store.templateJson,
+        data: dynamicStoreData,
+        storeId: (store._id || '').toString(),
+        live: true,
+      });
+    }
 
     // If no template exists yet, show a fallback gracefully, implementing the redirect logic
     const fallbackTemplate = `
@@ -246,6 +259,9 @@ const CustomAIStore = ({ store }) => {
   }, [
     store._id,
     store.themeTemplate,
+    store.templateFormat,
+    // Mixed-type doc: compare by content, not identity (parent rebuilds objects).
+    JSON.stringify(store.templateJson || null),
     store.themeColor,
     store.title,
     store.logo,

@@ -11,6 +11,9 @@ import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
 import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl, AI_PROVIDERS, TEMPLATE_PROVIDER } from '@/lib/aiProvider';
 import { buildTemplatePrompt, LOGO_DECODE_PROMPT } from '@/lib/templatePrompt';
+import { buildJsonTemplatePrompt } from '@/lib/templateJsonPrompt';
+import { parseTemplateJson } from '@/lib/templateJson';
+import { buildJsonStorefrontSrcDoc } from '@/lib/templateJsonRuntime';
 import { olaBridgeScript } from '@/lib/storefrontBridge';
 
 // Category-appropriate SAMPLE catalog for the builder preview, so an electronics
@@ -183,17 +186,9 @@ const describeLogo = async (logoUrl, provider) => {
   return (text || '').trim();
 };
 
-// --- CORE AI CODE GENERATION ENGINE ---
-const generateCodeAI = async (
-  promptText, imageBase64, imageMimeType, currentCode,
-  categoryContext, blueprintPrompt, themeColor, themeMode, artDirection,
-  advancedConfig, isEditingExplicit, business = {}
-) => {
-  const { aiProvider } = advancedConfig;
-
-  // Admin-defined "command" for this industry (global + most-specific), stored
-  // in the DB and editable from the admin dashboard. Layered into the brief.
-  let command = '';
+// Admin-defined "command" for this industry (global + most-specific), stored
+// in the DB and editable from the admin dashboard. Layered into the brief.
+const fetchHouseCommand = async (business = {}, categoryContext = '') => {
   try {
     const params = new URLSearchParams();
     const catSlug = (business.industry || categoryContext || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -202,8 +197,19 @@ const generateCodeAI = async (
     if (business.businessType) params.set('businessType', business.businessType);
     const res  = await fetch(`/api/commands?${params.toString()}`);
     const json = await res.json();
-    if (json?.success) command = json.command || '';
+    if (json?.success) return json.command || '';
   } catch (_) { /* no command → default brief only */ }
+  return '';
+};
+
+// --- CORE AI CODE GENERATION ENGINE ---
+const generateCodeAI = async (
+  promptText, imageBase64, imageMimeType, currentCode,
+  categoryContext, blueprintPrompt, themeColor, themeMode, artDirection,
+  advancedConfig, isEditingExplicit, business = {}
+) => {
+  const { aiProvider } = advancedConfig;
+  const command = await fetchHouseCommand(business, categoryContext);
 
   // The master prompt lives in its own module (@/lib/templatePrompt) so it can
   // evolve independently of this page — see buildTemplatePrompt for the full brief.
@@ -237,6 +243,43 @@ const generateCodeAI = async (
   // the theme studio passes an explicit choice; otherwise the env default wins.
   const text = await generateTemplateText(prompt, images, aiProvider);
   return cleanTemplateText(text);
+};
+
+// --- STRUCTURED JSON GENERATION ENGINE (templateFormat: 'json') ---
+// Asks the model for the structured document (docs/template-json-schema.md),
+// validates it, and — the reliability win over raw JSX — feeds validation
+// errors back for ONE corrective retry before giving up.
+const generateJsonAI = async (
+  promptText, currentJson,
+  categoryContext, themeColor, themeMode, artDirection,
+  advancedConfig, business = {}
+) => {
+  const { aiProvider } = advancedConfig;
+  const command = await fetchHouseCommand(business, categoryContext);
+
+  const base = {
+    promptText, currentJson, categoryContext, themeColor, themeMode,
+    artDirection, advancedConfig, business, command,
+  };
+
+  // Text decode of the logo replaces image bytes (see logoDescription); only
+  // attach the raw logo when no decode exists.
+  const images = [];
+  if (!business.logoDescription && business.logoBase64) {
+    images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
+  }
+
+  let text = await generateTemplateText(buildJsonTemplatePrompt(base), images, aiProvider);
+  let { doc, errors } = parseTemplateJson(text);
+  if (!doc) {
+    text = await generateTemplateText(
+      buildJsonTemplatePrompt({ ...base, validationErrors: errors }),
+      images, aiProvider,
+    );
+    ({ doc, errors } = parseTemplateJson(text));
+  }
+  if (!doc) throw new Error(`The model returned an invalid template document: ${errors.slice(0, 3).join(' · ')}`);
+  return doc;
 };
 
 // --- DATA LISTS ---
@@ -459,7 +502,7 @@ const App = ({ storeName = "My Store", storeLogo, storeBanner, contactEmail = "h
 };
 export default App;`;
 
-const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor, editMode = false, onVisualEdit }) => {
+const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeColor, editMode = false, onVisualEdit, format = 'jsx', jsonDoc = null }) => {
   const containerRef = useRef(null);
   const iframeRef = useRef(null);
   const [scale, setScale] = useState(1);
@@ -520,7 +563,20 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
 
   const processedCode = useMemo(() => sanitizeTemplateCode(code, 'window.__olaIcons'), [code]);
 
-  const srcDoc = useMemo(() => `
+  // Structured JSON preview — same fixed runtime as the live store, sample data,
+  // preview-mode bridge (checkout is a polite no-op). Visual Edit is JSX-only.
+  const jsonSrcDoc = useMemo(() => {
+    if (format !== 'json' || !jsonDoc) return null;
+    return buildJsonStorefrontSrcDoc({
+      doc: jsonDoc,
+      data: dynamicStoreData,
+      storeId: dynamicStoreData.storeId || null,
+      live: false,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [format, JSON.stringify(jsonDoc || null), JSON.stringify(dynamicStoreData)]);
+
+  const jsxSrcDoc = useMemo(() => `
     <!DOCTYPE html><html lang="en"><head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -575,6 +631,8 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
     </body></html>
   `, [processedCode, editMode]);
 
+  const srcDoc = (format === 'json' && jsonSrcDoc) ? jsonSrcDoc : jsxSrcDoc;
+
   return (
     <div ref={containerRef} className="w-full h-full flex justify-center overflow-hidden bg-transparent">
       <div
@@ -592,16 +650,30 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
       >
         {viewMode !== 'desktop' && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[24px] bg-[#111] rounded-b-[16px] z-50"></div>}
         {viewMode !== 'desktop' && <div className="absolute inset-0 pointer-events-none rounded-[36px] border-[12px] border-[#111] z-40"></div>}
-        <iframe ref={iframeRef} srcDoc={srcDoc} className="w-full h-full border-0 absolute inset-0 bg-white" sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups" title="Live AI Preview" />
+        {format === 'json' && !jsonDoc ? (
+          <div className="w-full h-full absolute inset-0 bg-[#0d0d0d] flex flex-col items-center justify-center gap-3 text-center px-8">
+            <Sparkles size={22} className="text-blue-500" />
+            <p className="text-sm font-bold text-white">Structured JSON template</p>
+            <p className="text-xs text-white/40 max-w-[300px]">No document yet — hit <b>Generate</b> and the design will be produced as validated JSON and previewed here.</p>
+          </div>
+        ) : (
+          <iframe ref={iframeRef} srcDoc={srcDoc} className="w-full h-full border-0 absolute inset-0 bg-white" sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups" title="Live AI Preview" />
+        )}
       </div>
     </div>
   );
 };
 
 // --- AI BUILDER DIALOG (Dark Theme with Blue-600 Primary) ---
-const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globalThemeMode, storeProfile = {} }) => {
+const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = null, onSave, onClose, globalThemeColor, globalThemeMode, storeProfile = {} }) => {
   const [code, setCode]                   = useState(initialCode);
   const [activeTab, setActiveTab]         = useState('basic');
+
+  // Output format: 'jsx' (legacy raw component) or 'json' (structured document
+  // per docs/template-json-schema.md, rendered by the fixed runtime).
+  const [outputFormat, setOutputFormat]   = useState(initialFormat === 'json' ? 'json' : 'jsx');
+  const [jsonDoc, setJsonDoc]             = useState(initialJson || null);
+  const [jsonText, setJsonText]           = useState(initialJson ? JSON.stringify(initialJson, null, 2) : '');
 
   // Basic Form State
   const [formNotes, setFormNotes]         = useState('');
@@ -791,12 +863,23 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
         aiProvider,
       };
 
-      const newCode = await generateCodeAI(
-        formNotes, rawBase64, imageMimeType, code,
-        categoryContext, blueprint?.prompt || '', dialogThemeColor, dialogThemeMode, artDir?.prompt || '',
-        advancedConfig, isEditingMode, business
-      );
-      setCode(newCode);
+      if (outputFormat === 'json') {
+        // Structured document generation (validated, one corrective retry).
+        const doc = await generateJsonAI(
+          formNotes, isEditingMode ? jsonDoc : null,
+          categoryContext, dialogThemeColor, dialogThemeMode, artDir?.prompt || '',
+          advancedConfig, business
+        );
+        setJsonDoc(doc);
+        setJsonText(JSON.stringify(doc, null, 2));
+      } else {
+        const newCode = await generateCodeAI(
+          formNotes, rawBase64, imageMimeType, code,
+          categoryContext, blueprint?.prompt || '', dialogThemeColor, dialogThemeMode, artDir?.prompt || '',
+          advancedConfig, isEditingMode, business
+        );
+        setCode(newCode);
+      }
       setToastMsg('✨ Design successfully generated!');
       setTimeout(() => setToastMsg(''), 4000);
     } catch (e) {
@@ -847,7 +930,15 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
           <button onClick={() => setShowCode(!showCode)} className="flex items-center gap-2 px-3 py-1.5 border border-white/20 hover:bg-white/5 text-white rounded-none text-xs font-bold transition-all">
             <Code size={14} /> {showCode ? 'View Render' : 'View Code'}
           </button>
-          <button onClick={() => { onSave(code, dialogThemeColor, dialogThemeMode); onClose(); }}
+          <button onClick={() => {
+              if (outputFormat === 'json' && !jsonDoc) {
+                setToastMsg('⚠️ Generate a JSON design first.');
+                setTimeout(() => setToastMsg(''), 4000);
+                return;
+              }
+              onSave({ format: outputFormat, code, json: jsonDoc, color: dialogThemeColor, mode: dialogThemeMode });
+              onClose();
+            }}
             className="flex items-center gap-2 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-none text-xs font-bold transition-all shadow-md">
             <Save size={14} /> Save to Store
           </button>
@@ -960,6 +1051,28 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
                   </div>
                   <p className="text-[10px] text-white/30 leading-tight">
                     {AI_PROVIDERS.find(p => p.id === aiProvider)?.blurb}
+                  </p>
+                </div>
+
+                {/* Output format — legacy JSX component vs structured JSON doc. */}
+                <div className="space-y-2">
+                  <h3 className="text-xs font-bold text-white/60 uppercase tracking-wider">Template format</h3>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {[['jsx', 'JSX (classic)'], ['json', 'JSON (structured)']].map(([id, label]) => (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => setOutputFormat(id)}
+                        className={`rounded-none border px-2 py-2 text-xs font-bold transition-all ${outputFormat === id ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-white/10 bg-[#1a1a1a] text-white/50 hover:text-white hover:border-white/20'}`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-white/30 leading-tight">
+                    {outputFormat === 'json'
+                      ? 'Structured document (tokens + sections, validated) rendered by the fixed engine — safer, cheaper, no code compile.'
+                      : 'Raw React component compiled in the sandbox — maximum freedom, legacy format.'}
                   </p>
                 </div>
 
@@ -1120,27 +1233,42 @@ const AIBuilderDialog = ({ initialCode, onSave, onClose, globalThemeColor, globa
           {showCode ? (
             <div className="w-full max-w-[1280px] h-full overflow-hidden rounded-none border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-500 bg-[#1e1e1e] relative flex flex-col">
               <div className="flex items-center justify-between px-4 py-2 border-b border-white/10 bg-[#181818] shrink-0">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-white/40">Template source — editable · paste your own to replace</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-white/40">
+                  {outputFormat === 'json' ? 'Template document (JSON) — editable' : 'Template source — editable · paste your own to replace'}
+                </span>
                 <button
-                  onClick={() => setShowCode(false)}
+                  onClick={() => {
+                    if (outputFormat === 'json') {
+                      const { doc, errors } = parseTemplateJson(jsonText);
+                      if (!doc) {
+                        setToastMsg(`⚠️ Invalid document: ${errors[0] || 'unknown error'}`);
+                        setTimeout(() => setToastMsg(''), 5000);
+                        return;
+                      }
+                      setJsonDoc(doc);
+                    }
+                    setShowCode(false);
+                  }}
                   className="text-[11px] font-bold text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Apply & view render →
                 </button>
               </div>
               <textarea
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
+                value={outputFormat === 'json' ? jsonText : code}
+                onChange={(e) => (outputFormat === 'json' ? setJsonText(e.target.value) : setCode(e.target.value))}
                 spellCheck={false}
                 autoCapitalize="off"
                 autoCorrect="off"
-                placeholder="Paste or edit the full template component here. It must export a component named App."
+                placeholder={outputFormat === 'json'
+                  ? 'Generate a design to see its JSON document here — or paste a valid template document.'
+                  : 'Paste or edit the full template component here. It must export a component named App.'}
                 className="w-full flex-1 bg-transparent text-[#d4d4d4] font-mono text-sm leading-relaxed p-6 outline-none resize-none custom-scrollbar"
               />
             </div>
           ) : (
             <div className="w-full h-full animate-in zoom-in-95 duration-500 relative flex items-center justify-center">
-              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} editMode={editMode} onVisualEdit={handleVisualEdit} />
+              <LiveCodePreview code={code} viewMode={viewport} storeProfile={storeProfile} themeColor={dialogThemeColor} editMode={outputFormat === 'jsx' && editMode} onVisualEdit={handleVisualEdit} format={outputFormat} jsonDoc={jsonDoc} />
 
               {/* Hidden input for replacing an image by upload */}
               <input
@@ -1360,6 +1488,8 @@ export default function ThemePage() {
   const [themeMode, setThemeMode]       = useState('light');
   const [flashSalesEnabled, setFlashSalesEnabled] = useState(false);
   const [themeTemplate, setThemeTemplate] = useState(null);
+  const [templateFormat, setTemplateFormat] = useState('jsx');
+  const [templateJson, setTemplateJson]     = useState(null);
 
   const layoutOptions = [
     { name: 'Classic',   desc: 'Clean & reliable. Great for electronics and mixed inventories.',       image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=80&fit=crop&h=300' },
@@ -1403,6 +1533,8 @@ export default function ThemePage() {
             setThemeMode(data.themeMode || 'light');
             setFlashSalesEnabled(data.flashSales || false);
             setThemeTemplate(data.themeTemplate || null);
+            setTemplateFormat(data.templateFormat || 'jsx');
+            setTemplateJson(data.templateJson || null);
           }
         }
       } catch (err) {
@@ -1436,19 +1568,39 @@ export default function ThemePage() {
     }
   };
 
-  const handleAiTemplateSave = async (generatedCode, aiColor, aiMode) => {
+  const handleAiTemplateSave = async (payload, legacyColor, legacyMode) => {
     if (!storeId) return;
-    setThemeTemplate(generatedCode);
+    // Accept both the new payload object ({ format, code, json, color, mode })
+    // and the legacy (code, color, mode) positional signature.
+    const p = typeof payload === 'string'
+      ? { format: 'jsx', code: payload, json: null, color: legacyColor, mode: legacyMode }
+      : (payload || {});
+
     setLayoutStyle('Custom_AI');
-    if (aiColor) setThemeColor(aiColor);
-    if (aiMode)  setThemeMode(aiMode);
-    
+    if (p.color) setThemeColor(p.color);
+    if (p.mode)  setThemeMode(p.mode);
+
+    const body = { layoutStyle: 'Custom_AI', themeColor: p.color, themeMode: p.mode };
+    if (p.format === 'json' && p.json) {
+      // Structured document — saved to the DB as JSON (templateJson), rendered
+      // by the fixed runtime on the live store.
+      body.templateFormat = 'json';
+      body.templateJson   = p.json;
+      setTemplateFormat('json');
+      setTemplateJson(p.json);
+    } else {
+      body.templateFormat = 'jsx';
+      body.themeTemplate  = p.code || '';
+      setTemplateFormat('jsx');
+      setThemeTemplate(p.code || '');
+    }
+
     await fetch(`/api/stores/${storeId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ themeTemplate: generatedCode, layoutStyle: 'Custom_AI', themeColor: aiColor, themeMode: aiMode }),
+      body: JSON.stringify(body),
     });
-    setMessage({ type: 'success', text: 'AI template saved & applied!' });
+    setMessage({ type: 'success', text: p.format === 'json' ? 'AI template saved as structured JSON & applied!' : 'AI template saved & applied!' });
     setTimeout(() => setMessage({ type: '', text: '' }), 6000);
   };
 
@@ -1598,6 +1750,8 @@ export default function ThemePage() {
       {isAiDialogOpen && (
         <AIBuilderDialog
           initialCode={themeTemplate || INITIAL_REACT_CODE}
+          initialFormat={templateFormat}
+          initialJson={templateJson}
           onSave={handleAiTemplateSave}
           onClose={() => setIsAiDialogOpen(false)}
           globalThemeColor={themeColor}
