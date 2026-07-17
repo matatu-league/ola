@@ -30,6 +30,19 @@ function Popconfirm({ open, position, title, description, onConfirm, onCancel, l
 
   if (!open || !position) return null;
 
+  // Clamp on-screen so the popover never clips off a narrow viewport — the
+  // trigger button can sit right at the edge of a horizontally-scrolled table
+  // on mobile, and the naive translate(-100%,-100%) anchoring would otherwise
+  // push most of the card off the top/left of the screen.
+  const POPOVER_WIDTH = 260;
+  const MARGIN = 8;
+  const clampedLeft = typeof window !== 'undefined'
+    ? Math.min(Math.max(position.left, POPOVER_WIDTH + MARGIN), window.innerWidth - MARGIN)
+    : position.left;
+  const clampedTop = typeof window !== 'undefined'
+    ? Math.max(position.top, 120)
+    : position.top;
+
   return (
     <>
       <div className="fixed inset-0 z-[1059]" onClick={onCancel} />
@@ -37,12 +50,12 @@ function Popconfirm({ open, position, title, description, onConfirm, onCancel, l
         role="dialog"
         style={{
           position: 'fixed',
-          top: position.top,
-          left: position.left,
+          top: clampedTop,
+          left: clampedLeft,
           transform: 'translate(-100%, -100%)',
           zIndex: 1060,
         }}
-        className="bg-white border border-gray-200 rounded-none shadow-sm min-w-[260px] p-4 animate-in fade-in zoom-in-95 duration-150"
+        className="bg-white border border-gray-200 rounded-none shadow-sm w-[260px] max-w-[calc(100vw-16px)] p-4 animate-in fade-in zoom-in-95 duration-150"
       >
         <div className="flex items-start gap-2 mb-4">
           <AlertCircle size={16} className="text-red-500 shrink-0 mt-0.5" />
@@ -263,7 +276,7 @@ export default function ProductsPage() {
   })();
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen p-4 sm:p-8">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen">
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
@@ -436,11 +449,11 @@ export default function ProductsPage() {
         </div>
 
         {!isLoading && !error && pagination.total > 0 && (
-          <div className="border-t border-gray-200 px-5 py-3 flex items-center justify-between bg-gray-50">
+          <div className="border-t border-gray-200 px-5 py-3 flex flex-wrap items-center justify-between gap-2 bg-gray-50">
             <span className="text-xs text-gray-500 font-semibold">
               Page {pagination.page} of {pagination.totalPages} · {pagination.total} product(s)
             </span>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               <button
                 onClick={() => handlePageChange(Math.max(1, page - 1))}
                 disabled={page <= 1}

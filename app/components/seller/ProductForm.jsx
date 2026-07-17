@@ -196,7 +196,7 @@ const DraggableImageCard = ({ img, idx, moveImage, removeImage }) => {
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
-        className="absolute top-1 right-1 p-1 bg-white/90 opacity-0 group-hover:opacity-100 hover:bg-red-50 transition-all"
+        className="absolute top-1 right-1 p-1 bg-white/90 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 hover:bg-red-50 transition-all"
       >
         <Trash2 size={14} className="text-red-500" />
       </button>
@@ -205,7 +205,7 @@ const DraggableImageCard = ({ img, idx, moveImage, removeImage }) => {
           Cover
         </div>
       )}
-      <div className="absolute top-1 left-1 p-1 bg-white/90 opacity-0 group-hover:opacity-100 transition-all">
+      <div className="absolute top-1 left-1 p-1 bg-white/90 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
         <GripVertical size={14} className="text-gray-400" />
       </div>
     </div>
@@ -924,7 +924,7 @@ Respond ONLY with a valid JSON object where each key is the field slug and the v
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen p-4 sm:p-8 relative">
+      <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen relative">
         {isAiProcessing && <MagicalLoader status={aiStatus} />}
 
         {/* ── Page Header ─────────────────────────────────────────────────── */}

@@ -666,7 +666,7 @@ export default function ServicesPage() {
                       <button
                         type="button"
                         onClick={() => handleRemoveImage(idx)}
-                        className="absolute top-1 right-1 p-1 bg-white/90 rounded-sm opacity-0 group-hover:opacity-100 hover:bg-[#FEE2E2] transition-all"
+                        className="absolute top-1 right-1 p-1 bg-white/90 rounded-sm opacity-100 sm:opacity-0 sm:group-hover:opacity-100 hover:bg-[#FEE2E2] transition-all"
                       >
                         <Trash2 size={14} className="text-[#FE2C55]" />
                       </button>

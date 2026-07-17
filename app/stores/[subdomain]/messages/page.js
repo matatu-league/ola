@@ -519,7 +519,7 @@ export default function SellerChatPage() {
   const activeTyping = activeConv ? typingIndicators[activeConv._id] : null;
 
   return (
-    <div className="flex h-[calc(100vh-60px)] bg-white border border-gray-200 rounded-none overflow-hidden -m-4 lg:-m-6">
+    <div className="flex h-[calc(100vh-56px)] bg-white border border-gray-200 rounded-none overflow-hidden -m-3 sm:-m-4 lg:-m-6">
 
       <div className={`flex flex-col border-r border-gray-200 bg-white
         ${activeConv ? 'hidden md:flex w-[320px] shrink-0' : 'flex w-full md:w-[320px] md:shrink-0'}`}>

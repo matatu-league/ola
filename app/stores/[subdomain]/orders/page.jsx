@@ -168,7 +168,7 @@ export default function OrdersPage() {
   const endItem = Math.min(page * limit, pagination.total);
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen p-4 sm:p-8">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen">
       
       {/* ── Main Page Content ────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">

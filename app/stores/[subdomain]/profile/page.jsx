@@ -655,7 +655,7 @@ export default function StoreProfile() {
   };
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen p-4 sm:p-8">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 pb-10 w-full bg-white text-black min-h-screen">
 
       {cropConfig && (
         <ImageCropperModal
@@ -818,7 +818,7 @@ export default function StoreProfile() {
                   ) : getDisplayUrl('logo') ? (
                     <div className="relative w-full h-full">
                       <img src={getDisplayUrl('logo')} alt="Logo" className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                      <div className="absolute inset-0 bg-black/60 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                         <UploadCloud size={16} className="text-white" />
                         <button 
                           type="button" 
@@ -892,7 +892,7 @@ export default function StoreProfile() {
                 ) : getDisplayUrl('banner') ? (
                   <div className="relative w-full h-full">
                     <img src={getDisplayUrl('banner')} alt="Banner" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    <div className="absolute inset-0 bg-black/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                       <div className="text-white text-xs font-semibold flex items-center gap-2 bg-black/40 border border-white/20 px-4 py-2 rounded-none">
                         <UploadCloud size={14} /> Replace
                       </div>

@@ -134,7 +134,7 @@ export default function SellerDashboard() {
   const isSetupFullyComplete = progressPercentage === 100;
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 w-full bg-white text-black min-h-screen p-4 sm:p-8 pb-10">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 w-full bg-white text-black min-h-screen pb-10">
 
       {/* ── Loading ─────────────────────────────────────────────────────────── */}
       {isLoading && (
@@ -221,12 +221,12 @@ export default function SellerDashboard() {
 
       {/* ── Analytics Chart ────────────────────────────────────────────────── */}
       <div className="bg-white border border-gray-200 mb-6 p-5 lg:p-6">
-        <div className="flex items-center gap-2 border-b border-gray-200 pb-3 mb-6">
-          <div className="flex-1">
+        <div className="flex flex-wrap items-center gap-y-2 gap-x-2 border-b border-gray-200 pb-3 mb-6">
+          <div className="flex-1 min-w-[180px]">
             <h3 className="font-bold text-base">Store Performance</h3>
             <p className="text-xs text-gray-500 mt-0.5">Product Views vs Orders over the last 7 days</p>
           </div>
-          <select className="bg-white border border-gray-300 px-3 py-1.5 text-xs font-semibold text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors">
+          <select className="shrink-0 bg-white border border-gray-300 px-3 py-1.5 text-xs font-semibold text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors">
             <option>Last 7 Days</option>
             <option>Last 30 Days</option>
             <option>This Year</option>
