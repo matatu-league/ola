@@ -31,6 +31,17 @@ const navigation = [
   { name: 'Settings',     href: '/settings',    icon: Settings        },
 ];
 
+// Primary destinations pinned to the bottom tab bar (mobile/tablet only) —
+// a native-app-style thumb-reachable nav bar, mirroring the pattern used by
+// the marketplace apps this project will eventually be wrapped alongside on
+// Android. The full menu stays one tap away via "More" (opens the drawer).
+const bottomTabs = [
+  { name: 'Home',     href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Products', href: '/products',  icon: Package         },
+  { name: 'Orders',   href: '/orders',    icon: ClipboardList   },
+  { name: 'Messages', href: '/messages',  icon: MessageSquare   },
+];
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 // Domain/session helpers live in '@/lib/domain' (shared across store screens).
 
@@ -175,6 +186,12 @@ export default function SellerLayout({ children }) {
     const match = navigation.find(nav => pathname.includes(nav.href));
     return match ? match.name : 'Dashboard';
   };
+
+  // The messages screen is its own full-height, full-bleed chat surface (see
+  // messages/page.js) — a fixed bottom bar would sit on top of the message
+  // input, so it's hidden there exactly like a native chat screen hides tab
+  // chrome once you're inside a conversation.
+  const hideBottomTabs = pathname.includes('/messages');
 
   if (isShopRoute) {
     // Buyer experience: system banner on top, then the themed page. The
@@ -405,9 +422,52 @@ export default function SellerLayout({ children }) {
         </header>
 
         {/* Page content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 lg:p-6 custom-scrollbar">
+        <div className={`flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 lg:p-6 custom-scrollbar ${hideBottomTabs ? '' : 'pb-20 lg:pb-6'}`}>
           <div className="mx-auto w-full max-w-full bg-white">{children}</div>
         </div>
+
+        {/* Bottom tab bar — native-app-style primary navigation, thumb-reachable
+            on mobile/tablet. Hidden at lg where the sidebar takes over. */}
+        {!hideBottomTabs && (
+          <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 flex items-stretch safe-area-pb">
+            {bottomTabs.map(tab => {
+              const isActive = pathname.includes(tab.href);
+              const Icon     = tab.icon;
+              return (
+                <Link
+                  key={tab.name}
+                  href={tab.href}
+                  className="relative flex-1 flex flex-col items-center justify-center gap-0.5 py-2 min-h-[52px] active:scale-95 transition-transform"
+                >
+                  <div className="relative">
+                    <Icon
+                      size={20}
+                      strokeWidth={isActive ? 2.5 : 2}
+                      className={isActive ? 'text-blue-600' : 'text-gray-400'}
+                    />
+                    {tab.href === '/messages' && unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[9px] font-bold min-w-[14px] h-[14px] flex items-center justify-center rounded-full px-0.5">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className={`text-[10px] font-semibold ${isActive ? 'text-blue-600' : 'text-gray-400'}`}>
+                    {tab.name}
+                  </span>
+                </Link>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="relative flex-1 flex flex-col items-center justify-center gap-0.5 py-2 min-h-[52px] active:scale-95 transition-transform"
+              aria-label="More menu"
+            >
+              <Menu size={20} className="text-gray-400" />
+              <span className="text-[10px] font-semibold text-gray-400">More</span>
+            </button>
+          </nav>
+        )}
       </main>
 
       <style dangerouslySetInnerHTML={{ __html: `

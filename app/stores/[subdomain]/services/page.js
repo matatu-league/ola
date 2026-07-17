@@ -506,11 +506,22 @@ export default function ServicesPage() {
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="bg-[#FE2C55] hover:bg-[#e0264b] text-white px-5 py-2.5 rounded-sm font-semibold text-[13px] transition-colors flex items-center gap-2 shadow-sm"
+          className="hidden sm:flex bg-[#FE2C55] hover:bg-[#e0264b] text-white px-5 py-2.5 rounded-sm font-semibold text-[13px] transition-colors items-center gap-2 shadow-sm"
         >
           <Plus size={16} /> Add New Service
         </button>
       </div>
+
+      {/* Floating action button — mirrors the Products page pattern: the
+          primary "Add" action stays thumb-reachable on phones instead of
+          requiring a scroll to the header. Hidden from sm up. */}
+      <button
+        onClick={() => handleOpenModal()}
+        aria-label="Add New Service"
+        className="sm:hidden fixed bottom-20 right-4 z-20 w-14 h-14 rounded-full bg-[#FE2C55] hover:bg-[#e0264b] active:scale-95 text-white flex items-center justify-center shadow-lg shadow-[#FE2C55]/30 transition-all"
+      >
+        <Plus size={26} />
+      </button>
 
       {/* ── Search ── */}
       <div className="relative mb-6 max-w-sm">
