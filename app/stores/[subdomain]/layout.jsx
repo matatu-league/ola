@@ -346,59 +346,67 @@ export default function SellerLayout({ children }) {
       {/* Main */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-white">
 
-        {/* Top header */}
-        {/* <header className="h-[60px] bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30 shrink-0">
-          <div className="flex items-center gap-3">
+        {/* Top header — the hamburger here is the ONLY way to open the sidebar
+            on mobile/tablet (it's fixed off-screen below the lg breakpoint),
+            so this bar must always be present, never hidden. */}
+        {/* Fixed height (not responsive) on purpose: a couple of pages size
+            themselves against "100vh minus the header" (e.g. the full-height
+            chat layout) — a single constant keeps that math correct at every
+            breakpoint instead of drifting out of sync. */}
+        <header className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-3 sm:px-4 lg:px-6 sticky top-0 z-30 shrink-0 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="p-1.5 -ml-1.5 rounded-none lg:hidden text-black hover:bg-gray-50"
+              className="p-2 -ml-2 rounded-none lg:hidden text-black hover:bg-gray-50 shrink-0"
+              aria-label="Open menu"
             >
-              <Menu size={20} />
+              <Menu size={22} />
             </button>
-            <h1 className="text-xl font-bold text-black tracking-tight hidden sm:block">
+            <h1 className="text-base sm:text-xl font-bold text-black tracking-tight truncate">
               {getPageTitle()}
             </h1>
           </div>
 
-          <div className="flex items-center gap-4 lg:gap-5">
+          <div className="flex items-center gap-1.5 sm:gap-4 lg:gap-5 shrink-0">
             <div className="relative hidden md:block">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-[220px] bg-gray-50 border border-gray-300 rounded-none pl-8 pr-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors placeholder:text-gray-400"
+                className="w-[160px] lg:w-[220px] bg-gray-50 border border-gray-300 rounded-none pl-8 pr-3 py-2 text-sm text-black focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors placeholder:text-gray-400"
               />
             </div>
 
-            <button className="relative p-1.5 text-gray-500 hover:text-black transition-colors rounded-none hover:bg-gray-50">
+            <button className="relative p-2 text-gray-500 hover:text-black transition-colors rounded-none hover:bg-gray-50" aria-label="Notifications">
               <Bell size={18} />
-              <span className="absolute top-1 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-none" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-none" />
             </button>
 
             <div className="h-5 w-px bg-gray-200 hidden sm:block" />
 
-            <div className="flex items-center gap-2.5 cursor-pointer group">
+            <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group">
               {user?.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={user.avatar}
                   alt="Avatar"
-                  className="w-7 h-7 rounded-none object-cover border border-gray-200"
+                  className="w-7 h-7 rounded-none object-cover border border-gray-200 shrink-0"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-none bg-black text-white flex items-center justify-center text-xs font-bold">
+                <div className="w-7 h-7 rounded-none bg-black text-white flex items-center justify-center text-xs font-bold shrink-0">
                   {user?.name?.charAt(0) || 'S'}
                 </div>
               )}
-              <p className="hidden sm:block text-sm font-bold text-black leading-tight group-hover:text-blue-600 transition-colors">
+              <p className="hidden sm:block text-sm font-bold text-black leading-tight group-hover:text-blue-600 transition-colors truncate max-w-[140px]">
                 {user?.name || 'Seller'}
               </p>
             </div>
           </div>
-        </header> */}
+        </header>
 
         {/* Page content */}
-        <div className="flex-1 overflow-y-auto p-4 lg:p-6 custom-scrollbar">
-          <div className="mx-auto bg-white">{children}</div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 lg:p-6 custom-scrollbar">
+          <div className="mx-auto w-full max-w-full bg-white">{children}</div>
         </div>
       </main>
 

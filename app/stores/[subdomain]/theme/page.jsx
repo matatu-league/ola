@@ -883,6 +883,10 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   const [imageMimeType, setImageMimeType] = useState(null);
   const [showCode, setShowCode]         = useState(false);
   const [viewport, setViewport]         = useState('desktop');
+  // Below lg, the 380px config panel and the preview can't fit side by side —
+  // the panel becomes an off-canvas drawer (closed by default so the preview
+  // is what a phone user sees first), toggled by the "Settings" button below.
+  const [showMobilePanel, setShowMobilePanel] = useState(false);
   const [toastMsg, setToastMsg]         = useState('');
 
   // Visual edit state
@@ -1152,6 +1156,10 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       setDummyImages(foundImages.map((url) => ({ url, replaced: false })));
       setShowImageReview(foundImages.length > 0);
 
+      // On mobile, close the settings drawer so the freshly generated preview
+      // is what's actually on screen (no-op above lg, where it's always docked).
+      setShowMobilePanel(false);
+
       setToastMsg('✨ Design successfully generated!');
       setTimeout(() => setToastMsg(''), 4000);
     } catch (e) {
@@ -1177,30 +1185,38 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   return (
     <div className="fixed inset-0 z-[100] bg-[#0a0a0a] flex flex-col animate-in fade-in duration-300">
       {/* Toolbar */}
-      <div className="h-12 bg-[#111] border-b border-white/10 flex items-center justify-between px-6 shrink-0 shadow-lg relative">
-        <div className="flex items-center gap-4">
-          <button onClick={onClose} className="p-1.5 hover:bg-white/5 rounded-none text-white/60 hover:text-white transition-colors">
+      <div className="h-12 bg-[#111] border-b border-white/10 flex items-center justify-between px-2.5 sm:px-6 shrink-0 shadow-lg relative gap-2">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+          <button onClick={onClose} className="p-1.5 hover:bg-white/5 rounded-none text-white/60 hover:text-white transition-colors shrink-0">
             <ArrowLeft size={18} />
           </button>
-          <div className="h-4 w-px bg-white/10"></div>
-          <div className="flex items-center gap-2">
-            <Sparkles className="text-blue-500 animate-pulse" size={14} />
-            <span className="text-sm font-bold text-white tracking-tight">AI Theme Studio</span>
+          <div className="h-4 w-px bg-white/10 hidden sm:block"></div>
+          {/* Settings toggle — opens the config panel as an off-canvas drawer
+              below lg, where it can't sit side-by-side with the preview. */}
+          <button
+            onClick={() => setShowMobilePanel(true)}
+            className="lg:hidden flex items-center gap-1.5 px-2 py-1.5 hover:bg-white/5 text-white/70 hover:text-white rounded-none text-xs font-bold transition-all shrink-0"
+          >
+            <Settings2 size={14} /> Settings
+          </button>
+          <div className="flex items-center gap-2 min-w-0">
+            <Sparkles className="text-blue-500 animate-pulse shrink-0" size={14} />
+            <span className="text-sm font-bold text-white tracking-tight truncate hidden sm:inline">AI Theme Studio</span>
           </div>
         </div>
 
         {toastMsg && (
-          <div className="absolute left-1/2 -translate-x-1/2 bg-blue-600 text-white font-bold text-xs px-4 py-1.5 rounded-none shadow-[0_0_15px_rgba(37,99,235,0.3)] animate-in slide-in-from-top-2">
+          <div className="absolute left-1/2 -translate-x-1/2 top-full sm:top-auto mt-1 sm:mt-0 bg-blue-600 text-white font-bold text-xs px-4 py-1.5 rounded-none shadow-[0_0_15px_rgba(37,99,235,0.3)] animate-in slide-in-from-top-2 z-10 whitespace-nowrap">
             {toastMsg}
           </div>
         )}
 
-        <div className="flex items-center gap-3">
-          <button onClick={openInNewTab} className="flex items-center gap-2 px-3 py-1.5 hover:bg-white/5 text-white/70 hover:text-white rounded-none text-xs font-bold transition-all">
-            <ExternalLink size={14} /> Fullscreen
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <button onClick={openInNewTab} className="flex items-center gap-2 px-2 sm:px-3 py-1.5 hover:bg-white/5 text-white/70 hover:text-white rounded-none text-xs font-bold transition-all" title="Fullscreen">
+            <ExternalLink size={14} /> <span className="hidden md:inline">Fullscreen</span>
           </button>
-          <button onClick={() => setShowCode(!showCode)} className="flex items-center gap-2 px-3 py-1.5 border border-white/20 hover:bg-white/5 text-white rounded-none text-xs font-bold transition-all">
-            <Code size={14} /> {showCode ? 'View Render' : 'View Code'}
+          <button onClick={() => setShowCode(!showCode)} className="flex items-center gap-2 px-2 sm:px-3 py-1.5 border border-white/20 hover:bg-white/5 text-white rounded-none text-xs font-bold transition-all" title={showCode ? 'View Render' : 'View Code'}>
+            <Code size={14} /> <span className="hidden md:inline">{showCode ? 'View Render' : 'View Code'}</span>
           </button>
           <button onClick={() => {
               if (outputFormat === 'json' && !jsonDoc) {
@@ -1211,29 +1227,53 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
               onSave({ format: outputFormat, code, json: jsonDoc, color: dialogThemeColor, mode: dialogThemeMode });
               onClose();
             }}
-            className="flex items-center gap-2 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-none text-xs font-bold transition-all shadow-md">
-            <Save size={14} /> Save to Store
+            className="flex items-center gap-2 px-2.5 sm:px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-none text-xs font-bold transition-all shadow-md" title="Save to Store">
+            <Save size={14} /> <span className="hidden md:inline">Save to Store</span>
           </button>
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left Form Panel - Dark */}
-        <div className="w-[380px] border-r border-white/10 bg-[#161616] flex flex-col shrink-0 relative">
-          
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Backdrop for the mobile off-canvas panel — no-op above lg, where
+            the panel is always docked and this never renders. */}
+        {showMobilePanel && (
+          <div
+            className="fixed inset-0 z-30 bg-black/60 lg:hidden"
+            onClick={() => setShowMobilePanel(false)}
+          />
+        )}
+
+        {/* Left Form Panel - Dark. Docked & always visible at lg+; below that
+            it's an off-canvas drawer toggled by the "Settings" button, since
+            its 380px width can't share a phone screen with the preview. */}
+        <div className={`
+          fixed lg:static inset-y-0 left-0 z-40 lg:z-auto
+          w-[86vw] max-w-[380px] lg:w-[380px]
+          border-r border-white/10 bg-[#161616] flex flex-col shrink-0
+          transition-transform duration-300 lg:transition-none
+          ${showMobilePanel ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+
           {/* Tab Switcher */}
-          <div className="flex border-b border-white/10 bg-[#111] sticky top-0 z-10">
-            <button 
-              onClick={() => setActiveTab('basic')} 
+          <div className="flex items-center border-b border-white/10 bg-[#111] sticky top-0 z-10">
+            <button
+              onClick={() => setActiveTab('basic')}
               className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${activeTab === 'basic' ? 'text-blue-500 border-b-2 border-blue-600 bg-white/5' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
             >
               Basic Setup
             </button>
-            <button 
-              onClick={() => setActiveTab('advanced')} 
+            <button
+              onClick={() => setActiveTab('advanced')}
               className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${activeTab === 'advanced' ? 'text-blue-500 border-b-2 border-blue-600 bg-white/5' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
             >
               <Settings2 size={12} /> Advanced
+            </button>
+            <button
+              onClick={() => setShowMobilePanel(false)}
+              className="lg:hidden p-2.5 text-white/40 hover:text-white shrink-0"
+              aria-label="Close settings"
+            >
+              <X size={16} />
             </button>
           </div>
 
@@ -1437,7 +1477,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                   {previewImg ? (
                     <div className="relative group w-full rounded-none overflow-hidden border border-white/20">
                       <img src={previewImg} className="w-full h-20 object-cover opacity-80" alt="preview" />
-                      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         <button onClick={() => { setPreviewImg(null); setRawBase64(null); setImageMimeType(null); }} className="bg-red-500 text-white px-3 py-1 rounded-none text-xs font-bold flex items-center gap-1 hover:scale-105 transition-transform">
                           <X size={12} /> Remove
                         </button>
@@ -1633,7 +1673,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                   Edit mode, since hover-to-replace is always available. */}
               {imageEdit && (
                 <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40" onClick={() => setImageEdit(null)}>
-                  <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                  <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] max-w-[calc(100vw-32px)] shadow-2xl" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="text-sm font-bold text-white">Replace image</h4>
                       <button onClick={() => setImageEdit(null)} className="text-white/40 hover:text-white"><X size={16} /></button>
@@ -1707,7 +1747,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
                       onClick={() => { setReviewTarget(d.url); setReviewQuery(''); }}
                       className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/60 transition-colors"
                     >
-                      <span className="text-[11px] font-bold text-white px-2.5 py-1 bg-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">Replace</span>
+                      <span className="text-[11px] font-bold text-white px-2.5 py-1 bg-blue-600 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">Replace</span>
                     </button>
                   )}
                 </div>
@@ -1730,7 +1770,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
           {/* Per-image replace popover (upload or AI-picked stock photo) */}
           {reviewTarget && (
             <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/40" onClick={() => setReviewTarget(null)}>
-              <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <div className="bg-[#111] border border-white/10 rounded-none p-4 w-[320px] max-w-[calc(100vw-32px)] shadow-2xl" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="text-sm font-bold text-white">Replace image</h4>
                   <button onClick={() => setReviewTarget(null)} className="text-white/40 hover:text-white"><X size={16} /></button>
