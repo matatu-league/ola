@@ -285,11 +285,23 @@ export default function ProductsPage() {
         </div>
         <Link
           href="/products/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-none font-semibold text-sm transition-colors flex items-center gap-2"
+          className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-none font-semibold text-sm transition-colors items-center gap-2"
         >
           <Plus size={16} /> Add Product
         </Link>
       </div>
+
+      {/* Floating action button — the primary "Add" action stays one thumb-tap
+          away on phones, native-app style, instead of scrolling up to a header
+          button. Sits above the bottom tab bar; hidden from sm up where the
+          header button takes over. */}
+      <Link
+        href="/products/add"
+        aria-label="Add Product"
+        className="sm:hidden fixed bottom-20 right-4 z-20 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white flex items-center justify-center shadow-lg shadow-blue-600/30 transition-all"
+      >
+        <Plus size={26} />
+      </Link>
 
       {message.text && (
         <div className={`mb-6 ${message.type === 'success' ? 'px-4 py-3 rounded-none border bg-green-50 border-green-200 text-green-700 text-sm font-semibold flex items-center gap-2' : 'px-4 py-3 rounded-none border bg-red-50 border-red-200 text-red-600 text-sm font-semibold flex items-center gap-2'}`}>
