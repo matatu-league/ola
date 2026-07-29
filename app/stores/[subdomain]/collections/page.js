@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Link from 'next/link';
 import {
   Layers, FolderTree, Plus, Edit2, Trash2, Check, X,
   Loader2, Sparkles, TrendingUp, Zap, Tag, DollarSign,
@@ -10,6 +11,7 @@ import {
 
 import { suggestStoreCategoriesAI } from '@/lib/ai';
 import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
+import { useAIConfig } from '@/hooks/useAIConfig';
 
 const ICON_MAP = { Sparkles, TrendingUp, Zap, Tag, DollarSign };
 
@@ -72,20 +74,22 @@ export default function CollectionsPage() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  const { geminiApiKey, hasGeminiKey } = useAIConfig();
+
   useEffect(() => {
-    if (!selectedMktCat || !aiMode) { setAiSuggestions([]); return; }
+    if (!selectedMktCat || !aiMode || !hasGeminiKey) { setAiSuggestions([]); return; }
     const cat = dbCategories.find(c => c._id === selectedMktCat);
     if (!cat) return;
     const tid = setTimeout(async () => {
       setIsSuggestingAI(true);
       try {
-        const suggestions = await suggestStoreCategoriesAI(cat.name);
+        const suggestions = await suggestStoreCategoriesAI(cat.name, geminiApiKey);
         if (Array.isArray(suggestions)) setAiSuggestions(suggestions);
       } catch (e) { console.error('AI suggestion failed', e); }
       finally { setIsSuggestingAI(false); }
     }, 600);
     return () => clearTimeout(tid);
-  }, [selectedMktCat, aiMode, dbCategories]);
+  }, [selectedMktCat, aiMode, dbCategories, hasGeminiKey, geminiApiKey]);
 
   const categoryTree = useMemo(() => {
     const parents = dbCategories.filter(c => !c.parentId || c.parentId === '');
@@ -251,14 +255,23 @@ export default function CollectionsPage() {
           <p className="text-sm text-gray-500 mt-1">Manage custom categories and smart collections for your storefront.</p>
         </div>
         {/* AI toggle — matches the blue-accent pattern of the profile page */}
-        <div className="flex items-center gap-2 px-3 py-2 border border-gray-200 bg-white self-start sm:self-auto">
-          <Sparkles size={14} className={aiMode ? 'text-blue-600' : 'text-gray-400'} />
-          <span className="text-sm font-semibold">AI Suggestions</span>
-          <label className="relative inline-flex items-center cursor-pointer ml-1">
-            <input type="checkbox" className="sr-only peer" checked={aiMode} onChange={() => setAiMode(p => !p)} />
-            <div className="w-9 h-5 bg-gray-200 rounded-none peer peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-none after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
-          </label>
-        </div>
+        {hasGeminiKey ? (
+          <div className="flex items-center gap-2 px-3 py-2 border border-gray-200 bg-white self-start sm:self-auto">
+            <Sparkles size={14} className={aiMode ? 'text-blue-600' : 'text-gray-400'} />
+            <span className="text-sm font-semibold">AI Suggestions</span>
+            <label className="relative inline-flex items-center cursor-pointer ml-1">
+              <input type="checkbox" className="sr-only peer" checked={aiMode} onChange={() => setAiMode(p => !p)} />
+              <div className="w-9 h-5 bg-gray-200 rounded-none peer peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-none after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full" />
+            </label>
+          </div>
+        ) : (
+          <Link
+            href="/settings?tab=ai"
+            className="flex items-center gap-2 px-3 py-2 border border-yellow-200 bg-yellow-50 text-yellow-700 self-start sm:self-auto text-xs font-semibold hover:border-yellow-400 transition-colors"
+          >
+            <Sparkles size={14} /> Add your Google AI key to enable AI suggestions
+          </Link>
+        )}
       </div>
 
       {/* ── Toast ──────────────────────────────────────────────────────────── */}

@@ -5,9 +5,11 @@ import {
   Store, Globe, MapPin, Save, Loader2, Image as ImageIcon, 
   Briefcase, Phone, UploadCloud, Trash2, X, ZoomIn, Check, Sparkles, Wand2
 } from 'lucide-react';
+import Link from 'next/link';
 import { storage } from '@/lib/firebaseLib';
 import { uploadFileToFirebase, deleteFileFromFirebase } from '@/lib/firebaseLib';
 import { optimizeLogo, optimizeImage } from '@/lib/imageOptimize';
+import { useAIConfig } from '@/hooks/useAIConfig';
 
 // ============================================================================
 // CONFIG
@@ -16,10 +18,11 @@ const API_ENDPOINTS = {
   store: '/api/stores',
 };
 
+// Gemini is BYOK — the model/base URL stay env-configurable, but the API key
+// is the store's own (Settings → AI Features), passed in as a prop below.
 const AI_IMAGE_CONFIG = {
   model: process.env.NEXT_PUBLIC_AI_IMAGE_MODEL || 'gemini-3.1-flash-image-preview',
   baseUrl: process.env.NEXT_PUBLIC_AI_IMAGE_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/models',
-  apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || '',
 };
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -182,7 +185,7 @@ const ImageCropperModal = ({ imageSrc, reqW, reqH, onCropComplete, onCancel }) =
 // ============================================================================
 // AI IMAGE GENERATION MODAL
 // ============================================================================
-const AIGenerationModal = ({ type, companyDescription, storeName, onClose, onGenerated }) => {
+const AIGenerationModal = ({ type, companyDescription, storeName, apiKey, onClose, onGenerated }) => {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
@@ -204,11 +207,11 @@ const AIGenerationModal = ({ type, companyDescription, storeName, onClose, onGen
     setError('');
 
     try {
-      if (!AI_IMAGE_CONFIG.apiKey) {
-        throw new Error('AI image generation is not configured. Please set the API key environment variable.');
+      if (!apiKey) {
+        throw new Error('Add your Google AI API key in Settings → AI Features to use AI image generation.');
       }
 
-      const apiUrl = `${AI_IMAGE_CONFIG.baseUrl}/${AI_IMAGE_CONFIG.model}:generateContent?key=${AI_IMAGE_CONFIG.apiKey}`;
+      const apiUrl = `${AI_IMAGE_CONFIG.baseUrl}/${AI_IMAGE_CONFIG.model}:generateContent?key=${apiKey}`;
 
       const payload = {
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -263,6 +266,11 @@ const AIGenerationModal = ({ type, companyDescription, storeName, onClose, onGen
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-500 rounded-none text-sm font-semibold">
               ⚠️ {error}
+              {!apiKey && (
+                <Link href="/settings?tab=ai" className="block underline underline-offset-2 mt-1">
+                  Add key in Settings
+                </Link>
+              )}
             </div>
           )}
 
@@ -375,6 +383,7 @@ const dataURLtoFile = (dataUrl, filename) => {
 // MAIN STORE PROFILE COMPONENT
 // ============================================================================
 export default function StoreProfile() {
+  const { geminiApiKey } = useAIConfig();
   const [isLoading,   setIsLoading]   = useState(true);
   const [isSaving,    setIsSaving]    = useState(false);
   const [message,     setMessage]     = useState({ type: '', text: '' });
@@ -672,6 +681,7 @@ export default function StoreProfile() {
           type={aiModalConfig.type}
           companyDescription={formData.description}
           storeName={formData.title}
+          apiKey={geminiApiKey}
           onClose={() => setAiModalConfig(null)}
           onGenerated={(url) => handleAIGenerated(url, aiModalConfig.type, aiModalConfig.reqW, aiModalConfig.reqH)}
         />

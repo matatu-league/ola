@@ -1,6 +1,16 @@
 // ─── Config ───────────────────────────────────────────────────────────────────
-const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+// Gemini is BYOK (bring your own key) — every store owner pastes their own
+// Google AI API key in Settings → AI Features, so there is no shared/platform
+// fallback here on purpose. Every Gemini-powered helper below takes that key
+// as an explicit argument and throws a clear, catchable error when it's
+// missing, so the UI can surface "set up your API key" instead of a silent
+// or confusing failure.
 const grokApiKey   = process.env.NEXT_PUBLIC_GROK_API_KEY   || '';
+
+const NO_KEY_ERROR = 'Add your Google AI API key in Settings → AI Features to use this tool.';
+const requireKey = (apiKey) => {
+  if (!apiKey) throw new Error(NO_KEY_ERROR);
+};
 
 const TEXT_MODEL_ID     = 'gemini-2.5-flash';
 const TTS_MODEL_ID      = 'gemini-3.1-flash-tts-preview';
@@ -146,9 +156,11 @@ const bgPromptFor = (pref) => {
  * @param {string}   base64Data   - Raw base64 image string (no prefix).
  * @param {string}   mimeType     - Image MIME type (e.g. 'image/jpeg').
  * @param {object[]} dbCategories - Array of { _id, name } category objects.
+ * @param {string}   apiKey       - The store's own Google AI API key.
  * @returns {Promise<{title,description,tags,category_id,attributes,recommended_views}>}
  */
-export const runGeminiImageAnalysis = async (base64Data, mimeType, dbCategories) => {
+export const runGeminiImageAnalysis = async (base64Data, mimeType, dbCategories, apiKey) => {
+  requireKey(apiKey);
   const categoryContext = dbCategories.length > 0
     ? `From this list: [${dbCategories.map(c => `[ID: ${c._id}] ${c.name}`).join(', ')}], select exactly one Category ID.`
     : 'Return an empty string for category_id.';
@@ -163,7 +175,7 @@ export const runGeminiImageAnalysis = async (base64Data, mimeType, dbCategories)
 IMPORTANT: Return ONLY a raw, valid JSON object.`;
 
   const result = await fetchWithRetry(
-    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${apiKey}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -196,13 +208,15 @@ IMPORTANT: Return ONLY a raw, valid JSON object.`;
  * Suggest store subcategories for a given global category name.
  *
  * @param {string} globalCatName
+ * @param {string} apiKey - The store's own Google AI API key.
  * @returns {Promise<string[]>}
  */
-export const suggestStoreCategoriesAI = async (globalCatName) => {
+export const suggestStoreCategoriesAI = async (globalCatName, apiKey) => {
+  requireKey(apiKey);
   const prompt = `A merchant is listing a product in the global category "${globalCatName}". Suggest 3 short, logical custom "Store Subcategories". Return ONLY a raw JSON array of strings.`;
 
   const result = await fetchWithRetry(
-    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${apiKey}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -221,13 +235,15 @@ export const suggestStoreCategoriesAI = async (globalCatName) => {
  *
  * @param {string} productTitle
  * @param {string} variantType  - e.g. 'Color', 'Size', 'Material'.
+ * @param {string} apiKey       - The store's own Google AI API key.
  * @returns {Promise<string[]>}
  */
-export const suggestVariantsAIList = async (productTitle, variantType) => {
+export const suggestVariantsAIList = async (productTitle, variantType, apiKey) => {
+  requireKey(apiKey);
   const prompt = `Based on "${productTitle}", suggest 3 logical "${variantType}" options. Return a raw JSON array of strings.`;
 
   const result = await fetchWithRetry(
-    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${geminiApiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${TEXT_MODEL_ID}:generateContent?key=${apiKey}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -347,12 +363,14 @@ export const buildVariantPrompt = (variantType, variantName, backgroundPreferenc
 /**
  * Generate a WAV audio Blob from descriptive text using Gemini TTS.
  *
- * @param {string} text - Product description / ad copy to vocalise.
+ * @param {string} text   - Product description / ad copy to vocalise.
+ * @param {string} apiKey - The store's own Google AI API key.
  * @returns {Promise<Blob>} - audio/wav Blob ready to upload or play.
  */
-export const runGeminiTTS = async (text) => {
+export const runGeminiTTS = async (text, apiKey) => {
+  requireKey(apiKey);
   const result = await fetchWithRetry(
-    `https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL_ID}:generateContent?key=${geminiApiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL_ID}:generateContent?key=${apiKey}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },

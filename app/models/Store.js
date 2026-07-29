@@ -141,6 +141,14 @@ const StoreSchema = new Schema(
       security: {
         twoFactorAuth: { type: Boolean, default: false },
       },
+      // Bring-your-own-key AI config. Every store brings its own Google AI
+      // (Gemini) API key — there is no shared/platform key — so every AI
+      // feature (theme builder, product photo analysis, category/variant
+      // suggestions, AI voice-over) is OFF by default until a vendor pastes
+      // their own key here (Settings → AI Features).
+      ai: {
+        geminiApiKey: { type: String, default: '' },
+      },
     },
 
     features: {
