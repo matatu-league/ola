@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { storage } from '@/lib/firebaseLib';
 import { uploadFileToFirebase, deleteFileFromFirebase, moveTempFileToPermanent } from '@/lib/firebaseLib';
 import { ref } from 'firebase/storage';
+import { useAIConfig } from '@/hooks/useAIConfig';
 
 import {
   fileToBase64, extractBase64FromUrl, convertDataUrlToFile,
@@ -282,6 +283,7 @@ export default function ProductForm({ initialData = null, onSubmit, isSaving = f
   const [variants, setVariants]                               = useState([]);
   const [videoMode, setVideoMode]                             = useState('upload');
 
+  const { geminiApiKey, hasGeminiKey }    = useAIConfig();
   const [aiMode, setAiMode]               = useState(true);
   const [imageGenModel, setImageGenModel] = useState('custom');
   const [keepOriginalBg, setKeepOriginalBg] = useState(false);
@@ -478,19 +480,19 @@ Respond ONLY with a valid JSON object where each key is the field slug and the v
 
   // AI store category suggestions
   useEffect(() => {
-    if (!formData.category || !aiMode || syncMarketplaceCat) { setSuggestedStoreCategories([]); return; }
+    if (!formData.category || !aiMode || !hasGeminiKey || syncMarketplaceCat) { setSuggestedStoreCategories([]); return; }
     const globalCat = dbCategories.find(c => c._id === formData.category);
     if (!globalCat) return;
     const tid = setTimeout(async () => {
       setIsSuggestingStoreCats(true);
       try {
-        const suggestions = await suggestStoreCategoriesAI(globalCat.name);
+        const suggestions = await suggestStoreCategoriesAI(globalCat.name, geminiApiKey);
         if (Array.isArray(suggestions)) setSuggestedStoreCategories(suggestions);
       } catch (e) { console.error('Store cat suggestions failed', e); }
       finally { setIsSuggestingStoreCats(false); }
     }, 800);
     return () => clearTimeout(tid);
-  }, [formData.category, aiMode, syncMarketplaceCat, dbCategories]);
+  }, [formData.category, aiMode, hasGeminiKey, geminiApiKey, syncMarketplaceCat, dbCategories]);
 
   // Initialize from initialData (edit mode)
   useEffect(() => {
@@ -659,12 +661,12 @@ Respond ONLY with a valid JSON object where each key is the field slug and the v
   };
 
   const generateDetailsFromImage = async (file) => {
-    if (!aiMode) return;
+    if (!aiMode || !hasGeminiKey) return;
     setIsAiProcessing(true);
     setAiStatus('Gemini is reasoning about your product...');
     try {
       const base64 = await fileToBase64(file);
-      const aiData = await runGeminiImageAnalysis(base64, file.type, dbCategories);
+      const aiData = await runGeminiImageAnalysis(base64, file.type, dbCategories, geminiApiKey);
       setFormData(p => ({
         ...p,
         title:       aiData.title       || p.title,
@@ -740,10 +742,11 @@ Respond ONLY with a valid JSON object where each key is the field slug and the v
   };
 
   const suggestVariantsAI = async () => {
+    if (!hasGeminiKey) return setErrorMessage('Add your Google AI API key in Settings → AI Features to use variant suggestions.');
     setIsAiProcessing(true);
     setAiStatus(`Reasoning logical ${activeVariantTab} options...`);
     try {
-      const suggested = await suggestVariantsAIList(formData.title, activeVariantTab);
+      const suggested = await suggestVariantsAIList(formData.title, activeVariantTab, geminiApiKey);
       if (Array.isArray(suggested)) {
         setHasVariants(true);
         setVariants(p => [
@@ -760,9 +763,10 @@ Respond ONLY with a valid JSON object where each key is the field slug and the v
 
   const generateAudioDescriptionAI = async () => {
     if (!formData.description) return setErrorMessage('Generate a description first.');
+    if (!hasGeminiKey) return setErrorMessage('Add your Google AI API key in Settings → AI Features to use voice-over.');
     setIsAiProcessing(true); setAiStatus('Rendering audio ad...');
     try {
-      const audioBlob = await runGeminiTTS(formData.description);
+      const audioBlob = await runGeminiTTS(formData.description, geminiApiKey);
       const file      = new File([audioBlob], `audio_${Date.now()}.wav`, { type: 'audio/wav', lastModified: Date.now() });
       setAiStatus('Uploading audio...');
       const url = await uploadFileToFirebase(file, 'products/audio', !initialData, sessionId.current);
@@ -980,6 +984,21 @@ Respond ONLY with a valid JSON object where each key is the field slug and the v
         {errorMessage && (
           <div className="mb-6 px-4 py-3 rounded-none border bg-red-50 border-red-200 text-red-600 text-sm font-semibold flex items-center gap-2">
             ⚠️ {errorMessage}
+          </div>
+        )}
+
+        {/* AI Copilot is on but this store has no Google AI key yet — photo
+            analysis, category/variant suggestions and voice-over are all
+            disabled until one is added. Image generation (Custom/Grok) is
+            unaffected — that's a separate provider. */}
+        {aiMode && !hasGeminiKey && (
+          <div className="mb-6 px-4 py-3 rounded-none border bg-yellow-50 border-yellow-200 text-yellow-700 text-sm font-semibold flex items-center justify-between gap-3 flex-wrap">
+            <span className="flex items-center gap-2">
+              <Sparkles size={15} className="shrink-0" /> Add your Google AI API key to enable AI photo analysis, suggestions and voice-over.
+            </span>
+            <Link href="/settings?tab=ai" className="text-yellow-800 underline underline-offset-2 shrink-0">
+              Add key in Settings
+            </Link>
           </div>
         )}
 

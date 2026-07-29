@@ -15,8 +15,11 @@
 //   NEXT_PUBLIC_CUSTOM_AI_CHAT_PATH  (default '/api/chat')
 //   NEXT_PUBLIC_CUSTOM_AI_KEY        (optional bearer token, if the service is protected)
 //
-// Gemini config:
-//   NEXT_PUBLIC_GEMINI_API_KEY
+// Gemini is BYOK (bring your own key) — there is no platform-wide Gemini key.
+// Every store owner pastes their own Google AI API key in the dashboard
+// (Settings → AI Features) and it's passed into `generateTemplateText` as an
+// explicit argument. No key configured → the 'gemini' provider throws instead
+// of silently generating with someone else's key:
 //   NEXT_PUBLIC_AI_TEXT_MODEL        (default 'gemini-3.5-flash')
 //   NEXT_PUBLIC_AI_TEXT_BASE_URL     (default Google Generative Language API)
 //
@@ -39,7 +42,6 @@ import { fetchWithRetry } from '@/lib/ai';
 export const TEMPLATE_PROVIDER =
   (process.env.NEXT_PUBLIC_AI_TEMPLATE_PROVIDER || 'gemini').toLowerCase();
 
-const GEMINI_KEY      = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
 const GEMINI_MODEL    = process.env.NEXT_PUBLIC_AI_TEXT_MODEL || 'gemini-3.5-flash';
 const GEMINI_BASE     = process.env.NEXT_PUBLIC_AI_TEXT_BASE_URL
   || 'https://generativelanguage.googleapis.com/v1beta/models';
@@ -94,23 +96,27 @@ const UNSPLASH_KEY    = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
  * @param {{ mimeType?: string, data: string }[]} [images] - inline base64 images
  * @param {string} [provider] - explicit provider override ('gemini'|'deepseek'|
  *                              'custom'); falls back to the env-selected default.
+ * @param {string} [geminiApiKey] - the store's own Google AI API key, required
+ *                                  when the active provider is 'gemini'.
  * @returns {Promise<string>} raw text from the model
  */
-export const generateTemplateText = async (prompt, images = [], provider) => {
+export const generateTemplateText = async (prompt, images = [], provider, geminiApiKey) => {
   const active = (provider || TEMPLATE_PROVIDER || 'gemini').toLowerCase();
   if (active === 'deepseek') return deepseekGenerate(prompt, images);
   if (active === 'custom')   return customGenerate(prompt, images);
-  return geminiGenerate(prompt, images);
+  return geminiGenerate(prompt, images, geminiApiKey);
 };
 
-const geminiGenerate = async (prompt, images) => {
+const geminiGenerate = async (prompt, images, apiKey) => {
+  if (!apiKey) throw new Error('Add your Google AI API key in Settings → AI Features to use Gemini generation.');
+
   const parts = [{ text: prompt }];
   for (const img of images || []) {
     if (img?.data) parts.push({ inlineData: { mimeType: img.mimeType || 'image/png', data: img.data } });
   }
 
   const result = await fetchWithRetry(
-    `${GEMINI_BASE}/${GEMINI_MODEL}:generateContent?key=${GEMINI_KEY}`,
+    `${GEMINI_BASE}/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
     {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Link from 'next/link';
+import { useAIConfig } from '@/hooks/useAIConfig';
 import {
   Plus, Edit, Trash2, Image as ImageIcon, Loader2, Save, X,
   UploadCloud, CalendarCheck, Clock, Search, Briefcase,
@@ -195,6 +197,7 @@ export default function ServicesPage() {
   const isEditing = !!formData._id;
 
   // ── AI state ─────────────────────────────────────────────────────────────────
+  const { geminiApiKey, hasGeminiKey }    = useAIConfig();
   const [aiMode, setAiMode]               = useState(true);
   const [imageGenModel, setImageGenModel] = useState('custom');
   const [keepOriginalBg, setKeepOriginalBg] = useState(false);
@@ -277,12 +280,12 @@ export default function ServicesPage() {
 
   // ── AI: Analyse first image ───────────────────────────────────────────────────
   const generateDetailsFromImage = async (file) => {
-    if (!aiMode) return;
+    if (!aiMode || !hasGeminiKey) return;
     setIsAiProcessing(true);
     setAiStatus('Gemini is analysing your service image...');
     try {
       const base64 = await fileToBase64(file);
-      const aiData = await runGeminiImageAnalysis(base64, file.type, dbCategories);
+      const aiData = await runGeminiImageAnalysis(base64, file.type, dbCategories, geminiApiKey);
 
       setFormData(p => ({
         ...p,
@@ -662,9 +665,18 @@ export default function ServicesPage() {
                   <label className="text-[13px] font-semibold text-[#161823]">
                     Service Images <span className="text-[#FE2C55]">*</span>
                     {aiMode && safeImages.length > 0 && (
-                      <span className="ml-2 text-[11px] font-normal text-[#7C3AED] flex items-center gap-1 inline-flex">
-                        <Sparkles size={10} /> AI will analyse first image
-                      </span>
+                      hasGeminiKey ? (
+                        <span className="ml-2 text-[11px] font-normal text-[#7C3AED] flex items-center gap-1 inline-flex">
+                          <Sparkles size={10} /> AI will analyse first image
+                        </span>
+                      ) : (
+                        <Link
+                          href="/settings?tab=ai"
+                          className="ml-2 text-[11px] font-normal text-[#B45309] flex items-center gap-1 inline-flex hover:underline"
+                        >
+                          <Sparkles size={10} /> Add your Google AI key to auto-analyse photos
+                        </Link>
+                      )
                     )}
                   </label>
                 </div>

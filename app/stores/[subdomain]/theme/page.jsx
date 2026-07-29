@@ -8,6 +8,7 @@ import {
   Wand2, Settings2, FileUp, Link as LinkIcon,
   Image as ImageIcon, Check, Plus, Trash2, FileText
 } from 'lucide-react';
+import Link from 'next/link';
 import { sanitizeTemplateCode } from '@/lib/templateSanitize';
 import { uploadFileToFirebase } from '@/lib/firebaseLib';
 import { generateTemplateText, searchUnsplashImage, unsplashSourceUrl, AI_PROVIDERS, TEMPLATE_PROVIDER } from '@/lib/aiProvider';
@@ -77,9 +78,10 @@ function sampleCatalog(industry) {
 
 // --- CONFIG & UTILITIES ---
 // Template text generation is provider-switchable (Gemini / DeepSeek v4) via
-// env — see @/lib/aiProvider. This key is only used for the lightweight inline
-// text rewrites in Visual Edit mode (always Gemini).
-const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+// env — see @/lib/aiProvider. Gemini is BYOK: the store's own key (from
+// storeProfile.geminiApiKey) is threaded through explicitly — there is no
+// platform-wide fallback. The lightweight inline text rewrite in Visual Edit
+// mode is always Gemini too, and uses that same store key.
 const TEXT_MODEL_ID = process.env.NEXT_PUBLIC_AI_TEXT_MODEL || 'gemini-3.5-flash';
 
 // Replace only the FIRST exact occurrence of `a` with `b` in `src`. Used by the
@@ -247,13 +249,14 @@ const urlToInlineImage = async (url) => {
 // generation attaches this text instead of re-uploading the image bytes, which
 // is cheaper on tokens and gives the designer model a fuller picture of the
 // brand. Returns a trimmed string, or '' if the logo can't be read.
-const describeLogo = async (logoUrl, provider) => {
+const describeLogo = async (logoUrl, provider, geminiApiKey) => {
   const img = await urlToInlineImage(logoUrl);
   if (!img) return '';
   const text = await generateTemplateText(
     LOGO_DECODE_PROMPT,
     [{ mimeType: img.mimeType, data: img.data }],
     provider,
+    geminiApiKey,
   );
   return (text || '').trim();
 };
@@ -280,7 +283,7 @@ const generateCodeAI = async (
   categoryContext, blueprintPrompt, themeColor, themeMode, artDirection,
   advancedConfig, isEditingExplicit, business = {}
 ) => {
-  const { aiProvider } = advancedConfig;
+  const { aiProvider, geminiApiKey } = advancedConfig;
   const command = await fetchHouseCommand(business, categoryContext);
 
   // The master prompt lives in its own module (@/lib/templatePrompt) so it can
@@ -313,7 +316,7 @@ const generateCodeAI = async (
 
   // Provider-switchable (Gemini / DeepSeek v4 / Custom) — the engine selector in
   // the theme studio passes an explicit choice; otherwise the env default wins.
-  const text = await generateTemplateText(prompt, images, aiProvider);
+  const text = await generateTemplateText(prompt, images, aiProvider, geminiApiKey);
   return cleanTemplateText(text);
 };
 
@@ -326,7 +329,7 @@ const generateJsonAI = async (
   categoryContext, themeColor, themeMode, artDirection,
   advancedConfig, business = {}
 ) => {
-  const { aiProvider } = advancedConfig;
+  const { aiProvider, geminiApiKey } = advancedConfig;
   const command = await fetchHouseCommand(business, categoryContext);
 
   const base = {
@@ -341,12 +344,12 @@ const generateJsonAI = async (
     images.push({ mimeType: business.logoMime || 'image/png', data: business.logoBase64 });
   }
 
-  let text = await generateTemplateText(buildJsonTemplatePrompt(base), images, aiProvider);
+  let text = await generateTemplateText(buildJsonTemplatePrompt(base), images, aiProvider, geminiApiKey);
   let { doc, errors } = parseTemplateJson(text);
   if (!doc) {
     text = await generateTemplateText(
       buildJsonTemplatePrompt({ ...base, validationErrors: errors }),
-      images, aiProvider,
+      images, aiProvider, geminiApiKey,
     );
     ({ doc, errors } = parseTemplateJson(text));
   }
@@ -776,6 +779,12 @@ const LiveCodePreview = ({ code, viewMode = 'desktop', storeProfile = {}, themeC
 
 // --- AI BUILDER DIALOG (Dark Theme with Blue-600 Primary) ---
 const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = null, onSave, onClose, globalThemeColor, globalThemeMode, storeProfile = {}, onLogoDescribed }) => {
+  // BYOK — this store's own Google AI key (Settings → AI Features). There is
+  // no platform-wide fallback, so the Gemini engine (the default) is disabled
+  // end-to-end until one is configured.
+  const geminiApiKey = storeProfile.geminiApiKey || '';
+  const hasGeminiKey = !!geminiApiKey;
+
   const [code, setCode]                   = useState(initialCode);
   const [activeTab, setActiveTab]         = useState('basic');
 
@@ -917,6 +926,11 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
   // AI rewrite of the currently-selected text literal.
   const rewriteActiveText = async (instruction) => {
     if (!activeText) return;
+    if (!hasGeminiKey) {
+      setToastMsg('⚠️ Add your Google AI API key in Settings → AI Features to use AI rewrite.');
+      setTimeout(() => setToastMsg(''), 5000);
+      return;
+    }
     setEditBusy(true);
     try {
       const prompt = `${instruction} this website copy. Keep it the same language and intent. Return ONLY the rewritten text, no quotes, no preamble:\n\n${activeText}`;
@@ -1063,6 +1077,14 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       return;
     }
 
+    // Gemini is BYOK — the default engine is disabled until this store has its
+    // own key. DeepSeek/Custom don't need one, so only gate the 'gemini' choice.
+    if (aiProvider === 'gemini' && !hasGeminiKey) {
+      setToastMsg('⚠️ Add your Google AI API key in Settings → AI Features to generate with Gemini (or switch AI Engine).');
+      setTimeout(() => setToastMsg(''), 6000);
+      return;
+    }
+
     const blueprint  = layoutBlueprints.find(b => b.id === selectedBlueprint);
     const artDir     = ART_DIRECTIONS.find(a => a.id === selectedArtDirection);
     // The store's own category (set at onboarding) is the source of truth.
@@ -1095,7 +1117,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
       const staleDescription = business.logo && logoDescribedFor !== business.logo;
       if (business.logo && (!business.logoDescription || staleDescription)) {
         try {
-          const desc = await describeLogo(business.logo, aiProvider);
+          const desc = await describeLogo(business.logo, aiProvider, geminiApiKey);
           if (desc) {
             business.logoDescription = desc;
             // Cache locally (so a second Generate click in THIS session reuses
@@ -1127,6 +1149,7 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
         borderRadius: borderRadius === 'auto' ? '✨ Let AI Decide based on vibe' : borderRadius,
         animationFeel: animationFeel === 'auto' ? '✨ Let AI Decide based on vibe' : animationFeel,
         aiProvider,
+        geminiApiKey,
       };
 
       let sourceForScan = '';
@@ -1555,9 +1578,17 @@ const AIBuilderDialog = ({ initialCode, initialFormat = 'jsx', initialJson = nul
 
           {/* Action Footer */}
           <div className="p-5 bg-[#111] border-t border-white/10 shrink-0">
+            {aiProvider === 'gemini' && !hasGeminiKey && (
+              <Link
+                href="/settings?tab=ai"
+                className="mb-3 flex items-center gap-2 px-3 py-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-xs font-semibold hover:bg-yellow-500/15 transition-colors"
+              >
+                <Sparkles size={13} className="shrink-0" /> Add your Google AI key in Settings to use the Gemini engine
+              </Link>
+            )}
             <button
               onClick={handleGenerate}
-              disabled={loading || (!isEditingMode && !profileComplete)}
+              disabled={loading || (!isEditingMode && !profileComplete) || (aiProvider === 'gemini' && !hasGeminiKey)}
               title={!isEditingMode && !profileComplete ? `Complete your store profile first: ${missingProfile.join(', ')}` : ''}
               className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-none text-sm font-bold transition-all shadow-[0_0_20px_rgba(37,99,235,0.15)] hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:-translate-y-0.5"
             >
@@ -2003,6 +2034,7 @@ export default function ThemePage() {
             serviceType:  s.serviceType || null,
             contactEmail: s.contact?.email || '',
             contactPhone: s.contact?.phone || '',
+            geminiApiKey: s.settings?.ai?.geminiApiKey || '',
           });
           const themeRes = await fetch(`/api/stores/${id}`);
           if (themeRes.ok) {

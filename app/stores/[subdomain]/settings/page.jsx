@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   CreditCard, Truck, Bell, Shield, Save, Smartphone, Building2,
   CheckCircle2, Clock, MapPin, Search, Navigation, Loader2,
-  AlertTriangle, Store as StoreIcon, ExternalLink
+  AlertTriangle, Store as StoreIcon, ExternalLink, Sparkles,
+  Eye, EyeOff, KeyRound, Wand2, Image as ImageIcon, Tags, Mic,
 } from 'lucide-react';
 import { GoogleMap, useJsApiLoader, Marker, Autocomplete } from '@react-google-maps/api';
 
@@ -16,6 +18,7 @@ const TABS = [
   { id: 'shipping',      label: 'Shipping & Delivery',   icon: Truck },
   { id: 'location',      label: 'Store Location',        icon: MapPin },
   { id: 'hours',         label: 'Business Hours',        icon: Clock },
+  { id: 'ai',            label: 'AI Features',           icon: Sparkles },
   { id: 'notifications', label: 'Notifications',         icon: Bell },
   { id: 'security',      label: 'Security & Login',      icon: Shield },
 ];
@@ -35,6 +38,7 @@ const INITIAL_SETTINGS = {
   emailMarketing:         false,
   smsAlerts:              true,
   twoFactorAuth:          false,
+  geminiApiKey:           '',
   location: {
     isOnlineOnly: false,
     address:      '',
@@ -78,12 +82,17 @@ const FlatToggle = ({ enabled, onChange, label, description, disabled = false, i
 );
 
 export default function StoreSettingsPage() {
-  const [activeTab,        setActiveTab]        = useState('payments');
+  const searchParams = useSearchParams();
+  const requestedTab = searchParams.get('tab');
+  const [activeTab,        setActiveTab]        = useState(
+    TABS.some((t) => t.id === requestedTab) ? requestedTab : 'payments'
+  );
   const [isLoading,        setIsLoading]        = useState(true);
   const [isSaving,         setIsSaving]         = useState(false);
   const [isConnectingGBP,  setIsConnectingGBP]  = useState(false);
   const [message,          setMessage]          = useState({ type: '', text: '' });
   const [settings,         setSettings]         = useState(INITIAL_SETTINGS);
+  const [showApiKey,       setShowApiKey]       = useState(false);
   const autocompleteRef = useRef(null);
 
   const { isLoaded: isMapsLoaded, loadError: mapsLoadError } = useJsApiLoader({
@@ -117,6 +126,7 @@ export default function StoreSettingsPage() {
             emailMarketing:        db.notifications?.emailMarketing    ?? false,
             smsAlerts:             db.notifications?.smsAlerts         ?? true,
             twoFactorAuth:         db.security?.twoFactorAuth          ?? false,
+            geminiApiKey:          db.ai?.geminiApiKey                 || '',
             location: {
               isOnlineOnly: loc.isOnlineOnly ?? false,
               address:      loc.address      || '',
@@ -167,6 +177,7 @@ export default function StoreSettingsPage() {
           },
           security:       { twoFactorAuth: settings.twoFactorAuth },
           googleBusiness: settings.googleBusiness,
+          ai:             { geminiApiKey: settings.geminiApiKey.trim() },
         },
       };
 
@@ -661,6 +672,126 @@ export default function StoreSettingsPage() {
                       )}
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* AI FEATURES — every store brings its own Google AI (Gemini) key;
+              there is no shared/platform key, so AI tools are OFF until a
+              vendor configures theirs here. */}
+          {activeTab === 'ai' && (
+            <div className="space-y-6">
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Sparkles size={18} className="text-black" />
+                  <h2 className="text-base font-bold">Google AI (Gemini) API Key</h2>
+                </div>
+
+                <div className={`flex items-start gap-3 p-4 mb-5 border ${settings.geminiApiKey ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
+                  {settings.geminiApiKey
+                    ? <CheckCircle2 size={18} className="text-green-600 shrink-0 mt-0.5" />
+                    : <AlertTriangle size={18} className="text-yellow-600 shrink-0 mt-0.5" />}
+                  <div>
+                    <p className={`text-sm font-bold ${settings.geminiApiKey ? 'text-green-700' : 'text-yellow-700'}`}>
+                      {settings.geminiApiKey ? 'AI features are enabled' : 'AI features are disabled'}
+                    </p>
+                    <p className={`text-xs mt-0.5 ${settings.geminiApiKey ? 'text-green-600' : 'text-yellow-600'}`}>
+                      {settings.geminiApiKey
+                        ? 'Your store is using its own Google AI API key for every AI tool below.'
+                        : 'Add your own Google AI API key to turn on AI tools across your store. Every store uses its own key — there is no shared key.'}
+                    </p>
+                  </div>
+                </div>
+
+                <label className="text-sm font-semibold text-black mb-1.5 block">Your Google AI API Key</label>
+                <div className="relative">
+                  <KeyRound size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type={showApiKey ? 'text' : 'password'}
+                    value={settings.geminiApiKey}
+                    onChange={(e) => set('geminiApiKey', e.target.value)}
+                    placeholder="AIza..."
+                    autoComplete="off"
+                    spellCheck={false}
+                    className="w-full bg-gray-50 border border-gray-300 rounded-none pl-9 pr-10 py-2 text-sm text-black font-mono focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowApiKey((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+                    aria-label={showApiKey ? 'Hide API key' : 'Show API key'}
+                  >
+                    {showApiKey ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Stored against your store and used only for the AI requests you trigger from your own dashboard. Don&apos;t share this key — anyone who has it can use your Google AI quota.
+                </p>
+              </div>
+
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <Wand2 size={18} className="text-black" />
+                  <h2 className="text-base font-bold">What your key unlocks</h2>
+                </div>
+                <div className="space-y-0">
+                  {[
+                    { icon: Wand2,     label: 'AI Theme Builder',                desc: 'Generate and edit your storefront design with AI.' },
+                    { icon: ImageIcon, label: 'Product Photo Analysis',          desc: 'Auto-fill titles, descriptions, tags and specs from a photo.' },
+                    { icon: Tags,      label: 'Category & Variant Suggestions',  desc: 'AI-suggested store subcategories and variant options (Color, Size, …).' },
+                    { icon: Mic,       label: 'AI Voice-Over',                   desc: 'Turn a product description into spoken audio.' },
+                  ].map((f) => (
+                    <div key={f.label} className="flex items-start gap-3 py-3 border-b border-gray-200 last:border-0">
+                      <f.icon size={16} className="text-blue-600 shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="text-sm font-semibold text-black">{f.label}</h4>
+                        <p className="text-xs text-gray-500 mt-0.5">{f.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-200 p-6">
+                <div className="flex items-center gap-2 mb-5 border-b border-gray-200 pb-3">
+                  <KeyRound size={18} className="text-black" />
+                  <h2 className="text-base font-bold">How to get your Google AI API key</h2>
+                </div>
+                <p className="text-sm text-gray-500 mb-5">
+                  Google AI Studio gives every Google account a free API key with a generous free-tier quota. It takes about 2 minutes.
+                </p>
+                <ol className="space-y-4">
+                  {[
+                    { title: 'Open Google AI Studio',           desc: 'Go to aistudio.google.com and sign in with the Google account you want quota-tracked for this store.' },
+                    { title: 'Open the API keys page',          desc: 'Click "Get API key" in the left sidebar, then "Create API key".' },
+                    { title: 'Choose or create a Google Cloud project', desc: 'If prompted, pick an existing project or let Google create one for you — any project works.' },
+                    { title: 'Copy the generated key',          desc: 'It starts with "AIza…". Copy it immediately — treat it like a password.' },
+                    { title: 'Paste it above and save',         desc: 'Paste the key into the field above, then click "Save Changes" at the top of this page.' },
+                  ].map((step, i) => (
+                    <li key={step.title} className="flex gap-3">
+                      <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center shrink-0">{i + 1}</span>
+                      <div>
+                        <h4 className="text-sm font-bold text-black">{step.title}</h4>
+                        <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{step.desc}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:border-black text-black px-5 py-2.5 rounded-none font-semibold text-sm transition-colors"
+                >
+                  <ExternalLink size={14} /> Open Google AI Studio
+                </a>
+
+                <div className="mt-5 bg-blue-50 border border-blue-200 p-4">
+                  <p className="text-xs text-blue-700 leading-relaxed">
+                    <strong>Good to know:</strong> Google AI Studio&apos;s free tier is generous for a single store&apos;s day-to-day use, but usage beyond it is billed to your own Google account — not to Ola. You can revoke or rotate this key any time from the same API keys page.
+                  </p>
                 </div>
               </div>
             </div>
