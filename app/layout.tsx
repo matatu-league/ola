@@ -5,6 +5,8 @@ import { CartProvider } from '@/contexts/CartContext';
 import CartDrawer from '@/components/shared/CartDrawer';
 import { UserProvider } from '@/contexts/UserContext';
 import { NotificationProvider } from '@/contexts/NotificationContext';
+import ServiceWorkerRegister from '@/components/shared/ServiceWorkerRegister';
+import InstallPrompt from '@/components/shared/InstallPrompt';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -24,6 +26,14 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'Ola',
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-any-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-any-512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.ico', sizes: '16x16 32x32', type: 'image/x-icon' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
 };
 
@@ -49,6 +59,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body>
+        <ServiceWorkerRegister />
         {/* The rest of your pages render inside {children} */}
         <main className="flex-1">
           <UserProvider>
@@ -56,6 +67,7 @@ export default function RootLayout({
               <CartProvider>
                 {children}
                 <CartDrawer /> {/* Drawer placed globally here! */}
+                <InstallPrompt />
               </CartProvider>
             </NotificationProvider>
           </UserProvider>
